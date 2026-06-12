@@ -9,15 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
+import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
 import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemRouteRoute = DesignSystemRouteRouteImport.update({
   id: '/design-system',
   path: '/design-system',
@@ -48,6 +55,11 @@ const DesignSystemTypographyRoute = DesignSystemTypographyRouteImport.update({
   path: '/typography',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
+const DesignSystemScrollbarsRoute = DesignSystemScrollbarsRouteImport.update({
+  id: '/scrollbars',
+  path: '/scrollbars',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
 const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
   id: '/colors',
   path: '/colors',
@@ -63,7 +75,9 @@ const DesignSystemComponentsSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system/': typeof DesignSystemIndexRoute
@@ -72,7 +86,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system': typeof DesignSystemIndexRoute
@@ -83,7 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system/': typeof DesignSystemIndexRoute
@@ -95,7 +113,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/design-system'
+    | '/about'
     | '/design-system/colors'
+    | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system/'
@@ -104,7 +124,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/design-system/colors'
+    | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system'
@@ -114,7 +136,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/design-system'
+    | '/about'
     | '/design-system/colors'
+    | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system/'
@@ -125,12 +149,20 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system': {
       id: '/design-system'
       path: '/design-system'
@@ -173,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemTypographyRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/design-system/scrollbars': {
+      id: '/design-system/scrollbars'
+      path: '/scrollbars'
+      fullPath: '/design-system/scrollbars'
+      preLoaderRoute: typeof DesignSystemScrollbarsRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
     '/design-system/colors': {
       id: '/design-system/colors'
       path: '/colors'
@@ -192,6 +231,7 @@ declare module '@tanstack/react-router' {
 
 interface DesignSystemRouteRouteChildren {
   DesignSystemColorsRoute: typeof DesignSystemColorsRoute
+  DesignSystemScrollbarsRoute: typeof DesignSystemScrollbarsRoute
   DesignSystemTypographyRoute: typeof DesignSystemTypographyRoute
   DesignSystemIndexRoute: typeof DesignSystemIndexRoute
   DesignSystemComponentsSlugRoute: typeof DesignSystemComponentsSlugRoute
@@ -199,6 +239,7 @@ interface DesignSystemRouteRouteChildren {
 
 const DesignSystemRouteRouteChildren: DesignSystemRouteRouteChildren = {
   DesignSystemColorsRoute: DesignSystemColorsRoute,
+  DesignSystemScrollbarsRoute: DesignSystemScrollbarsRoute,
   DesignSystemTypographyRoute: DesignSystemTypographyRoute,
   DesignSystemIndexRoute: DesignSystemIndexRoute,
   DesignSystemComponentsSlugRoute: DesignSystemComponentsSlugRoute,
@@ -210,6 +251,7 @@ const DesignSystemRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }

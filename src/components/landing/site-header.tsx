@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 const navItems = [
   { label: "Work", href: "/#work", isAnchor: true },
-  { label: "About", href: "/#about", isAnchor: true },
+  { label: "About", to: "/about" as const, isAnchor: false },
   { label: "Experience", href: "/#experience", isAnchor: true },
   { label: "Projects", to: "/projects" as const, isAnchor: false },
 ] as const

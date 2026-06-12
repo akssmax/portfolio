@@ -20,7 +20,6 @@ export function getM3ShapeMaskStyle(shape: M3ShapeId): CSSProperties {
     maskPosition: "center",
     WebkitMaskPosition: "center",
     maskMode: "alpha",
-    WebkitMaskSourceType: "alpha",
   }
 }
 
@@ -120,8 +119,11 @@ export function M3ShapeClip({
         mask={`url(#${maskId})`}
       >
         <div
-          xmlns="http://www.w3.org/1999/xhtml"
           className="size-full overflow-hidden"
+          {...({ xmlns: "http://www.w3.org/1999/xhtml" } as Record<
+            string,
+            unknown
+          >)}
         >
           {children}
         </div>

@@ -1,0 +1,43 @@
+:root {
+  --scrollbar-size: 0.5rem;
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 55%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 75%, transparent);
+  --scrollbar-track: transparent;
+}
+
+@layer base {
+  *,
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  *::-webkit-scrollbar,
+  html::-webkit-scrollbar {
+    width: var(--scrollbar-size);
+    height: var(--scrollbar-size);
+  }
+
+  *::-webkit-scrollbar-track,
+  html::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+
+  *::-webkit-scrollbar-thumb,
+  html::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover,
+  html::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  *::-webkit-scrollbar-corner,
+  html::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+  }
+}

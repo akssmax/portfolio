@@ -1,0 +1,8 @@
+/**
+ * Semantic surface aliases — loaded after brand + neutral theme layers.
+ * Section backgrounds always track the active neutral palette (via --muted).
+ */
+html {
+  --section: var(--muted);
+  --section-foreground: var(--foreground);
+}

@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { CustomScrollbar } from "@/components/ui/custom-scrollbar"
 import { Separator } from "@/components/ui/separator"
 
 import { ColorPresetGrid } from "./theme-customizer/color-preset-grid"
@@ -35,7 +36,8 @@ export function ThemeCustomizer() {
           <Palette className="size-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80 max-h-[min(85vh,640px)] overflow-y-auto">
+      <PopoverContent align="end" className="w-80 p-0">
+        <CustomScrollbar className="flex max-h-[min(85vh,640px)] flex-col gap-4 p-4">
         <div className="space-y-1">
           <p className="text-sm font-semibold">Theme</p>
           <p className="text-xs text-muted-foreground">
@@ -83,6 +85,7 @@ export function ThemeCustomizer() {
           </p>
           <ModePicker />
         </section>
+        </CustomScrollbar>
       </PopoverContent>
     </Popover>
   )

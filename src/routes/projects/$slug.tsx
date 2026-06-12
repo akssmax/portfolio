@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 
+import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
 import { SiteHeader } from "@/components/landing/site-header"
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/projects/$slug")({
       ],
     }
   },
+  errorComponent: RouteError,
   component: ProjectDetailPage,
 })
 

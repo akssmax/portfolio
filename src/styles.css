@@ -13,6 +13,8 @@
 @import "./lib/themes/themes/presets.css";
 @import "./lib/themes/themes/fonts.css";
 @import "./lib/themes/themes/radius.css";
+@import "./lib/themes/themes/surfaces.css";
+@import "./styles/scrollbars.css";
 
 @custom-variant dark (&:is(.dark *));
 

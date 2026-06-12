@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { Palette, Shapes, Type } from "lucide-react"
+import { Palette, ScrollText, Shapes, Type } from "lucide-react"
 
 import {
   Card,
@@ -19,21 +19,29 @@ const foundationCards = [
   {
     title: "Colors",
     description: "OKLCH semantic tokens for light and dark themes.",
-    href: "/design-system/colors",
+    to: "/design-system/colors" as const,
     icon: Palette,
   },
   {
     title: "Typography",
     description: "Geist type scale using Tailwind font tokens.",
-    href: "/design-system/typography",
+    to: "/design-system/typography" as const,
     icon: Type,
   },
   {
     title: "M3 Shapes",
     description:
       "Material Design 3 expressive shapes for icons, masks, and placeholders.",
-    href: "/design-system/components/m3-shapes",
+    to: "/design-system/components/$slug" as const,
+    params: { slug: "m3-shapes" },
     icon: Shapes,
+  },
+  {
+    title: "Scrollbars",
+    description:
+      "Brand primary thumb with transparent track — global and component usage.",
+    to: "/design-system/scrollbars" as const,
+    icon: ScrollText,
   },
 ] as const
 
@@ -64,7 +72,11 @@ function DesignSystemIntroduction() {
         <h2 className="text-2xl font-semibold tracking-tight">Foundations</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {foundationCards.map((card) => (
-            <Link key={card.href} to={card.href}>
+            <Link
+              key={card.to}
+              to={card.to}
+              {...("params" in card ? { params: card.params } : {})}
+            >
               <Card className="h-full transition-shadow hover:shadow-md">
                 <CardHeader>
                   <card.icon className="size-5 text-muted-foreground" />

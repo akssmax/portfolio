@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 import { ArrowDown } from "lucide-react"
 
+import { ErrorBoundary } from "@/components/error-boundary"
 import { M3FeatureImage } from "@/components/m3-shapes"
 import {
   InteractiveStrandsBackground,
@@ -26,11 +27,13 @@ export function HeroSection() {
         aria-hidden
       >
         {!shouldReduceMotion ? (
-          <InteractiveStrandsBackground
-            dynamicProps={dynamicProps}
-            colors={[...PRIDE_FLAG_COLORS]}
-            className="absolute inset-0"
-          />
+          <ErrorBoundary title="Background animation failed" showHeader={false}>
+            <InteractiveStrandsBackground
+              dynamicProps={dynamicProps}
+              colors={[...PRIDE_FLAG_COLORS]}
+              className="absolute inset-0"
+            />
+          </ErrorBoundary>
         ) : null}
         <div className="absolute inset-0 bg-background/75" aria-hidden />
       </div>
@@ -86,11 +89,13 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <M3FeatureImage
-            items={heroPortraitItems}
-            alt={`${profile.name} portrait`}
-            imageClassName="size-80 sm:size-96 lg:size-[28rem] xl:size-[32rem] 2xl:size-[36rem]"
-          />
+          <ErrorBoundary title="Portrait failed to load" showHeader={false}>
+            <M3FeatureImage
+              items={heroPortraitItems}
+              alt={`${profile.name} portrait`}
+              imageClassName="size-80 sm:size-96 lg:size-[28rem] xl:size-[32rem] 2xl:size-[36rem]"
+            />
+          </ErrorBoundary>
         </motion.div>
       </div>
     </section>

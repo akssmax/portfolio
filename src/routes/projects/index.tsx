@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 
+import { RouteError } from "@/components/route-error"
+
 import {
   InteractiveStrandsBackground,
   useInteractiveStrands,
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/projects/")({
     ],
   }),
   loader: () => getAllProjects(),
+  errorComponent: RouteError,
   component: ProjectsIndexPage,
 })
 

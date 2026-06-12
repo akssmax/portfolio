@@ -3,6 +3,7 @@
 import { Link, useRouterState } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
 
+import { ErrorBoundary } from "@/components/error-boundary"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import {
   Sidebar,
@@ -112,7 +113,9 @@ export function DesignSystemLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <main className={cn("mx-auto w-full max-w-4xl flex-1 p-6 sm:p-10")}>
-          {children}
+          <ErrorBoundary title="This page failed to render" showHeader={false}>
+            {children}
+          </ErrorBoundary>
         </main>
       </SidebarInset>
     </SidebarProvider>

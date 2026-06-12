@@ -12,6 +12,8 @@ export const Route = createFileRoute("/design-system/colors")({
 const semanticColors = [
   { name: "Background", variable: "--background" },
   { name: "Foreground", variable: "--foreground" },
+  { name: "Section", variable: "--section" },
+  { name: "Section foreground", variable: "--section-foreground" },
   { name: "Card", variable: "--card" },
   { name: "Card foreground", variable: "--card-foreground" },
   { name: "Popover", variable: "--popover" },
@@ -54,8 +56,11 @@ function ColorsPage() {
           Colors
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Brand palette mapped to semantic OKLCH tokens. Use the palette icon in
-          the nav to preview 25 color presets, fonts, and radius options live.
+          Brand palette mapped to semantic OKLCH tokens. Surface layers come from
+          the neutral preset (<code className="text-foreground">data-neutral</code>
+          ); <code className="text-foreground">--section</code> aliases{" "}
+          <code className="text-foreground">--muted</code> so alternating sections
+          stay in sync. Use the palette icon to preview presets live.
         </p>
       </header>
 

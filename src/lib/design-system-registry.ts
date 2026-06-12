@@ -124,6 +124,11 @@ export const customEntries: DocEntry[] = [
     "custom"
   ),
   entry(
+    "scrollbars",
+    "Brand-colored scrollbars with transparent tracks for native and Radix scroll areas.",
+    "custom"
+  ),
+  entry(
     "mode-toggle",
     "Theme switcher with light, dark, and system modes.",
     "custom"
@@ -166,6 +171,7 @@ export const designSystemNav = {
     { title: "Introduction", href: "/design-system" },
     { title: "Colors", href: "/design-system/colors" },
     { title: "Typography", href: "/design-system/typography" },
+    { title: "Scrollbars", href: "/design-system/scrollbars" },
   ],
   components: componentEntries.map((e) => ({
     title: e.title,

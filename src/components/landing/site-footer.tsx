@@ -6,6 +6,7 @@ import { profile } from "@/lib/profile"
 
 const siteLinks = [
   { label: "Work", href: "/#work" },
+  { label: "About", to: "/about" as const },
   { label: "Projects", to: "/projects" as const },
   { label: "Skills", href: "/#skills" },
   { label: "Design System", to: "/design-system" as const },

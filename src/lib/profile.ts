@@ -4,18 +4,146 @@ export const profile = {
   role: "Product Designer",
   company: "100x.bot",
   location: "Bengaluru, India",
+  resumePath: "/resume/akshay-saini-resume.pdf",
   tagline:
     "I craft interfaces where design systems meet production code — bridging Figma pixels and shipped React components.",
   bio: "With nearly 8 years in product and UX design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.",
+  contact: {
+    email: "akshaysaini.design@gmail.com",
+    phone: "+91 8168238248",
+  },
   links: {
     linkedin: "https://www.linkedin.com/in/akssmax/",
     github: "https://github.com/akssmax",
+    dribbble: "https://dribbble.com/akssmax",
+    medium: "https://medium.com/@akssmax",
+    youtube: "https://www.youtube.com/@akshaysainiAK",
   },
   education: {
     degree: "B.Tech, Computer Science",
-    school: "Guru Jambheshwar University",
+    school: "Guru Jambheshwar University of Science and Technology",
     years: "2014 – 2018",
+    location: "Hisar, Haryana",
   },
+  certifications: [
+    {
+      title: "UX Design Masterclass",
+      issuer: "UXDMC",
+      date: "Sep 2020",
+      credentialId: "23119389",
+    },
+    {
+      title: "UXDMC Certification",
+      issuer: "UXDMC",
+      date: "Sep 2020",
+    },
+  ],
+  languages: [
+    { name: "Hindi", level: "Native" },
+    { name: "English", level: "Professional working" },
+  ],
+  interests: [
+    "Gaming",
+    "AI Tools",
+    "Open Source Tools",
+    "Android",
+    "Photography",
+    "Music Theory",
+    "Mentoring",
+    "Human Psychology",
+    "Interior Design",
+    "Ethical UX",
+    "Cinematography",
+  ],
+  designCapabilities: [
+    "Design Systems with Tokens",
+    "Figma Variables & Auto Layout",
+    "Advanced Prototyping",
+    "Design Docs",
+    "Web Products",
+    "Mobile Apps",
+    "Website Design",
+    "Responsive Design",
+    "UX Research",
+    "Design Sprints",
+    "Lean UX",
+    "Wireframing",
+    "UI Animations",
+  ],
+  tools: [
+    {
+      name: "Figma",
+      category: "Design",
+      note: "UI design, prototyping",
+      logoSrc: "/tools/figma.svg",
+    },
+    {
+      name: "Miro",
+      category: "Research",
+      note: "UX research",
+      logoSrc: "/tools/miro.svg",
+    },
+    {
+      name: "FigJam",
+      category: "Research",
+      note: "UX research",
+      logoSrc: "/tools/figjam.svg",
+    },
+    {
+      name: "SurveyMonkey",
+      category: "Research",
+      note: "User research",
+      logoSrc: "/tools/surveymonkey.svg",
+    },
+    {
+      name: "Maze",
+      category: "Research",
+      note: "Usability testing",
+      logoSrc: "/tools/maze.svg",
+    },
+    {
+      name: "Framer",
+      category: "Build",
+      note: "Website development",
+      logoSrc: "/tools/framer.svg",
+    },
+    {
+      name: "Webflow",
+      category: "Build",
+      note: "Website development",
+      logoSrc: "/tools/webflow.svg",
+    },
+    {
+      name: "Adobe Creative Suite",
+      category: "Design",
+      note: "Ai, Ae, XD, Premiere, Ps, In",
+      logoSrc: "/tools/adobecreativecloud.svg",
+    },
+    {
+      name: "Amplitude",
+      category: "Analytics",
+      note: "User analytics",
+      logoSrc: "/tools/amplitude.svg",
+    },
+    {
+      name: "Google Analytics",
+      category: "Analytics",
+      note: "User analytics",
+      logoSrc: "/tools/googleanalytics.svg",
+    },
+    {
+      name: "Notion",
+      category: "Ops",
+      note: "Project management",
+      logoSrc: "/tools/notion.svg",
+    },
+    {
+      name: "Jitter",
+      category: "Design",
+      note: "UI animation",
+      logoSrc: "/tools/jitter.svg",
+    },
+  ],
   experience: [
     {
       company: "100x.bot",
@@ -38,29 +166,80 @@ export const profile = {
     {
       company: "Unlogged",
       logoSrc: "/companies/unlogged.svg",
-      role: "UX Designer",
+      role: "Product Designer",
       period: "Dec 2021 – Jan 2024",
-      location: "Remote",
+      location: "Remote · YC S22",
       description:
         "Designed developer tooling experiences for a YC S22 open-source Java debugging platform — from onboarding to real-time performance monitoring.",
+      highlights: [
+        "Plugin design for IntelliJ IDEA",
+        "Website design & development built from scratch in Webflow",
+        "Web dashboard app",
+        "UX research, user testing, and prototyping",
+        "Branding and investor presentations",
+        "Custom design system (modified Chakra UI)",
+        "Video editing for YouTube and LinkedIn",
+        "UI animations for marketing website",
+      ],
     },
     {
       company: "AuthMe Id Services",
       logoSrc: "/companies/authme.png",
       role: "UX Designer",
       period: "Feb 2021 – Dec 2021",
-      location: "India",
+      location: "Gurgaon, India",
       description:
         "Shaped identity verification flows and dashboard experiences for a digital identity services platform.",
+      highlights: [
+        "Worked on Tulr — project management app and no-code builder",
+        "Mobile and web product design",
+        "Built 700+ custom component library",
+        "Branding, animation, social media, and Product Hunt launch",
+        "Collaborated with a team of 7 developers",
+      ],
+    },
+    {
+      company: "Freelance",
+      role: "Product Designer",
+      period: "May 2020 – Jan 2021",
+      location: "Gurgaon, India",
+      description:
+        "Contract design work across product, web, and packaging for early-stage startups.",
+      highlights: [
+        "3-month contract for Tulr",
+        "Strictly4Men website and packaging design",
+        "Tenxgeeks website design",
+        "Cloud-based gaming platform app",
+      ],
+    },
+    {
+      company: "tenxresults",
+      role: "Graphic Designer (Intern)",
+      period: "Aug 2019 – Nov 2019",
+      location: "Gurgaon, India",
+      description:
+        "Brand and marketing design for a results-driven marketing agency.",
+      highlights: [
+        "Branding and print media",
+        "Social media ads and post design",
+        "WordPress development",
+        "Video editing",
+      ],
     },
     {
       company: "Wallzy",
       logoSrc: "/companies/wallzy.png",
       role: "Graphic Designer & Founder",
       period: "Jan 2017 – Dec 2018",
-      location: "India",
+      location: "Hisar, Haryana",
       description:
-        "Built and designed an Android wallpaper app with custom editing tools — 10K+ downloads on Google Play.",
+        "Built and designed an Android wallpaper app with custom editing tools.",
+      highlights: [
+        "Custom wallpapers and in-app editing tools",
+        "User analytics in Fabric (acquired by Firebase)",
+        "Branding and visual identity",
+        "100K+ installs on Google Play",
+      ],
     },
   ],
   designSkills: [
@@ -87,4 +266,6 @@ export const profile = {
     "Marketing Design",
     "Amplitude",
   ],
-} as const
+}
+
+export type ProfileExperience = (typeof profile.experience)[number]

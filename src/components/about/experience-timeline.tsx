@@ -4,14 +4,11 @@ import { CompanyLogo } from "@/components/shared/company-logo"
 import { getExperienceDuration } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
 
-export function ExperienceSection() {
+export function ExperienceTimeline() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section
-      id="experience"
-      className="border-t border-border bg-section py-24 text-section-foreground"
-    >
+    <section className="border-b border-border bg-muted/30 py-24">
       <motion.div
         className="mx-auto max-w-6xl px-4 sm:px-6"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -28,15 +25,15 @@ export function ExperienceSection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-10">
           {profile.experience.map((item, index) => (
             <motion.article
               key={`${item.company}-${item.period}`}
-              className="grid gap-2 border-b border-border pb-8 last:border-0 last:pb-0 sm:grid-cols-[200px_1fr]"
+              className="grid gap-4 border-b border-border pb-10 last:border-0 last:pb-0 sm:grid-cols-[200px_1fr]"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
+              transition={{ duration: 0.4, delay: index * 0.04 }}
             >
               <div className="text-sm text-muted-foreground">
                 <p>{item.period}</p>
@@ -52,6 +49,19 @@ export function ExperienceSection() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
+                  {"highlights" in item && item.highlights?.length ? (
+                    <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+                      {item.highlights.map((highlight) => (
+                        <li key={highlight} className="flex gap-2">
+                          <span
+                            className="mt-2 size-1 shrink-0 rounded-full bg-primary"
+                            aria-hidden
+                          />
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               </div>
             </motion.article>
