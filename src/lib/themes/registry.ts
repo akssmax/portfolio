@@ -154,7 +154,8 @@ export function parseAppearanceState(
     partial?.neutral && isNeutralPresetId(partial.neutral) ? partial.neutral : null
 
   let palette: BrandPresetId = DEFAULT_APPEARANCE.palette
-  let neutral: NeutralPresetId | null = storedNeutral
+  let neutral: NeutralPresetId | null =
+    storedNeutral ?? DEFAULT_APPEARANCE.neutral
 
   if (partial?.palette && isThemePresetId(partial.palette)) {
     if (isNeutralPresetId(partial.palette)) {

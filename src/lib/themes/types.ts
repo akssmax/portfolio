@@ -79,7 +79,7 @@ export const APPEARANCE_STORAGE_KEYS = {
 
 export const DEFAULT_APPEARANCE: AppearanceState = {
   palette: "default",
-  neutral: null,
+  neutral: "stone",
   font: "geist",
   radius: "default",
 }

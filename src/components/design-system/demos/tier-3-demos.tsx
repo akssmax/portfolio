@@ -43,15 +43,3 @@ export function LabelDemo() {
     </div>
   )
 }
-
-export function ProviderNoteDemo({ name }: { name: string }) {
-  return (
-    <p className="text-sm text-muted-foreground">
-      {name} requires additional providers or context. See component source in{" "}
-      <code className="rounded bg-muted px-1 py-0.5 text-xs">
-        src/components/ui/{name}.tsx
-      </code>
-      .
-    </p>
-  )
-}

@@ -30,7 +30,7 @@ export const Route = createFileRoute("/projects/")({
 function ProjectsIndexPage() {
   const projects = Route.useLoaderData()
   const shouldReduceMotion = useReducedMotion()
-  const { dynamicProps, mouseHandlers } = useInteractiveStrands()
+  const { dynamicPropsRef, mouseHandlers } = useInteractiveStrands()
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -45,7 +45,7 @@ function ProjectsIndexPage() {
         >
           {!shouldReduceMotion ? (
             <InteractiveStrandsBackground
-              dynamicProps={dynamicProps}
+              dynamicPropsRef={dynamicPropsRef}
               className="absolute inset-0"
             />
           ) : null}

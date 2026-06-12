@@ -13,24 +13,23 @@ import { heroPortraitItems } from "@/lib/hero-portraits"
 import { PRIDE_FLAG_COLORS } from "@/lib/pride-colors"
 import { profile } from "@/lib/profile"
 
+const HERO_STRAND_COLORS = [...PRIDE_FLAG_COLORS]
+
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
-  const { dynamicProps, mouseHandlers } = useInteractiveStrands()
+  const { dynamicPropsRef, mouseHandlers } = useInteractiveStrands()
 
   return (
     <section
       className="relative isolate overflow-hidden"
       {...(!shouldReduceMotion ? mouseHandlers : {})}
     >
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden
-      >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         {!shouldReduceMotion ? (
           <ErrorBoundary title="Background animation failed" showHeader={false}>
             <InteractiveStrandsBackground
-              dynamicProps={dynamicProps}
-              colors={[...PRIDE_FLAG_COLORS]}
+              dynamicPropsRef={dynamicPropsRef}
+              colors={HERO_STRAND_COLORS}
               className="absolute inset-0"
             />
           </ErrorBoundary>

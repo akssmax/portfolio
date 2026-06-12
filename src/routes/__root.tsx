@@ -51,6 +51,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       lang="en"
       suppressHydrationWarning
       data-theme="default"
+      data-neutral="stone"
       data-font="geist"
       data-radius="default"
     >

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useRef } from "react"
 import {
   useMotionValue,
   useMotionValueEvent,
@@ -73,13 +73,12 @@ export function useInteractiveStrands() {
   const mouseX = useMotionValue(0.5)
   const smoothMouseX = useSpring(mouseX, { stiffness: 80, damping: 36 })
 
-  const [dynamicProps, setDynamicProps] = useState<DynamicStrandsProps>(() =>
-    computeProps(0, 0.5),
-  )
+  const dynamicPropsRef = useRef<DynamicStrandsProps>(computeProps(0, 0.5))
 
   const syncProps = useCallback(() => {
-    setDynamicProps(
-      computeProps(smoothHover.get(), smoothMouseX.get()),
+    dynamicPropsRef.current = computeProps(
+      smoothHover.get(),
+      smoothMouseX.get(),
     )
   }, [smoothHover, smoothMouseX])
 
@@ -104,24 +103,25 @@ export function useInteractiveStrands() {
   )
 
   return {
-    dynamicProps,
+    dynamicPropsRef,
     mouseHandlers: { onMouseEnter, onMouseLeave, onMouseMove },
   }
 }
 
 type InteractiveStrandsBackgroundProps = {
-  dynamicProps: DynamicStrandsProps
+  dynamicPropsRef: React.RefObject<DynamicStrandsProps>
   className?: string
   colors?: string[]
 }
 
 export function InteractiveStrandsBackground({
-  dynamicProps,
+  dynamicPropsRef,
   className,
   colors: colorsProp,
 }: InteractiveStrandsBackgroundProps) {
   const [primary, secondary, accent] = useStrandColors()
   const colors = colorsProp ?? [primary, secondary, accent]
+  const idleProps = dynamicPropsRef.current
 
   return (
     <div className={className} aria-hidden>
@@ -134,7 +134,8 @@ export function InteractiveStrandsBackground({
         dispersion={1}
         glassSize={1}
         taper={1.9}
-        {...dynamicProps}
+        livePropsRef={dynamicPropsRef}
+        {...idleProps}
       />
     </div>
   )

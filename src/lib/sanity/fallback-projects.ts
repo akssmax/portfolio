@@ -59,6 +59,11 @@ const CHAT_SHELL_TECH_STACK_ITEMS = [
   { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
 ]
 
+const KODO_TECH_STACK_ITEMS = [
+  { name: "Figma", logoSrc: "/projects/kodo/tech/figma.svg" },
+  { name: "Framer", logoSrc: "/projects/kodo/tech/framer.svg" },
+]
+
 export const fallbackProjects: Project[] = [
   {
     _id: "fallback-100x-landing-page",
@@ -624,6 +629,322 @@ export const fallbackProjects: Project[] = [
         _type: "embed",
         _key: "cs-embed",
         url: "https://llm-daisyui-shell.vercel.app/",
+        label: "View live site",
+        embedType: "link",
+      },
+    ],
+  },
+  {
+    _id: "fallback-kodo",
+    title: "Kodo — Intake-to-Pay Platform",
+    slug: "kodo",
+    description:
+      "Enterprise fintech marketing site and product UI for procure-to-pay — designed in Figma, built in Framer, and shipped across AP, payments, cards, and reimbursements.",
+    tag: "Enterprise Fintech",
+    featured: true,
+    coverImageUrl: "/projects/kodo/hero.webp",
+    year: "Feb 2024 – Nov 2025",
+    role: "Product Designer",
+    client: "Kodo",
+    tools: ["Figma", "Framer"],
+    publishedAt: "2025-11-01T00:00:00.000Z",
+    seo: {
+      metaTitle: "Kodo — Intake-to-Pay Platform — Case Study",
+      metaDescription:
+        "How an enterprise procure-to-pay fintech got a full marketing site in Framer and end-to-end product design across AP automation, vendor payouts, corporate cards, and reimbursements.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "k-h-context",
+        title: "Context",
+        subtitle: "Product design lead on an enterprise intake-to-pay fintech platform.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-context",
+        body: [
+          textBlock(
+            "k-rt-context-1",
+            "Kodo is an intake-to-pay platform for businesses of all sizes — accounts payable automation, vendor payouts, corporate cards, and reimbursements — trusted by more than 2,000 companies.",
+          ),
+          {
+            _type: "block" as const,
+            _key: "k-rt-context-2",
+            style: "normal" as const,
+            markDefs: [],
+            children: [
+              {
+                _type: "span" as const,
+                _key: "k-rt-context-2-a",
+                marks: [],
+                text: "I led product design across complex finance and compliance workflows, and designed and developed the marketing site in ",
+              },
+              {
+                _type: "span" as const,
+                _key: "k-rt-context-2-b",
+                marks: ["strong"],
+                text: "Framer",
+              },
+              {
+                _type: "span" as const,
+                _key: "k-rt-context-2-c",
+                marks: [],
+                text: " from ",
+              },
+              {
+                _type: "span" as const,
+                _key: "k-rt-context-2-d",
+                marks: ["strong"],
+                text: "Figma",
+              },
+              {
+                _type: "span" as const,
+                _key: "k-rt-context-2-e",
+                marks: [],
+                text: " — from homepage through product storytelling and conversion flows.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "k-collab",
+        subtitle: "Solo design lead — product UI and marketing site end to end.",
+        items: [
+          {
+            name: "Akshay Saini",
+            role: "Product Designer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "k-metrics",
+        items: [
+          { value: "2000+", label: "Companies on platform" },
+          { value: "4", label: "Product lines" },
+          { value: "21", label: "Months in role" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-challenge",
+        body: [
+          textBlock(
+            "k-rt-challenge-1",
+            "Enterprise procure-to-pay products operate under strict policy, compliance, and approval constraints — every flow must feel intuitive while encoding maker-checker rules, nested workflows, and ERP integrations. At the same time, the marketing site had to explain dense fintech value to startups, mid-market teams, and enterprise buyers without feeling like a feature dump.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-marketing",
+        title: "Marketing site",
+        subtitle: "Designed in Figma, built and shipped in Framer.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-marketing",
+        body: [
+          textBlock(
+            "k-rt-marketing-1",
+            "The public site at kodo.com tells the full platform story — hero messaging, four product pillars, segment-based positioning, and deep feature sections for workflows, integrations, and collaboration.",
+          ),
+          ...bulletList("k-rt-marketing-b", [
+            "Animated hero with cycling headline and dual CTAs (Talk to Sales, Book a Demo)",
+            "Product cards for AP automation, vendor payments, corporate cards, and reimbursements",
+            "Startup, mid-market, and enterprise segment tiers with tailored value props",
+            "Feature deep-dives: dynamic workflows, ERP integrations, and team collaboration",
+            "Customer testimonials carousel and featured blog content",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "k-tech",
+        items: KODO_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `k-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "k-img-hero",
+        src: "/projects/kodo/hero.webp",
+        alt: "Kodo marketing site hero — Spend Smarter, Grow Stronger, Scale Faster",
+        caption: "Hero — cycling headline animation with product positioning and CTAs",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "k-gallery-marketing",
+        caption: "Marketing site — product pillars, workflows, and platform features",
+        images: [
+          {
+            src: "/projects/kodo/products.webp",
+            alt: "Product cards for AP, vendor payments, corporate cards, and reimbursements",
+          },
+          {
+            src: "/projects/kodo/workflows.webp",
+            alt: "Dynamic Workflows feature section with maker-checker approval UI",
+          },
+          {
+            src: "/projects/kodo/integrations.webp",
+            alt: "Robust Integrations section with ERP and bank partners",
+          },
+        ],
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "k-gallery-marketing-2",
+        caption: "Collaboration, segment tiers, and social proof",
+        images: [
+          {
+            src: "/projects/kodo/collaboration.webp",
+            alt: "Seamless Collaboration section with threaded comments",
+          },
+          {
+            src: "/projects/kodo/segments.webp",
+            alt: "Startup, mid-market, and enterprise segment positioning",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-product",
+        title: "Product design",
+        subtitle: "End-to-end UI across the intake-to-pay platform.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-product",
+        body: [
+          textBlock(
+            "k-rt-product-1",
+            "Beyond the marketing site, I owned product design across the full Kodo platform — translating finance and compliance requirements into workflows teams could trust and adopt at scale.",
+          ),
+          ...bulletList("k-rt-product-b", [
+            "Accounts Payable Agent — automated invoice processing with speed and accuracy",
+            "Vendor Payments — flexible payout flows with real-time controls",
+            "Corporate Cards — expense limits, approvals, and on-the-go insights",
+            "Reimbursements — policy enforcement with configurable approval chains",
+            "Dynamic maker-checker workflows with nested approver levels",
+            "ERP integrations with Zoho, Tally, Oracle, and SAP plus mailbox and WhatsApp intake",
+          ]),
+        ],
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "k-gallery-product",
+        caption: "In-app product UI — AP, payments, cards, and reimbursements",
+        images: [
+          {
+            src: "/projects/kodo/product/ap-invoices.webp",
+            alt: "Accounts Payable invoice processing interface",
+          },
+          {
+            src: "/projects/kodo/product/vendor-payments.webp",
+            alt: "Vendor payments dashboard with payout controls",
+          },
+          {
+            src: "/projects/kodo/product/corporate-cards.webp",
+            alt: "Corporate cards expense management view",
+          },
+          {
+            src: "/projects/kodo/product/reimbursements.webp",
+            alt: "Reimbursements flow with policy enforcement",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-decisions",
+        body: bulletList("k-rt-decisions-b", [
+          "Segment-based messaging — startup, mid-market, and enterprise tiers with distinct value props on the marketing site",
+          "Workflow visualization for compliance — maker-checker and nested approver patterns surfaced clearly in product UI",
+          "Marketing and product visual consistency — shared typography, color, and component language from Figma through Framer to the app",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-sitemap",
+        title: "Site structure",
+      },
+      {
+        _type: "siteMap",
+        _key: "k-sitemap",
+        baseUrl: "https://kodo.com",
+        groups: [
+          {
+            title: "Products",
+            description:
+              "Four core product lines — AP automation, vendor payouts, corporate cards, and reimbursements.",
+            routes: [
+              { path: "/products/invoices", label: "Invoices (AP)" },
+              { path: "/products/vendor-payments", label: "Vendor Payments" },
+              { path: "/products/corporate-cards", label: "Corporate Cards" },
+              { path: "/products/reimbursements", label: "Reimbursements" },
+            ],
+          },
+          {
+            title: "Platform",
+            description:
+              "Workflow automation, ERP integrations, and team collaboration features.",
+            routes: [
+              { path: "/platform/integrations", label: "Integrations" },
+              { path: "/platform/workflows", label: "Workflows" },
+              { path: "/platform/collaboration", label: "Collaboration" },
+            ],
+          },
+          {
+            title: "Company",
+            description: "About, blog, careers, and contact.",
+            routes: [
+              { path: "/about", label: "About Us" },
+              { path: "/blog", label: "Blog" },
+              { path: "/careers", label: "Careers" },
+            ],
+          },
+        ],
+      },
+      {
+        _type: "quote",
+        _key: "k-quote",
+        text: "Kodo's intuitive UX/UI has streamlined expense management, enabling 10,000+ seamless transactions monthly — far surpassing our previous tool.",
+        attribution: "Karthik, Finance Ops Manager",
+      },
+      {
+        _type: "sectionHeading",
+        _key: "k-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "k-rt-outcome",
+        body: [
+          textBlock(
+            "k-rt-outcome-1",
+            "Over 21 months at Kodo, I led design across the full intake-to-pay platform and shipped the marketing site at kodo.com — from Figma exploration through Framer production. The site is live and converting enterprise fintech buyers while the product serves 2,000+ companies with AP automation, payments, cards, and reimbursements.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "k-embed",
+        url: "https://www.kodo.com/",
         label: "View live site",
         embedType: "link",
       },

@@ -35,6 +35,14 @@ npm run capture:100x
 
 Captures homepage and extended page screenshots from [100x.bot](https://100x.bot/) into `public/projects/100x/`.
 
+### Capture Kodo screenshots
+
+```bash
+npm run capture:kodo
+```
+
+Captures homepage and marketing section screenshots from [kodo.com](https://www.kodo.com/) into `public/projects/kodo/`.
+
 ## Adding components
 
 To add components to your app, run the following command:

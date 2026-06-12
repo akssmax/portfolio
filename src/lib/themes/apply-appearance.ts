@@ -25,11 +25,10 @@ export function applyAppearanceToDocument(state: AppearanceState) {
 
   root.setAttribute("data-theme", state.palette)
 
-  if (state.neutral) {
-    root.setAttribute("data-neutral", state.neutral)
-  } else {
-    root.removeAttribute("data-neutral")
-  }
+  root.setAttribute(
+    "data-neutral",
+    state.neutral ?? DEFAULT_APPEARANCE.neutral ?? "stone",
+  )
 
   root.setAttribute("data-font", state.font)
   root.setAttribute("data-radius", state.radius)
@@ -95,4 +94,4 @@ export function setRadius(radius: RadiusPresetId) {
 }
 
 /** Inline script string for FOUC prevention — injected in __root.tsx */
-export const APPEARANCE_INIT_SCRIPT = `(function(){try{var p=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.palette}")||"${DEFAULT_APPEARANCE.palette}";var n=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.neutral}");var f=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.font}")||"${DEFAULT_APPEARANCE.font}";var r=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.radius}")||"${DEFAULT_APPEARANCE.radius}";var rv={default:"0.625rem",soft:"0.875rem",sharp:"0.375rem"};var root=document.documentElement;root.setAttribute("data-theme",p);if(n){root.setAttribute("data-neutral",n)}else{root.removeAttribute("data-neutral")}root.setAttribute("data-font",f);root.setAttribute("data-radius",r);root.style.setProperty("--radius-base",rv[r]||rv.default);var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches)){root.classList.add("dark")}}catch(e){}})();`
+export const APPEARANCE_INIT_SCRIPT = `(function(){try{var p=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.palette}")||"${DEFAULT_APPEARANCE.palette}";var n=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.neutral}")||"${DEFAULT_APPEARANCE.neutral}";var f=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.font}")||"${DEFAULT_APPEARANCE.font}";var r=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.radius}")||"${DEFAULT_APPEARANCE.radius}";var rv={default:"0.625rem",soft:"0.875rem",sharp:"0.375rem"};var root=document.documentElement;root.setAttribute("data-theme",p);root.setAttribute("data-neutral",n);root.setAttribute("data-font",f);root.setAttribute("data-radius",r);root.style.setProperty("--radius-base",rv[r]||rv.default);var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches)){root.classList.add("dark")}}catch(e){}})();`

@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle, RenderTarget } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import type { CSSProperties } from 'react';
 
 import './Strands.css';
@@ -172,6 +172,11 @@ void main() {
 }
 `;
 
+type StrandsLiveProps = Partial<Pick<
+  StrandsProps,
+  'speed' | 'amplitude' | 'waviness' | 'thickness' | 'glow' | 'taper' | 'spread' | 'hueShift' | 'intensity' | 'saturation' | 'scale'
+>>;
+
 export interface StrandsProps {
   colors?: string[];
   count?: number;
@@ -193,6 +198,7 @@ export interface StrandsProps {
   glassSize?: number;
   className?: string;
   style?: CSSProperties;
+  livePropsRef?: RefObject<StrandsLiveProps | null>;
 }
 
 const buildPalette = (colors: string[]): number[][] => {
@@ -226,9 +232,11 @@ export default function Strands({
   dispersion = 1,
   glassSize = 1,
   className = '',
-  style
+  style,
+  livePropsRef
 }: StrandsProps) {
-  const propsRef = useRef<Required<Omit<StrandsProps, 'className' | 'style'>>>({
+  type StrandsRuntimeProps = Required<Omit<StrandsProps, 'className' | 'style' | 'livePropsRef'>>;
+  const propsRef = useRef<StrandsRuntimeProps>({
     colors,
     count,
     speed,
@@ -270,6 +278,8 @@ export default function Strands({
   };
 
   const ctnDom = useRef<HTMLDivElement>(null);
+  const livePropsRefStable = useRef(livePropsRef);
+  livePropsRefStable.current = livePropsRef;
 
   useEffect(() => {
     const ctn = ctnDom.current;
@@ -355,7 +365,9 @@ export default function Strands({
     let animateId = 0;
     const update = (t: number) => {
       animateId = requestAnimationFrame(update);
-      const current = propsRef.current;
+      const base = propsRef.current;
+      const live = livePropsRefStable.current?.current ?? {};
+      const current = { ...base, ...live };
       program.uniforms.uTime.value = t * 0.001;
       program.uniforms.uColors.value = buildPalette(current.colors);
       program.uniforms.uColorCount.value = Math.min(current.colors.length, MAX_COLORS);

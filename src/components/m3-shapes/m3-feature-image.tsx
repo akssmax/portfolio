@@ -25,6 +25,24 @@ const MORPH_DURATION = 0.75
 const IMAGE_FADE_DELAY = 0.28
 const IMAGE_FADE_DURATION = 0.45
 const AUTO_CYCLE_INTERVAL_MS = 6000
+const INDEX_STORAGE_KEY = "hero-portrait-index"
+
+function readStoredIndex(length: number) {
+  if (typeof sessionStorage === "undefined" || length < 1) return 0
+
+  const stored = sessionStorage.getItem(INDEX_STORAGE_KEY)
+  if (stored === null) return 0
+
+  const parsed = Number.parseInt(stored, 10)
+  if (!Number.isFinite(parsed)) return 0
+
+  return ((parsed % length) + length) % length
+}
+
+function writeStoredIndex(index: number) {
+  if (typeof sessionStorage === "undefined") return
+  sessionStorage.setItem(INDEX_STORAGE_KEY, String(index))
+}
 
 export function M3FeatureImage({
   items,
@@ -36,11 +54,14 @@ export function M3FeatureImage({
   const isMorphing = useRef(false)
   const cycleRef = useRef<() => Promise<void>>(async () => {})
   const autoCycleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isVisibleRef = useRef(true)
+  const indexRef = useRef(readStoredIndex(items.length))
   const shapeProgress = useMotionValue(0)
   const imageProgress = useMotionValue(0)
-  const [index, setIndex] = useState(0)
+  const rootRef = useRef<HTMLButtonElement>(null)
+  const [index, setIndex] = useState(() => indexRef.current)
   const [pathD, setPathD] = useState(
-    () => getM3ShapePath(items[0]?.shape ?? "circle") ?? "",
+    () => getM3ShapePath(items[indexRef.current]?.shape ?? "circle") ?? "",
   )
   const [nextSrc, setNextSrc] = useState<string | null>(null)
   const [imageMix, setImageMix] = useState(0)
@@ -49,25 +70,30 @@ export function M3FeatureImage({
     void import("@/lib/m3-shape-morph")
   }, [])
 
-  const applyItem = useCallback((nextIndex: number) => {
-    const nextItem = items[nextIndex]
-    if (!nextItem) return
+  const applyItem = useCallback(
+    (nextIndex: number) => {
+      const nextItem = items[nextIndex]
+      if (!nextItem) return
 
-    const nextPath = getM3ShapePath(nextItem.shape)
-    if (!nextPath) return
+      const nextPath = getM3ShapePath(nextItem.shape)
+      if (!nextPath) return
 
-    setIndex(nextIndex)
-    setPathD(nextPath)
-    setNextSrc(null)
-    setImageMix(0)
-    shapeProgress.set(0)
-    imageProgress.set(0)
-  }, [imageProgress, items, shapeProgress])
+      indexRef.current = nextIndex
+      writeStoredIndex(nextIndex)
+      setIndex(nextIndex)
+      setPathD(nextPath)
+      setNextSrc(null)
+      setImageMix(0)
+      shapeProgress.set(0)
+      imageProgress.set(0)
+    },
+    [imageProgress, items, shapeProgress],
+  )
 
   const cycle = useCallback(async () => {
-    if (isMorphing.current || items.length < 2) return
+    if (isMorphing.current || items.length < 2 || !isVisibleRef.current) return
 
-    const fromIndex = index
+    const fromIndex = indexRef.current
     const nextIndex = (fromIndex + 1) % items.length
     const fromItem = items[fromIndex]
     const nextItem = items[nextIndex]
@@ -122,14 +148,7 @@ export function M3FeatureImage({
     } finally {
       isMorphing.current = false
     }
-  }, [
-    applyItem,
-    imageProgress,
-    index,
-    items,
-    shapeProgress,
-    shouldReduceMotion,
-  ])
+  }, [applyItem, imageProgress, items, shapeProgress, shouldReduceMotion])
 
   cycleRef.current = cycle
 
@@ -142,19 +161,46 @@ export function M3FeatureImage({
 
   const scheduleAutoCycle = useCallback(() => {
     clearAutoCycle()
-    if (items.length < 2) return
+    if (items.length < 2 || !isVisibleRef.current || shouldReduceMotion) return
 
     autoCycleTimeoutRef.current = setTimeout(() => {
       void cycleRef.current().finally(() => {
-        scheduleAutoCycle()
+        if (isVisibleRef.current) {
+          scheduleAutoCycle()
+        }
       })
     }, AUTO_CYCLE_INTERVAL_MS)
-  }, [clearAutoCycle, items.length])
+  }, [clearAutoCycle, items.length, shouldReduceMotion])
 
   useEffect(() => {
+    if (shouldReduceMotion === null) return
+
     scheduleAutoCycle()
     return clearAutoCycle
-  }, [scheduleAutoCycle, clearAutoCycle])
+  }, [scheduleAutoCycle, clearAutoCycle, shouldReduceMotion])
+
+  useEffect(() => {
+    const node = rootRef.current
+    if (!node || typeof IntersectionObserver === "undefined") return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry?.isIntersecting ?? false
+        isVisibleRef.current = visible
+
+        if (visible) {
+          scheduleAutoCycle()
+          return
+        }
+
+        clearAutoCycle()
+      },
+      { threshold: 0.15 },
+    )
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [clearAutoCycle, scheduleAutoCycle])
 
   const handleClick = useCallback(() => {
     clearAutoCycle()
@@ -166,8 +212,11 @@ export function M3FeatureImage({
   const current = items[index]
   if (!current) return null
 
+  const prefersReducedMotion = shouldReduceMotion === true
+
   return (
     <button
+      ref={rootRef}
       type="button"
       onClick={handleClick}
       className={cn(
@@ -177,7 +226,7 @@ export function M3FeatureImage({
       aria-label={`${alt}. Cycles shape and photo automatically. Click to advance.`}
     >
       <div className="relative inline-block">
-        {shouldReduceMotion ? (
+        {prefersReducedMotion ? (
           <M3ShapeImage
             shape={current.shape}
             src={current.src}
