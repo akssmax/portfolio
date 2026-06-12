@@ -5,10 +5,9 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { label: "Work", href: "#work", isAnchor: true },
+  { label: "Work", href: "/#work", isAnchor: true },
   { label: "Projects", to: "/projects" as const, isAnchor: false },
-  { label: "Skills", href: "#skills", isAnchor: true },
-  { label: "Contact", href: "#contact", isAnchor: true },
+  { label: "Skills", href: "/#skills", isAnchor: true },
 ] as const
 
 export function SiteHeader() {
@@ -40,6 +39,9 @@ export function SiteHeader() {
               </Button>
             ),
           )}
+          <Button size="sm" className="ml-1" asChild>
+            <a href="/#contact">Let's build together</a>
+          </Button>
           <ModeToggle />
         </nav>
       </div>

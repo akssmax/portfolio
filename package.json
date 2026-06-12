@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "studio": "sanity dev",
     "seed": "node --env-file=.env.local --import tsx scripts/seed-projects.ts",
-    "capture:100x": "node --import tsx scripts/capture-100x-screenshots.ts"
+    "capture:100x": "node --import tsx scripts/capture-100x-screenshots.ts",
+    "capture:chat-shell": "node --import tsx scripts/capture-chat-shell-screenshots.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

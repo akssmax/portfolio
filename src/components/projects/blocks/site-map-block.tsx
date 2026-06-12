@@ -1,3 +1,5 @@
+import { ExternalLink } from "lucide-react"
+
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +11,17 @@ import type { SiteMapBlock } from "@/lib/sanity/types"
 
 const LIVE_BASE = "https://100x.bot"
 
+function routeHref(baseUrl: string, path: string) {
+  const base = baseUrl.replace(/\/$/, "")
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`
+  return `${base}${normalizedPath}`
+}
+
 export function SiteMapBlockComponent({ block }: { block: SiteMapBlock }) {
   if (!block.groups?.length) return null
+
+  const baseUrl = block.baseUrl ?? LIVE_BASE
+  const linkRoutes = baseUrl.length > 0
 
   return (
     <Accordion type="multiple" className="w-full">
@@ -32,20 +43,29 @@ export function SiteMapBlockComponent({ block }: { block: SiteMapBlock }) {
                 className="w-full rounded-lg border border-border object-cover object-top"
               />
             ) : null}
-            <div className="flex flex-wrap gap-2">
-              {group.routes?.map((route) => (
-                <Badge key={route._key ?? route.path} variant="secondary" asChild>
-                  <a
-                    href={`${LIVE_BASE}${route.path}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:bg-secondary/80"
-                  >
-                    {route.label}
-                  </a>
-                </Badge>
-              ))}
-            </div>
+            {group.routes?.length ? (
+              <div className="flex flex-wrap gap-2">
+                {group.routes.map((route) =>
+                  linkRoutes ? (
+                    <Badge key={route._key ?? route.path} variant="outline" asChild>
+                      <a
+                        href={routeHref(baseUrl, route.path)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="gap-1.5 hover:bg-muted/50"
+                      >
+                        {route.label}
+                        <ExternalLink className="size-3" />
+                      </a>
+                    </Badge>
+                  ) : (
+                    <Badge key={route._key ?? route.path} variant="secondary">
+                      {route.label}
+                    </Badge>
+                  ),
+                )}
+              </div>
+            ) : null}
           </AccordionContent>
         </AccordionItem>
       ))}

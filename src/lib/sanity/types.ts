@@ -126,6 +126,8 @@ export type CollaboratorsBlock = {
 export type SiteMapBlock = {
   _type: "siteMap"
   _key: string
+  /** Defaults to https://100x.bot. Set to "" for label-only routes (no links). */
+  baseUrl?: string | null
   groups: Array<{
     title: string
     description?: string | null

@@ -342,6 +342,13 @@ export const siteMap = defineType({
   type: "object",
   fields: [
     defineField({
+      name: "baseUrl",
+      title: "Base URL",
+      type: "url",
+      description:
+        "Live site origin for route links. Leave empty for label-only routes. Defaults to https://100x.bot when omitted.",
+    }),
+    defineField({
       name: "groups",
       type: "array",
       of: [

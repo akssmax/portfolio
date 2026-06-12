@@ -47,6 +47,18 @@ const TECH_STACK_ITEMS = [
   { name: "TipTap", logoSrc: "/projects/100x/tech/tiptap.svg" },
 ]
 
+const CHAT_SHELL_TECH_STACK_ITEMS = [
+  { name: "React", logoSrc: "/projects/chat-shell/tech/react.svg" },
+  { name: "TypeScript", logoSrc: "/projects/chat-shell/tech/typescript.svg" },
+  { name: "Vite", logoSrc: "/projects/chat-shell/tech/vite.svg" },
+  { name: "Tailwind CSS", logoSrc: "/projects/chat-shell/tech/tailwindcss.svg" },
+  { name: "shadcn/ui", logoSrc: "/projects/chat-shell/tech/shadcn.svg" },
+  { name: "Konva", logoSrc: "/projects/chat-shell/tech/konva.svg" },
+  { name: "Zustand", logoSrc: "/projects/chat-shell/tech/zustand.svg" },
+  { name: "Mistral", logoSrc: "/projects/chat-shell/tech/mistral.svg" },
+  { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
+]
+
 export const fallbackProjects: Project[] = [
   {
     _id: "fallback-100x-landing-page",
@@ -354,68 +366,266 @@ export const fallbackProjects: Project[] = [
     ],
   },
   {
-    _id: "fallback-saas-dashboard",
-    title: "SaaS Dashboard",
-    slug: "saas-dashboard",
-    description: "Case study coming soon.",
+    _id: "fallback-100x-chat-shell",
+    title: "100x Chat Shell",
+    slug: "100x-chat-shell",
+    description:
+      "AI-native workspace combining Mistral streaming chat, persistent memory, knowledge retrieval, and a conversational design studio.",
     tag: "Product UI",
-    featured: false,
-    year: "2024",
+    featured: true,
+    coverImageUrl: "/projects/chat-shell/hero.webp",
+    year: "May 5–15, 2026",
     role: "Design Engineer",
-    client: "B2B Analytics",
-    publishedAt: "2024-09-01T00:00:00.000Z",
+    client: "100x",
+    tools: ["Cursor", "Mistral"],
+    publishedAt: "2026-05-15T00:00:00.000Z",
     seo: {
-      metaTitle: "SaaS Dashboard — Case Study",
-      metaDescription: "Case study coming soon.",
+      metaTitle: "100x Chat Shell — Case Study",
+      metaDescription:
+        "How a full AI workspace shell — chat, memory, RAG, and generative design studio — was designed and built in ten days as a reference for AI product UX.",
     },
     content: [
       {
         _type: "sectionHeading",
-        _key: "stub-1",
-        title: "Coming soon",
+        _key: "cs-h-context",
+        title: "Context",
+        subtitle: "Solo design-engineering build for the 100x product ecosystem.",
       },
       {
         _type: "richTextBlock",
-        _key: "stub-2",
+        _key: "cs-rt-context",
         body: [
           textBlock(
-            "stub-2-1",
-            "This case study is in progress. Check back for a full write-up on dashboard design and data visualization work.",
+            "cs-rt-context-1",
+            "100x Chat Shell is a production-minded reference app for a modern AI assistant workspace — not just a chat box, but memory, document grounding, and visual output in one cohesive shell.",
           ),
+          {
+            _type: "block" as const,
+            _key: "cs-rt-context-2",
+            style: "normal" as const,
+            markDefs: [],
+            children: [
+              {
+                _type: "span" as const,
+                _key: "cs-rt-context-2-a",
+                marks: [],
+                text: "Designed and built with ",
+              },
+              {
+                _type: "span" as const,
+                _key: "cs-rt-context-2-b",
+                marks: ["strong"],
+                text: "Cursor",
+              },
+              {
+                _type: "span" as const,
+                _key: "cs-rt-context-2-c",
+                marks: [],
+                text: " and ",
+              },
+              {
+                _type: "span" as const,
+                _key: "cs-rt-context-2-d",
+                marks: ["strong"],
+                text: "Mistral",
+              },
+              {
+                _type: "span" as const,
+                _key: "cs-rt-context-2-e",
+                marks: [],
+                text: " — companion to the 100x.Bot marketing site, focused on the application experience.",
+              },
+            ],
+          },
         ],
       },
-    ],
-  },
-  {
-    _id: "fallback-marketing-site",
-    title: "Marketing Site",
-    slug: "marketing-site",
-    description: "Case study coming soon.",
-    tag: "Frontend",
-    featured: false,
-    year: "2024",
-    role: "Frontend Engineer",
-    client: "Startup Launch",
-    publishedAt: "2024-05-10T00:00:00.000Z",
-    seo: {
-      metaTitle: "Marketing Site — Case Study",
-      metaDescription: "Case study coming soon.",
-    },
-    content: [
+      {
+        _type: "collaborators",
+        _key: "cs-collab",
+        subtitle: "Solo design-engineering build — product design through deployment.",
+        items: [
+          {
+            name: "Akshay Saini",
+            role: "Design Engineer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "cs-metrics-top",
+        items: [
+          { value: "35", label: "Layout patterns" },
+          { value: "20+", label: "Design agent phases" },
+          { value: "10", label: "Days to ship" },
+        ],
+      },
       {
         _type: "sectionHeading",
-        _key: "stub-1",
-        title: "Coming soon",
+        _key: "cs-h-challenge",
+        title: "The challenge",
       },
       {
         _type: "richTextBlock",
-        _key: "stub-2",
+        _key: "cs-rt-challenge",
         body: [
           textBlock(
-            "stub-2-1",
-            "This case study is in progress. Check back for a full write-up on marketing site design and performance work.",
+            "cs-rt-challenge-1",
+            "Credible AI products need more than streaming text — users expect persistent memory, grounded answers from their documents, and visual output like social carousels, pitch decks, and documents. Building all of that in one shell, with polished chat UX and a generative canvas, is a design and engineering problem at once.",
           ),
         ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-shipped",
+        title: "What I shipped",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cs-rt-shipped",
+        body: [
+          textBlock(
+            "cs-rt-shipped-1",
+            "A full AI workspace — five major surfaces plus a UI playground — spanning chat reliability, memory systems, and conversational design generation.",
+          ),
+          ...bulletList("cs-rt-shipped-b", [
+            "New Chat — Mistral streaming with attachments, chain-of-thought, virtualized threads, and 40+ starter prompts",
+            "Memory — global profile, preferences, and facts plus per-thread context with retrieval gating",
+            "Knowledge — client-side RAG with chunked file upload and keyword search",
+            "Design Studio — split chat + Konva canvas with 20+ agent phases, 35 layouts, and 25+ canvas formats",
+            "Playground — live chat UI configurator for colors, avatars, reasoning, and viewport modes",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "cs-tech",
+        items: CHAT_SHELL_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `cs-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "cs-img-hero",
+        src: "/projects/chat-shell/hero.webp",
+        alt: "100x Chat Shell Design Studio with split chat panel and Konva canvas",
+        caption: "Design Studio — conversational layout generation with resizable split panels",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "cs-gallery-workspace",
+        caption: "Core workspace — streaming chat, memory, and knowledge retrieval",
+        images: [
+          {
+            src: "/projects/chat-shell/chat.webp",
+            alt: "New Chat with starter prompt chips and virtualized message list",
+          },
+          {
+            src: "/projects/chat-shell/memory.webp",
+            alt: "Memory page with global profile, preferences, and thread memory",
+          },
+          {
+            src: "/projects/chat-shell/knowledge.webp",
+            alt: "Knowledge page with file upload for retrieval sources",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cs-rt-decisions",
+        body: bulletList("cs-rt-decisions-b", [
+          "Resizable split panels — 360px chat column pattern across Design and Playground",
+          "Multi-phase Design Agent with visible chain-of-thought from intent through critic validation",
+          "Layout Intelligence — 35 catalogued patterns with fit scoring, region binding, and variant pipeline",
+          "8px grid, WCAG AA contrast, and ≤3 dominant colors enforced in design agent prompts",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-appmap",
+        title: "App structure",
+      },
+      {
+        _type: "siteMap",
+        _key: "cs-sitemap",
+        baseUrl: "https://llm-daisyui-shell.vercel.app",
+        groups: [
+          {
+            title: "Workspace",
+            description:
+              "Sidebar navigation with collapsible icon mode, recents for chat and design sessions, and theme switching.",
+            routes: [
+              { path: "/new-chat", label: "New Chat" },
+              { path: "/memory", label: "Memory" },
+              { path: "/knowledge", label: "Knowledge" },
+            ],
+          },
+          {
+            title: "Design Studio",
+            description:
+              "Split chat + canvas layout with manual tools, remix layout, floating properties panel, and HTML/PDF export.",
+            routes: [{ path: "/design", label: "Design" }],
+          },
+          {
+            title: "Playground",
+            description:
+              "Live preview of chat UI patterns — colors, avatars, code themes, reasoning traces, and viewport sizing.",
+            routes: [{ path: "/playground", label: "Playground" }],
+          },
+        ],
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "cs-gallery-design",
+        caption: "Design canvas and UI playground",
+        images: [
+          {
+            src: "/projects/chat-shell/design-canvas.webp",
+            alt: "Design Studio canvas with generated layout and page navigator",
+          },
+          {
+            src: "/projects/chat-shell/playground.webp",
+            alt: "Playground settings panel with live chat preview",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "cs-metrics-build",
+        items: [
+          { value: "25+", label: "Canvas formats" },
+          { value: "8", label: "Design token themes" },
+          { value: "29", label: "Vitest suites" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cs-rt-outcome",
+        body: [
+          textBlock(
+            "cs-rt-outcome-1",
+            "Shipped in ten days (May 5–15, 2026) as a reference implementation for AI workspace UX — from Mistral streaming and client-side RAG through a multi-agent design pipeline with export-ready canvas output. 29 Vitest suites cover the layout intelligence pipeline.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "cs-embed",
+        url: "https://llm-daisyui-shell.vercel.app/",
+        label: "View live site",
+        embedType: "link",
       },
     ],
   },

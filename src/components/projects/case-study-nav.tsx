@@ -49,7 +49,7 @@ export function CaseStudyNav({ headings }: CaseStudyNavProps) {
   return (
     <nav
       aria-label="Case study sections"
-      className="sticky top-20 z-10 -mx-4 mb-10 hidden border-b border-border bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:block"
+      className="sticky top-16 z-40 -mx-4 mb-10 hidden border-b border-border bg-background px-4 py-3 shadow-sm lg:block"
     >
       <ul className="flex flex-wrap gap-x-6 gap-y-2">
         {items.map((item) => (

@@ -23,16 +23,16 @@ const IDLE = {
 } as const
 
 const HOVER = {
-  amplitude: 1.4,
-  speed: 0.9,
-  glow: 2.4,
-  intensity: 0.72,
-  spread: 2.9,
-  scale: 2.05,
-  hueShift: 0.72,
-  waviness: 3.4,
-  thickness: 0.85,
-  saturation: 1.9,
+  amplitude: 1.0,
+  speed: 0.62,
+  glow: 1.85,
+  intensity: 0.52,
+  spread: 2.55,
+  scale: 2.3,
+  hueShift: 0.64,
+  waviness: 3.0,
+  thickness: 0.76,
+  saturation: 1.8,
 } as const
 
 function lerp(from: number, to: number, t: number) {
@@ -64,15 +64,15 @@ function computeProps(hoverT: number, mouseX: number): DynamicStrandsProps {
     thickness: lerp(IDLE.thickness, HOVER.thickness, hoverT),
     saturation: lerp(IDLE.saturation, HOVER.saturation, hoverT),
     hueShift:
-      lerp(IDLE.hueShift, HOVER.hueShift, hoverT) + (mouseX - 0.5) * 0.28,
+      lerp(IDLE.hueShift, HOVER.hueShift, hoverT) + (mouseX - 0.5) * 0.14,
   }
 }
 
 export function useInteractiveStrands() {
   const hover = useMotionValue(0)
-  const smoothHover = useSpring(hover, { stiffness: 140, damping: 24 })
+  const smoothHover = useSpring(hover, { stiffness: 55, damping: 28 })
   const mouseX = useMotionValue(0.5)
-  const smoothMouseX = useSpring(mouseX, { stiffness: 220, damping: 32 })
+  const smoothMouseX = useSpring(mouseX, { stiffness: 80, damping: 36 })
 
   const [dynamicProps, setDynamicProps] = useState<DynamicStrandsProps>(() =>
     computeProps(0, 0.5),
