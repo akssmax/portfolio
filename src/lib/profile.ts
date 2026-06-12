@@ -159,7 +159,7 @@ export const profile = {
       company: "Kodo",
       logoSrc: "/companies/kodo.svg",
       websiteUrl: "https://www.kodo.com/",
-      role: "Product Designer",
+      role: "Senior Product Designer",
       period: "Feb 2024 – Nov 2025",
       location: "Pune, India",
       description:
@@ -288,6 +288,8 @@ export type EmployerLogo = {
   name: string
   logoSrc: string
   websiteUrl?: string
+  period: string
+  role: string
 }
 
 export function getEmployerLogos(): EmployerLogo[] {
@@ -298,6 +300,8 @@ export function getEmployerLogos(): EmployerLogo[] {
             name: item.company,
             logoSrc: item.logoSrc,
             websiteUrl: item.websiteUrl,
+            period: item.period,
+            role: item.role,
           },
         ]
       : [],

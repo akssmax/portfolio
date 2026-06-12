@@ -5,6 +5,12 @@ import { motion, useReducedMotion } from "motion/react"
 
 import { HundredXLogo } from "@/components/logos/hundred-x-logo"
 import { KodoLogo } from "@/components/logos/kodo-logo"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { getExperienceDuration } from "@/lib/experience-duration"
 import { getEmployerLogos, type EmployerLogo } from "@/lib/profile"
 import { cn } from "@/lib/utils"
 
@@ -19,8 +25,9 @@ const svgLogoClassName =
 const imgLogoClassName =
   "h-7 w-auto max-w-[6.5rem] object-contain opacity-55 grayscale transition duration-200 group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-0 dark:opacity-60 dark:group-hover:invert"
 
-function LogoBarItem({ name, logoSrc, websiteUrl }: EmployerLogo) {
+function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) {
   const [failed, setFailed] = useState(false)
+  const duration = getExperienceDuration(period)
 
   const logo =
     logoSrc === "/companies/kodo.svg" ? (
@@ -33,25 +40,39 @@ function LogoBarItem({ name, logoSrc, websiteUrl }: EmployerLogo) {
       <img
         src={logoSrc}
         alt={`${name} logo`}
-        title={name}
         className={imgLogoClassName}
         loading="lazy"
         onError={() => setFailed(true)}
       />
     )
 
-  if (!websiteUrl) return logo
+  const triggerClassName =
+    "group inline-flex rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 
-  return (
+  const trigger = websiteUrl ? (
     <a
       href={websiteUrl}
       target="_blank"
       rel="noopener noreferrer"
-      title={`Visit ${name}`}
-      className="group rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className={triggerClassName}
     >
       {logo}
     </a>
+  ) : (
+    <span className={triggerClassName}>{logo}</span>
+  )
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+      <TooltipContent sideOffset={6}>
+        <p className="font-medium">{role}</p>
+        <p className="text-background/80">
+          {period}
+          {duration ? ` · ${duration}` : null}
+        </p>
+      </TooltipContent>
+    </Tooltip>
   )
 }
 

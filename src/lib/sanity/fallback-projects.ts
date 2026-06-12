@@ -648,7 +648,7 @@ export const fallbackProjects: Project[] = [
     featured: true,
     coverImageUrl: "/projects/kodo/hero.webp",
     year: "Feb 2024 – Nov 2025",
-    role: "Product Designer",
+    role: "Senior Product Designer",
     client: "Kodo",
     tools: ["Figma", "Framer"],
     publishedAt: "2025-11-01T00:00:00.000Z",
@@ -719,7 +719,7 @@ export const fallbackProjects: Project[] = [
         items: [
           {
             name: "Akshay Saini",
-            role: "Product Designer",
+            role: "Senior Product Designer",
             initials: "AS",
           },
         ],

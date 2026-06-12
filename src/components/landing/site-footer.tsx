@@ -30,10 +30,10 @@ export function SiteFooter() {
                 aria-label="Akshay Saini — home"
                 className="inline-flex shrink-0 transition-opacity hover:opacity-80"
               >
-                <Logo className="h-5 sm:h-6" />
+                <Logo className="h-6 sm:h-7" />
               </Link>
               <PrideFlag
-                className="h-5 w-auto shrink-0 sm:h-6"
+                className="h-6 w-auto shrink-0 sm:h-7"
                 numOfColumns={8}
                 billow={0.5}
                 staggeredDelay={40}
