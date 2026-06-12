@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 
+import { HundredXLogo } from "@/components/logos/hundred-x-logo"
 import { KodoLogo } from "@/components/logos/kodo-logo"
 import { getEmployerLogos, type EmployerLogo } from "@/lib/profile"
 import { cn } from "@/lib/utils"
@@ -12,18 +13,20 @@ type CompanyLogoBarProps = {
   label?: string
 }
 
-const logoClassName =
-  "h-7 w-auto max-w-[6.5rem] opacity-55 grayscale transition duration-200 hover:opacity-100 hover:grayscale-0 dark:opacity-60"
+const svgLogoClassName =
+  "h-7 w-auto max-w-[6.5rem] text-muted-foreground opacity-55 transition duration-200 group-hover:scale-105 group-hover:text-foreground group-hover:opacity-100 dark:opacity-60"
+
+const imgLogoClassName =
+  "h-7 w-auto max-w-[6.5rem] object-contain opacity-55 grayscale transition duration-200 group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-0 dark:opacity-60 dark:group-hover:invert"
 
 function LogoBarItem({ name, logoSrc, websiteUrl }: EmployerLogo) {
   const [failed, setFailed] = useState(false)
 
   const logo =
     logoSrc === "/companies/kodo.svg" ? (
-      <KodoLogo
-        title={name}
-        className={cn(logoClassName, "text-foreground")}
-      />
+      <KodoLogo title={name} className={svgLogoClassName} />
+    ) : logoSrc === "/companies/100x-bot.svg" ? (
+      <HundredXLogo title={name} className={svgLogoClassName} />
     ) : failed ? (
       <span className="text-sm font-medium text-muted-foreground">{name}</span>
     ) : (
@@ -31,7 +34,7 @@ function LogoBarItem({ name, logoSrc, websiteUrl }: EmployerLogo) {
         src={logoSrc}
         alt={`${name} logo`}
         title={name}
-        className={cn(logoClassName, "object-contain")}
+        className={imgLogoClassName}
         loading="lazy"
         onError={() => setFailed(true)}
       />
@@ -45,7 +48,7 @@ function LogoBarItem({ name, logoSrc, websiteUrl }: EmployerLogo) {
       target="_blank"
       rel="noopener noreferrer"
       title={`Visit ${name}`}
-      className="rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       {logo}
     </a>

@@ -8,6 +8,15 @@ export const PRIDE_FLAG_COLORS = [
   "#750787", // violet
 ] as const
 
+/** Solid horizontal bars via double-position color stops (Josh Comeau technique). */
+export function generatePrideGradient(colors: readonly string[]) {
+  const segment = 100 / colors.length
+  const stops = colors.map(
+    (color, index) => `${color} ${index * segment}% ${(index + 1) * segment}%`,
+  )
+  return `linear-gradient(to bottom, ${stops.join(", ")})`
+}
+
 /** Pride palette streak colors for the hero Lightfall background. */
 export const HERO_LIGHTFALL_COLORS = [...PRIDE_FLAG_COLORS] as string[]
 

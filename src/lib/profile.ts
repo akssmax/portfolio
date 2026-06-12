@@ -147,7 +147,7 @@ export const profile = {
   experience: [
     {
       company: "100x.bot",
-      logoSrc: "/companies/100x-bot.png",
+      logoSrc: "/companies/100x-bot.svg",
       websiteUrl: "https://100x.bot/",
       role: "Design Engineer",
       period: "Dec 2025 – Present",

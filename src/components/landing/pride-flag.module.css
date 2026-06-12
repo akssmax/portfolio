@@ -1,0 +1,35 @@
+@keyframes oscillate {
+  from {
+    transform: translateY(var(--billow));
+  }
+  to {
+    transform: translateY(calc(var(--billow) * -1));
+  }
+}
+
+.flag {
+  display: flex;
+  overflow: hidden;
+}
+
+.column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  animation: oscillate 500ms ease-in-out infinite alternate;
+  animation-fill-mode: backwards;
+}
+
+.column:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.column:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.static .column {
+  animation: none;
+}
