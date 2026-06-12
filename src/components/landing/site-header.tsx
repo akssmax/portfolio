@@ -1,9 +1,22 @@
+"use client"
+
+import { useState } from "react"
 import { Link } from "@tanstack/react-router"
+import { Menu } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { Logo } from "@/components/brand/logo"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 const navItems = [
   { label: "Work", href: "/#work", isAnchor: true },
@@ -12,8 +25,70 @@ const navItems = [
   { label: "Projects", to: "/projects" as const, isAnchor: false },
 ] as const
 
+type NavItem = (typeof navItems)[number]
+
+function HeaderNavLink({
+  item,
+  className,
+  onNavigate,
+}: {
+  item: NavItem
+  className?: string
+  onNavigate?: () => void
+}) {
+  if (item.isAnchor) {
+    return (
+      <Button variant="ghost" size="sm" className={className} asChild>
+        <a href={item.href} onClick={onNavigate}>
+          {item.label}
+        </a>
+      </Button>
+    )
+  }
+
+  return (
+    <Button variant="ghost" size="sm" className={className} asChild>
+      <Link to={item.to} onClick={onNavigate}>
+        {item.label}
+      </Link>
+    </Button>
+  )
+}
+
+function MobileNavLink({
+  item,
+  onNavigate,
+}: {
+  item: NavItem
+  onNavigate: () => void
+}) {
+  const linkClassName =
+    "flex h-11 w-full items-center rounded-md px-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+
+  if (item.isAnchor) {
+    return (
+      <SheetClose asChild>
+        <a href={item.href} className={linkClassName} onClick={onNavigate}>
+          {item.label}
+        </a>
+      </SheetClose>
+    )
+  }
+
+  return (
+    <SheetClose asChild>
+      <Link to={item.to} className={linkClassName} onClick={onNavigate}>
+        {item.label}
+      </Link>
+    </SheetClose>
+  )
+}
+
 export function SiteHeader() {
   const shouldReduceMotion = useReducedMotion()
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const closeMobileMenu = () => setMobileOpen(false)
 
   return (
     <motion.header
@@ -22,31 +97,69 @@ export function SiteHeader() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <Link
           to="/"
           aria-label="Akshay Saini — home"
-          className="inline-flex text-foreground"
+          className="inline-flex min-w-0 shrink text-foreground"
         >
-          <Logo />
+          <Logo className="h-5 sm:h-6" />
         </Link>
-        <nav className="flex items-center gap-1">
-          {navItems.map((item) =>
-            item.isAnchor ? (
-              <Button key={item.href} variant="ghost" size="sm" asChild>
-                <a href={item.href}>{item.label}</a>
-              </Button>
-            ) : (
-              <Button key={item.to} variant="ghost" size="sm" asChild>
-                <Link to={item.to}>{item.label}</Link>
-              </Button>
-            ),
-          )}
+
+        <nav
+          className="hidden items-center gap-1 md:flex"
+          aria-label="Main navigation"
+        >
+          {navItems.map((item) => (
+            <HeaderNavLink key={item.isAnchor ? item.href : item.to} item={item} />
+          ))}
           <Button size="sm" className="ml-1" asChild>
-            <a href="/#contact">Let's build together</a>
+            <a href="/#contact">Let&apos;s build together</a>
           </Button>
           <ThemeCustomizer />
         </nav>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeCustomizer />
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" aria-label="Open menu">
+                <Menu className="size-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-full max-w-xs gap-0 p-0">
+              <SheetHeader className="border-b border-border px-4 py-4 text-left">
+                <SheetTitle>Menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Site navigation links
+                </SheetDescription>
+              </SheetHeader>
+
+              <nav
+                className="flex flex-col gap-1 px-2 py-3"
+                aria-label="Mobile navigation"
+              >
+                {navItems.map((item) => (
+                  <MobileNavLink
+                    key={item.isAnchor ? item.href : item.to}
+                    item={item}
+                    onNavigate={closeMobileMenu}
+                  />
+                ))}
+              </nav>
+
+              <div className="mt-auto border-t border-border p-4">
+                <SheetClose asChild>
+                  <Button className="w-full" asChild>
+                    <a href="/#contact" onClick={closeMobileMenu}>
+                      Let&apos;s build together
+                    </a>
+                  </Button>
+                </SheetClose>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </motion.header>
   )
