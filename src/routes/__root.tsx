@@ -1,6 +1,9 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { TanStackDevtools } from "@tanstack/react-devtools"
+
+import { RouteError } from "@/components/route-error"
+import { ThemeProvider } from "@/components/theme-provider"
+import { DirectionProvider } from "@/components/ui/direction"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 import appCss from "../styles.css?url"
 
@@ -15,7 +18,12 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Akshay Saini — Design Engineer",
+      },
+      {
+        name: "description",
+        content:
+          "Design engineer portfolio — crafting interfaces where design systems meet production code.",
       },
     ],
     links: [
@@ -25,6 +33,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  errorComponent: RouteError,
   notFoundComponent: () => (
     <main className="container mx-auto p-4 pt-16">
       <h1>404</h1>
@@ -36,23 +45,16 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <DirectionProvider dir="ltr">
+            <TooltipProvider>{children}</TooltipProvider>
+          </DirectionProvider>
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>

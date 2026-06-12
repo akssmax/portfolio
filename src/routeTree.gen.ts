@@ -8,59 +8,218 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root"
-import { Route as IndexRouteImport } from "./routes/index"
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
+import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
+import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
+import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+const DesignSystemRouteRoute = DesignSystemRouteRouteImport.update({
+  id: '/design-system',
+  path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemTypographyRoute = DesignSystemTypographyRouteImport.update({
+  id: '/typography',
+  path: '/typography',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
+  id: '/colors',
+  path: '/colors',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const DesignSystemComponentsSlugRoute =
+  DesignSystemComponentsSlugRouteImport.update({
+    id: '/components/$slug',
+    path: '/components/$slug',
+    getParentRoute: () => DesignSystemRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/typography': typeof DesignSystemTypographyRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/design-system/': typeof DesignSystemIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/typography': typeof DesignSystemTypographyRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/design-system': typeof DesignSystemIndexRoute
+  '/projects': typeof ProjectsIndexRoute
+  '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/typography': typeof DesignSystemTypographyRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/design-system/': typeof DesignSystemIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/"
+  fullPaths:
+    | '/'
+    | '/design-system'
+    | '/design-system/colors'
+    | '/design-system/typography'
+    | '/projects/$slug'
+    | '/design-system/'
+    | '/projects/'
+    | '/design-system/components/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: "/"
-  id: "__root__" | "/"
+  to:
+    | '/'
+    | '/design-system/colors'
+    | '/design-system/typography'
+    | '/projects/$slug'
+    | '/design-system'
+    | '/projects'
+    | '/design-system/components/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/design-system'
+    | '/design-system/colors'
+    | '/design-system/typography'
+    | '/projects/$slug'
+    | '/design-system/'
+    | '/projects/'
+    | '/design-system/components/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
+    '/design-system': {
+      id: '/design-system'
+      path: '/design-system'
+      fullPath: '/design-system'
+      preLoaderRoute: typeof DesignSystemRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system/': {
+      id: '/design-system/'
+      path: '/'
+      fullPath: '/design-system/'
+      preLoaderRoute: typeof DesignSystemIndexRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system/typography': {
+      id: '/design-system/typography'
+      path: '/typography'
+      fullPath: '/design-system/typography'
+      preLoaderRoute: typeof DesignSystemTypographyRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/design-system/colors': {
+      id: '/design-system/colors'
+      path: '/colors'
+      fullPath: '/design-system/colors'
+      preLoaderRoute: typeof DesignSystemColorsRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/design-system/components/$slug': {
+      id: '/design-system/components/$slug'
+      path: '/components/$slug'
+      fullPath: '/design-system/components/$slug'
+      preLoaderRoute: typeof DesignSystemComponentsSlugRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
     }
   }
 }
 
+interface DesignSystemRouteRouteChildren {
+  DesignSystemColorsRoute: typeof DesignSystemColorsRoute
+  DesignSystemTypographyRoute: typeof DesignSystemTypographyRoute
+  DesignSystemIndexRoute: typeof DesignSystemIndexRoute
+  DesignSystemComponentsSlugRoute: typeof DesignSystemComponentsSlugRoute
+}
+
+const DesignSystemRouteRouteChildren: DesignSystemRouteRouteChildren = {
+  DesignSystemColorsRoute: DesignSystemColorsRoute,
+  DesignSystemTypographyRoute: DesignSystemTypographyRoute,
+  DesignSystemIndexRoute: DesignSystemIndexRoute,
+  DesignSystemComponentsSlugRoute: DesignSystemComponentsSlugRoute,
+}
+
+const DesignSystemRouteRouteWithChildren =
+  DesignSystemRouteRoute._addFileChildren(DesignSystemRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
+  ProjectsSlugRoute: ProjectsSlugRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx"
-import type { createStart } from "@tanstack/react-start"
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
