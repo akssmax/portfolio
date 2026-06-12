@@ -7,7 +7,7 @@ import {
 
 import Strands from "@/components/Strands"
 
-const BASE_COLORS = ["#F97316", "#7C3AED", "#06B6D4"] as const
+const BASE_COLORS = ["#FF354B", "#7E00FF", "#00D061"] as const
 
 const IDLE = {
   amplitude: 0.7,

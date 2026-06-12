@@ -140,7 +140,11 @@ const DotGrid: React.FC<DotGridProps> = ({
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
+
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
 
       const { x: px, y: py } = pointerRef.current;
 
@@ -279,11 +283,11 @@ const DotGrid: React.FC<DotGridProps> = ({
   }, [maxSpeed, speedTrigger, proximity, resistance, returnDuration, shockRadius, shockStrength]);
 
   return (
-    <section className={`p-4 flex items-center justify-center h-full w-full relative ${className}`} style={style}>
-      <div ref={wrapperRef} className="w-full h-full relative">
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+    <div className={`relative h-full w-full ${className}`} style={style}>
+      <div ref={wrapperRef} className="relative h-full w-full">
+        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       </div>
-    </section>
+    </div>
   );
 };
 

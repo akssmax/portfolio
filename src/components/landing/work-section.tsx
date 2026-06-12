@@ -14,7 +14,10 @@ export function WorkSection({ projects }: WorkSectionProps) {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section id="work" className="border-t border-border bg-muted/30 py-24">
+    <section
+      id="work"
+      className="border-t border-border bg-foreground py-24 text-background dark:bg-muted/80 dark:text-foreground"
+    >
       <motion.div
         className="mx-auto max-w-6xl px-4 sm:px-6"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -27,11 +30,15 @@ export function WorkSection({ projects }: WorkSectionProps) {
             <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Selected work
             </h2>
-            <p className="mt-3 text-base text-muted-foreground">
+            <p className="mt-3 text-base text-background/70 dark:text-muted-foreground">
               A few projects where design craft and engineering rigor came together.
             </p>
           </div>
-          <Button asChild variant="outline">
+          <Button
+            asChild
+            variant="outline"
+            className="border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background dark:border-border dark:text-foreground dark:hover:bg-background/10"
+          >
             <Link to="/projects">
               View all work
               <ArrowRight className="size-4" />

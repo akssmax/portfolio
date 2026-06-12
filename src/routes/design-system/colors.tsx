@@ -54,8 +54,9 @@ function ColorsPage() {
           Colors
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Semantic OKLCH tokens defined in CSS variables. Toggle light/dark mode
-          to preview both themes.
+          Brand palette mapped to semantic OKLCH tokens — red primary, purple
+          secondary, green accent, navy surfaces. Toggle light/dark mode to
+          preview both themes.
         </p>
       </header>
 

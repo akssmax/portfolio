@@ -2,22 +2,7 @@ import { motion, useReducedMotion } from "motion/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-
-const designSkills = [
-  "Figma",
-  "Design Systems",
-  "Prototyping",
-  "Visual Design",
-  "UX Research",
-] as const
-
-const engineeringSkills = [
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "TanStack",
-  "Framer Motion",
-] as const
+import { profile } from "@/lib/profile"
 
 export function SkillsSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -41,7 +26,7 @@ export function SkillsSection() {
         </div>
 
         <motion.div
-          className="grid gap-10 sm:grid-cols-2"
+          className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -57,7 +42,7 @@ export function SkillsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.15 }}
             >
-              {designSkills.map((skill) => (
+              {profile.designSkills.map((skill) => (
                 <Badge key={skill} variant="secondary">
                   {skill}
                 </Badge>
@@ -75,7 +60,25 @@ export function SkillsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              {engineeringSkills.map((skill) => (
+              {profile.engineeringSkills.map((skill) => (
+                <Badge key={skill} variant="outline">
+                  {skill}
+                </Badge>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <motion.div className="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
+            <h3 className="text-sm font-medium text-foreground">Domains & tools</h3>
+            <Separator />
+            <motion.div
+              className="flex flex-wrap gap-2"
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+            >
+              {profile.domainSkills.map((skill) => (
                 <Badge key={skill} variant="outline">
                   {skill}
                 </Badge>

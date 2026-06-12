@@ -7,6 +7,7 @@ import {
 } from "@/components/projects/interactive-strands-background"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { profile } from "@/lib/profile"
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -36,14 +37,16 @@ export function HeroSection() {
           transition={{ duration: 0.5 }}
         >
           <Badge variant="secondary" className="w-fit">
-            Available for work
+            {profile.role} @ {profile.company}
           </Badge>
+          <p className="text-sm font-medium text-muted-foreground">
+            {profile.name} · {profile.location}
+          </p>
           <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            Design Engineer
+            {profile.title}
           </h1>
           <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-            I craft interfaces where design systems meet production code — bridging
-            Figma pixels and shipped React components.
+            {profile.tagline}
           </p>
           <motion.div
             className="flex flex-wrap gap-3"
