@@ -64,6 +64,10 @@ const KODO_TECH_STACK_ITEMS = [
   { name: "Framer", logoSrc: "/projects/kodo/tech/framer.svg" },
 ]
 
+const TULR_TECH_STACK_ITEMS = [
+  { name: "Figma", logoSrc: "/projects/tulr/tech/figma.svg" },
+]
+
 export const fallbackProjects: Project[] = [
   {
     _id: "fallback-100x-landing-page",
@@ -946,6 +950,172 @@ export const fallbackProjects: Project[] = [
         _key: "k-embed",
         url: "https://www.kodo.com/",
         label: "View live site",
+        embedType: "link",
+      },
+    ],
+  },
+  {
+    _id: "fallback-tulr",
+    title: "Tulr — No-Code Platform",
+    slug: "tulr",
+    description:
+      "Pre-LLM-era no-code platform combining videos, tables, forms, and calendars with automation — designed as a one-shot replacement for Airtable, Typeform, Calendly, and Loom.",
+    tag: "Product UI",
+    featured: true,
+    coverImageUrl: "/projects/tulr/hero.png",
+    year: "May 2020 – Dec 2021",
+    role: "UX Designer",
+    client: "Tulr",
+    tools: ["Figma"],
+    publishedAt: "2021-12-01T00:00:00.000Z",
+    seo: {
+      metaTitle: "Tulr — No-Code Platform — Case Study",
+      metaDescription:
+        "How Tulr unified videos, tables, forms, and calendars into a pre-LLM no-code builder — designed and launched on Product Hunt as a replacement for Airtable, Typeform, Calendly, and Loom.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "t-h-context",
+        title: "Context",
+        subtitle: "UX designer on a pre-LLM no-code productivity platform.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "t-rt-context",
+        body: [
+          textBlock(
+            "t-rt-context-1",
+            "Tulr.io was a no-code platform that let teams combine videos, tables, forms, and calendars — then layer automation on top to build internal apps without writing code. Positioned as a one-shot replacement for Airtable, Typeform, Calendly, and Loom, it shipped in the early no-code wave — before LLMs made \"describe your app\" the default onboarding pattern.",
+          ),
+          textBlock(
+            "t-rt-context-2",
+            "I joined as UX designer at AuthMe Id Services, working with founder Shardul Lavekar and a team of seven developers to design the mobile and web builder, a 700+ component library, brand system, and Product Hunt launch.",
+          ),
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "t-collab",
+        subtitle: "Design partner to the founder and engineering team.",
+        items: [
+          {
+            name: "Shardul Lavekar",
+            role: "Founder",
+            initials: "SL",
+          },
+          {
+            name: "Akshay Saini",
+            role: "UX Designer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "t-metrics",
+        items: [
+          { value: "700+", label: "Custom components" },
+          { value: "4", label: "Unified primitives" },
+          { value: "7", label: "Developers shipped with" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "t-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "t-rt-challenge",
+        body: [
+          textBlock(
+            "t-rt-challenge-1",
+            "Tulr had to feel approachable to non-technical makers while encoding four distinct product metaphors — spreadsheet, form, scheduler, and async video — inside one composable builder. Every screen needed to teach the mental model fast: pick a primitive, wire automation, ship an app. There was no AI copilot to fall back on; clarity of layout, copy, and component hierarchy had to do the heavy lifting.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "t-h-product",
+        title: "Product design",
+        subtitle: "Mobile and web UI for the no-code builder and launch.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "t-rt-product",
+        body: [
+          textBlock(
+            "t-rt-product-1",
+            "I owned end-to-end product design across Tulr's builder surfaces — from empty states and onboarding through complex automation flows — plus brand, motion, social assets, and the Product Hunt launch.",
+          ),
+          ...bulletList("t-rt-product-b", [
+            "Mobile and web product design for the no-code builder",
+            "700+ custom component library with a shared base design system",
+            "Applicant tracking, email marketing, and video pitch templates",
+            "Branding, UI animation, social media, and Product Hunt launch",
+            "Collaboration with a team of 7 developers",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "t-tech",
+        items: TULR_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `t-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "t-img-hero",
+        src: "/projects/tulr/hero.png",
+        alt: "Tulr marketing — One tool to rule them all",
+        caption: "Launch creative — unified no-code positioning",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImage",
+        _key: "t-img-product",
+        src: "/projects/tulr/product.jpg",
+        alt: "Tulr no-code builder interface with tables, forms, and automation",
+        caption: "Builder UI — tables, forms, calendars, and video in one workspace",
+        fullBleed: true,
+      },
+      {
+        _type: "sectionHeading",
+        _key: "t-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "t-rt-decisions",
+        body: bulletList("t-rt-decisions-b", [
+          "Primitive-first navigation — videos, tables, forms, and calendars as first-class building blocks instead of buried settings",
+          "Component library at scale — 700+ variants so engineering could ship fast without one-off UI drift",
+          "Pre-LLM onboarding — progressive disclosure and template galleries instead of prompt-based setup",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "t-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "t-rt-outcome",
+        body: [
+          textBlock(
+            "t-rt-outcome-1",
+            "Tulr launched on Product Hunt in April 2022 with a clear consolidation story — one workspace for the tools teams were already duct-taping together. The product demonstrated that thoughtful no-code UX could stand on its own in a pre-LLM world, before chat-native builders rewrote how makers expect to start.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "t-embed",
+        url: "https://www.producthunt.com/products/tulr-io",
+        label: "View on Product Hunt",
         embedType: "link",
       },
     ],

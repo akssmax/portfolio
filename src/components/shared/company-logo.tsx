@@ -1,3 +1,4 @@
+import { KodoLogo } from "@/components/logos/kodo-logo"
 import { cn } from "@/lib/utils"
 
 export function CompanyLogo({
@@ -16,7 +17,12 @@ export function CompanyLogo({
         className,
       )}
     >
-      {src ? (
+      {src === "/companies/kodo.svg" ? (
+        <KodoLogo
+          title={name}
+          className="h-4 w-auto max-w-full text-foreground"
+        />
+      ) : src ? (
         <img
           src={src}
           alt={`${name} logo`}

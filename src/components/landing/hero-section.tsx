@@ -1,47 +1,68 @@
+"use client"
+
+import { useCallback, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { ArrowDown } from "lucide-react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
-import { M3FeatureImage } from "@/components/m3-shapes"
+import Lightfall from "@/components/Lightfall"
+import { CompanyLogoBar } from "@/components/landing/company-logo-bar"
+import { HeroRotatingHeadline, HeroRotatingTagline } from "@/components/landing/hero-rotating-headline"
 import {
-  InteractiveStrandsBackground,
-  useInteractiveStrands,
-} from "@/components/projects/interactive-strands-background"
+  M3FeatureImage,
+  readStoredHeroPortraitIndex,
+} from "@/components/m3-shapes/m3-feature-image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { heroPortraitItems } from "@/lib/hero-portraits"
-import { PRIDE_FLAG_COLORS } from "@/lib/pride-colors"
+import { useInView } from "@/hooks/use-in-view"
+import { HERO_HEADLINES, HERO_TAGLINES } from "@/lib/hero-headlines"
+import {
+  getRandomizedHeroPortraitItems,
+  HERO_PORTRAIT_SLOT_COUNT,
+} from "@/lib/hero-portraits"
+import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
 import { profile } from "@/lib/profile"
-
-const HERO_STRAND_COLORS = [...PRIDE_FLAG_COLORS]
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
-  const { dynamicPropsRef, mouseHandlers } = useInteractiveStrands()
+  const sectionRef = useRef<HTMLElement>(null)
+  const isHeroInView = useInView(sectionRef, { threshold: 0.08, initialInView: true })
+  const [portraitItems] = useState(() => getRandomizedHeroPortraitItems())
+  const [headlineIndex, setHeadlineIndex] = useState(() =>
+    readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % HERO_HEADLINES.length,
+  )
+
+  const handleMorphStart = useCallback((nextIndex: number) => {
+    if (!isHeroInView) return
+    setHeadlineIndex(nextIndex % HERO_HEADLINES.length)
+  }, [isHeroInView])
 
   return (
     <section
-      className="relative isolate overflow-hidden"
-      {...(!shouldReduceMotion ? mouseHandlers : {})}
+      ref={sectionRef}
+      className="relative isolate min-h-[94svh] overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         {!shouldReduceMotion ? (
           <ErrorBoundary title="Background animation failed" showHeader={false}>
-            <InteractiveStrandsBackground
-              dynamicPropsRef={dynamicPropsRef}
-              colors={HERO_STRAND_COLORS}
+            <Lightfall
               className="absolute inset-0"
+              {...HERO_LIGHTFALL_CONFIG}
+              pointerRootRef={sectionRef}
+              paused={!isHeroInView}
             />
           </ErrorBoundary>
         ) : null}
-        <div className="absolute inset-0 bg-background/75" aria-hidden />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
+          aria-hidden
+        />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl transform-gpu items-center gap-12 px-4 py-24 sm:px-6 sm:py-32 lg:grid-cols-[1fr_auto] lg:gap-16">
+      <div className="relative z-10 mx-auto grid min-h-[94svh] w-full max-w-6xl items-center gap-12 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[1fr_auto] lg:gap-16">
         <motion.div
           className="flex max-w-3xl flex-col gap-6"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
           <Badge variant="secondary" className="w-fit">
@@ -50,16 +71,12 @@ export function HeroSection() {
           <p className="text-sm font-medium text-muted-foreground">
             {profile.name} · {profile.location}
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            {profile.title}
-          </h1>
-          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-            {profile.tagline}
-          </p>
+          <HeroRotatingHeadline lines={HERO_HEADLINES} index={headlineIndex} />
+          <HeroRotatingTagline lines={HERO_TAGLINES} index={headlineIndex} />
           <motion.div
             className="flex flex-wrap gap-3"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
             <Button size="lg" asChild>
@@ -69,30 +86,22 @@ export function HeroSection() {
               <a href="#contact">Get in touch</a>
             </Button>
           </motion.div>
-          <motion.a
-            href="#work"
-            className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            aria-label="Scroll to work section"
-          >
-            <ArrowDown className="size-4" />
-            Scroll to explore
-          </motion.a>
+          <CompanyLogoBar />
         </motion.div>
 
         <motion.div
-          className="relative isolate z-20 mx-auto shrink-0 lg:mx-0"
-          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          className="relative z-20 mx-auto shrink-0 lg:mx-0"
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <ErrorBoundary title="Portrait failed to load" showHeader={false}>
             <M3FeatureImage
-              items={heroPortraitItems}
+              items={portraitItems}
               alt={`${profile.name} portrait`}
               imageClassName="size-80 sm:size-96 lg:size-[28rem] xl:size-[32rem] 2xl:size-[36rem]"
+              onMorphStart={handleMorphStart}
+              active={isHeroInView}
             />
           </ErrorBoundary>
         </motion.div>

@@ -1,13 +1,13 @@
 export const profile = {
   name: "Akshay Saini",
   title: "Design Engineer",
-  role: "Product Designer",
+  role: "Design Engineer",
   company: "100x.bot",
   location: "Bengaluru, India",
   resumePath: "/resume/akshay-saini-resume.pdf",
   tagline:
-    "I craft interfaces where design systems meet production code — bridging Figma pixels and shipped React components.",
-  bio: "With nearly 8 years in product and UX design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.",
+    "I design and build product UI for founders and early teams — from Figma to React, so you ship faster with less rework.",
+  bio: "With nearly 8 years in product and UX design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.",
   contact: {
     email: "akshaysaini.design@gmail.com",
     phone: "+91 8168238248",
@@ -148,7 +148,8 @@ export const profile = {
     {
       company: "100x.bot",
       logoSrc: "/companies/100x-bot.png",
-      role: "Product Designer",
+      websiteUrl: "https://100x.bot/",
+      role: "Design Engineer",
       period: "Dec 2025 – Present",
       location: "Bengaluru, India",
       description:
@@ -157,15 +158,27 @@ export const profile = {
     {
       company: "Kodo",
       logoSrc: "/companies/kodo.svg",
+      websiteUrl: "https://www.kodo.com/",
       role: "Product Designer",
       period: "Feb 2024 – Nov 2025",
       location: "Pune, India",
       description:
         "Led design on procure-to-pay flows for an enterprise fintech product — translating complex finance and compliance requirements into intuitive workflows.",
+      highlights: [
+        "Built unified Kodo design system (native light/dark mode) — Tamagui and MD3 versions",
+        "New website in Framer with Framer Motion and custom React components",
+        "Kodo ERP P2P (Procure-to-Pay) v1 launch with enterprise customers",
+        "UPI app demo for NPCI",
+        "Bharat Connect integration design screens (NPCI approved)",
+        "Revamped Kodo's payment solution app with MD3 guidelines",
+        "Multiple customer demos and prototypes (code-based and Figma)",
+        "700+ custom component library with base design system",
+      ],
     },
     {
       company: "Unlogged",
       logoSrc: "/companies/unlogged.svg",
+      websiteUrl: "https://www.unlogged.io/",
       role: "Product Designer",
       period: "Dec 2021 – Jan 2024",
       location: "Remote · YC S22",
@@ -183,16 +196,16 @@ export const profile = {
       ],
     },
     {
-      company: "AuthMe Id Services",
-      logoSrc: "/companies/authme.png",
+      company: "Tulr",
+      logoSrc: "/companies/tulr.svg",
+      websiteUrl: "https://www.producthunt.com/products/tulr-io",
       role: "UX Designer",
-      period: "Feb 2021 – Dec 2021",
-      location: "Gurgaon, India",
+      period: "May 2020 – Dec 2021",
+      location: "Gurgaon, India · AuthMe Id Services",
       description:
-        "Shaped identity verification flows and dashboard experiences for a digital identity services platform.",
+        "Designed Tulr — a no-code platform combining videos, tables, forms, and calendars with automation. One-shot replacement for Airtable, Typeform, Calendly, and Loom.",
       highlights: [
-        "Worked on Tulr — project management app and no-code builder",
-        "Mobile and web product design",
+        "Mobile and web product design for the no-code builder",
         "Built 700+ custom component library",
         "Branding, animation, social media, and Product Hunt launch",
         "Collaborated with a team of 7 developers",
@@ -206,7 +219,6 @@ export const profile = {
       description:
         "Contract design work across product, web, and packaging for early-stage startups.",
       highlights: [
-        "3-month contract for Tulr",
         "Strictly4Men website and packaging design",
         "Tenxgeeks website design",
         "Cloud-based gaming platform app",
@@ -229,6 +241,8 @@ export const profile = {
     {
       company: "Wallzy",
       logoSrc: "/companies/wallzy.png",
+      websiteUrl:
+        "https://play.google.com/store/apps/details?id=com.wallzy.app",
       role: "Graphic Designer & Founder",
       period: "Jan 2017 – Dec 2018",
       location: "Hisar, Haryana",
@@ -269,3 +283,23 @@ export const profile = {
 }
 
 export type ProfileExperience = (typeof profile.experience)[number]
+
+export type EmployerLogo = {
+  name: string
+  logoSrc: string
+  websiteUrl?: string
+}
+
+export function getEmployerLogos(): EmployerLogo[] {
+  return profile.experience.flatMap((item) =>
+    item.logoSrc
+      ? [
+          {
+            name: item.company,
+            logoSrc: item.logoSrc,
+            websiteUrl: item.websiteUrl,
+          },
+        ]
+      : [],
+  )
+}

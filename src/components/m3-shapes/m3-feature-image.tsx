@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { animate, useMotionValue, useReducedMotion } from "motion/react"
+import { animate, useMotionValue, useReducedMotion, type AnimationPlaybackControls } from "motion/react"
 
 import { M3ShapeMorphImage } from "@/components/m3-shapes/m3-shape-morph-image"
 import { M3ShapeImage } from "@/components/m3-shapes/m3-shape"
@@ -19,15 +19,18 @@ type M3FeatureImageProps = {
   alt: string
   className?: string
   imageClassName?: string
+  onMorphStart?: (nextIndex: number) => void
+  /** When false, pauses auto-cycle and in-flight morph animations. */
+  active?: boolean
 }
 
 const MORPH_DURATION = 0.75
-const IMAGE_FADE_DELAY = 0.28
-const IMAGE_FADE_DURATION = 0.45
-const AUTO_CYCLE_INTERVAL_MS = 6000
+export const MORPH_IMAGE_FADE_DELAY = 0.28
+export const MORPH_IMAGE_FADE_DURATION = 0.45
+export const AUTO_CYCLE_INTERVAL_MS = 6000
 const INDEX_STORAGE_KEY = "hero-portrait-index"
 
-function readStoredIndex(length: number) {
+export function readStoredHeroPortraitIndex(length: number) {
   if (typeof sessionStorage === "undefined" || length < 1) return 0
 
   const stored = sessionStorage.getItem(INDEX_STORAGE_KEY)
@@ -49,13 +52,17 @@ export function M3FeatureImage({
   alt,
   className,
   imageClassName,
+  onMorphStart,
+  active,
 }: M3FeatureImageProps) {
   const shouldReduceMotion = useReducedMotion()
   const isMorphing = useRef(false)
   const cycleRef = useRef<() => Promise<void>>(async () => {})
   const autoCycleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isVisibleRef = useRef(true)
-  const indexRef = useRef(readStoredIndex(items.length))
+  const isVisibleRef = useRef(active ?? true)
+  const shapeAnimationRef = useRef<AnimationPlaybackControls | null>(null)
+  const imageAnimationRef = useRef<AnimationPlaybackControls | null>(null)
+  const indexRef = useRef(readStoredHeroPortraitIndex(items.length))
   const shapeProgress = useMotionValue(0)
   const imageProgress = useMotionValue(0)
   const rootRef = useRef<HTMLButtonElement>(null)
@@ -68,6 +75,14 @@ export function M3FeatureImage({
 
   useEffect(() => {
     void import("@/lib/m3-shape-morph")
+  }, [])
+
+  const stopMorphAnimations = useCallback(() => {
+    shapeAnimationRef.current?.stop()
+    imageAnimationRef.current?.stop()
+    shapeAnimationRef.current = null
+    imageAnimationRef.current = null
+    isMorphing.current = false
   }, [])
 
   const applyItem = useCallback(
@@ -103,6 +118,7 @@ export function M3FeatureImage({
     if (!nextPath) return
 
     if (shouldReduceMotion) {
+      onMorphStart?.(nextIndex)
       applyItem(nextIndex)
       return
     }
@@ -119,10 +135,12 @@ export function M3FeatureImage({
       )
 
       if (!interpolator) {
+        onMorphStart?.(nextIndex)
         applyItem(nextIndex)
         return
       }
 
+      onMorphStart?.(nextIndex)
       setNextSrc(nextItem.src)
       setImageMix(0)
       shapeProgress.set(0)
@@ -134,11 +152,13 @@ export function M3FeatureImage({
         onUpdate: (t) => setPathD(interpolator(t)),
       })
       const imageAnimation = animate(imageProgress, 1, {
-        duration: IMAGE_FADE_DURATION,
-        delay: IMAGE_FADE_DELAY,
+        duration: MORPH_IMAGE_FADE_DURATION,
+        delay: MORPH_IMAGE_FADE_DELAY,
         ease: "easeInOut",
         onUpdate: setImageMix,
       })
+      shapeAnimationRef.current = shapeAnimation
+      imageAnimationRef.current = imageAnimation
 
       await Promise.all([shapeAnimation.finished, imageAnimation.finished])
       applyItem(nextIndex)
@@ -147,8 +167,10 @@ export function M3FeatureImage({
       applyItem(nextIndex)
     } finally {
       isMorphing.current = false
+      shapeAnimationRef.current = null
+      imageAnimationRef.current = null
     }
-  }, [applyItem, imageProgress, items, shapeProgress, shouldReduceMotion])
+  }, [applyItem, imageProgress, items, onMorphStart, shapeProgress, shouldReduceMotion])
 
   cycleRef.current = cycle
 
@@ -174,12 +196,29 @@ export function M3FeatureImage({
 
   useEffect(() => {
     if (shouldReduceMotion === null) return
+    if (active === false) return
 
     scheduleAutoCycle()
     return clearAutoCycle
-  }, [scheduleAutoCycle, clearAutoCycle, shouldReduceMotion])
+  }, [active, scheduleAutoCycle, clearAutoCycle, shouldReduceMotion])
 
   useEffect(() => {
+    if (active === undefined) return
+
+    isVisibleRef.current = active
+
+    if (active) {
+      scheduleAutoCycle()
+      return
+    }
+
+    clearAutoCycle()
+    stopMorphAnimations()
+  }, [active, clearAutoCycle, scheduleAutoCycle, stopMorphAnimations])
+
+  useEffect(() => {
+    if (active !== undefined) return
+
     const node = rootRef.current
     if (!node || typeof IntersectionObserver === "undefined") return
 
@@ -194,13 +233,14 @@ export function M3FeatureImage({
         }
 
         clearAutoCycle()
+        stopMorphAnimations()
       },
       { threshold: 0.15 },
     )
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [clearAutoCycle, scheduleAutoCycle])
+  }, [active, clearAutoCycle, scheduleAutoCycle, stopMorphAnimations])
 
   const handleClick = useCallback(() => {
     clearAutoCycle()

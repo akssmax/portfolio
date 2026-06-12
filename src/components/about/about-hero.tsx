@@ -1,12 +1,19 @@
+"use client"
+
+import { useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 import { Download, GraduationCap, Mail, MapPin, Phone } from "lucide-react"
 
+import { ErrorBoundary } from "@/components/error-boundary"
+import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
 import { profile } from "@/lib/profile"
 
 export function AboutHero() {
   const shouldReduceMotion = useReducedMotion()
+  const [portraitItems] = useState(() => getRandomizedHeroPortraitItems())
 
   return (
     <section className="border-b border-border py-24">
@@ -16,16 +23,33 @@ export function AboutHero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mb-12 max-w-2xl">
-          <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-            About
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            {profile.name}
-          </h1>
-          <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-            Product designer with a computer science foundation.
-          </p>
+        <div className="mb-12 grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+              About
+            </p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              {profile.name}
+            </h1>
+            <p className="mt-3 text-base text-muted-foreground sm:text-lg">
+              Product designer with a computer science foundation.
+            </p>
+          </div>
+
+          <motion.div
+            className="mx-auto shrink-0 lg:mx-0"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <ErrorBoundary title="Portrait failed to load" showHeader={false}>
+              <M3FeatureImage
+                items={portraitItems}
+                alt={`${profile.name} portrait`}
+                imageClassName="size-56 sm:size-64 lg:size-72 xl:size-80"
+              />
+            </ErrorBoundary>
+          </motion.div>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_300px]">

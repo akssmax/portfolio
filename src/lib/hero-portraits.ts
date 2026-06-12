@@ -1,12 +1,88 @@
 import type { M3FeatureImageItem } from "@/components/m3-shapes/m3-feature-image"
+import { m3ShapePaths } from "@/lib/m3-shape-paths"
+import type { M3ShapeId } from "@/lib/m3-shapes"
 
-export const heroPortraitItems = [
-  { src: "/images/portraits/01.png", shape: "gem" },
-  { src: "/images/portraits/02.png", shape: "arch" },
-  { src: "/images/portraits/03.png", shape: "flower" },
-  { src: "/images/portraits/04.png", shape: "heart" },
-  { src: "/images/portraits/05.png", shape: "soft-burst" },
-  { src: "/images/portraits/06.png", shape: "diamond" },
-  { src: "/images/portraits/07.png", shape: "circle" },
-  { src: "/images/portraits/08.png", shape: "4-leaf-clover" },
-] as const satisfies readonly M3FeatureImageItem[]
+/** Shapes that support SVG path morphing in M3FeatureImage. */
+const MORPHABLE_SHAPE_POOL = Object.keys(m3ShapePaths) as M3ShapeId[]
+
+/** All available selfies — existing set plus newer ones. */
+const HERO_SELFIE_SOURCES = [
+  "/images/portraits/01.png",
+  "/images/portraits/02.png",
+  "/images/portraits/03.png",
+  "/images/portraits/04.png",
+  "/images/portraits/05.png",
+  "/images/portraits/06.png",
+  "/images/portraits/07.png",
+  "/images/portraits/08.png",
+  "/images/portraits/selfie-2026-02-03.png",
+  "/images/portraits/selfie-2026-02-14-a.png",
+  "/images/portraits/selfie-2026-02-14-b.png",
+  "/images/portraits/selfie-2026-03-04.png",
+  "/images/portraits/selfie-2026-03-05.png",
+  "/images/portraits/selfie-2026-03-27.png",
+] as const
+
+export const HERO_PORTRAIT_SLOT_COUNT = HERO_SELFIE_SOURCES.length
+
+const SHUFFLE_STORAGE_KEY = "hero-portrait-shuffle-v3"
+
+function shuffleInPlace<T>(items: T[]) {
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[items[i], items[j]] = [items[j], items[i]]
+  }
+}
+
+function buildPortraitItems(
+  selectedSources: readonly string[],
+  selectedShapes: readonly M3ShapeId[],
+): M3FeatureImageItem[] {
+  return selectedShapes.map((shape, index) => ({
+    src: selectedSources[index] ?? HERO_SELFIE_SOURCES[0],
+    shape,
+  }))
+}
+
+/** Picks a random selfie + shape pairing per session, stable until the tab closes. */
+export function getRandomizedHeroPortraitItems(): M3FeatureImageItem[] {
+  if (typeof sessionStorage !== "undefined") {
+    const stored = sessionStorage.getItem(SHUFFLE_STORAGE_KEY)
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as M3FeatureImageItem[]
+        if (
+          parsed.length === HERO_PORTRAIT_SLOT_COUNT &&
+          parsed.every((item) => item.src && item.shape)
+        ) {
+          return parsed
+        }
+      } catch {
+        // fall through to regenerate
+      }
+    }
+  }
+
+  const selfies = [...HERO_SELFIE_SOURCES]
+  shuffleInPlace(selfies)
+
+  const shapes = [...MORPHABLE_SHAPE_POOL]
+  shuffleInPlace(shapes)
+
+  const items = buildPortraitItems(
+    selfies,
+    shapes.slice(0, HERO_PORTRAIT_SLOT_COUNT),
+  )
+
+  if (typeof sessionStorage !== "undefined") {
+    sessionStorage.setItem(SHUFFLE_STORAGE_KEY, JSON.stringify(items))
+  }
+
+  return items
+}
+
+/** Default non-random set — useful for tests or static previews. */
+export const heroPortraitItems = buildPortraitItems(
+  HERO_SELFIE_SOURCES,
+  MORPHABLE_SHAPE_POOL.slice(0, HERO_PORTRAIT_SLOT_COUNT),
+)

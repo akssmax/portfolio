@@ -1,9 +1,9 @@
-[data-font="geist"],
-:root:not([data-font]) {
+[data-font="geist"] {
   --font-family-sans: "Geist Variable", sans-serif;
 }
 
-[data-font="geist-pixel-square"] {
+[data-font="geist-pixel-square"],
+:root:not([data-font]) {
   --font-family-sans: "Geist Pixel Square", monospace;
 }
 

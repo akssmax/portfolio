@@ -80,6 +80,6 @@ export const APPEARANCE_STORAGE_KEYS = {
 export const DEFAULT_APPEARANCE: AppearanceState = {
   palette: "default",
   neutral: "stone",
-  font: "geist",
+  font: "geist-pixel-square",
   radius: "default",
 }
