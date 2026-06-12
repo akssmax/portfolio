@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react"
 
+import { getExperienceDuration } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
 import { cn } from "@/lib/utils"
 
@@ -62,6 +63,7 @@ export function ExperienceSection() {
             >
               <div className="text-sm text-muted-foreground">
                 <p>{item.period}</p>
+                <p className="mt-1">{getExperienceDuration(item.period)}</p>
                 <p className="mt-1">{item.location}</p>
               </div>
               <div className="flex gap-4">

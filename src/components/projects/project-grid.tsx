@@ -51,7 +51,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       className="block h-full"
     >
       <MotionCard
-        className="h-full overflow-hidden transition-shadow hover:shadow-md"
+        className="h-full gap-4 overflow-hidden pt-0 transition-shadow hover:shadow-md"
         {...hoverProps}
       >
         {coverUrl ? (

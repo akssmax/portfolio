@@ -3,7 +3,7 @@
 import { Link, useRouterState } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
 
-import { ModeToggle } from "@/components/mode-toggle"
+import { ThemeCustomizer } from "@/components/theme-customizer"
 import {
   Sidebar,
   SidebarContent,
@@ -108,7 +108,7 @@ export function DesignSystemLayout({ children }: { children: React.ReactNode }) 
             Back to portfolio
           </Link>
           <div className="ms-auto">
-            <ModeToggle />
+            <ThemeCustomizer />
           </div>
         </header>
         <main className={cn("mx-auto w-full max-w-4xl flex-1 p-6 sm:p-10")}>

@@ -1,7 +1,7 @@
 import { ArrowUpRight, Mail } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
-import DotGrid from "@/components/DotGrid"
+import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
 import { GithubIcon, LinkedinIcon } from "@/components/icons/social-icons"
 import { Button } from "@/components/ui/button"
 import { profile } from "@/lib/profile"
@@ -15,28 +15,7 @@ export function ContactSection() {
       className="relative overflow-hidden border-t border-primary/30 bg-primary text-primary-foreground"
     >
       <div className="absolute inset-0 opacity-40" aria-hidden>
-        {!shouldReduceMotion ? (
-          <DotGrid
-            className="absolute inset-0 h-full w-full p-0"
-            dotSize={4}
-            gap={24}
-            baseColor="#FF98A5"
-            activeColor="#FFFFFF"
-            proximity={140}
-            speedTrigger={60}
-            shockRadius={200}
-            shockStrength={5}
-          />
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, rgba(255,255,255,0.55) 1.5px, transparent 1.5px)",
-              backgroundSize: "24px 24px",
-            }}
-          />
-        )}
+        <ContactDotGridBackground />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />
       </div>
 

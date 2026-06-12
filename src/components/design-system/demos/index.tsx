@@ -8,6 +8,7 @@ import {
   SkillsSectionDemo,
   WorkSectionDemo,
 } from "@/components/design-system/demos/custom-demos"
+import { M3ShapesDemo } from "@/components/design-system/demos/m3-shapes-demo"
 import { PlaceholderDemo } from "@/components/design-system/demos/placeholder-demo"
 import {
   AlertDemo,
@@ -115,6 +116,7 @@ export const componentDemos: Record<string, ComponentType> = {
   toggle: ToggleDemo,
   "toggle-group": ToggleGroupDemo,
   tooltip: TooltipDemo,
+  "m3-shapes": M3ShapesDemo,
   "mode-toggle": ModeToggleDemo,
   "site-header": SiteHeaderDemo,
   "hero-section": HeroSectionDemo,

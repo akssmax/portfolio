@@ -31,8 +31,8 @@ function TypographyPage() {
           Typography
         </h1>
         <p className="max-w-2xl text-base text-muted-foreground">
-          Geist Variable is the primary typeface. Use only Tailwind font-size
-          tokens — no arbitrary values.
+          Geist Variable is the default typeface. Switch fonts from the nav theme
+          picker to preview Inter, DM Sans, Outfit, and more.
         </p>
       </header>
 

@@ -16,7 +16,7 @@ export function WorkSection({ projects }: WorkSectionProps) {
   return (
     <section
       id="work"
-      className="border-t border-border bg-foreground py-24 text-background dark:bg-muted/80 dark:text-foreground"
+      className="border-t border-border bg-section py-24 text-section-foreground"
     >
       <motion.div
         className="mx-auto max-w-6xl px-4 sm:px-6"
@@ -27,17 +27,17 @@ export function WorkSection({ projects }: WorkSectionProps) {
       >
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              Selected work
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Recent work
             </h2>
-            <p className="mt-3 text-base text-background/70 dark:text-muted-foreground">
+            <p className="mt-3 text-base text-muted-foreground">
               A few projects where design craft and engineering rigor came together.
             </p>
           </div>
           <Button
             asChild
             variant="outline"
-            className="border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background dark:border-border dark:text-foreground dark:hover:bg-background/10"
+            className="border-border bg-transparent hover:bg-muted/50"
           >
             <Link to="/projects">
               View all work

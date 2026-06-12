@@ -6,8 +6,7 @@ import {
 } from "motion/react"
 
 import Strands from "@/components/Strands"
-
-const BASE_COLORS = ["#FF354B", "#7E00FF", "#00D061"] as const
+import { useStrandColors } from "@/hooks/use-brand-colors"
 
 const IDLE = {
   amplitude: 0.7,
@@ -113,16 +112,21 @@ export function useInteractiveStrands() {
 type InteractiveStrandsBackgroundProps = {
   dynamicProps: DynamicStrandsProps
   className?: string
+  colors?: string[]
 }
 
 export function InteractiveStrandsBackground({
   dynamicProps,
   className,
+  colors: colorsProp,
 }: InteractiveStrandsBackgroundProps) {
+  const [primary, secondary, accent] = useStrandColors()
+  const colors = colorsProp ?? [primary, secondary, accent]
+
   return (
     <div className={className} aria-hidden>
       <Strands
-        colors={[...BASE_COLORS]}
+        colors={colors}
         count={6}
         opacity={1}
         glass={false}

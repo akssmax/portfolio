@@ -1,0 +1,44 @@
+[data-font="geist"],
+:root:not([data-font]) {
+  --font-family-sans: "Geist Variable", sans-serif;
+}
+
+[data-font="geist-pixel-square"] {
+  --font-family-sans: "Geist Pixel Square", monospace;
+}
+
+[data-font="geist-pixel-grid"] {
+  --font-family-sans: "Geist Pixel Grid", monospace;
+}
+
+[data-font="geist-pixel-circle"] {
+  --font-family-sans: "Geist Pixel Circle", monospace;
+}
+
+[data-font="geist-pixel-triangle"] {
+  --font-family-sans: "Geist Pixel Triangle", monospace;
+}
+
+[data-font="geist-pixel-line"] {
+  --font-family-sans: "Geist Pixel Line", monospace;
+}
+
+[data-font="inter"] {
+  --font-family-sans: "Inter Variable", sans-serif;
+}
+
+[data-font="dm-sans"] {
+  --font-family-sans: "DM Sans Variable", sans-serif;
+}
+
+[data-font="outfit"] {
+  --font-family-sans: "Outfit Variable", sans-serif;
+}
+
+[data-font="source-serif"] {
+  --font-family-sans: "Source Serif 4 Variable", serif;
+}
+
+[data-font="jetbrains-mono"] {
+  --font-family-sans: "JetBrains Mono Variable", monospace;
+}

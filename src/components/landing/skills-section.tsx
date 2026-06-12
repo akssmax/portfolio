@@ -1,8 +1,42 @@
+import type { LucideIcon } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { profile } from "@/lib/profile"
+import { categoryIcons, skillIcons } from "@/lib/skill-icons"
+
+function SkillBadge({
+  skill,
+  variant,
+}: {
+  skill: string
+  variant: "secondary" | "outline"
+}) {
+  const Icon = skillIcons[skill]
+
+  return (
+    <Badge variant={variant}>
+      {Icon ? <Icon aria-hidden /> : null}
+      {skill}
+    </Badge>
+  )
+}
+
+function CategoryHeading({
+  icon: Icon,
+  label,
+}: {
+  icon: LucideIcon
+  label: string
+}) {
+  return (
+    <h3 className="flex items-center gap-2 text-sm font-medium text-foreground">
+      <Icon className="size-4 text-muted-foreground" aria-hidden />
+      {label}
+    </h3>
+  )
+}
 
 export function SkillsSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -33,7 +67,7 @@ export function SkillsSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <motion.div className="flex flex-col gap-4">
-            <h3 className="text-sm font-medium text-foreground">Design</h3>
+            <CategoryHeading icon={categoryIcons.design} label="Design" />
             <Separator />
             <motion.div
               className="flex flex-wrap gap-2"
@@ -43,15 +77,13 @@ export function SkillsSection() {
               transition={{ duration: 0.4, delay: 0.15 }}
             >
               {profile.designSkills.map((skill) => (
-                <Badge key={skill} variant="secondary">
-                  {skill}
-                </Badge>
+                <SkillBadge key={skill} skill={skill} variant="secondary" />
               ))}
             </motion.div>
           </motion.div>
 
           <motion.div className="flex flex-col gap-4">
-            <h3 className="text-sm font-medium text-foreground">Engineering</h3>
+            <CategoryHeading icon={categoryIcons.engineering} label="Engineering" />
             <Separator />
             <motion.div
               className="flex flex-wrap gap-2"
@@ -61,15 +93,13 @@ export function SkillsSection() {
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               {profile.engineeringSkills.map((skill) => (
-                <Badge key={skill} variant="outline">
-                  {skill}
-                </Badge>
+                <SkillBadge key={skill} skill={skill} variant="outline" />
               ))}
             </motion.div>
           </motion.div>
 
           <motion.div className="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
-            <h3 className="text-sm font-medium text-foreground">Domains & tools</h3>
+            <CategoryHeading icon={categoryIcons.domains} label="Domains & tools" />
             <Separator />
             <motion.div
               className="flex flex-wrap gap-2"
@@ -79,9 +109,7 @@ export function SkillsSection() {
               transition={{ duration: 0.4, delay: 0.25 }}
             >
               {profile.domainSkills.map((skill) => (
-                <Badge key={skill} variant="outline">
-                  {skill}
-                </Badge>
+                <SkillBadge key={skill} skill={skill} variant="outline" />
               ))}
             </motion.div>
           </motion.div>

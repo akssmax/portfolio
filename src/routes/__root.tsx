@@ -4,6 +4,7 @@ import { RouteError } from "@/components/route-error"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { APPEARANCE_INIT_SCRIPT } from "@/lib/themes/apply-appearance"
 
 import appCss from "../styles.css?url"
 
@@ -45,12 +46,19 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-theme="default"
+      data-font="geist"
+      data-radius="default"
+    >
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: APPEARANCE_INIT_SCRIPT }} />
       </head>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <DirectionProvider dir="ltr">
             <TooltipProvider>{children}</TooltipProvider>
           </DirectionProvider>

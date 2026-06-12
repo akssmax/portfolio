@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 
 import { Logo } from "@/components/brand/logo"
-import { ModeToggle } from "@/components/mode-toggle"
+import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
@@ -26,7 +26,7 @@ export function SiteHeader() {
         <Link
           to="/"
           aria-label="Akshay Saini — home"
-          className="inline-flex text-foreground transition-opacity hover:opacity-80"
+          className="inline-flex text-foreground"
         >
           <Logo />
         </Link>
@@ -45,7 +45,7 @@ export function SiteHeader() {
           <Button size="sm" className="ml-1" asChild>
             <a href="/#contact">Let's build together</a>
           </Button>
-          <ModeToggle />
+          <ThemeCustomizer />
         </nav>
       </div>
     </motion.header>

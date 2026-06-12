@@ -119,6 +119,11 @@ export const componentEntries: DocEntry[] = componentSlugs.map((slug) =>
 
 export const customEntries: DocEntry[] = [
   entry(
+    "m3-shapes",
+    "Material Design 3 expressive shapes for icon boxes, image clipping masks, and placeholders.",
+    "custom"
+  ),
+  entry(
     "mode-toggle",
     "Theme switcher with light, dark, and system modes.",
     "custom"

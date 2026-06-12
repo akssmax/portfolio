@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { Palette, Type } from "lucide-react"
+import { Palette, Shapes, Type } from "lucide-react"
 
 import {
   Card,
@@ -27,6 +27,13 @@ const foundationCards = [
     description: "Geist type scale using Tailwind font tokens.",
     href: "/design-system/typography",
     icon: Type,
+  },
+  {
+    title: "M3 Shapes",
+    description:
+      "Material Design 3 expressive shapes for icons, masks, and placeholders.",
+    href: "/design-system/components/m3-shapes",
+    icon: Shapes,
   },
 ] as const
 

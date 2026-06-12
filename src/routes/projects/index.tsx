@@ -33,22 +33,24 @@ function ProjectsIndexPage() {
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main
-        className="relative min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
+        className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
         {...(!shouldReduceMotion ? mouseHandlers : {})}
       >
-        {!shouldReduceMotion ? (
-          <InteractiveStrandsBackground
-            dynamicProps={dynamicProps}
-            className="pointer-events-none absolute inset-0"
-          />
-        ) : null}
         <div
-          className="pointer-events-none absolute inset-0 bg-background/75"
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
           aria-hidden
-        />
+        >
+          {!shouldReduceMotion ? (
+            <InteractiveStrandsBackground
+              dynamicProps={dynamicProps}
+              className="absolute inset-0"
+            />
+          ) : null}
+          <div className="absolute inset-0 bg-background/75" />
+        </div>
 
         <motion.div
-          className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6"
+          className="relative z-10 mx-auto max-w-6xl px-4 py-24 sm:px-6"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}

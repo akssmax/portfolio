@@ -285,6 +285,9 @@ export default function Strands({
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = 'transparent';
+    gl.canvas.style.position = 'absolute';
+    gl.canvas.style.inset = '0';
+    gl.canvas.style.pointerEvents = 'none';
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {

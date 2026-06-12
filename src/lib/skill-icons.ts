@@ -1,0 +1,50 @@
+import type { LucideIcon } from "lucide-react"
+import {
+  Atom,
+  BarChart3,
+  Bot,
+  Briefcase,
+  Code2,
+  FileCode,
+  Landmark,
+  Layers,
+  LayoutGrid,
+  Megaphone,
+  Move,
+  Palette,
+  PenTool,
+  Play,
+  ScanSearch,
+  Smartphone,
+  Sparkles,
+  Table2,
+  Terminal,
+  Wind,
+} from "lucide-react"
+
+export const categoryIcons = {
+  design: PenTool,
+  engineering: Code2,
+  domains: Briefcase,
+} as const satisfies Record<string, LucideIcon>
+
+export const skillIcons: Record<string, LucideIcon> = {
+  Figma: PenTool,
+  "Design Systems": Layers,
+  "Product Design": LayoutGrid,
+  "UX Research": ScanSearch,
+  Prototyping: Play,
+  "Visual Design": Palette,
+  "Brand Identity": Sparkles,
+  React: Atom,
+  TypeScript: FileCode,
+  "Tailwind CSS": Wind,
+  TanStack: Table2,
+  "Framer Motion": Move,
+  Android: Smartphone,
+  Fintech: Landmark,
+  DevTools: Terminal,
+  "Agentic AI": Bot,
+  "Marketing Design": Megaphone,
+  Amplitude: BarChart3,
+}
