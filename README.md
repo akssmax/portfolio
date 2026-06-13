@@ -43,6 +43,41 @@ npm run capture:kodo
 
 Captures homepage and marketing section screenshots from [kodo.com](https://www.kodo.com/) into `public/projects/kodo/`.
 
+## Ask AI (Mistral + RAG)
+
+The hero section includes an **Ask AI** prompt that opens a sheet chat grounded in portfolio content (profile, projects, case studies).
+
+### Setup
+
+1. Copy `.env.example` to `.env.local`
+2. Set `MISTRAL_API_KEY` (server-only — never use a `VITE_` prefix)
+3. Optional: `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`
+
+### Build the RAG index
+
+After changing profile or case study content, regenerate vector embeddings:
+
+```bash
+npm run build:rag
+```
+
+This writes `src/lib/rag/corpus-index.json`. Commit that file so production deploys do not need the API key at build time.
+
+For local development without an API key, generate a keyword-search stub:
+
+```bash
+npm run build:rag:stub
+```
+
+### Manual test checklist
+
+1. Hero shows Ask AI input below the company logo bar
+2. Submitting a question opens the sheet and streams a response
+3. "Why hire Akshay?" returns grounded experience highlights
+4. Project questions reference Kodo, 100x, or Tulr with `/projects/*` links
+5. Off-topic questions are declined politely
+6. Design system → AI Elements demo renders conversation components
+
 ## Adding components
 
 To add components to your app, run the following command:

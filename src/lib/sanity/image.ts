@@ -1,18 +1,28 @@
-import { createImageUrlBuilder } from "@sanity/image-url"
+import { createImageUrlBuilder, type ImageUrlBuilder } from "@sanity/image-url"
 
-import { sanityClient } from "./client"
+import { getSanityClient, isSanityConfigured } from "./client"
 
-const builder = createImageUrlBuilder(sanityClient)
+let cachedBuilder: ImageUrlBuilder | null = null
 
-export function urlFor(source: Parameters<typeof builder.image>[0]) {
-  return builder.image(source)
+function getBuilder(): ImageUrlBuilder {
+  if (!isSanityConfigured()) {
+    throw new Error("Sanity is not configured")
+  }
+  if (!cachedBuilder) {
+    cachedBuilder = createImageUrlBuilder(getSanityClient())
+  }
+  return cachedBuilder
+}
+
+export function urlFor(source: Parameters<ImageUrlBuilder["image"]>[0]) {
+  return getBuilder().image(source)
 }
 
 export function getImageUrl(
-  source: Parameters<typeof builder.image>[0] | null | undefined,
+  source: Parameters<ImageUrlBuilder["image"]>[0] | null | undefined,
   width = 1200,
 ): string | undefined {
-  if (!source) return undefined
+  if (!source || !isSanityConfigured()) return undefined
 
   return urlFor(source).width(width).auto("format").quality(85).url()
 }

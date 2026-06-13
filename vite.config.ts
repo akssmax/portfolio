@@ -12,6 +12,7 @@ import { nitro } from "nitro/vite"
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
 const config = defineConfig({
+  envDir: rootDir,
   resolve: {
     alias: {
       flubber: path.resolve(rootDir, "node_modules/flubber/index.js"),

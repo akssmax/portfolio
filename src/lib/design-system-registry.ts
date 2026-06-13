@@ -169,6 +169,11 @@ export const customEntries: DocEntry[] = [
     "Contact CTA section with email and social links.",
     "custom"
   ),
+  entry(
+    "ai-elements",
+    "Vercel AI Elements — conversation, message, prompt input, suggestions, sources, and shimmer for portfolio chat.",
+    "custom"
+  ),
 ]
 
 export const allDocEntries: DocEntry[] = [...componentEntries, ...customEntries]

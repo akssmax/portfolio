@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { ErrorBoundary } from "@/components/error-boundary"
 import Lightfall from "@/components/Lightfall"
 import { CompanyLogoBar } from "@/components/landing/company-logo-bar"
+import { AskAiPrompt } from "@/components/landing/ask-ai-prompt"
 import { HeroRotatingHeadline, HeroRotatingTagline } from "@/components/landing/hero-rotating-headline"
 import {
   M3FeatureImage,
@@ -58,9 +59,9 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid min-h-[94svh] w-full max-w-6xl items-center gap-12 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[1fr_auto] lg:gap-16">
+      <div className="relative z-10 mx-auto grid min-h-[94svh] w-full max-w-6xl items-center gap-10 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[1fr_auto] lg:gap-12">
         <motion.div
-          className="flex max-w-3xl flex-col gap-6"
+          className="flex max-w-2xl flex-col gap-6"
           initial={shouldReduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -87,6 +88,7 @@ export function HeroSection() {
             </Button>
           </motion.div>
           <CompanyLogoBar />
+          <AskAiPrompt />
         </motion.div>
 
         <motion.div

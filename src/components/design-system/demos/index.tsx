@@ -8,6 +8,7 @@ import {
   SkillsSectionDemo,
   WorkSectionDemo,
 } from "@/components/design-system/demos/custom-demos"
+import { AiElementsDemo } from "@/components/design-system/demos/ai-elements-demo"
 import { M3ShapesDemo } from "@/components/design-system/demos/m3-shapes-demo"
 import { ScrollbarDemo } from "@/components/design-system/demos/scrollbar-demo"
 import { PlaceholderDemo } from "@/components/design-system/demos/placeholder-demo"
@@ -137,6 +138,7 @@ export const componentDemos: Record<string, ComponentType> = {
   "work-section": WorkSectionDemo,
   "skills-section": SkillsSectionDemo,
   "contact-section": ContactSectionDemo,
+  "ai-elements": AiElementsDemo,
 }
 
 export function getDemo(slug: string): ComponentType {

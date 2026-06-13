@@ -1,4 +1,4 @@
-import { isSanityConfigured, sanityClient } from "./client"
+import { isSanityConfigured, getSanityClient } from "./client"
 import {
   getFallbackFeaturedProjects,
   getFallbackProjectBySlug,
@@ -17,7 +17,7 @@ export async function getAllProjects(): Promise<ProjectCard[]> {
   }
 
   try {
-    const projects = await sanityClient.fetch<ProjectCard[]>(allProjectsQuery)
+    const projects = await getSanityClient().fetch<ProjectCard[]>(allProjectsQuery)
     return projects.length > 0 ? projects : getFallbackProjectCards()
   } catch {
     return getFallbackProjectCards()
@@ -30,7 +30,7 @@ export async function getFeaturedProjects(): Promise<ProjectCard[]> {
   }
 
   try {
-    const projects = await sanityClient.fetch<ProjectCard[]>(featuredProjectsQuery)
+    const projects = await getSanityClient().fetch<ProjectCard[]>(featuredProjectsQuery)
     return projects.length > 0 ? projects : getFallbackFeaturedProjects()
   } catch {
     return getFallbackFeaturedProjects()
@@ -43,7 +43,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   }
 
   try {
-    const project = await sanityClient.fetch<Project | null>(projectBySlugQuery, {
+    const project = await getSanityClient().fetch<Project | null>(projectBySlugQuery, {
       slug,
     })
     return project ?? getFallbackProjectBySlug(slug)

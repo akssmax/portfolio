@@ -18,6 +18,7 @@ import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
 import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
 import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 
 const AboutRoute = AboutRouteImport.update({
@@ -65,6 +66,11 @@ const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
   path: '/colors',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemComponentsSlugRoute =
   DesignSystemComponentsSlugRouteImport.update({
     id: '/components/$slug',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/api/chat': typeof ApiChatRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/api/chat': typeof ApiChatRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/api/chat': typeof ApiChatRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/about'
+    | '/api/chat'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/api/chat'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/about'
+    | '/api/chat'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
@@ -150,6 +162,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  ApiChatRoute: typeof ApiChatRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemColorsRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system/components/$slug': {
       id: '/design-system/components/$slug'
       path: '/components/$slug'
@@ -252,6 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  ApiChatRoute: ApiChatRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }
