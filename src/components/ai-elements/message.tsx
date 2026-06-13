@@ -54,6 +54,18 @@ export type MessageActionProps = ComponentProps<typeof Button> & {
   label?: string
 }
 
+export type MessageActionsProps = ComponentProps<"div">
+
+export const MessageActions = ({
+  className,
+  children,
+  ...props
+}: MessageActionsProps) => (
+  <div className={cn("flex items-center gap-1", className)} {...props}>
+    {children}
+  </div>
+)
+
 export const MessageAction = ({
   tooltip,
   children,

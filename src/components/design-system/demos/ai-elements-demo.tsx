@@ -13,6 +13,7 @@ import {
   MessageContent,
   MessageResponse,
 } from "@/components/ai-elements/message"
+import { MessageFeedbackBar } from "@/components/ai-elements/message-feedback-bar"
 import { PromptInput } from "@/components/ai-elements/prompt-input"
 import { Shimmer } from "@/components/ai-elements/shimmer"
 import {
@@ -46,6 +47,10 @@ export function AiConversationDemo() {
 }
 
 export function AiMessageDemo() {
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null)
+  const sampleText =
+    "Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI."
+
   return (
     <div className="flex flex-col gap-4">
       <Message from="user">
@@ -53,10 +58,13 @@ export function AiMessageDemo() {
       </Message>
       <Message from="assistant">
         <MessageContent>
-          <MessageResponse>
-            {`Akshay brings **8 years** of product design experience across fintech, devtools, and agentic AI — most recently as Design Engineer at 100x.bot.`}
-          </MessageResponse>
+          <MessageResponse>{sampleText}</MessageResponse>
         </MessageContent>
+        <MessageFeedbackBar
+          text={sampleText}
+          feedback={feedback}
+          onFeedback={setFeedback}
+        />
       </Message>
     </div>
   )

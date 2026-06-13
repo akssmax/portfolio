@@ -6,6 +6,7 @@ export type AssistantMeta = {
   reasoning?: { content: string; durationSeconds?: number }
   sources?: ChatSource[]
   citations?: Array<{ label: string; href: string }>
+  feedback?: "up" | "down"
 }
 
 export type ChatItem = {

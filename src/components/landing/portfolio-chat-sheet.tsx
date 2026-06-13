@@ -19,6 +19,7 @@ import {
   MessageContent,
   MessageResponse,
 } from "@/components/ai-elements/message"
+import { MessageFeedbackBar } from "@/components/ai-elements/message-feedback-bar"
 import { PromptInput } from "@/components/ai-elements/prompt-input"
 import { Shimmer } from "@/components/ai-elements/shimmer"
 import {
@@ -205,6 +206,19 @@ export function PortfolioChatSheet({
     setStatus("ready")
   }, [])
 
+  const handleFeedback = useCallback((messageId: string, rating: "up" | "down") => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === messageId
+          ? { ...item, meta: { ...item.meta, feedback: rating } }
+          : item,
+      ),
+    )
+  }, [])
+
+  const lastAssistantId =
+    [...items].reverse().find((item) => item.message.role === "assistant")?.id ?? null
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
@@ -231,6 +245,11 @@ export function PortfolioChatSheet({
                 const text = getMessageText(item.message)
                 const isAssistant = item.message.role === "assistant"
                 const isStreamingEmpty = isAssistant && !text && status === "streaming"
+                const isLatestAssistant = isAssistant && item.id === lastAssistantId
+                const showFeedbackBar =
+                  isAssistant &&
+                  Boolean(text.trim()) &&
+                  !(isLatestAssistant && status === "streaming")
 
                 return (
                   <Message key={item.id} from={item.message.role}>
@@ -238,7 +257,9 @@ export function PortfolioChatSheet({
                       {isStreamingEmpty ? (
                         <Shimmer className="text-sm">Thinking…</Shimmer>
                       ) : isAssistant ? (
-                        <MessageResponse isAnimating={status === "streaming"}>
+                        <MessageResponse
+                          isAnimating={isLatestAssistant && status === "streaming"}
+                        >
                           {text}
                         </MessageResponse>
                       ) : (
@@ -259,6 +280,13 @@ export function PortfolioChatSheet({
                         </Sources>
                       ) : null}
                     </MessageContent>
+                    {showFeedbackBar ? (
+                      <MessageFeedbackBar
+                        text={text}
+                        feedback={item.meta?.feedback ?? null}
+                        onFeedback={(rating) => handleFeedback(item.id, rating)}
+                      />
+                    ) : null}
                   </Message>
                 )
               })
