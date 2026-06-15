@@ -13,7 +13,7 @@ export function getTargetSpeed(distance: number): number {
   const score = getScore(distance)
   const milestoneIndex = getMilestoneIndex(distance)
   const tier = Math.floor(score / 50)
-  const milestoneBoost = milestoneIndex * 0.4
+  const milestoneBoost = milestoneIndex * 0.18
   return Math.min(MAX_SPEED, INITIAL_SPEED + tier * 0.35 + milestoneBoost)
 }
 

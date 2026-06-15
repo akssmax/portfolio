@@ -3,12 +3,29 @@ export type MilestoneId =
   | "terminal"
   | "paint"
   | "html5"
+  | "css3"
+  | "javascript"
+  | "canva"
   | "photoshop"
-  | "after-effects"
   | "illustrator"
-  | "behance"
+  | "indesign"
+  | "after-effects"
+  | "premiere-pro"
+  | "sketch"
+  | "adobe-xd"
   | "figma"
-  | "design-engineer"
+  | "figjam"
+  | "framer"
+  | "webflow"
+  | "miro"
+  | "dribbble"
+  | "behance"
+  | "jitter"
+  | "storybook"
+  | "tailwindcss"
+  | "react"
+  | "notion"
+  | "cursor"
 
 export type MilestoneEra = "boot" | "code" | "design" | "ship"
 
@@ -21,6 +38,8 @@ export type RunnerMilestone = {
   distanceThreshold: number
   svgSrc: string
 }
+
+const MILESTONE_STEP = 180
 
 export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
   {
@@ -38,7 +57,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "CLI",
     tagline: "C:\\> dir /w",
     era: "boot",
-    distanceThreshold: 250,
+    distanceThreshold: MILESTONE_STEP * 1,
     svgSrc: "/tools/runner/terminal.svg",
   },
   {
@@ -47,7 +66,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "Paint",
     tagline: "Saved as bitmap. Proud.",
     era: "boot",
-    distanceThreshold: 550,
+    distanceThreshold: MILESTONE_STEP * 2,
     svgSrc: "/tools/runner/paint.svg",
   },
   {
@@ -56,8 +75,35 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "HTML",
     tagline: "View Source changed everything",
     era: "code",
-    distanceThreshold: 850,
+    distanceThreshold: MILESTONE_STEP * 3,
     svgSrc: "/tools/runner/html5.svg",
+  },
+  {
+    id: "css3",
+    label: "CSS",
+    shortLabel: "CSS",
+    tagline: "Box model enlightenment",
+    era: "code",
+    distanceThreshold: MILESTONE_STEP * 4,
+    svgSrc: "/tools/runner/css3.svg",
+  },
+  {
+    id: "javascript",
+    label: "JavaScript",
+    shortLabel: "JS",
+    tagline: "console.log('hello world')",
+    era: "code",
+    distanceThreshold: MILESTONE_STEP * 5,
+    svgSrc: "/tools/runner/javascript.svg",
+  },
+  {
+    id: "canva",
+    label: "Canva",
+    shortLabel: "Canva",
+    tagline: "First poster. Instant designer.",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 6,
+    svgSrc: "/tools/runner/canva.svg",
   },
   {
     id: "photoshop",
@@ -65,17 +111,8 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "Ps",
     tagline: "Layers. Masks. Rabbit hole.",
     era: "design",
-    distanceThreshold: 1150,
+    distanceThreshold: MILESTONE_STEP * 7,
     svgSrc: "/tools/runner/photoshop.svg",
-  },
-  {
-    id: "after-effects",
-    label: "After Effects",
-    shortLabel: "AE",
-    tagline: "Keyframes = magic",
-    era: "design",
-    distanceThreshold: 1450,
-    svgSrc: "/tools/runner/after-effects.svg",
   },
   {
     id: "illustrator",
@@ -83,8 +120,107 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "Ai",
     tagline: "Bezier handles my feelings",
     era: "design",
-    distanceThreshold: 1750,
+    distanceThreshold: MILESTONE_STEP * 8,
     svgSrc: "/tools/runner/illustrator.svg",
+  },
+  {
+    id: "indesign",
+    label: "InDesign",
+    shortLabel: "Id",
+    tagline: "Grids, guides, and guilt",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 9,
+    svgSrc: "/tools/runner/indesign.svg",
+  },
+  {
+    id: "after-effects",
+    label: "After Effects",
+    shortLabel: "AE",
+    tagline: "Keyframes = magic",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 10,
+    svgSrc: "/tools/runner/after-effects.svg",
+  },
+  {
+    id: "premiere-pro",
+    label: "Premiere Pro",
+    shortLabel: "Pr",
+    tagline: "Timeline therapy",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 11,
+    svgSrc: "/tools/runner/premiere-pro.svg",
+  },
+  {
+    id: "sketch",
+    label: "Sketch",
+    shortLabel: "Sk",
+    tagline: "Symbols changed the game",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 12,
+    svgSrc: "/tools/runner/sketch.svg",
+  },
+  {
+    id: "adobe-xd",
+    label: "Adobe XD",
+    shortLabel: "XD",
+    tagline: "Prototype dreams",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 13,
+    svgSrc: "/tools/runner/adobe-xd.svg",
+  },
+  {
+    id: "figma",
+    label: "Figma",
+    shortLabel: "Fig",
+    tagline: "Multiplayer design unlocked",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 14,
+    svgSrc: "/tools/runner/figma.svg",
+  },
+  {
+    id: "figjam",
+    label: "FigJam",
+    shortLabel: "Jam",
+    tagline: "Sticky notes everywhere",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 15,
+    svgSrc: "/tools/figjam.svg",
+  },
+  {
+    id: "framer",
+    label: "Framer",
+    shortLabel: "Fr",
+    tagline: "Motion meets UI",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 16,
+    svgSrc: "/tools/framer.svg",
+  },
+  {
+    id: "webflow",
+    label: "Webflow",
+    shortLabel: "Wf",
+    tagline: "Visual dev unlocked",
+    era: "ship",
+    distanceThreshold: MILESTONE_STEP * 17,
+    svgSrc: "/tools/webflow.svg",
+  },
+  {
+    id: "miro",
+    label: "Miro",
+    shortLabel: "Miro",
+    tagline: "Infinite whiteboard energy",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 18,
+    svgSrc: "/tools/miro.svg",
+  },
+  {
+    id: "dribbble",
+    label: "Dribbble",
+    shortLabel: "Db",
+    tagline: "Shot posted. Confidence up.",
+    era: "design",
+    distanceThreshold: MILESTONE_STEP * 19,
+    svgSrc: "/tools/runner/dribbble.svg",
   },
   {
     id: "behance",
@@ -92,26 +228,62 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     shortLabel: "Be",
     tagline: "Found my design crushes",
     era: "design",
-    distanceThreshold: 2050,
+    distanceThreshold: MILESTONE_STEP * 20,
     svgSrc: "/tools/runner/behance.svg",
   },
   {
-    id: "figma",
-    label: "Figma",
-    shortLabel: "Figma",
-    tagline: "Multiplayer design unlocked",
+    id: "jitter",
+    label: "Jitter",
+    shortLabel: "Jit",
+    tagline: "Micro-motion obsession",
     era: "design",
-    distanceThreshold: 2350,
-    svgSrc: "/tools/runner/figma.svg",
+    distanceThreshold: MILESTONE_STEP * 21,
+    svgSrc: "/tools/jitter.svg",
   },
   {
-    id: "design-engineer",
+    id: "storybook",
+    label: "Storybook",
+    shortLabel: "SB",
+    tagline: "Components with stories",
+    era: "ship",
+    distanceThreshold: MILESTONE_STEP * 22,
+    svgSrc: "/tools/runner/storybook.svg",
+  },
+  {
+    id: "tailwindcss",
+    label: "Tailwind CSS",
+    shortLabel: "TW",
+    tagline: "Utility classes forever",
+    era: "ship",
+    distanceThreshold: MILESTONE_STEP * 23,
+    svgSrc: "/tools/runner/tailwindcss.svg",
+  },
+  {
+    id: "react",
+    label: "React",
+    shortLabel: "Rx",
+    tagline: "Component brain online",
+    era: "ship",
+    distanceThreshold: MILESTONE_STEP * 24,
+    svgSrc: "/tools/runner/react.svg",
+  },
+  {
+    id: "notion",
+    label: "Notion",
+    shortLabel: "Nt",
+    tagline: "Docs, specs, and chaos",
+    era: "ship",
+    distanceThreshold: MILESTONE_STEP * 25,
+    svgSrc: "/tools/notion.svg",
+  },
+  {
+    id: "cursor",
     label: "Design Engineer",
-    shortLabel: "Eng",
+    shortLabel: "Cur",
     tagline: "Shipping pixels in prod",
     era: "ship",
-    distanceThreshold: 2650,
-    svgSrc: "/tools/runner/design-engineer.svg",
+    distanceThreshold: MILESTONE_STEP * 26,
+    svgSrc: "/tools/cursor.svg",
   },
 ] as const
 
@@ -123,18 +295,21 @@ export type EraAccentStyle =
   | "blob"
   | "code"
 
-export const ERA_ACCENT_STYLE: Record<MilestoneId, EraAccentStyle> = {
-  computer: "boot",
-  terminal: "boot",
-  paint: "boot",
-  html5: "code",
-  photoshop: "stroke",
-  "after-effects": "spark",
-  illustrator: "stroke",
-  behance: "diamond",
-  figma: "blob",
-  "design-engineer": "code",
-}
+const ACCENT_CYCLE: readonly EraAccentStyle[] = [
+  "boot",
+  "code",
+  "stroke",
+  "spark",
+  "diamond",
+  "blob",
+] as const
+
+export const ERA_ACCENT_STYLE = Object.fromEntries(
+  RUNNER_MILESTONES.map((milestone, index) => [
+    milestone.id,
+    ACCENT_CYCLE[index % ACCENT_CYCLE.length],
+  ]),
+) as Record<MilestoneId, EraAccentStyle>
 
 export type IconResolutionTier = "normal" | "hi"
 
@@ -206,7 +381,9 @@ async function rasterizeSvgMarkup(
   color: string,
   size: number,
 ): Promise<HTMLCanvasElement> {
-  const tintedSvg = svgMarkup.replace(/currentColor/g, color)
+  const tintedSvg = svgMarkup
+    .replace(/currentColor/g, color)
+    .replace(/fill="#[^"]+"/gi, `fill="${color}"`)
   const blob = new Blob([tintedSvg], { type: "image/svg+xml" })
   const url = URL.createObjectURL(blob)
 

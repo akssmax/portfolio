@@ -34,6 +34,7 @@ import {
   drawMilestoneObstacles,
   ensureMilestoneIcons,
   getIconResolutionTier,
+  getMilestoneById,
   getMilestoneByIndex,
   getMilestoneIndex,
   type IconResolutionTier,
@@ -49,32 +50,42 @@ import {
   triggerLandRecovery,
   updatePlayerMotionVisual,
 } from "@/lib/brand/runner-player-motion"
+import {
+  createRunnerHapticsController,
+  type RunnerHapticsController,
+} from "@/lib/brand/runner-haptics"
+import {
+  recordRunnerHighScore,
+} from "@/lib/brand/runner-high-score"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const GRAVITY = 0.72
 const GRAVITY_HOLD = 0.26
-const JUMP_VELOCITY = 11
+const JUMP_VELOCITY = 12
 const COYOTE_MS = 90
 const JUMP_BUFFER_MS = 130
 const GROUND_PADDING = 12
 const PLAYER_HEIGHT_RATIO = 0.18
 const FULLSCREEN_PLAYER_HEIGHT_RATIO = 0.12
 const FULLSCREEN_PLAYER_MAX_HEIGHT = 88
-const MAX_JUMP_HEIGHT_RATIO = 0.42
+const MAX_JUMP_HEIGHT_RATIO = 0.58
+const HEADROOM_JUMP_RATIO = 0.68
+const MAX_JUMP_TOP_PADDING = 5
+const MIN_JUMP_HEIGHT = 70
 const OBSTACLE_WIDTH = 44
 const OBSTACLE_HEIGHT_SHORT = 40
 const OBSTACLE_HEIGHT_TALL = 58
 const BASELINE_PLAYER_HEIGHT = 48
 const COLOR_CACHE_FRAMES = 30
 const SCORE_SYNC_MS = 250
-const ERA_TOAST_MS = 1800
 
 type Obstacle = {
   x: number
   width: number
   height: number
   milestoneId: MilestoneId
+  cleared: boolean
 }
 
 type GamePhase = "running" | "gameOver"
@@ -92,13 +103,15 @@ type GameState = {
 
 type GameOverState = {
   score: number
+  highScore: number
+  isNewHighScore: boolean
   milestoneLabel: string
   milestoneTagline: string
 }
 
-type EraToast = {
-  label: string
-  tagline: string
+function getInitialUpcomingLabels() {
+  const milestone = getMilestoneByIndex(0)
+  return { label: milestone.label, shortLabel: milestone.shortLabel }
 }
 
 function createInitialState(width: number): GameState {
@@ -125,6 +138,7 @@ function spawnObstacle(width: number, distance: number, layoutScale: number): Ob
     width: OBSTACLE_WIDTH,
     height: obstacleHeight,
     milestoneId: milestone.id,
+    cleared: false,
   }
 }
 
@@ -159,6 +173,39 @@ function advanceObstacles(
     }
   }
   obstacles.length = writeIndex
+}
+
+function findNextUnclearedObstacleAhead(
+  obstacles: Obstacle[],
+  playerPassX: number,
+  layoutScale: number,
+): Obstacle | null {
+  let candidate: Obstacle | null = null
+
+  for (const obstacle of obstacles) {
+    if (obstacle.cleared) continue
+    const { width: obstacleWidth } = getObstacleSize(obstacle, layoutScale)
+    if (obstacle.x + obstacleWidth < playerPassX) continue
+
+    if (!candidate || obstacle.x < candidate.x) {
+      candidate = obstacle
+    }
+  }
+
+  return candidate
+}
+
+function getUpcomingObstacleLabels(
+  state: GameState,
+  playerPassX: number,
+  layoutScale: number,
+): { label: string; shortLabel: string } {
+  const next = findNextUnclearedObstacleAhead(state.obstacles, playerPassX, layoutScale)
+  const milestone = next
+    ? getMilestoneById(next.milestoneId)
+    : getMilestoneByIndex(getMilestoneIndex(state.distance))
+
+  return { label: milestone.label, shortLabel: milestone.shortLabel }
 }
 
 function getPlayerHeightForContainer(height: number, fullscreen: boolean) {
@@ -206,37 +253,41 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
   const tabVisibleRef = useRef(true)
   const isFullscreenRef = useRef(false)
   const displayScoreRef = useRef(0)
-  const lastMilestoneIndexRef = useRef(0)
+  const lastUpcomingLabelRef = useRef("")
+  const lastUpcomingShortLabelRef = useRef("")
   const iconTierRef = useRef<IconResolutionTier>("normal")
-  const eraToastTimerRef = useRef(0)
-  const setEraToastRef = useRef<(toast: EraToast | null) => void>(() => {})
-  const setCurrentEraShortLabelRef = useRef<(label: string) => void>(() => {})
+  const setUpcomingObstacleLabelRef = useRef<(label: string) => void>(() => {})
+  const setUpcomingObstacleShortLabelRef = useRef<(label: string) => void>(() => {})
   const setDisplayScoreRef = useRef<(score: number) => void>(() => {})
   const [gameOverState, setGameOverState] = useState<GameOverState | null>(null)
   const [displayScore, setDisplayScore] = useState(0)
-  const [currentEraShortLabel, setCurrentEraShortLabel] = useState("PC")
-  const [eraToast, setEraToast] = useState<EraToast | null>(null)
+  const [upcomingObstacleLabel, setUpcomingObstacleLabel] = useState(
+    () => getInitialUpcomingLabels().label,
+  )
+  const [upcomingObstacleShortLabel, setUpcomingObstacleShortLabel] = useState(
+    () => getInitialUpcomingLabels().shortLabel,
+  )
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [canFullscreen, setCanFullscreen] = useState(false)
   const { trigger, isSupported } = useWebHaptics()
-  const triggerHapticRef = useRef(trigger)
-  triggerHapticRef.current = trigger
-
-  const playHaptic = useCallback(
-    (
-      input: Parameters<NonNullable<typeof trigger>>[0],
-      options?: Parameters<NonNullable<typeof trigger>>[1],
-    ) => {
-      if (!isSupported) return
-      void triggerHapticRef.current?.(input, options)
-    },
-    [isSupported],
-  )
-  const playHapticRef = useRef(playHaptic)
-  playHapticRef.current = playHaptic
-  setEraToastRef.current = setEraToast
-  setCurrentEraShortLabelRef.current = setCurrentEraShortLabel
+  const hapticsRef = useRef<RunnerHapticsController>(createRunnerHapticsController())
+  hapticsRef.current.bind(trigger, isSupported)
+  setUpcomingObstacleLabelRef.current = setUpcomingObstacleLabel
+  setUpcomingObstacleShortLabelRef.current = setUpcomingObstacleShortLabel
   setDisplayScoreRef.current = setDisplayScore
+
+  const syncUpcomingObstacleLabels = useCallback((label: string, shortLabel: string) => {
+    if (label !== lastUpcomingLabelRef.current) {
+      lastUpcomingLabelRef.current = label
+      setUpcomingObstacleLabelRef.current(label)
+    }
+    if (shortLabel !== lastUpcomingShortLabelRef.current) {
+      lastUpcomingShortLabelRef.current = shortLabel
+      setUpcomingObstacleShortLabelRef.current(shortLabel)
+    }
+  }, [])
+  const syncUpcomingObstacleLabelsRef = useRef(syncUpcomingObstacleLabels)
+  syncUpcomingObstacleLabelsRef.current = syncUpcomingObstacleLabels
 
   const restart = useCallback(() => {
     stateRef.current = createInitialState(sizeRef.current.width)
@@ -245,31 +296,30 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     coyoteTimeRef.current = 0
     uiPhaseRef.current = "running"
     lastEffectTierRef.current = 0
-    lastMilestoneIndexRef.current = 0
     resetParticlePool(particlePoolRef.current)
     resetPlayerMotionState(playerMotionRef.current)
     displayScoreRef.current = 0
     setDisplayScore(0)
-    setCurrentEraShortLabel("PC")
-    setEraToast(null)
-    window.clearTimeout(eraToastTimerRef.current)
+    const initialLabels = getInitialUpcomingLabels()
+    lastUpcomingLabelRef.current = initialLabels.label
+    lastUpcomingShortLabelRef.current = initialLabels.shortLabel
+    setUpcomingObstacleLabel(initialLabels.label)
+    setUpcomingObstacleShortLabel(initialLabels.shortLabel)
     setGameOverState(null)
-    playHaptic("success")
-  }, [playHaptic])
+    hapticsRef.current.reset()
+    hapticsRef.current.restart()
+  }, [])
 
-  const launchJump = useCallback(
-    (intensity = 0.45) => {
-      const result = beginJump(playerMotionRef.current)
-      if (result === "instant") {
-        stateRef.current.playerVy = JUMP_VELOCITY
-        playHaptic(14, { intensity: intensity * 0.9 })
-      } else if (result === "anticipate") {
-        playHaptic(16, { intensity })
-      }
-      return result !== "blocked"
-    },
-    [playHaptic],
-  )
+  const launchJump = useCallback(() => {
+    const result = beginJump(playerMotionRef.current)
+    if (result === "instant") {
+      stateRef.current.playerVy = JUMP_VELOCITY
+      hapticsRef.current.jumpInstant()
+    } else if (result === "anticipate") {
+      hapticsRef.current.jumpAnticipate()
+    }
+    return result !== "blocked"
+  }, [])
 
   const canJumpNow = useCallback((state: GameState, coyoteMs: number) => {
     if (state.phase !== "running") return false
@@ -397,12 +447,6 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     }
   }, [])
 
-  useEffect(() => {
-    return () => {
-      window.clearTimeout(eraToastTimerRef.current)
-    }
-  }, [])
-
   useLayoutEffect(() => {
     mainPathRef.current = new Path2D(MONOGRAM_MAIN)
     accentPathRef.current = new Path2D(MONOGRAM_ACCENT)
@@ -468,11 +512,13 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     resetPlayerMotionState(playerMotionRef.current)
     jumpBufferRef.current = 0
     coyoteTimeRef.current = COYOTE_MS
-    lastMilestoneIndexRef.current = 0
     displayScoreRef.current = 0
     lastScoreSyncTime = 0
     setDisplayScoreRef.current(0)
-    setCurrentEraShortLabelRef.current("PC")
+    const initialLabels = getInitialUpcomingLabels()
+    lastUpcomingLabelRef.current = initialLabels.label
+    lastUpcomingShortLabelRef.current = initialLabels.shortLabel
+    syncUpcomingObstacleLabelsRef.current(initialLabels.label, initialLabels.shortLabel)
     setGameOverState(null)
     void ensureIcons(
       readColors().foreground,
@@ -520,9 +566,10 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
         const groundY = height - GROUND_PADDING
         const playerHeight = getPlayerHeightForContainer(height, isFullscreenRef.current)
         const layoutScale = getLayoutScale(playerHeight)
-        const maxJumpHeight = Math.min(
-          height * MAX_JUMP_HEIGHT_RATIO,
-          groundY - playerHeight - 8,
+        const jumpHeadroom = groundY - playerHeight - MAX_JUMP_TOP_PADDING
+        const maxJumpHeight = Math.max(
+          MIN_JUMP_HEIGHT,
+          Math.min(height * MAX_JUMP_HEIGHT_RATIO, jumpHeadroom * HEADROOM_JUMP_RATIO),
         )
         const playerX = width * 0.1
         const scale = playerHeight / 153
@@ -549,18 +596,6 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
             state.maxMilestoneIndex = currentMilestoneIndex
           }
 
-          if (currentMilestoneIndex > lastMilestoneIndexRef.current) {
-            lastMilestoneIndexRef.current = currentMilestoneIndex
-            const milestone = getMilestoneByIndex(currentMilestoneIndex)
-            playHapticRef.current("nudge")
-            setEraToastRef.current({ label: milestone.label, tagline: milestone.tagline })
-            setCurrentEraShortLabelRef.current(milestone.shortLabel)
-            window.clearTimeout(eraToastTimerRef.current)
-            eraToastTimerRef.current = window.setTimeout(() => {
-              setEraToastRef.current(null)
-            }, ERA_TOAST_MS)
-          }
-
           const score = getScore(state.distance)
           const scoreValue = Math.floor(state.distance / 10)
           if (scoreValue !== displayScoreRef.current) {
@@ -574,7 +609,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           const effectTier = getScoreEffectTier(score)
           if (effectTier > lastEffectTierRef.current) {
             lastEffectTierRef.current = effectTier
-            playHapticRef.current("nudge")
+            hapticsRef.current.scoreTier(time)
             spawnScoreTierBurst(
               particlePoolRef.current,
               effectTier,
@@ -608,10 +643,10 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
               const bufferedResult = beginJump(playerMotionRef.current)
               if (bufferedResult === "instant") {
                 state.playerVy = JUMP_VELOCITY
-                playHapticRef.current(14, { intensity: 0.34 })
+                hapticsRef.current.jumpInstant()
                 jumpBufferRef.current = 0
               } else if (bufferedResult === "anticipate") {
-                playHapticRef.current(16, { intensity: 0.38 })
+                hapticsRef.current.jumpAnticipate()
                 jumpBufferRef.current = 0
               }
             }
@@ -651,7 +686,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
 
           if (state.playerY <= 0) {
             if (wasAirborne) {
-              playHapticRef.current(10, { intensity: 0.28 })
+              hapticsRef.current.land(time)
               triggerLandRecovery(playerMotionRef.current)
               spawnLandingPuff(
                 particlePoolRef.current,
@@ -684,17 +719,47 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           playerScaleY = playerMotion.scaleY
           playerRotation = playerMotion.rotation
 
+          const hitboxInset = 6 * layoutScale
+          const playerPassX = playerX + hitboxInset
+
           state.nextObstacleIn -= state.speed * dt
           if (state.nextObstacleIn <= 0) {
             state.obstacles.push(spawnObstacle(width, state.distance, layoutScale))
             state.nextObstacleIn = getNextObstacleGap(state.speed) * layoutScale
+            const spawnedLabels = getUpcomingObstacleLabels(state, playerPassX, layoutScale)
+            syncUpcomingObstacleLabelsRef.current(
+              spawnedLabels.label,
+              spawnedLabels.shortLabel,
+            )
           }
 
           advanceObstacles(state.obstacles, state.speed, dt, layoutScale)
 
-          const hitboxInset = 6 * layoutScale
+          let clearedAnyObstacle = false
+          for (const obstacle of state.obstacles) {
+            if (obstacle.cleared) continue
+            const { width: obstacleWidth } = getObstacleSize(obstacle, layoutScale)
+            if (obstacle.x + obstacleWidth < playerPassX) {
+              obstacle.cleared = true
+              clearedAnyObstacle = true
+            }
+          }
+
+          if (clearedAnyObstacle) {
+            hapticsRef.current.milestone(time)
+            const nextObstacle = findNextUnclearedObstacleAhead(
+              state.obstacles,
+              playerPassX,
+              layoutScale,
+            )
+            if (nextObstacle) {
+              const milestone = getMilestoneById(nextObstacle.milestoneId)
+              syncUpcomingObstacleLabelsRef.current(milestone.label, milestone.shortLabel)
+            }
+          }
+
           const playerBox = {
-            x: playerX + hitboxInset,
+            x: playerPassX,
             y: groundY - playerHeight + hitboxInset - state.playerY,
             w: playerWidth - hitboxInset * 2,
             h: playerHeight - hitboxInset * 2,
@@ -717,14 +782,17 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
                 uiPhaseRef.current = "gameOver"
                 const milestone = getMilestoneByIndex(state.maxMilestoneIndex)
                 const finalScore = Math.floor(state.distance / 10)
+                const { highScore, isNewHighScore } = recordRunnerHighScore(finalScore)
                 displayScoreRef.current = finalScore
                 setDisplayScoreRef.current(finalScore)
                 setGameOverState({
                   score: finalScore,
+                  highScore,
+                  isNewHighScore,
                   milestoneLabel: milestone.label,
                   milestoneTagline: milestone.tagline,
                 })
-                playHapticRef.current("error")
+                hapticsRef.current.gameOver(isNewHighScore)
               }
               break
             }
@@ -915,9 +983,11 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           Back
         </Button>
 
-        {eraToast ? (
+        {!gameOverState ? (
           <div className="pointer-events-none min-w-0 leading-tight" aria-live="polite">
-            <p className="truncate text-[10px] font-medium text-foreground/70">{eraToast.label}</p>
+            <p className="truncate text-[10px] font-medium text-foreground/70">
+              {upcomingObstacleLabel}
+            </p>
           </div>
         ) : null}
       </div>
@@ -952,7 +1022,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
                 isFullscreen && "text-[11px]",
               )}
             >
-              {currentEraShortLabel}
+              {upcomingObstacleShortLabel}
             </span>
           </div>
           {canFullscreen ? (
@@ -1003,6 +1073,16 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
                 {gameOverState.score}
               </p>
               <p className="text-xs text-muted-foreground">points</p>
+              {gameOverState.isNewHighScore ? (
+                <p className="text-xs font-semibold text-primary">New high score!</p>
+              ) : gameOverState.highScore > 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  High score ·{" "}
+                  <span className="font-medium tabular-nums text-foreground">
+                    {gameOverState.highScore}
+                  </span>
+                </p>
+              ) : null}
               <p className="text-sm font-medium text-foreground">
                 Made it to: {gameOverState.milestoneLabel}
               </p>

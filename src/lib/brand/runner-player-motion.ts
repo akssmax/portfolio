@@ -118,8 +118,8 @@ function getAirborneTrianglePose(
   maxJumpHeight: number,
 ): PlayerMotionVisual {
   const heightRatio = maxJumpHeight > 0 ? Math.min(1, playerY / maxJumpHeight) : 0
-  const speed = Math.min(1, Math.abs(playerVy) / 11)
-  const vyNorm = Math.max(-1, Math.min(1, playerVy / 11))
+  const speed = Math.min(1, Math.abs(playerVy) / 12)
+  const vyNorm = Math.max(-1, Math.min(1, playerVy / 12))
 
   const nearApex = Math.exp(-((playerVy / 2.4) ** 2)) * Math.min(1, heightRatio * 1.2 + 0.15)
 
