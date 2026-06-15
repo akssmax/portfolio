@@ -1,6 +1,7 @@
 import { ExternalLink, LayoutTemplate, PlayCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { sanitizeExternalHref, isAllowedEmbedUrl } from "@/lib/url-safety"
 import type { EmbedBlock } from "@/lib/sanity/types"
 
 function getEmbedIcon(embedType: EmbedBlock["embedType"]) {
@@ -17,13 +18,14 @@ function getEmbedIcon(embedType: EmbedBlock["embedType"]) {
 export function EmbedBlockComponent({ block }: { block: EmbedBlock }) {
   const Icon = getEmbedIcon(block.embedType)
   const label = block.label ?? block.url
+  const safeUrl = sanitizeExternalHref(block.url)
 
-  if (block.embedType === "video" && block.url) {
+  if (block.embedType === "video" && safeUrl && isAllowedEmbedUrl(safeUrl)) {
     return (
       <div className="overflow-hidden rounded-xl border border-border">
         <div className="aspect-video">
           <iframe
-            src={block.url}
+            src={safeUrl}
             title={label}
             className="size-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -34,12 +36,12 @@ export function EmbedBlockComponent({ block }: { block: EmbedBlock }) {
     )
   }
 
-  if (block.embedType === "figma" && block.url) {
+  if (block.embedType === "figma" && safeUrl && isAllowedEmbedUrl(safeUrl)) {
     return (
       <div className="overflow-hidden rounded-xl border border-border">
         <div className="aspect-video">
           <iframe
-            src={block.url}
+            src={safeUrl}
             title={label}
             className="size-full"
             allowFullScreen
@@ -49,9 +51,11 @@ export function EmbedBlockComponent({ block }: { block: EmbedBlock }) {
     )
   }
 
+  if (!safeUrl) return null
+
   return (
     <Button asChild variant="outline">
-      <a href={block.url} target="_blank" rel="noreferrer">
+      <a href={safeUrl} target="_blank" rel="noreferrer">
         <Icon className="size-4" />
         {label}
       </a>

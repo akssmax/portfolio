@@ -26,3 +26,17 @@ export function getImageUrl(
 
   return urlFor(source).width(width).auto("format").quality(85).url()
 }
+
+export function getImageSrcSet(
+  source: Parameters<ImageUrlBuilder["image"]>[0] | null | undefined,
+  widths: number[] = [640, 960, 1200, 1600],
+): string | undefined {
+  if (!source || !isSanityConfigured()) return undefined
+
+  return widths
+    .map((width) => {
+      const url = urlFor(source).width(width).auto("format").quality(85).url()
+      return `${url} ${width}w`
+    })
+    .join(", ")
+}

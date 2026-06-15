@@ -1,20 +1,36 @@
-const WINDOW_MS = 60 * 60 * 1000
-const MAX_REQUESTS = 20
-
 type Bucket = { count: number; resetAt: number }
 
 const buckets = new Map<string, Bucket>()
 
-export function checkRateLimit(key: string): { allowed: boolean; retryAfterMs?: number } {
+export type RateLimitConfig = {
+  windowMs: number
+  maxRequests: number
+}
+
+export const CHAT_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 60 * 60 * 1000,
+  maxRequests: 20,
+}
+
+export const UNLOCK_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 15 * 60 * 1000,
+  maxRequests: 5,
+}
+
+export function checkRateLimit(
+  key: string,
+  config: RateLimitConfig = CHAT_RATE_LIMIT,
+): { allowed: boolean; retryAfterMs?: number } {
   const now = Date.now()
-  const bucket = buckets.get(key)
+  const bucketKey = `${config.windowMs}:${config.maxRequests}:${key}`
+  const bucket = buckets.get(bucketKey)
 
   if (!bucket || now >= bucket.resetAt) {
-    buckets.set(key, { count: 1, resetAt: now + WINDOW_MS })
+    buckets.set(bucketKey, { count: 1, resetAt: now + config.windowMs })
     return { allowed: true }
   }
 
-  if (bucket.count >= MAX_REQUESTS) {
+  if (bucket.count >= config.maxRequests) {
     return { allowed: false, retryAfterMs: bucket.resetAt - now }
   }
 
@@ -28,4 +44,9 @@ export function getClientIp(request: Request): string {
     return forwarded.split(",")[0]?.trim() || "unknown"
   }
   return request.headers.get("x-real-ip") || "unknown"
+}
+
+export function rateLimitHeaders(retryAfterMs?: number): Record<string, string> {
+  if (!retryAfterMs) return {}
+  return { "Retry-After": String(Math.ceil(retryAfterMs / 1000)) }
 }

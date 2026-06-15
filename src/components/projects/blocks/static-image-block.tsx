@@ -5,6 +5,8 @@ export function StaticImageBlockComponent({ block }: { block: StaticImageBlock }
     <img
       src={block.src}
       alt={block.alt}
+      loading="lazy"
+      decoding="async"
       className={`w-full rounded-xl border border-border object-cover ${
         block.fullBleed ? "aspect-[21/9]" : "aspect-[16/10]"
       }`}

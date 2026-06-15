@@ -1,10 +1,9 @@
 "use client"
 
-import { useCallback, useRef, useState } from "react"
+import { lazy, Suspense, useCallback, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
-import Lightfall from "@/components/Lightfall"
 import { CompanyLogoBar } from "@/components/landing/company-logo-bar"
 import { AskAiPrompt } from "@/components/landing/ask-ai-prompt"
 import { HeroRotatingHeadline, HeroRotatingTagline } from "@/components/landing/hero-rotating-headline"
@@ -22,6 +21,8 @@ import {
 } from "@/lib/hero-portraits"
 import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
 import { profile } from "@/lib/profile"
+
+const Lightfall = lazy(() => import("@/components/Lightfall"))
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -43,14 +44,16 @@ export function HeroSection() {
       className="relative isolate min-h-[94svh] overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        {!shouldReduceMotion ? (
+        {!shouldReduceMotion && isHeroInView ? (
           <ErrorBoundary title="Background animation failed" showHeader={false}>
-            <Lightfall
-              className="absolute inset-0"
-              {...HERO_LIGHTFALL_CONFIG}
-              pointerRootRef={sectionRef}
-              paused={!isHeroInView}
-            />
+            <Suspense fallback={null}>
+              <Lightfall
+                className="absolute inset-0"
+                {...HERO_LIGHTFALL_CONFIG}
+                pointerRootRef={sectionRef}
+                paused={!isHeroInView}
+              />
+            </Suspense>
           </ErrorBoundary>
         ) : null}
         <div

@@ -1,10 +1,29 @@
+"use client"
+
+import { lazy, Suspense } from "react"
+
 import { DocPreview } from "@/components/design-system/doc-preview"
 import { DocSection } from "@/components/design-system/doc-section"
+import { loadDemo } from "@/components/design-system/demos"
 import type { DocEntry } from "@/lib/design-system-registry"
 
-export function ComponentDocPage({ entry }: { entry: DocEntry }) {
-  const Demo = entry.demo
+function DemoPreview({ slug }: { slug: string }) {
+  const Demo = lazy(() => loadDemo(slug).then((component) => ({ default: component })))
 
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-32 items-center justify-center text-sm text-muted-foreground">
+          Loading preview…
+        </div>
+      }
+    >
+      <Demo />
+    </Suspense>
+  )
+}
+
+export function ComponentDocPage({ entry }: { entry: DocEntry }) {
   return (
     <article className="space-y-10">
       <header className="space-y-3 border-b border-border pb-8">
@@ -21,7 +40,7 @@ export function ComponentDocPage({ entry }: { entry: DocEntry }) {
 
       <DocSection title="Preview" description="Live component example.">
         <DocPreview>
-          <Demo />
+          <DemoPreview slug={entry.slug} />
         </DocPreview>
       </DocSection>
     </article>

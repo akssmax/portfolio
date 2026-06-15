@@ -111,6 +111,7 @@ export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
           image={project.coverImage}
           imageUrl={project.coverImageUrl}
           alt={project.coverImage?.alt ?? project.title}
+          priority
         />
       </header>
 

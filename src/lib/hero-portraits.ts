@@ -7,20 +7,20 @@ const MORPHABLE_SHAPE_POOL = Object.keys(m3ShapePaths) as M3ShapeId[]
 
 /** All available selfies — existing set plus newer ones. */
 const HERO_SELFIE_SOURCES = [
-  "/images/portraits/01.png",
-  "/images/portraits/02.png",
-  "/images/portraits/03.png",
-  "/images/portraits/04.png",
-  "/images/portraits/05.png",
-  "/images/portraits/06.png",
-  "/images/portraits/07.png",
-  "/images/portraits/08.png",
-  "/images/portraits/selfie-2026-02-03.png",
-  "/images/portraits/selfie-2026-02-14-a.png",
-  "/images/portraits/selfie-2026-02-14-b.png",
-  "/images/portraits/selfie-2026-03-04.png",
-  "/images/portraits/selfie-2026-03-05.png",
-  "/images/portraits/selfie-2026-03-27.png",
+  "/images/portraits/01.webp",
+  "/images/portraits/02.webp",
+  "/images/portraits/03.webp",
+  "/images/portraits/04.webp",
+  "/images/portraits/05.webp",
+  "/images/portraits/06.webp",
+  "/images/portraits/07.webp",
+  "/images/portraits/08.webp",
+  "/images/portraits/selfie-2026-02-03.webp",
+  "/images/portraits/selfie-2026-02-14-a.webp",
+  "/images/portraits/selfie-2026-02-14-b.webp",
+  "/images/portraits/selfie-2026-03-04.webp",
+  "/images/portraits/selfie-2026-03-05.webp",
+  "/images/portraits/selfie-2026-03-27.webp",
 ] as const
 
 export const HERO_PORTRAIT_SLOT_COUNT = HERO_SELFIE_SOURCES.length

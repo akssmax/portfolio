@@ -55,6 +55,13 @@ export const Route = createRootRoute({
         href: "/apple-touch-icon.png",
       },
       {
+        rel: "preload",
+        href: "/fonts/geist-pixel-square.woff2",
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
+      {
         rel: "manifest",
         href: "/manifest.json",
       },

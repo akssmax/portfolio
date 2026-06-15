@@ -2,8 +2,9 @@ import { PortableText } from "@portabletext/react"
 import { ExternalLink } from "lucide-react"
 
 import { Separator } from "@/components/ui/separator"
-import { getImageUrl } from "@/lib/sanity/image"
+import { getImageSrcSet, getImageUrl } from "@/lib/sanity/image"
 import type { ContentBlock } from "@/lib/sanity/types"
+import { sanitizeExternalHref } from "@/lib/url-safety"
 
 import { BeforeAfterBlockComponent } from "./before-after-block"
 import { EmbedBlockComponent } from "./embed-block"
@@ -45,17 +46,22 @@ const portableTextComponents = {
     }: {
       children?: React.ReactNode
       value?: { href?: string }
-    }) => (
-      <a
-        href={value?.href}
-        className="inline-flex items-center gap-1 text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80"
-        target="_blank"
-        rel="noreferrer"
-      >
-        {children}
-        <ExternalLink className="size-3.5" />
-      </a>
-    ),
+    }) => {
+      const href = sanitizeExternalHref(value?.href)
+      if (!href) return <span>{children}</span>
+
+      return (
+        <a
+          href={href}
+          className="inline-flex items-center gap-1 text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80"
+          target={href.startsWith("/") ? undefined : "_blank"}
+          rel={href.startsWith("/") ? undefined : "noreferrer"}
+        >
+          {children}
+          {!href.startsWith("/") ? <ExternalLink className="size-3.5" /> : null}
+        </a>
+      )
+    },
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
@@ -146,13 +152,16 @@ export function ProjectCoverImage({
   imageUrl,
   alt,
   className,
+  priority = false,
 }: {
   image?: import("@/lib/sanity/types").SanityImage | null | undefined
   imageUrl?: string | null
   alt: string
   className?: string
+  priority?: boolean
 }) {
   const src = imageUrl ?? getImageUrl(image, 1600)
+  const srcSet = image ? getImageSrcSet(image, [960, 1200, 1600]) : undefined
 
   if (!src) {
     return (
@@ -167,7 +176,12 @@ export function ProjectCoverImage({
   return (
     <img
       src={src}
+      srcSet={srcSet}
+      sizes="(min-width: 1024px) 960px, 100vw"
       alt={alt}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : undefined}
+      decoding="async"
       className={`aspect-[16/10] w-full rounded-xl border border-border object-cover ${className ?? ""}`}
     />
   )

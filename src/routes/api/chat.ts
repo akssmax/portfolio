@@ -7,15 +7,23 @@ import {
 } from "@/lib/llm/llm-types"
 import { buildRetrievedContext, PORTFOLIO_SYSTEM_PROMPT } from "@/lib/rag/system-prompt"
 import { retrieveForQuery } from "@/lib/rag/search"
-import { checkRateLimit, getClientIp } from "@/lib/rag/rate-limit"
+import {
+  checkRateLimit,
+  getClientIp,
+  rateLimitHeaders,
+  CHAT_RATE_LIMIT,
+} from "@/lib/rag/rate-limit"
 
 type ChatRequestBody = {
   model?: string
   messages?: LlmChatMessage[]
   temperature?: number
   maxTokens?: number
-  retrievedContext?: string
 }
+
+const MAX_MAX_TOKENS = 2000
+const MIN_TEMPERATURE = 0
+const MAX_TEMPERATURE = 1
 
 type GroundedSource = { href: string; title: string }
 type GroundedCitation = { href: string; label: string }
@@ -168,7 +176,38 @@ function validateRequest(body: ChatRequestBody) {
     }
   }
 
-  return { ok: true as const, model }
+  if (body.maxTokens !== undefined) {
+    if (typeof body.maxTokens !== "number" || !Number.isFinite(body.maxTokens)) {
+      return { ok: false as const, status: 400, code: "invalid_max_tokens", message: "Invalid maxTokens." }
+    }
+    if (body.maxTokens < 1 || body.maxTokens > MAX_MAX_TOKENS) {
+      return {
+        ok: false as const,
+        status: 400,
+        code: "max_tokens_out_of_range",
+        message: `maxTokens must be between 1 and ${MAX_MAX_TOKENS}.`,
+      }
+    }
+  }
+
+  if (body.temperature !== undefined) {
+    if (typeof body.temperature !== "number" || !Number.isFinite(body.temperature)) {
+      return { ok: false as const, status: 400, code: "invalid_temperature", message: "Invalid temperature." }
+    }
+    if (body.temperature < MIN_TEMPERATURE || body.temperature > MAX_TEMPERATURE) {
+      return {
+        ok: false as const,
+        status: 400,
+        code: "temperature_out_of_range",
+        message: `temperature must be between ${MIN_TEMPERATURE} and ${MAX_TEMPERATURE}.`,
+      }
+    }
+  }
+
+  const maxTokens = body.maxTokens ?? DEFAULT_MAX_TOKENS
+  const temperature = body.temperature ?? 0.5
+
+  return { ok: true as const, model, maxTokens, temperature }
 }
 
 export const Route = createFileRoute("/api/chat")({
@@ -180,9 +219,12 @@ export const Route = createFileRoute("/api/chat")({
           return jsonError(500, "missing_api_key", "MISTRAL_API_KEY is not configured.")
         }
 
-        const rate = checkRateLimit(getClientIp(request))
+        const rate = checkRateLimit(`chat:${getClientIp(request)}`, CHAT_RATE_LIMIT)
         if (!rate.allowed) {
-          return jsonError(429, "rate_limited", "Too many requests. Please try again later.")
+          return Response.json(
+            { error: { code: "rate_limited", message: "Too many requests. Please try again later." } },
+            { status: 429, headers: rateLimitHeaders(rate.retryAfterMs) },
+          )
         }
 
         let body: ChatRequestBody
@@ -200,8 +242,8 @@ export const Route = createFileRoute("/api/chat")({
         const messages = body.messages ?? []
         const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content ?? ""
 
-        let retrievedContext = body.retrievedContext?.trim() ?? ""
-        if (!retrievedContext && lastUserMessage.trim()) {
+        let retrievedContext = ""
+        if (lastUserMessage.trim()) {
           try {
             const results = await retrieveForQuery(lastUserMessage)
             retrievedContext = buildRetrievedContext(
@@ -240,8 +282,8 @@ export const Route = createFileRoute("/api/chat")({
                 body: JSON.stringify({
                   model: validation.model,
                   messages: finalMessages,
-                  max_tokens: body.maxTokens ?? DEFAULT_MAX_TOKENS,
-                  temperature: body.temperature ?? 0.5,
+                  max_tokens: validation.maxTokens,
+                  temperature: validation.temperature,
                   stream: true,
                 }),
                 signal: controller.signal,
@@ -249,8 +291,9 @@ export const Route = createFileRoute("/api/chat")({
 
               if (!response.ok || !response.body) {
                 const text = await response.text().catch(() => "")
+                console.error("Mistral request failed:", response.status, text)
                 writeSse(streamController, "error", {
-                  message: text || "Mistral request failed.",
+                  message: "The AI service is temporarily unavailable. Please try again.",
                 })
                 streamController.close()
                 return
@@ -338,7 +381,7 @@ export const Route = createFileRoute("/api/chat")({
               writeSse(streamController, "done", {
                 ok: true,
                 finishReason: finishReason ?? "stop",
-                maxTokens: body.maxTokens ?? DEFAULT_MAX_TOKENS,
+                maxTokens: validation.maxTokens,
                 status: finishReason === "length" ? "max_tokens_reached" : "completed",
               })
               streamController.close()

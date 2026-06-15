@@ -15,6 +15,7 @@ import {
   readAppearanceFromStorage,
   writeAppearanceToStorage,
 } from "@/lib/themes/apply-appearance"
+import { loadFontPreset } from "@/lib/themes/font-loader"
 import { DEFAULT_APPEARANCE } from "@/lib/themes/registry"
 import type {
   AppearanceState,
@@ -49,8 +50,10 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const stored = readAppearanceFromStorage()
     setAppearance(stored)
-    applyAppearanceToDocument(stored)
-    setMounted(true)
+    void loadFontPreset(stored.font).then(() => {
+      applyAppearanceToDocument(stored)
+      setMounted(true)
+    })
   }, [])
 
   useEffect(() => {
@@ -90,6 +93,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
   const setFont = useCallback(
     (font: FontPresetId) => {
+      void loadFontPreset(font)
       updateAppearance((prev) => ({ ...prev, font }))
     },
     [updateAppearance],

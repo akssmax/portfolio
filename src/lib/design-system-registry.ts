@@ -1,7 +1,3 @@
-import type { ComponentType } from "react"
-
-import { getDemo } from "@/components/design-system/demos"
-
 export type DocCategory = "components" | "custom"
 
 export type DocEntry = {
@@ -9,7 +5,6 @@ export type DocEntry = {
   title: string
   description: string
   category: DocCategory
-  demo: ComponentType
 }
 
 function titleFromSlug(slug: string): string {
@@ -29,7 +24,6 @@ function entry(
     title: titleFromSlug(slug),
     description,
     category,
-    demo: getDemo(slug),
   }
 }
 

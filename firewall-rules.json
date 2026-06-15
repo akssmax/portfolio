@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Rate limit chat API",
+    "active": true,
+    "conditionGroup": [
+      {
+        "conditions": [
+          { "type": "path", "op": "eq", "value": "/api/chat" },
+          { "type": "method", "op": "eq", "value": "POST" }
+        ]
+      }
+    ],
+    "action": {
+      "mitigate": {
+        "action": "rate_limit",
+        "rateLimit": {
+          "algo": "fixed_window",
+          "window": 3600,
+          "limit": 20,
+          "keys": ["ip"],
+          "action": "deny"
+        }
+      }
+    }
+  },
+  {
+    "name": "Rate limit resume unlock",
+    "active": true,
+    "conditionGroup": [
+      {
+        "conditions": [
+          { "type": "path", "op": "eq", "value": "/api/resume/unlock" },
+          { "type": "method", "op": "eq", "value": "POST" }
+        ]
+      }
+    ],
+    "action": {
+      "mitigate": {
+        "action": "rate_limit",
+        "rateLimit": {
+          "algo": "fixed_window",
+          "window": 900,
+          "limit": 5,
+          "keys": ["ip"],
+          "action": "deny"
+        }
+      }
+    }
+  }
+]

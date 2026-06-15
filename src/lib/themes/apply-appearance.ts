@@ -18,7 +18,6 @@ import {
   type FontPresetId,
   type NeutralPresetId,
   type RadiusPresetId,
-  type ColorVisionPresetId,
   type FontScalePresetId,
 } from "./types"
 import {

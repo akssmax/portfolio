@@ -10,6 +10,7 @@ import tailwindcss from "@tailwindcss/vite"
 import { nitro } from "nitro/vite"
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
+const isDev = process.env.NODE_ENV !== "production"
 
 const config = defineConfig({
   envDir: rootDir,
@@ -25,7 +26,7 @@ const config = defineConfig({
     noExternal: ["flubber"],
   },
   plugins: [
-    devtools(),
+    ...(isDev ? [devtools()] : []),
     nitro({
       vercel: {
         functions: {

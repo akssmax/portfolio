@@ -1,13 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
 @import "./lib/fonts/geist-pixel.css";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/dm-sans";
-@import "@fontsource-variable/outfit";
-@import "@fontsource-variable/source-serif-4";
-@import "@fontsource-variable/jetbrains-mono";
 
 @import "./lib/themes/themes/default.css";
 @import "./lib/themes/themes/presets.css";

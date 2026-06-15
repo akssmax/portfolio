@@ -12,6 +12,7 @@ type M3ShapeMorphImageProps = {
   imageMix?: number
   alt: string
   className?: string
+  priority?: boolean
 }
 
 /** Portrait clipped to a morphing M3 SVG path. */
@@ -22,6 +23,7 @@ export function M3ShapeMorphImage({
   imageMix = 0,
   alt,
   className,
+  priority = false,
 }: M3ShapeMorphImageProps) {
   const clipId = useId().replace(/:/g, "")
 
@@ -45,6 +47,7 @@ export function M3ShapeMorphImage({
         preserveAspectRatio="xMidYMid slice"
         clipPath={`url(#${clipId})`}
         opacity={1 - imageMix}
+        {...(priority ? { "data-fetchpriority": "high" } : {})}
       />
       {nextSrc ? (
         <image

@@ -77,6 +77,36 @@ export function M3FeatureImage({
     void import("@/lib/m3-shape-morph")
   }, [])
 
+  useEffect(() => {
+    if (typeof document === "undefined") return
+
+    const currentSrc = items[index]?.src
+    if (!currentSrc) return
+
+    const preload = document.createElement("link")
+    preload.rel = "preload"
+    preload.as = "image"
+    preload.href = currentSrc
+    document.head.appendChild(preload)
+
+    const prefetchOthers = () => {
+      for (const item of items) {
+        if (item.src === currentSrc) continue
+        const link = document.createElement("link")
+        link.rel = "prefetch"
+        link.as = "image"
+        link.href = item.src
+        document.head.appendChild(link)
+      }
+    }
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(prefetchOthers)
+    } else {
+      setTimeout(prefetchOthers, 1500)
+    }
+  }, [items, index])
+
   const stopMorphAnimations = useCallback(() => {
     shapeAnimationRef.current?.stop()
     imageAnimationRef.current?.stop()
@@ -281,6 +311,7 @@ export function M3FeatureImage({
             imageMix={imageMix}
             alt={alt}
             className={imageClassName}
+            priority
           />
         )}
       </div>

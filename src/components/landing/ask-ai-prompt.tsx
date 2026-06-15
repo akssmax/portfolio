@@ -1,13 +1,18 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { lazy, Suspense, useCallback, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { PromptInput } from "@/components/ai-elements/prompt-input"
-import { PortfolioChatSheet } from "@/components/landing/portfolio-chat-sheet"
 import { Suggestion } from "@/components/ai-elements/suggestion"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
 import { cn } from "@/lib/utils"
+
+const PortfolioChatSheet = lazy(() =>
+  import("@/components/landing/portfolio-chat-sheet").then((module) => ({
+    default: module.PortfolioChatSheet,
+  })),
+)
 
 type AskAiPromptProps = {
   className?: string
@@ -71,11 +76,15 @@ export function AskAiPrompt({ className }: AskAiPromptProps) {
         </div>
       </motion.div>
 
-      <PortfolioChatSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        initialMessage={initialMessage}
-      />
+      {sheetOpen ? (
+        <Suspense fallback={null}>
+          <PortfolioChatSheet
+            open={sheetOpen}
+            onOpenChange={setSheetOpen}
+            initialMessage={initialMessage}
+          />
+        </Suspense>
+      ) : null}
     </>
   )
 }

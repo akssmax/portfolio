@@ -6,6 +6,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
+import { sanitizeExternalHref } from "@/lib/url-safety"
 import { BookIcon, ChevronDownIcon } from "lucide-react"
 import type { ComponentProps } from "react"
 
@@ -55,14 +56,18 @@ export type SourceProps = ComponentProps<"a"> & {
   title?: string
 }
 
-export const Source = ({ href, title, children, ...props }: SourceProps) => (
-  <a
-    className="flex items-center gap-2 hover:underline"
-    href={href}
-    rel="noreferrer"
-    target={href?.startsWith("http") ? "_blank" : undefined}
-    {...props}
-  >
+export const Source = ({ href, title, children, ...props }: SourceProps) => {
+  const safeHref = sanitizeExternalHref(href)
+  if (!safeHref) return null
+
+  return (
+    <a
+      className="flex items-center gap-2 hover:underline"
+      href={safeHref}
+      rel="noreferrer"
+      target={safeHref.startsWith("/") ? undefined : "_blank"}
+      {...props}
+    >
     {children ?? (
       <>
         <BookIcon className="h-4 w-4" />
@@ -70,4 +75,5 @@ export const Source = ({ href, title, children, ...props }: SourceProps) => (
       </>
     )}
   </a>
-)
+  )
+}
