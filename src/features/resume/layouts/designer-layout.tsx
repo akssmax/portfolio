@@ -6,6 +6,13 @@ import { resolvePdfAssetUrl } from "../pdf-asset-url"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 
+const PAGE_MARGIN = {
+  paddingTop: 34,
+  paddingBottom: 44,
+  paddingRight: 40,
+  paddingLeft: 60,
+} as const
+
 const styles = StyleSheet.create({
   page: {
     position: "relative",
@@ -13,6 +20,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 1.45,
     color: "#171717",
+    ...PAGE_MARGIN,
   },
   sidebarStripe: {
     position: "absolute",
@@ -21,11 +29,48 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: 8,
   },
-  content: {
-    paddingTop: 34,
-    paddingBottom: 36,
-    paddingRight: 40,
-    paddingLeft: 60,
+  continuationHeader: {
+    position: "absolute",
+    top: 0,
+    left: PAGE_MARGIN.paddingLeft,
+    right: PAGE_MARGIN.paddingRight,
+    height: PAGE_MARGIN.paddingTop,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    paddingBottom: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
+  },
+  continuationName: {
+    fontSize: 9,
+    fontWeight: 700,
+    color: "#0F1923",
+  },
+  continuationMeta: {
+    fontSize: 8,
+    color: "#737373",
+    textAlign: "right",
+  },
+  pageFooter: {
+    position: "absolute",
+    bottom: 22,
+    left: PAGE_MARGIN.paddingLeft,
+    right: PAGE_MARGIN.paddingRight,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5E5",
+    paddingTop: 8,
+  },
+  footerMark: {
+    width: 18,
+    height: 13.4,
+  },
+  footerText: {
+    fontSize: 8,
+    color: "#737373",
   },
   header: {
     marginBottom: 20,
@@ -160,23 +205,6 @@ const styles = StyleSheet.create({
     textDecoration: "none",
     marginBottom: 4,
   },
-  footer: {
-    marginTop: 8,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#E5E5E5",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  footerMark: {
-    width: 18,
-    height: 13.4,
-  },
-  footerText: {
-    fontSize: 8,
-    color: "#737373",
-  },
 })
 
 function Section({
@@ -190,7 +218,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View style={styles.sectionHeader}>
+      <View wrap={false} minPresenceAhead={40} style={styles.sectionHeader}>
         <View style={[styles.sectionAccent, { backgroundColor: brandColor }]} />
         <Text style={styles.sectionTitle}>{title}</Text>
       </View>
@@ -201,6 +229,49 @@ function Section({
 
 function formatWebsiteLabel(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+}
+
+function PageChrome({
+  document,
+  brandColor,
+}: {
+  document: ResumeDocument
+  brandColor: string
+}) {
+  return (
+    <>
+      <View
+        fixed
+        style={[styles.sidebarStripe, { backgroundColor: brandColor }]}
+      />
+
+      <View
+        fixed
+        render={({ pageNumber }) =>
+          pageNumber > 1 ? (
+            <View style={styles.continuationHeader}>
+              <Text style={styles.continuationName}>{document.name}</Text>
+              <Text style={styles.continuationMeta}>{document.title}</Text>
+            </View>
+          ) : null
+        }
+      />
+
+      <View fixed style={styles.pageFooter}>
+        <View style={styles.footerMark}>
+          <ResumeLogomark brandColor={brandColor} width={18} />
+        </View>
+        <Text
+          style={styles.footerText}
+          render={({ pageNumber, totalPages }) =>
+            totalPages > 1
+              ? `Akshay Saini · Design Engineer · ${pageNumber}/${totalPages}`
+              : "Akshay Saini · Design Engineer"
+          }
+        />
+      </View>
+    </>
+  )
 }
 
 export function DesignerResumeLayout({
@@ -216,119 +287,116 @@ export function DesignerResumeLayout({
 
   return (
     <Page size="A4" style={styles.page}>
-      <View
-        fixed
-        style={[styles.sidebarStripe, { backgroundColor: brandColor }]}
-      />
+      <PageChrome document={document} brandColor={brandColor} />
 
-      <View style={styles.content}>
-        <View style={[styles.header, { backgroundColor: tint }]}>
-          <View style={styles.headerRow}>
-            <View style={styles.headerText}>
-              <View style={styles.headerLine}>
-                <Text style={styles.name}>{document.name}</Text>
-              </View>
-              <View style={styles.headerLine}>
-                <Text style={[styles.title, { color: brandColor }]}>
-                  {document.title}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.meta}>{document.location}</Text>
-              </View>
+      <View style={[styles.header, { backgroundColor: tint }]}>
+        <View style={styles.headerRow}>
+          <View style={styles.headerText}>
+            <View style={styles.headerLine}>
+              <Text style={styles.name}>{document.name}</Text>
             </View>
-            {document.portrait ? (
-              <Image
-                src={resolvePdfAssetUrl(document.portrait.src)}
-                style={styles.portrait}
-              />
-            ) : null}
+            <View style={styles.headerLine}>
+              <Text style={[styles.title, { color: brandColor }]}>
+                {document.title}
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.meta}>{document.location}</Text>
+            </View>
           </View>
-
-          {document.contact ? (
-            <View style={styles.contactRow}>
-              <Text
-                style={[
-                  styles.contactPill,
-                  { backgroundColor: pillBackground, color: brandColor },
-                ]}
-              >
-                {document.contact.email}
-              </Text>
-              <Text
-                style={[
-                  styles.contactPill,
-                  { backgroundColor: pillBackground, color: brandColor },
-                ]}
-              >
-                {document.contact.phone}
-              </Text>
-              {document.contact.website ? (
-                <Text
-                  style={[
-                    styles.contactPill,
-                    { backgroundColor: pillBackground, color: brandColor },
-                  ]}
-                >
-                  {formatWebsiteLabel(document.contact.website)}
-                </Text>
-              ) : null}
-            </View>
+          {document.portrait ? (
+            <Image
+              src={resolvePdfAssetUrl(document.portrait.src)}
+              style={styles.portrait}
+            />
           ) : null}
         </View>
 
-        {document.summary ? (
-          <Section title="Summary" brandColor={brandColor}>
-            {document.summary.split("\n\n").map((paragraph) => (
-              <Text key={paragraph.slice(0, 24)} style={styles.paragraph}>
-                {paragraph}
-              </Text>
-            ))}
-          </Section>
-        ) : null}
-
-        {document.experience?.length ? (
-          <Section title="Experience" brandColor={brandColor}>
-            {document.experience.map((job) => (
-              <View
-                key={`${job.company}-${job.period}`}
-                style={[styles.job, { borderLeftColor: brandColor }]}
+        {document.contact ? (
+          <View style={styles.contactRow}>
+            <Text
+              style={[
+                styles.contactPill,
+                { backgroundColor: pillBackground, color: brandColor },
+              ]}
+            >
+              {document.contact.email}
+            </Text>
+            <Text
+              style={[
+                styles.contactPill,
+                { backgroundColor: pillBackground, color: brandColor },
+              ]}
+            >
+              {document.contact.phone}
+            </Text>
+            {document.contact.website ? (
+              <Text
+                style={[
+                  styles.contactPill,
+                  { backgroundColor: pillBackground, color: brandColor },
+                ]}
               >
-                <View style={styles.jobHeader}>
-                  <View style={styles.jobTitleRow}>
-                    {job.logoSrc ? (
-                      <Image
-                        src={resolvePdfAssetUrl(job.logoSrc)}
-                        style={styles.jobLogo}
-                      />
-                    ) : null}
-                    <Text style={styles.jobTitle}>
-                      {job.role} · {job.company}
-                    </Text>
-                  </View>
-                  <Text style={styles.jobMeta}>
-                    {job.period}
-                    {"\n"}
-                    {job.location}
+                {formatWebsiteLabel(document.contact.website)}
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
+      </View>
+
+      {document.summary ? (
+        <Section title="Summary" brandColor={brandColor}>
+          {document.summary.split("\n\n").map((paragraph) => (
+            <Text key={paragraph.slice(0, 24)} style={styles.paragraph}>
+              {paragraph}
+            </Text>
+          ))}
+        </Section>
+      ) : null}
+
+      {document.experience?.length ? (
+        <Section title="Experience" brandColor={brandColor}>
+          {document.experience.map((job) => (
+            <View
+              key={`${job.company}-${job.period}`}
+              style={[styles.job, { borderLeftColor: brandColor }]}
+            >
+              <View wrap={false} minPresenceAhead={48} style={styles.jobHeader}>
+                <View style={styles.jobTitleRow}>
+                  {job.logoSrc ? (
+                    <Image
+                      src={resolvePdfAssetUrl(job.logoSrc)}
+                      style={styles.jobLogo}
+                    />
+                  ) : null}
+                  <Text style={styles.jobTitle}>
+                    {job.role} · {job.company}
                   </Text>
                 </View>
-                <Text style={styles.paragraph}>{job.description}</Text>
-                {job.highlights?.length ? (
-                  <View style={styles.bulletList}>
-                    {job.highlights.map((highlight) => (
-                      <Text key={highlight} style={styles.bulletItem}>
-                        • {highlight}
-                      </Text>
-                    ))}
-                  </View>
-                ) : null}
+                <Text style={styles.jobMeta}>
+                  {job.period}
+                  {"\n"}
+                  {job.location}
+                </Text>
               </View>
-            ))}
-          </Section>
-        ) : null}
+              <Text style={styles.paragraph}>{job.description}</Text>
+              {job.highlights?.length ? (
+                <View style={styles.bulletList}>
+                  {job.highlights.map((highlight) => (
+                    <Text key={highlight} style={styles.bulletItem}>
+                      • {highlight}
+                    </Text>
+                  ))}
+                </View>
+              ) : null}
+            </View>
+          ))}
+        </Section>
+      ) : null}
 
-        {document.education ? (
-          <Section title="Education" brandColor={brandColor}>
+      {document.education ? (
+        <Section title="Education" brandColor={brandColor}>
+          <View wrap={false} minPresenceAhead={32}>
             <Text style={styles.paragraph}>
               {document.education.degree}
               {"\n"}
@@ -336,115 +404,114 @@ export function DesignerResumeLayout({
               {"\n"}
               {document.education.location}
             </Text>
-          </Section>
-        ) : null}
+          </View>
+        </Section>
+      ) : null}
 
-        {document.skills?.length ? (
-          <Section title="Skills" brandColor={brandColor}>
-            <View style={styles.skillWrap}>
-              {document.skills.map((skill) => (
-                <Text
-                  key={skill}
-                  style={[
-                    styles.skillPill,
-                    {
-                      backgroundColor: pillBackground,
-                      borderColor: pillBorder,
-                      color: "#262626",
-                    },
-                  ]}
-                >
-                  {skill}
-                </Text>
-              ))}
-            </View>
-          </Section>
-        ) : null}
-
-        {document.certifications?.length ? (
-          <Section title="Certifications" brandColor={brandColor}>
-            {document.certifications.map((certification) => (
+      {document.skills?.length ? (
+        <Section title="Skills" brandColor={brandColor}>
+          <View style={styles.skillWrap}>
+            {document.skills.map((skill) => (
               <Text
-                key={`${certification.title}-${certification.date}`}
-                style={styles.paragraph}
+                key={skill}
+                style={[
+                  styles.skillPill,
+                  {
+                    backgroundColor: pillBackground,
+                    borderColor: pillBorder,
+                    color: "#262626",
+                  },
+                ]}
               >
-                {certification.title} — {certification.issuer} ({certification.date})
+                {skill}
+              </Text>
+            ))}
+          </View>
+        </Section>
+      ) : null}
+
+      {document.certifications?.length ? (
+        <Section title="Certifications" brandColor={brandColor}>
+          {document.certifications.map((certification) => (
+            <View
+              key={`${certification.title}-${certification.date}`}
+              wrap={false}
+              minPresenceAhead={24}
+            >
+              <Text style={styles.paragraph}>
+                {certification.title} — {certification.issuer} (
+                {certification.date})
                 {certification.credentialId
                   ? ` · ID ${certification.credentialId}`
                   : ""}
               </Text>
-            ))}
-          </Section>
-        ) : null}
+            </View>
+          ))}
+        </Section>
+      ) : null}
 
-        {document.languages?.length ? (
-          <Section title="Languages" brandColor={brandColor}>
-            {document.languages.map((language) => (
-              <Text key={language.name} style={styles.paragraph}>
+      {document.languages?.length ? (
+        <Section title="Languages" brandColor={brandColor}>
+          {document.languages.map((language) => (
+            <View key={language.name} wrap={false} minPresenceAhead={20}>
+              <Text style={styles.paragraph}>
                 {language.name} — {language.level}
               </Text>
-            ))}
-          </Section>
-        ) : null}
-
-        {document.interests?.length ? (
-          <Section title="Interests" brandColor={brandColor}>
-            <View style={styles.skillWrap}>
-              {document.interests.map((interest) => (
-                <Text
-                  key={interest}
-                  style={[
-                    styles.skillPill,
-                    {
-                      backgroundColor: pillBackground,
-                      borderColor: pillBorder,
-                      color: "#262626",
-                    },
-                  ]}
-                >
-                  {interest}
-                </Text>
-              ))}
             </View>
-          </Section>
-        ) : null}
+          ))}
+        </Section>
+      ) : null}
 
-        {document.contact ? (
-          <Section title="Links" brandColor={brandColor}>
-            {document.contact.website ? (
-              <Link
-                src={document.contact.website}
-                style={[styles.link, { color: brandColor }]}
+      {document.interests?.length ? (
+        <Section title="Interests" brandColor={brandColor}>
+          <View style={styles.skillWrap}>
+            {document.interests.map((interest) => (
+              <Text
+                key={interest}
+                style={[
+                  styles.skillPill,
+                  {
+                    backgroundColor: pillBackground,
+                    borderColor: pillBorder,
+                    color: "#262626",
+                  },
+                ]}
               >
-                <Text>{document.contact.website}</Text>
-              </Link>
-            ) : null}
-            {document.contact.linkedin ? (
-              <Link
-                src={document.contact.linkedin}
-                style={[styles.link, { color: brandColor }]}
-              >
-                <Text>{document.contact.linkedin}</Text>
-              </Link>
-            ) : null}
-            {document.contact.github ? (
-              <Link
-                src={document.contact.github}
-                style={[styles.link, { color: brandColor }]}
-              >
-                <Text>{document.contact.github}</Text>
-              </Link>
-            ) : null}
-          </Section>
-        ) : null}
-
-        <View style={styles.footer}>
-          <View style={styles.footerMark}>
-            <ResumeLogomark brandColor={brandColor} width={18} />
+                {interest}
+              </Text>
+            ))}
           </View>
-          <Text style={styles.footerText}>Akshay Saini · Design Engineer</Text>
-        </View>
-      </View>
+        </Section>
+      ) : null}
+
+      {document.contact ? (
+        <Section title="Links" brandColor={brandColor}>
+          {document.contact.website ? (
+            <Link
+              src={document.contact.website}
+              style={[styles.link, { color: brandColor }]}
+            >
+              <Text>{document.contact.website}</Text>
+            </Link>
+          ) : null}
+          {document.contact.linkedin ? (
+            <Link
+              src={document.contact.linkedin}
+              style={[styles.link, { color: brandColor }]}
+            >
+              <Text>{document.contact.linkedin}</Text>
+            </Link>
+          ) : null}
+          {document.contact.github ? (
+            <Link
+              src={document.contact.github}
+              style={[styles.link, { color: brandColor }]}
+            >
+              <Text>{document.contact.github}</Text>
+            </Link>
+          ) : null}
+        </Section>
+      ) : null}
     </Page>
   )
 }
