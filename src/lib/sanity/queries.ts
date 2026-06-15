@@ -50,3 +50,31 @@ export const projectBySlugQuery = `
     ${projectDetailFields}
   }
 `
+
+export const blogPostCardFields = `
+  _id,
+  title,
+  "slug": slug.current,
+  excerpt,
+  tag,
+  coverImage,
+  publishedAt
+`
+
+export const blogPostDetailFields = `
+  ${blogPostCardFields},
+  body,
+  seo
+`
+
+export const allPostsQuery = `
+  *[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc) {
+    ${blogPostCardFields}
+  }
+`
+
+export const postBySlugQuery = `
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    ${blogPostDetailFields}
+  }
+`

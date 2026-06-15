@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "studio": "sanity dev",
     "seed": "node --env-file=.env.local --import tsx scripts/seed-projects.ts",
+    "seed:posts": "node --env-file=.env.local --import tsx scripts/seed-posts.ts",
     "capture:100x": "node --import tsx scripts/capture-100x-screenshots.ts",
     "capture:chat-shell": "node --import tsx scripts/capture-chat-shell-screenshots.ts",
     "capture:kodo": "node --import tsx scripts/capture-kodo-screenshots.ts",

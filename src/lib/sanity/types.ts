@@ -161,6 +161,24 @@ export type Project = ProjectCard & {
   } | null
 }
 
+export type BlogPostCard = {
+  _id: string
+  title: string
+  slug: string
+  excerpt: string
+  tag: string
+  coverImage?: SanityImage | null
+  publishedAt?: string | null
+}
+
+export type BlogPost = BlogPostCard & {
+  body: string
+  seo?: {
+    metaTitle?: string | null
+    metaDescription?: string | null
+  } | null
+}
+
 export function isProjectCard(project: Project | ProjectCard): project is ProjectCard {
   return !("content" in project)
 }

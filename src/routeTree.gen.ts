@@ -15,11 +15,13 @@ import { Route as DesignSystemRouteRouteImport } from './routes/design-system/ro
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
 import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
 import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
 import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
+import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
@@ -55,6 +57,11 @@ const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/projects/$slug',
   path: '/projects/$slug',
@@ -81,6 +88,11 @@ const DesignSystemAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => DesignSystemRouteRoute,
   } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -109,11 +121,13 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -125,11 +139,13 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/design-system': typeof DesignSystemIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -143,11 +159,13 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -162,11 +180,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/resume'
     | '/api/chat'
+    | '/blog/$slug'
     | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/blog/'
     | '/design-system/'
     | '/projects/'
     | '/api/resume/session'
@@ -178,11 +198,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/resume'
     | '/api/chat'
+    | '/blog/$slug'
     | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/blog'
     | '/design-system'
     | '/projects'
     | '/api/resume/session'
@@ -195,11 +217,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/resume'
     | '/api/chat'
+    | '/blog/$slug'
     | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/blog/'
     | '/design-system/'
     | '/projects/'
     | '/api/resume/session'
@@ -213,7 +237,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ApiResumeSessionRoute: typeof ApiResumeSessionRoute
   ApiResumeUnlockRoute: typeof ApiResumeUnlockRoute
@@ -263,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemIndexRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/projects/$slug'
@@ -297,6 +330,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/design-system/accessibility'
       preLoaderRoute: typeof DesignSystemAccessibilityRouteImport
       parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/chat': {
       id: '/api/chat'
@@ -356,7 +396,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
+  BlogSlugRoute: BlogSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ApiResumeSessionRoute: ApiResumeSessionRoute,
   ApiResumeUnlockRoute: ApiResumeUnlockRoute,
