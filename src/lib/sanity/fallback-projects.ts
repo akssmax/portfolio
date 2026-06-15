@@ -59,6 +59,18 @@ const CHAT_SHELL_TECH_STACK_ITEMS = [
   { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
 ]
 
+const V1_100X_PROTO_TECH_STACK_ITEMS = [
+  { name: "React", logoSrc: "/projects/v1-100x-proto/tech/react.svg" },
+  { name: "Vite", logoSrc: "/projects/v1-100x-proto/tech/vite.svg" },
+  { name: "Tailwind CSS", logoSrc: "/projects/v1-100x-proto/tech/tailwindcss.svg" },
+  { name: "Framer Motion", logoSrc: "/projects/v1-100x-proto/tech/framer.svg" },
+  { name: "TanStack Table", logoSrc: "/projects/v1-100x-proto/tech/react.svg" },
+  { name: "Radix UI", logoSrc: "/projects/v1-100x-proto/tech/shadcn.svg" },
+  { name: "TipTap", logoSrc: "/projects/v1-100x-proto/tech/tiptap.svg" },
+  { name: "OpenRouter", logoSrc: "/projects/v1-100x-proto/tech/react.svg" },
+  { name: "Vercel", logoSrc: "/projects/v1-100x-proto/tech/vercel.svg" },
+]
+
 const KODO_TECH_STACK_ITEMS = [
   { name: "Figma", logoSrc: "/projects/kodo/tech/figma.svg" },
   { name: "Framer", logoSrc: "/projects/kodo/tech/framer.svg" },
@@ -376,7 +388,7 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-100x-chat-shell",
-    title: "100x Chat Shell",
+    title: "LLM Chat Shell",
     slug: "100x-chat-shell",
     description:
       "AI-native workspace combining Mistral streaming chat, persistent memory, knowledge retrieval, and a conversational design studio.",
@@ -389,7 +401,7 @@ export const fallbackProjects: Project[] = [
     tools: ["Cursor", "Mistral"],
     publishedAt: "2026-05-15T00:00:00.000Z",
     seo: {
-      metaTitle: "100x Chat Shell — Case Study",
+      metaTitle: "LLM Chat Shell — Case Study",
       metaDescription:
         "How a full AI workspace shell — chat, memory, RAG, and generative design studio — was designed and built in ten days as a reference for AI product UX.",
     },
@@ -406,7 +418,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "cs-rt-context-1",
-            "100x Chat Shell is a production-minded reference app for a modern AI assistant workspace — not just a chat box, but memory, document grounding, and visual output in one cohesive shell.",
+            "LLM Chat Shell is a production-minded reference app for a modern AI assistant workspace — not just a chat box, but memory, document grounding, and visual output in one cohesive shell.",
           ),
           {
             _type: "block" as const,
@@ -518,7 +530,7 @@ export const fallbackProjects: Project[] = [
         _type: "staticImage",
         _key: "cs-img-hero",
         src: "/projects/chat-shell/hero.webp",
-        alt: "100x Chat Shell Design Studio with split chat panel and Konva canvas",
+        alt: "LLM Chat Shell Design Studio with split chat panel and Konva canvas",
         caption: "Design Studio — conversational layout generation with resizable split panels",
         fullBleed: true,
       },
@@ -634,6 +646,206 @@ export const fallbackProjects: Project[] = [
         _key: "cs-embed",
         url: "https://llm-daisyui-shell.vercel.app/",
         label: "View live site",
+        embedType: "link",
+      },
+    ],
+  },
+  {
+    _id: "fallback-v1-100x-proto",
+    title: "100x Agent Extension",
+    slug: "v1-100x-proto",
+    description:
+      "AI-powered agent workspace prototype — multi-mode chat, workflow automation, data explorer, app generation, and interest-based personalization for 100x.bot.",
+    tag: "Product UI",
+    featured: true,
+    coverImageUrl: "/projects/v1-100x-proto/hero.webp",
+    year: "2026",
+    role: "Design Engineer",
+    client: "100x.bot",
+    tools: ["Cursor", "Figma"],
+    publishedAt: "2026-06-12T00:00:00.000Z",
+    seo: {
+      metaTitle: "100x Agent Extension — Case Study",
+      metaDescription:
+        "How a V1 agent extension prototype unified chat, workflows, data tables, app generation, and onboarding into one AI productivity shell for 100x.bot.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "proto-h-context",
+        title: "Context",
+        subtitle: "V1 product prototype for the 100x agent extension ecosystem.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "proto-rt-context",
+        body: [
+          textBlock(
+            "proto-rt-context-1",
+            "100x Agent Extension is a comprehensive React prototype for an AI-powered productivity platform — chat with intelligent mode switching, workflow automation, interactive data exploration, and natural-language app generation in one shell.",
+          ),
+          {
+            _type: "block" as const,
+            _key: "proto-rt-context-2",
+            style: "normal" as const,
+            markDefs: [],
+            children: [
+              {
+                _type: "span" as const,
+                _key: "proto-rt-context-2-a",
+                marks: [],
+                text: "Built from the ",
+              },
+              {
+                _type: "span" as const,
+                _key: "proto-rt-context-2-b",
+                marks: ["strong"],
+                text: "100X-UI Figma system",
+              },
+              {
+                _type: "span" as const,
+                _key: "proto-rt-context-2-c",
+                marks: [],
+                text: " with semantic design tokens, deployed to Vercel with Neon-backed auth and a full API layer for chat, memory, workflows, and data sources.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "proto-collab",
+        subtitle: "Design-engineering prototype aligned to 100x product direction.",
+        items: [
+          {
+            name: "Akshay Saini",
+            role: "Design Engineer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "proto-metrics",
+        items: [
+          { value: "40+", label: "Design system components" },
+          { value: "167", label: "React components" },
+          { value: "8", label: "Core product surfaces" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "proto-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "proto-rt-challenge",
+        body: [
+          textBlock(
+            "proto-rt-challenge-1",
+            "Agent products need more than a chat box — users expect workflows, data tables, generated apps, memory, and quick actions in one coherent experience. The prototype had to validate mode switching, onboarding, personalization, and production-minded patterns before the full 100x platform shipped.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "proto-h-shipped",
+        title: "What I shipped",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "proto-rt-shipped",
+        body: [
+          textBlock(
+            "proto-rt-shipped-1",
+            "A full agent extension shell spanning chat reliability, automation, data exploration, and generative output — not isolated demos.",
+          ),
+          ...bulletList("proto-rt-shipped-b", [
+            "AI chat — multi-mode agent with streaming LLM responses, attachments, and chat-scoped file tracking",
+            "Workflow builder — visual workflow creation, browser, and build mode for automation",
+            "Data explorer — TanStack Table views with AI-powered configuration, filters, grouping, and D3/Perspective visualizations",
+            "App generation — React/JSX apps from natural language with sandbox preview and dynamic rendering",
+            "Quick actions — categorized one-click prompts with interest-based personalization",
+            "Onboarding — welcome, OTP verification, and interest selection curating the workspace",
+            "Memory & history — persistent context, notes, todos, and thread management",
+            "Design system — 40+ components, semantic tokens, and light/dark themes",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "proto-tech",
+        items: V1_100X_PROTO_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `proto-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "proto-img-hero",
+        src: "/projects/v1-100x-proto/hero.webp",
+        alt: "100x Agent Extension design system overview with tokens and component catalog",
+        caption: "Design system — semantic tokens, 40+ components, and theme switching",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "proto-gallery",
+        caption: "Component library and product shell patterns",
+        images: [
+          {
+            src: "/projects/v1-100x-proto/design-system.webp",
+            alt: "Design system components page with buttons, inputs, and cards",
+          },
+          {
+            src: "/projects/v1-100x-proto/hero.webp",
+            alt: "Design system overview with components, tokens, and themes",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "proto-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "proto-rt-decisions",
+        body: bulletList("proto-rt-decisions-b", [
+          "Mode-aware agent shell — chat, build, data, and app surfaces share navigation without context loss",
+          "Semantic design tokens — CSS variables for theme compatibility across light and dark modes",
+          "Miller's Law in UI — dropdowns capped at seven items to reduce cognitive load",
+          "Figma-to-code traceability — components reference Figma node IDs for design-dev alignment",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "proto-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "proto-rt-outcome",
+        body: [
+          textBlock(
+            "proto-rt-outcome-1",
+            "The V1 prototype validates the 100x agent extension UX end to end — from onboarding and personalization through chat, workflows, data tables, and app generation. It ships as an open reference implementation with Neon auth, Vercel serverless APIs, and a documented design system.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "proto-embed-live",
+        url: "https://v1-100x-proto.vercel.app/",
+        label: "View live prototype",
+        embedType: "link",
+      },
+      {
+        _type: "embed",
+        _key: "proto-embed-github",
+        url: "https://github.com/akssmax/V1-100x-Proto",
+        label: "View on GitHub",
         embedType: "link",
       },
     ],
