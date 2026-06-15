@@ -52,7 +52,7 @@ export function syncCanvasSize(
   canvas.style.width = `${width}px`
   canvas.style.height = `${height}px`
 
-  const ctx = canvas.getContext("2d")
+  const ctx = canvas.getContext("2d", { alpha: false })
   if (ctx) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
