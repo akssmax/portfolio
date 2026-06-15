@@ -153,6 +153,41 @@ function getAirborneTrianglePose(
   return makeVisual(1, 1, vyNorm * -0.03)
 }
 
+function resolvePlayerMotionPose(
+  motion: PlayerMotionState,
+  playerY: number,
+  playerVy: number,
+  maxJumpHeight: number,
+  shouldLaunch = false,
+): PlayerMotionVisual {
+  if (motion.anticipateMs > 0) {
+    const progress = 1 - motion.anticipateMs / ANTICIPATE_MS
+    const pose = getAnticipationPose(progress)
+    return { ...pose, shouldLaunch }
+  }
+
+  if (motion.landRecoverMs > 0) {
+    const progress = 1 - motion.landRecoverMs / LAND_RECOVER_MS
+    return getLandingPose(progress)
+  }
+
+  if (playerY > 0.5) {
+    return getAirborneTrianglePose(playerY, playerVy, maxJumpHeight)
+  }
+
+  return { ...TRI_POSE.idle, shouldLaunch }
+}
+
+/** Read pose after physics without advancing anticipation or landing timers. */
+export function getPlayerMotionPose(
+  motion: PlayerMotionState,
+  playerY: number,
+  playerVy: number,
+  maxJumpHeight: number,
+): PlayerMotionVisual {
+  return resolvePlayerMotionPose(motion, playerY, playerVy, maxJumpHeight)
+}
+
 export function updatePlayerMotionVisual(
   motion: PlayerMotionState,
   dtMs: number,
@@ -174,22 +209,7 @@ export function updatePlayerMotionVisual(
     motion.landRecoverMs = Math.max(0, motion.landRecoverMs - dtMs)
   }
 
-  if (motion.anticipateMs > 0) {
-    const progress = 1 - motion.anticipateMs / ANTICIPATE_MS
-    const pose = getAnticipationPose(progress)
-    return { ...pose, shouldLaunch }
-  }
-
-  if (motion.landRecoverMs > 0) {
-    const progress = 1 - motion.landRecoverMs / LAND_RECOVER_MS
-    return getLandingPose(progress)
-  }
-
-  if (playerY > 0.5) {
-    return getAirborneTrianglePose(playerY, playerVy, maxJumpHeight)
-  }
-
-  return { ...TRI_POSE.idle, shouldLaunch }
+  return resolvePlayerMotionPose(motion, playerY, playerVy, maxJumpHeight, shouldLaunch)
 }
 
 export function getDescentGravity(baseGravity: number, playerVy: number): number {

@@ -330,11 +330,21 @@ export function getMilestoneById(id: MilestoneId): RunnerMilestone {
 }
 
 export function getMilestoneIndex(distance: number): number {
-  let index = 0
-  for (let i = 0; i < RUNNER_MILESTONES.length; i += 1) {
+  for (let i = RUNNER_MILESTONES.length - 1; i >= 0; i -= 1) {
     if (distance >= RUNNER_MILESTONES[i].distanceThreshold) {
-      index = i
+      return i
     }
+  }
+  return 0
+}
+
+export function advanceMaxMilestoneIndex(currentMax: number, distance: number): number {
+  let index = currentMax
+  while (
+    index + 1 < RUNNER_MILESTONES.length &&
+    distance >= RUNNER_MILESTONES[index + 1].distanceThreshold
+  ) {
+    index += 1
   }
   return index
 }
@@ -468,6 +478,13 @@ export function drawMilestoneObstacles(
 
   ctx.fillStyle = foreground
   ctx.strokeStyle = foreground
+  ctx.imageSmoothingEnabled = true
+
+  const tallLabelSize = 8 * layoutScale
+  const shortLabelSize = 7 * layoutScale
+  const tallHeightThreshold = 50 * layoutScale
+  const labelFont = `600 ${tallLabelSize}px system-ui, sans-serif`
+  const shortLabelFont = `600 ${shortLabelSize}px system-ui, sans-serif`
 
   for (const obstacle of obstacles) {
     const width = obstacle.width * layoutScale
@@ -496,9 +513,9 @@ export function drawMilestoneObstacles(
   }
 
   ctx.globalAlpha = 1
-
-  const tallLabelSize = 8 * layoutScale
-  const shortLabelSize = 7 * layoutScale
+  ctx.textAlign = "center"
+  ctx.textBaseline = "top"
+  ctx.fillStyle = foreground
 
   for (const obstacle of obstacles) {
     const milestone = getMilestoneById(obstacle.milestoneId)
@@ -506,7 +523,8 @@ export function drawMilestoneObstacles(
     const height = obstacle.height * layoutScale
     const top = groundY - height
     const icon = icons.get(obstacle.milestoneId)
-    const labelFontSize = obstacle.height >= 50 ? tallLabelSize : shortLabelSize
+    const useTallLabel = height >= tallHeightThreshold
+    const labelFontSize = useTallLabel ? tallLabelSize : shortLabelSize
     const iconSize = Math.min(22 * layoutScale, width - 8 * layoutScale, height * 0.48)
     const labelHeight = labelFontSize + 2 * layoutScale
     const contentHeight = iconSize + labelHeight + 4 * layoutScale
@@ -514,15 +532,10 @@ export function drawMilestoneObstacles(
 
     if (icon) {
       const iconX = obstacle.x + (width - iconSize) / 2
-      ctx.imageSmoothingEnabled = true
       ctx.drawImage(icon, iconX, contentTop, iconSize, iconSize)
     }
 
-    ctx.fillStyle = foreground
-    ctx.globalAlpha = 1
-    ctx.font = `600 ${labelFontSize}px system-ui, sans-serif`
-    ctx.textAlign = "center"
-    ctx.textBaseline = "top"
+    ctx.font = useTallLabel ? labelFont : shortLabelFont
     ctx.fillText(milestone.shortLabel, obstacle.x + width / 2, contentTop + iconSize + 2 * layoutScale)
   }
 

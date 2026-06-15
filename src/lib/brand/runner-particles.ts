@@ -384,17 +384,24 @@ export function updateParticles(
 }
 
 export function drawParticles(ctx: CanvasRenderingContext2D, pool: RunnerParticle[]) {
+  let lastColor = ""
+  let lastAlpha = -1
+
   for (const particle of pool) {
     if (!particle.active) continue
 
-    ctx.fillStyle = particle.color
-    ctx.globalAlpha = particle.alpha
-    ctx.fillRect(
-      Math.floor(particle.x),
-      Math.floor(particle.y),
-      particle.sizeW,
-      particle.sizeH,
-    )
+    if (particle.color !== lastColor) {
+      ctx.fillStyle = particle.color
+      lastColor = particle.color
+    }
+    if (particle.alpha !== lastAlpha) {
+      ctx.globalAlpha = particle.alpha
+      lastAlpha = particle.alpha
+    }
+    ctx.fillRect(particle.x | 0, particle.y | 0, particle.sizeW, particle.sizeH)
   }
-  ctx.globalAlpha = 1
+
+  if (lastAlpha !== 1) {
+    ctx.globalAlpha = 1
+  }
 }

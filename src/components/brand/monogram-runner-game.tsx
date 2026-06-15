@@ -29,8 +29,10 @@ import {
   spawnLandingPuff,
   spawnScoreTierBurst,
   updateParticles,
+  type ParticleThemeColors,
 } from "@/lib/brand/runner-particles"
 import {
+  advanceMaxMilestoneIndex,
   drawMilestoneObstacles,
   ensureMilestoneIcons,
   getIconResolutionTier,
@@ -46,6 +48,7 @@ import {
   createPlayerMotionState,
   getApexGravityMultiplier,
   getDescentGravity,
+  getPlayerMotionPose,
   resetPlayerMotionState,
   triggerLandRecovery,
   updatePlayerMotionVisual,
@@ -146,28 +149,17 @@ function getLayoutScale(playerHeight: number) {
   return playerHeight / BASELINE_PLAYER_HEIGHT
 }
 
-function getObstacleSize(
-  obstacle: Obstacle,
-  layoutScale: number,
-): { width: number; height: number } {
-  return {
-    width: obstacle.width * layoutScale,
-    height: obstacle.height * layoutScale,
-  }
-}
-
 function advanceObstacles(
   obstacles: Obstacle[],
   speed: number,
   dt: number,
-  layoutScale: number,
+  scaledObstacleWidth: number,
 ) {
   let writeIndex = 0
   for (let i = 0; i < obstacles.length; i += 1) {
     const obstacle = obstacles[i]
     obstacle.x -= speed * dt
-    const { width: obstacleWidth } = getObstacleSize(obstacle, layoutScale)
-    if (obstacle.x + obstacleWidth > 0) {
+    if (obstacle.x + scaledObstacleWidth > 0) {
       obstacles[writeIndex] = obstacle
       writeIndex += 1
     }
@@ -178,14 +170,13 @@ function advanceObstacles(
 function findNextUnclearedObstacleAhead(
   obstacles: Obstacle[],
   playerPassX: number,
-  layoutScale: number,
+  scaledObstacleWidth: number,
 ): Obstacle | null {
   let candidate: Obstacle | null = null
 
   for (const obstacle of obstacles) {
     if (obstacle.cleared) continue
-    const { width: obstacleWidth } = getObstacleSize(obstacle, layoutScale)
-    if (obstacle.x + obstacleWidth < playerPassX) continue
+    if (obstacle.x + scaledObstacleWidth < playerPassX) continue
 
     if (!candidate || obstacle.x < candidate.x) {
       candidate = obstacle
@@ -198,9 +189,9 @@ function findNextUnclearedObstacleAhead(
 function getUpcomingObstacleLabels(
   state: GameState,
   playerPassX: number,
-  layoutScale: number,
+  scaledObstacleWidth: number,
 ): { label: string; shortLabel: string } {
-  const next = findNextUnclearedObstacleAhead(state.obstacles, playerPassX, layoutScale)
+  const next = findNextUnclearedObstacleAhead(state.obstacles, playerPassX, scaledObstacleWidth)
   const milestone = next
     ? getMilestoneById(next.milestoneId)
     : getMilestoneByIndex(getMilestoneIndex(state.distance))
@@ -224,6 +215,45 @@ function rectsOverlap(
     a.y < b.y + b.h &&
     a.y + a.h > b.y
   )
+}
+
+function obstacleHitsPlayer(
+  obstacleX: number,
+  obstacleWidth: number,
+  obstacleHeight: number,
+  speed: number,
+  dt: number,
+  playerBox: { x: number; y: number; w: number; h: number },
+  groundY: number,
+) {
+  const obstacleY = groundY - obstacleHeight
+  const obstacleBox = {
+    x: obstacleX,
+    y: obstacleY,
+    w: obstacleWidth,
+    h: obstacleHeight,
+  }
+
+  if (rectsOverlap(playerBox, obstacleBox)) return true
+
+  const prevObstacleX = obstacleX + speed * dt
+  const prevObstacleBox = {
+    x: prevObstacleX,
+    y: obstacleY,
+    w: obstacleWidth,
+    h: obstacleHeight,
+  }
+
+  if (rectsOverlap(playerBox, prevObstacleBox)) return true
+
+  const playerLeft = playerBox.x
+  const playerRight = playerBox.x + playerBox.w
+  const minObstacleLeft = Math.min(obstacleX, prevObstacleX)
+  const maxObstacleRight = Math.max(obstacleX + obstacleWidth, prevObstacleX + obstacleWidth)
+
+  if (maxObstacleRight < playerLeft || minObstacleLeft > playerRight) return false
+
+  return playerBox.y < obstacleY + obstacleHeight && playerBox.y + playerBox.h > obstacleY
 }
 
 type MonogramRunnerGameProps = {
@@ -250,9 +280,16 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
   const playerMotionRef = useRef(createPlayerMotionState())
   const colorsCacheRef = useRef<CanvasThemeColors | null>(null)
   const colorFrameRef = useRef(0)
+  const particleColorsRef = useRef<ParticleThemeColors>({
+    foreground: "",
+    muted: "",
+    primary: "",
+  })
   const tabVisibleRef = useRef(true)
   const isFullscreenRef = useRef(false)
   const displayScoreRef = useRef(0)
+  const scoreFrozenRef = useRef(false)
+  const setGameOverStateRef = useRef<(state: GameOverState | null) => void>(() => {})
   const lastUpcomingLabelRef = useRef("")
   const lastUpcomingShortLabelRef = useRef("")
   const iconTierRef = useRef<IconResolutionTier>("normal")
@@ -275,6 +312,9 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
   setUpcomingObstacleLabelRef.current = setUpcomingObstacleLabel
   setUpcomingObstacleShortLabelRef.current = setUpcomingObstacleShortLabel
   setDisplayScoreRef.current = setDisplayScore
+  setGameOverStateRef.current = setGameOverState
+
+  const hudScore = gameOverState?.score ?? displayScore
 
   const syncUpcomingObstacleLabels = useCallback((label: string, shortLabel: string) => {
     if (label !== lastUpcomingLabelRef.current) {
@@ -295,6 +335,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     jumpBufferRef.current = 0
     coyoteTimeRef.current = 0
     uiPhaseRef.current = "running"
+    scoreFrozenRef.current = false
     lastEffectTierRef.current = 0
     resetParticlePool(particlePoolRef.current)
     resetPlayerMotionState(playerMotionRef.current)
@@ -468,6 +509,35 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
 
     let lastScoreSyncTime = 0
 
+    const syncHudScore = (score: number, force = false) => {
+      if (scoreFrozenRef.current && !force) return
+      displayScoreRef.current = score
+      setDisplayScoreRef.current(score)
+    }
+
+    const finalizeGameOver = (state: GameState) => {
+      state.phase = "gameOver"
+      if (uiPhaseRef.current === "gameOver") return
+
+      uiPhaseRef.current = "gameOver"
+      scoreFrozenRef.current = true
+
+      const finalScore = Math.floor(state.distance / 10)
+      syncHudScore(finalScore, true)
+      lastScoreSyncTime = performance.now()
+
+      const milestone = getMilestoneByIndex(state.maxMilestoneIndex)
+      const { highScore, isNewHighScore } = recordRunnerHighScore(finalScore)
+      setGameOverStateRef.current({
+        score: finalScore,
+        highScore,
+        isNewHighScore,
+        milestoneLabel: milestone.label,
+        milestoneTagline: milestone.tagline,
+      })
+      hapticsRef.current.gameOver(isNewHighScore)
+    }
+
     const readColors = (): CanvasThemeColors => {
       colorFrameRef.current += 1
       if (!colorsCacheRef.current || colorFrameRef.current >= COLOR_CACHE_FRAMES) {
@@ -507,6 +577,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     resize()
     stateRef.current = createInitialState(sizeRef.current.width)
     uiPhaseRef.current = "running"
+    scoreFrozenRef.current = false
     lastEffectTierRef.current = 0
     resetParticlePool(particlePoolRef.current)
     resetPlayerMotionState(playerMotionRef.current)
@@ -574,27 +645,28 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
         const playerX = width * 0.1
         const scale = playerHeight / 153
         const playerWidth = 205 * scale
+        const scaledObstacleWidth = OBSTACLE_WIDTH * layoutScale
+        const hitboxInset = 6 * layoutScale
+        const playerPassX = playerX + hitboxInset
         const state = stateRef.current
         const colors = readColors()
-        const particleColors = {
-          foreground: colors.foreground,
-          muted: colors.muted,
-          primary: colors.primary,
-        }
+        const particleColors = particleColorsRef.current
+        particleColors.foreground = colors.foreground
+        particleColors.muted = colors.muted
+        particleColors.primary = colors.primary
 
         let playerScaleX = 1
         let playerScaleY = 1
         let playerRotation = 0
 
-        if (state.phase === "running") {
+        if (state.phase === "running" && !scoreFrozenRef.current) {
           const targetSpeed = getTargetSpeed(state.distance)
           state.speed = lerpSpeed(state.speed, targetSpeed, dt)
           state.distance += state.speed * dt
-
-          const currentMilestoneIndex = getMilestoneIndex(state.distance)
-          if (currentMilestoneIndex > state.maxMilestoneIndex) {
-            state.maxMilestoneIndex = currentMilestoneIndex
-          }
+          state.maxMilestoneIndex = advanceMaxMilestoneIndex(
+            state.maxMilestoneIndex,
+            state.distance,
+          )
 
           const score = getScore(state.distance)
           const scoreValue = Math.floor(state.distance / 10)
@@ -602,7 +674,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
             displayScoreRef.current = scoreValue
             if (time - lastScoreSyncTime >= SCORE_SYNC_MS) {
               lastScoreSyncTime = time
-              setDisplayScoreRef.current(scoreValue)
+              syncHudScore(scoreValue)
             }
           }
 
@@ -708,9 +780,8 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
             }
           }
 
-          const playerMotion = updatePlayerMotionVisual(
+          const playerMotion = getPlayerMotionPose(
             playerMotionRef.current,
-            0,
             state.playerY,
             state.playerVy,
             maxJumpHeight,
@@ -719,45 +790,24 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           playerScaleY = playerMotion.scaleY
           playerRotation = playerMotion.rotation
 
-          const hitboxInset = 6 * layoutScale
-          const playerPassX = playerX + hitboxInset
-
           state.nextObstacleIn -= state.speed * dt
           if (state.nextObstacleIn <= 0) {
             state.obstacles.push(spawnObstacle(width, state.distance, layoutScale))
             state.nextObstacleIn = getNextObstacleGap(state.speed) * layoutScale
-            const spawnedLabels = getUpcomingObstacleLabels(state, playerPassX, layoutScale)
+            const spawnedLabels = getUpcomingObstacleLabels(
+              state,
+              playerPassX,
+              scaledObstacleWidth,
+            )
             syncUpcomingObstacleLabelsRef.current(
               spawnedLabels.label,
               spawnedLabels.shortLabel,
             )
           }
 
-          advanceObstacles(state.obstacles, state.speed, dt, layoutScale)
+          advanceObstacles(state.obstacles, state.speed, dt, scaledObstacleWidth)
 
           let clearedAnyObstacle = false
-          for (const obstacle of state.obstacles) {
-            if (obstacle.cleared) continue
-            const { width: obstacleWidth } = getObstacleSize(obstacle, layoutScale)
-            if (obstacle.x + obstacleWidth < playerPassX) {
-              obstacle.cleared = true
-              clearedAnyObstacle = true
-            }
-          }
-
-          if (clearedAnyObstacle) {
-            hapticsRef.current.milestone(time)
-            const nextObstacle = findNextUnclearedObstacleAhead(
-              state.obstacles,
-              playerPassX,
-              layoutScale,
-            )
-            if (nextObstacle) {
-              const milestone = getMilestoneById(nextObstacle.milestoneId)
-              syncUpcomingObstacleLabelsRef.current(milestone.label, milestone.shortLabel)
-            }
-          }
-
           const playerBox = {
             x: playerPassX,
             y: groundY - playerHeight + hitboxInset - state.playerY,
@@ -766,35 +816,41 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           }
 
           for (const obstacle of state.obstacles) {
-            const { width: obstacleWidth, height: obstacleHeight } = getObstacleSize(
-              obstacle,
-              layoutScale,
-            )
-            const obstacleBox = {
-              x: obstacle.x,
-              y: groundY - obstacleHeight,
-              w: obstacleWidth,
-              h: obstacleHeight,
-            }
-            if (rectsOverlap(playerBox, obstacleBox)) {
-              state.phase = "gameOver"
-              if (uiPhaseRef.current !== "gameOver") {
-                uiPhaseRef.current = "gameOver"
-                const milestone = getMilestoneByIndex(state.maxMilestoneIndex)
-                const finalScore = Math.floor(state.distance / 10)
-                const { highScore, isNewHighScore } = recordRunnerHighScore(finalScore)
-                displayScoreRef.current = finalScore
-                setDisplayScoreRef.current(finalScore)
-                setGameOverState({
-                  score: finalScore,
-                  highScore,
-                  isNewHighScore,
-                  milestoneLabel: milestone.label,
-                  milestoneTagline: milestone.tagline,
-                })
-                hapticsRef.current.gameOver(isNewHighScore)
+            if (!obstacle.cleared) {
+              if (obstacle.x + scaledObstacleWidth < playerPassX) {
+                obstacle.cleared = true
+                clearedAnyObstacle = true
+                continue
               }
-              break
+
+              const obstacleHeight = obstacle.height * layoutScale
+              if (
+                obstacleHitsPlayer(
+                  obstacle.x,
+                  scaledObstacleWidth,
+                  obstacleHeight,
+                  state.speed,
+                  dt,
+                  playerBox,
+                  groundY,
+                )
+              ) {
+                finalizeGameOver(state)
+                break
+              }
+            }
+          }
+
+          if (clearedAnyObstacle) {
+            hapticsRef.current.milestone(time)
+            const nextObstacle = findNextUnclearedObstacleAhead(
+              state.obstacles,
+              playerPassX,
+              scaledObstacleWidth,
+            )
+            if (nextObstacle) {
+              const milestone = getMilestoneById(nextObstacle.milestoneId)
+              syncUpcomingObstacleLabelsRef.current(milestone.label, milestone.shortLabel)
             }
           }
 
@@ -821,8 +877,6 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
             false,
           )
         }
-
-        ctx.clearRect(0, 0, width, height)
 
         ctx.fillStyle = colors.background
         ctx.fillRect(0, 0, width, height)
@@ -864,6 +918,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           ctx.translate(64, 0)
           ctx.fillStyle = colors.foreground
           ctx.fill(mainPath)
+          ctx.fillStyle = colors.primary
           ctx.fill(accentPath)
           ctx.restore()
         }
@@ -1012,9 +1067,9 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
                 isFullscreen && "text-sm text-foreground",
               )}
               aria-live="polite"
-              aria-label={`Score ${displayScore}`}
+              aria-label={`Score ${hudScore}`}
             >
-              {String(displayScore).padStart(5, "0")}
+              {String(hudScore).padStart(5, "0")}
             </span>
             <span
               className={cn(
