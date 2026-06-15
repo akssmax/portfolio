@@ -80,6 +80,12 @@ const TULR_TECH_STACK_ITEMS = [
   { name: "Figma", logoSrc: "/projects/tulr/tech/figma.svg" },
 ]
 
+const UNLOGGED_TECH_STACK_ITEMS = [
+  { name: "Figma", logoSrc: "/tools/figma.svg" },
+  { name: "Webflow", logoSrc: "/tools/webflow.svg" },
+  { name: "IntelliJ IDEA", logoSrc: "/companies/unlogged.svg" },
+]
+
 export const fallbackProjects: Project[] = [
   {
     _id: "fallback-100x-landing-page",
@@ -89,6 +95,8 @@ export const fallbackProjects: Project[] = [
       "YC-backed marketing site for a browser automation platform — designed and built with Cursor alongside the founder.",
     tag: "Product UI",
     featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
     coverImageUrl: "/projects/100x/hero.webp",
     year: "Jan–Mar 2026",
     role: "Design Engineer",
@@ -394,6 +402,8 @@ export const fallbackProjects: Project[] = [
       "AI-native workspace combining Mistral streaming chat, persistent memory, knowledge retrieval, and a conversational design studio.",
     tag: "Product UI",
     featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
     coverImageUrl: "/projects/chat-shell/hero.webp",
     year: "May 5–15, 2026",
     role: "Design Engineer",
@@ -658,6 +668,8 @@ export const fallbackProjects: Project[] = [
       "AI-powered agent workspace prototype — multi-mode chat, workflow automation, data explorer, app generation, and interest-based personalization for 100x.bot.",
     tag: "Product UI",
     featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
     coverImageUrl: "/projects/v1-100x-proto/hero.webp",
     year: "2026",
     role: "Design Engineer",
@@ -858,6 +870,8 @@ export const fallbackProjects: Project[] = [
       "Enterprise fintech marketing site and product UI for procure-to-pay — designed in Figma, built in Framer, and shipped across AP, payments, cards, and reimbursements.",
     tag: "Enterprise Fintech",
     featured: true,
+    workSection: "caseStudy",
+    buildBadge: "pre-llm",
     coverImageUrl: "/projects/kodo/hero.webp",
     year: "Feb 2024 – Nov 2025",
     role: "Senior Product Designer",
@@ -1167,6 +1181,216 @@ export const fallbackProjects: Project[] = [
     ],
   },
   {
+    _id: "fallback-unlogged",
+    title: "Unlogged — Java DevTools Plugin",
+    slug: "unlogged",
+    description:
+      "YC S22 open-source IntelliJ plugin for record/replay, runtime mocking, and JUnit test generation — plugin UX, marketing site, and branding.",
+    tag: "Product UI",
+    featured: true,
+    workSection: "caseStudy",
+    buildBadge: "pre-llm",
+    coverImageUrl: "/projects/unlogged/hero.webp",
+    year: "Dec 2021 – Jan 2024",
+    role: "Product Designer",
+    client: "Unlogged",
+    tools: ["Figma", "Webflow"],
+    publishedAt: "2024-01-15T00:00:00.000Z",
+    seo: {
+      metaTitle: "Unlogged — Java DevTools Plugin — Case Study",
+      metaDescription:
+        "How an open-source IntelliJ plugin for Java developers got clear plugin UX, a Webflow marketing site designed in Figma, and cohesive branding — at YC-backed Unlogged.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "u-h-context",
+        title: "Context",
+        subtitle: "Product designer on a YC S22 Java devtools startup.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "u-rt-context",
+        body: [
+          textBlock(
+            "u-rt-context-1",
+            "Unlogged is an open-source IntelliJ IDEA plugin that helps Java developers mock, monitor, replay, and test production traffic locally — with one-click JUnit test generation, runtime mocking, direct method invocation, and performance tracking.",
+          ),
+          textBlock(
+            "u-rt-context-2",
+            "After the team made Y Combinator's Summer 2022 batch, I joined as the design lead — owning plugin UX inside the IDE, the marketing site at unlogged.io (designed in Figma, built in Webflow), and the product's visual identity and branding.",
+          ),
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "u-collab",
+        subtitle: "Design partner to the Unlogged founding team.",
+        teamUrl: "https://www.unlogged.io/about-us",
+        items: [
+          {
+            name: "Shardul Lavekar",
+            role: "Founder / QA",
+            initials: "SL",
+          },
+          {
+            name: "Parth Mudgal",
+            role: "Founder / Software Engineer",
+            initials: "PM",
+          },
+          {
+            name: "Amogh CR",
+            role: "Software Engineer",
+            initials: "AC",
+          },
+          {
+            name: "Akshay Saini",
+            role: "Design",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "u-metrics",
+        items: [
+          { value: "YC S22", label: "Batch" },
+          { value: "Open", label: "Source" },
+          { value: "Java", label: "IntelliJ plugin" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "u-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "u-rt-challenge",
+        body: [
+          textBlock(
+            "u-rt-challenge-1",
+            "Developer tools live in two worlds at once — dense IDE surfaces where every pixel competes with code, and a marketing site that has to explain bytecode instrumentation, record/replay, and runtime mocking to skeptical backend engineers. Unlogged needed both to feel trustworthy, fast, and approachable without dumbing down the technical story.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "u-h-shipped",
+        title: "What I shipped",
+        subtitle: "Plugin UX, marketing site, and brand system.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "u-rt-shipped",
+        body: [
+          textBlock(
+            "u-rt-shipped-1",
+            "I designed end-to-end across the product surface — from IntelliJ plugin flows to the public site and launch assets.",
+          ),
+          ...bulletList("u-rt-shipped-b", [
+            "IntelliJ IDEA plugin UX — record/replay, runtime mocking, JUnit generation, and method performance tracking",
+            "Marketing site designed in Figma and built in Webflow from scratch",
+            "Branding, visual identity, investor decks, and UI animations for the launch site",
+            "Web dashboard app flows and onboarding for developer workflows",
+            "Custom design system adapted from Chakra UI for product surfaces",
+            "UX research, user testing, and prototyping with early customers",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "u-tech",
+        items: UNLOGGED_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `u-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "u-img-hero",
+        src: "/projects/unlogged/hero.webp",
+        alt: "Unlogged marketing site hero — Mock, Monitor, Replay, and Test with Ease",
+        caption: "Marketing site hero — open-source Java devtools positioning",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "u-gallery",
+        caption: "Marketing site and founding team",
+        images: [
+          {
+            src: "/projects/unlogged/features.webp",
+            alt: "Unlogged marketing site — Mock, Monitor, Replay, and Test with Ease",
+          },
+          {
+            src: "/projects/unlogged/about.webp",
+            alt: "Unlogged about page — YC journey and founding team",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "u-h-plugin",
+        title: "Plugin UX",
+        subtitle: "Designing inside IntelliJ for complex backend workflows.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "u-rt-plugin",
+        body: bulletList("u-rt-plugin-b", [
+          "Record and replay — capture method inputs and return values, replay locally without HTTP endpoints",
+          "Runtime mocking — inject mocks for APIs, DB calls, and downstream services with recorded data",
+          "JUnit generation — one-click unit tests from recorded scenarios with framework and serializer choices",
+          "Performance tracking — method-level execution thresholds and bottleneck visibility as you code",
+        ]),
+      },
+      {
+        _type: "quote",
+        _key: "u-quote",
+        text: "We are the early adopters of Unlogged to automatically generate the unit test cases for our Java code. We were pleasantly surprised to see the results of what this plugin provided us that normally used to take manual efforts of ~2-3 hours by our developers.",
+        attribution: "Pranav Khambayatkar — VP & Head of Engineering",
+      },
+      {
+        _type: "sectionHeading",
+        _key: "u-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "u-rt-outcome",
+        body: [
+          textBlock(
+            "u-rt-outcome-1",
+            "Unlogged publicly launched in January 2023 with a cohesive brand, a Webflow marketing site, and plugin UX that made record/replay and automated test generation approachable for Java teams. The product remains open source — helping developers catch regressions early and deploy with more confidence.",
+          ),
+        ],
+      },
+      {
+        _type: "staticImage",
+        _key: "u-img-about",
+        src: "/projects/unlogged/about.webp",
+        alt: "Unlogged about page — founding team and company story",
+        caption: "About page — YC journey, team, and mission",
+        fullBleed: true,
+      },
+      {
+        _type: "embed",
+        _key: "u-embed-site",
+        url: "https://www.unlogged.io/",
+        label: "View live site",
+        embedType: "link",
+      },
+      {
+        _type: "embed",
+        _key: "u-embed-team",
+        url: "https://www.unlogged.io/about-us",
+        label: "View team",
+        embedType: "link",
+      },
+    ],
+  },
+  {
     _id: "fallback-tulr",
     title: "Tulr — No-Code Platform",
     slug: "tulr",
@@ -1174,6 +1398,8 @@ export const fallbackProjects: Project[] = [
       "Pre-LLM-era no-code platform combining videos, tables, forms, and calendars with automation — designed as a one-shot replacement for Airtable, Typeform, Calendly, and Loom.",
     tag: "Product UI",
     featured: true,
+    workSection: "caseStudy",
+    buildBadge: "pre-llm",
     coverImageUrl: "/projects/tulr/hero.png",
     year: "May 2020 – Dec 2021",
     role: "UX Designer",
@@ -1344,6 +1570,51 @@ export function getFallbackProjectCards(): ProjectCard[] {
 
 export function getFallbackFeaturedProjects(): ProjectCard[] {
   return toProjectCards(fallbackProjects.filter((project) => project.featured))
+}
+
+function sortByPublishedAtDesc(projects: ProjectCard[]): ProjectCard[] {
+  return [...projects].sort((a, b) => {
+    const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0
+    const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0
+    return bTime - aTime
+  })
+}
+
+export function getFallbackHomeWorkSections(): {
+  recentProjects: ProjectCard[]
+  caseStudies: ProjectCard[]
+} {
+  const featured = getFallbackFeaturedProjects()
+
+  return {
+    recentProjects: sortByPublishedAtDesc(
+      featured.filter((project) => project.workSection === "recentProject"),
+    ),
+    caseStudies: sortByPublishedAtDesc(
+      featured.filter((project) => project.workSection === "caseStudy"),
+    ),
+  }
+}
+
+export function partitionProjectsByWorkSection(projects: ProjectCard[]): {
+  recentProjects: ProjectCard[]
+  caseStudies: ProjectCard[]
+  other: ProjectCard[]
+} {
+  const recentProjects = sortByPublishedAtDesc(
+    projects.filter((project) => project.workSection === "recentProject"),
+  )
+  const caseStudies = sortByPublishedAtDesc(
+    projects.filter((project) => project.workSection === "caseStudy"),
+  )
+  const other = sortByPublishedAtDesc(
+    projects.filter(
+      (project) =>
+        project.workSection !== "recentProject" && project.workSection !== "caseStudy",
+    ),
+  )
+
+  return { recentProjects, caseStudies, other }
 }
 
 export function getFallbackProjectBySlug(slug: string): Project | null {

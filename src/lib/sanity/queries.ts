@@ -5,6 +5,8 @@ export const projectCardFields = `
   description,
   tag,
   featured,
+  workSection,
+  buildBadge,
   coverImage,
   coverImageUrl,
   year,

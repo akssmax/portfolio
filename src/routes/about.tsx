@@ -8,6 +8,8 @@ import { InterestsSection } from "@/components/about/interests-section"
 import { SkillsToolsSection } from "@/components/about/skills-tools-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
+import { getDesignCareerSpanLabel } from "@/lib/experience-duration"
+import { profile } from "@/lib/profile"
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -15,8 +17,7 @@ export const Route = createFileRoute("/about")({
       { title: "About — Akshay Saini" },
       {
         name: "description",
-        content:
-          "Product designer and design engineer with nearly 8 years of experience across fintech, devtools, and agentic AI.",
+        content: `Product designer and design engineer with ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period)).toLowerCase()} in design across fintech, devtools, and agentic AI.`,
       },
     ],
   }),

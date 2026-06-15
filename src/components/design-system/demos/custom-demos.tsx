@@ -7,7 +7,7 @@ import { SkillsSection } from "@/components/landing/skills-section"
 import { WorkSection } from "@/components/landing/work-section"
 import { ModeToggle } from "@/components/mode-toggle"
 import { ThemeCustomizer } from "@/components/theme-customizer"
-import { getFallbackFeaturedProjects } from "@/lib/sanity/fallback-projects"
+import { getFallbackHomeWorkSections } from "@/lib/sanity/fallback-projects"
 
 export function ModeToggleDemo() {
   return <ModeToggle />
@@ -34,9 +34,11 @@ export function HeroSectionDemo() {
 }
 
 export function WorkSectionDemo() {
+  const { recentProjects, caseStudies } = getFallbackHomeWorkSections()
+
   return (
     <div className="w-full overflow-hidden rounded-lg border border-border">
-      <WorkSection projects={getFallbackFeaturedProjects()} />
+      <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} />
     </div>
   )
 }

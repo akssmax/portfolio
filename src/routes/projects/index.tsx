@@ -8,11 +8,11 @@ import { ErrorBoundary } from "@/components/error-boundary"
 import Lightfall from "@/components/Lightfall"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
-import { ProjectGrid } from "@/components/projects/project-grid"
+import { WorkProjectGroup } from "@/components/projects/work-project-group"
 import { RouteError } from "@/components/route-error"
 import { useInView } from "@/hooks/use-in-view"
 import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
-import { getAllProjects } from "@/lib/sanity/projects"
+import { getAllWorkSections } from "@/lib/sanity/projects"
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -24,13 +24,13 @@ export const Route = createFileRoute("/projects/")({
       },
     ],
   }),
-  loader: () => getAllProjects(),
+  loader: () => getAllWorkSections(),
   errorComponent: RouteError,
   component: ProjectsIndexPage,
 })
 
 function ProjectsIndexPage() {
-  const projects = Route.useLoaderData()
+  const { recentProjects, caseStudies, other } = Route.useLoaderData()
   const shouldReduceMotion = useReducedMotion()
   const mainRef = useRef<HTMLElement>(null)
   const isMainInView = useInView(mainRef, { threshold: 0.08, initialInView: true })
@@ -60,12 +60,12 @@ function ProjectsIndexPage() {
         </div>
 
         <motion.div
-          className="relative z-10 mx-auto max-w-6xl px-4 py-24 sm:px-6"
+          className="relative z-10 mx-auto max-w-6xl space-y-20 px-4 py-24 sm:px-6"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-12 max-w-2xl">
+          <div className="max-w-2xl">
             <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
               Work
             </p>
@@ -73,7 +73,7 @@ function ProjectsIndexPage() {
               Projects
             </h1>
             <p className="mt-3 text-base text-muted-foreground">
-              Case studies where design craft and engineering rigor came together.
+              Recent AI-assisted builds and deeper case studies from pre-LLM product design.
             </p>
             <Link
               to="/"
@@ -83,7 +83,27 @@ function ProjectsIndexPage() {
             </Link>
           </div>
 
-          <ProjectGrid projects={projects} animated={false} />
+          <WorkProjectGroup
+            title="Recent projects"
+            description="Agentic AI products designed and shipped with AI-assisted workflows."
+            projects={recentProjects}
+            animated={false}
+          />
+
+          <WorkProjectGroup
+            id="case-studies"
+            title="Case studies"
+            description="Deep dives from pre-LLM product design — Figma to shipped UI without AI codegen."
+            projects={caseStudies}
+            animated={false}
+          />
+
+          <WorkProjectGroup
+            title="More work"
+            description="Additional projects and experiments."
+            projects={other}
+            animated={false}
+          />
         </motion.div>
       </main>
       <SiteFooter />

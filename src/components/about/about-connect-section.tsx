@@ -12,6 +12,11 @@ import {
 } from "@/components/icons/social-icons"
 import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { DownloadResumeButton } from "@/features/resume/download-resume-button"
 import { profile } from "@/lib/profile"
 import { cn } from "@/lib/utils"
@@ -64,19 +69,23 @@ export function AboutConnectSection() {
               aria-label="Social profiles"
             >
               {socialLinks.map(({ label, href, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className={cn(
-                    "group inline-flex size-11 items-center justify-center rounded-full border border-white/20 bg-white/10",
-                    "transition hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/15",
-                  )}
-                >
-                  <Icon className="size-4 opacity-90 transition-opacity group-hover:opacity-100" />
-                </a>
+                <Tooltip key={label}>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className={cn(
+                        "group inline-flex size-11 items-center justify-center rounded-full border border-white/20 bg-white/10",
+                        "transition hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/15",
+                      )}
+                    >
+                      <Icon className="size-4 opacity-90 transition-opacity group-hover:opacity-100" />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6}>{label}</TooltipContent>
+                </Tooltip>
               ))}
             </nav>
           </div>
@@ -127,26 +136,6 @@ export function AboutConnectSection() {
                 variant="secondary"
                 className="w-full"
               />
-            </div>
-
-            <div className="border-t border-border pt-5">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Elsewhere
-              </p>
-              <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {socialLinks.map(({ label, href }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1 text-sm text-foreground transition-colors hover:text-primary"
-                  >
-                    {label}
-                    <ArrowUpRight className="size-3.5 opacity-60 transition-transform group-hover:-translate-y-px group-hover:translate-x-px group-hover:opacity-100" />
-                  </a>
-                ))}
-              </div>
             </div>
           </motion.div>
         </motion.div>

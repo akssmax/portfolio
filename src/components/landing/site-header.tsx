@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
-import { Menu } from "lucide-react"
+import { Menu, Sparkles } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { Logo } from "@/components/brand/logo"
+import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
 import {
@@ -86,8 +87,14 @@ function MobileNavLink({
 export function SiteHeader() {
   const shouldReduceMotion = useReducedMotion()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { openChat } = usePortfolioChat()
 
   const closeMobileMenu = () => setMobileOpen(false)
+
+  const handleAskAi = () => {
+    closeMobileMenu()
+    openChat()
+  }
 
   return (
     <motion.header
@@ -112,8 +119,9 @@ export function SiteHeader() {
           {navItems.map((item) => (
             <HeaderNavLink key={item.isAnchor ? item.href : item.to} item={item} />
           ))}
-          <Button size="sm" className="ml-1" asChild>
-            <a href="/#contact">Let&apos;s build together</a>
+          <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
+            <Sparkles className="size-3.5" aria-hidden />
+            Ask AI
           </Button>
           <ThemeCustomizer />
         </nav>
@@ -148,13 +156,10 @@ export function SiteHeader() {
               </nav>
 
               <div className="mt-auto border-t border-border p-4">
-                <SheetClose asChild>
-                  <Button className="w-full" asChild>
-                    <a href="/#contact" onClick={closeMobileMenu}>
-                      Let&apos;s build together
-                    </a>
-                  </Button>
-                </SheetClose>
+                <Button className="w-full gap-1.5" onClick={handleAskAi}>
+                  <Sparkles className="size-3.5" aria-hidden />
+                  Ask AI
+                </Button>
               </div>
             </SheetContent>
           </Sheet>

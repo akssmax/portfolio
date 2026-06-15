@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 
 import { CompanyLogo } from "@/components/shared/company-logo"
-import { getExperienceDuration } from "@/lib/experience-duration"
+import { getExperienceDuration, getExperienceSectionSubtitle } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
 
 export function ExperienceTimeline() {
@@ -21,7 +21,7 @@ export function ExperienceTimeline() {
             Experience
           </h2>
           <p className="mt-3 text-base text-muted-foreground">
-            Nearly 8 years designing products across fintech, devtools, and AI.
+            {getExperienceSectionSubtitle(profile.experience.map((item) => item.period))}
           </p>
         </div>
 

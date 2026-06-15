@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
+import { History, Sparkles } from "lucide-react"
 
 import {
   Card,
@@ -7,7 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { getImageUrl } from "@/lib/sanity/image"
+import { Tag } from "@/components/ui/tag"
+import { ProjectCardCover } from "@/components/projects/project-card-cover"
+import { getBuildBadgeLabel } from "@/lib/projects/build-badge"
 import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 
 const MotionCard = motion.create(Card)
@@ -20,21 +23,26 @@ const cardHoverVariants = {
   },
 }
 
-const imageHoverVariants = {
-  rest: { scale: 1 },
-  hover: {
-    scale: 1.03,
-    transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] as const },
-  },
-}
-
 type ProjectCardProps = {
   project: ProjectCardType
 }
 
+function BuildBadgeTag({ badge }: { badge: NonNullable<ProjectCardType["buildBadge"]> }) {
+  const label = getBuildBadgeLabel(badge)
+  if (!label) return null
+
+  const Icon = badge === "built-with-ai" ? Sparkles : History
+
+  return (
+    <Tag variant="outline" className="gap-1">
+      <Icon aria-hidden />
+      {label}
+    </Tag>
+  )
+}
+
 export function ProjectCard({ project }: ProjectCardProps) {
   const shouldReduceMotion = useReducedMotion()
-  const coverUrl = project.coverImageUrl ?? getImageUrl(project.coverImage, 800)
 
   const hoverProps = shouldReduceMotion
     ? {}
@@ -54,26 +62,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
         className="h-full gap-4 overflow-hidden pt-0 transition-shadow hover:shadow-md"
         {...hoverProps}
       >
-        {coverUrl ? (
-          <div className="overflow-hidden border-b border-border">
-            <motion.img
-              src={coverUrl}
-              alt={project.coverImage?.alt ?? project.title}
-              className="aspect-[16/10] w-full object-cover"
-              variants={shouldReduceMotion ? undefined : imageHoverVariants}
-            />
-          </div>
-        ) : (
-          <div className="flex aspect-[16/10] items-center justify-center border-b border-border bg-muted/40">
-            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {project.tag}
-            </span>
-          </div>
-        )}
+        <ProjectCardCover project={project} />
         <CardHeader>
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {project.tag}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {project.tag}
+            </p>
+            {project.buildBadge ? <BuildBadgeTag badge={project.buildBadge} /> : null}
+          </div>
           <CardTitle className="text-lg">{project.title}</CardTitle>
           <CardDescription className="text-base">
             {project.description}

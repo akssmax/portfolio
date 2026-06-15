@@ -33,6 +33,30 @@ export const project = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "workSection",
+      type: "string",
+      title: "Homepage section",
+      options: {
+        list: [
+          { title: "Recent project", value: "recentProject" },
+          { title: "Case study", value: "caseStudy" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
+      name: "buildBadge",
+      type: "string",
+      title: "Build era badge",
+      options: {
+        list: [
+          { title: "Built with AI", value: "built-with-ai" },
+          { title: "Pre-LLM era", value: "pre-llm" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
       name: "coverImage",
       type: "image",
       options: { hotspot: true },

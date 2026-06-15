@@ -77,25 +77,25 @@ export function ThemeCustomizer() {
 
         <Separator />
 
-        <section className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Font
-          </p>
-          <FontPicker activeFont={appearance.font} onSelect={setFont} />
-        </section>
+        <Accordion type="multiple" className="space-y-0">
+          <AccordionItem value="font" className="border-none">
+            <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
+              Font
+            </AccordionTrigger>
+            <AccordionContent className="pb-2">
+              <FontPicker activeFont={appearance.font} onSelect={setFont} />
+            </AccordionContent>
+          </AccordionItem>
 
-        <Separator />
+          <AccordionItem value="radius" className="border-none">
+            <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
+              Radius
+            </AccordionTrigger>
+            <AccordionContent className="pb-2">
+              <RadiusPicker activeRadius={appearance.radius} onSelect={setRadius} />
+            </AccordionContent>
+          </AccordionItem>
 
-        <section className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Radius
-          </p>
-          <RadiusPicker activeRadius={appearance.radius} onSelect={setRadius} />
-        </section>
-
-        <Separator />
-
-        <Accordion type="single" collapsible>
           <AccordionItem value="accessibility" className="border-none">
             <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
               Accessibility

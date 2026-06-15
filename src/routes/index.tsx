@@ -9,16 +9,16 @@ import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
 import { WorkSection } from "@/components/landing/work-section"
-import { getFeaturedProjects } from "@/lib/sanity/projects"
+import { getHomeWorkSections } from "@/lib/sanity/projects"
 
 export const Route = createFileRoute("/")({
-  loader: () => getFeaturedProjects(),
+  loader: () => getHomeWorkSections(),
   errorComponent: RouteError,
   component: HomePage,
 })
 
 function HomePage() {
-  const featuredProjects = Route.useLoaderData()
+  const { recentProjects, caseStudies } = Route.useLoaderData()
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -28,7 +28,7 @@ function HomePage() {
           <HeroSection />
         </ErrorBoundary>
         <ErrorBoundary title="Work section failed" showHeader={false}>
-          <WorkSection projects={featuredProjects} />
+          <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} />
         </ErrorBoundary>
         <ErrorBoundary title="Experience section failed" showHeader={false}>
           <ExperienceSection />

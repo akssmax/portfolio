@@ -41,6 +41,8 @@ async function seed() {
       description: project.description,
       tag: project.tag,
       featured: project.featured,
+      workSection: project.workSection,
+      buildBadge: project.buildBadge,
       coverImageUrl: project.coverImageUrl,
       year: project.year,
       role: project.role,

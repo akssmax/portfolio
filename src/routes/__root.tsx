@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { APPEARANCE_INIT_SCRIPT } from "@/lib/themes/apply-appearance"
+import { getDesignCareerSpanLabel } from "@/lib/experience-duration"
+import { profile } from "@/lib/profile"
 
 import appCss from "../styles.css?url"
 
@@ -24,8 +26,7 @@ export const Route = createRootRoute({
       },
       {
         name: "description",
-        content:
-          "Akshay Saini — Product Designer and Design Engineer based in Bengaluru. Nearly 8 years designing fintech, devtools, and agentic AI products at 100x.bot, Kodo, and Unlogged (YC S22).",
+        content: `Akshay Saini — Product Designer and Design Engineer based in Bengaluru. ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period))} in design across fintech, devtools, and agentic AI at 100x.bot, Kodo, and Unlogged (YC S22).`,
       },
     ],
     links: [

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { UIMessage } from "ai"
 import type { ChatStatus } from "ai"
-import { BotIcon } from "lucide-react"
+import { BotIcon, XIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { toast } from "sonner"
 
@@ -29,8 +29,10 @@ import {
   SourcesTrigger,
 } from "@/components/ai-elements/sources"
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -38,6 +40,10 @@ import {
 import type { ChatItem } from "@/lib/llm/chat-types"
 import { streamChat } from "@/lib/llm/llm-service"
 import type { MistralModel } from "@/lib/llm/llm-types"
+import {
+  getRandomHeroPromptSuggestions,
+  type HeroPromptSuggestion,
+} from "@/lib/hero-prompt-suggestions"
 
 const CHAT_MODEL: MistralModel = "mistral-small-latest"
 
@@ -77,6 +83,9 @@ export function PortfolioChatSheet({
   const [input, setInput] = useState("")
   const [status, setStatus] = useState<ChatStatus>("ready")
   const [suggestions, setSuggestions] = useState<string[]>([])
+  const [starterSuggestions, setStarterSuggestions] = useState<HeroPromptSuggestion[]>(
+    () => getRandomHeroPromptSuggestions(),
+  )
   const abortRef = useRef<AbortController | null>(null)
   const pendingInitialRef = useRef<string | null>(null)
   const rafRef = useRef<number | null>(null)
@@ -197,8 +206,13 @@ export function PortfolioChatSheet({
       pendingInitialRef.current = null
       abortRef.current?.abort()
       setStatus("ready")
+      return
     }
-  }, [open])
+
+    if (items.length === 0 && !initialMessage?.trim()) {
+      setStarterSuggestions(getRandomHeroPromptSuggestions())
+    }
+  }, [initialMessage, items.length, open])
 
   const handleStop = useCallback(() => {
     abortRef.current?.abort()
@@ -218,14 +232,28 @@ export function PortfolioChatSheet({
   const lastAssistantId =
     [...items].reverse().find((item) => item.message.role === "assistant")?.id ?? null
 
+  const showFollowUpSuggestions = suggestions.length > 0
+  const showStarterSuggestions = items.length === 0 && !showFollowUpSuggestions
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
+        showCloseButton={false}
         className="flex w-full flex-col gap-0 p-0 sm:max-w-md"
       >
-        <SheetHeader className="border-b px-4 py-4">
-          <SheetTitle>Ask about Akshay</SheetTitle>
+        <SheetHeader className="relative flex flex-row items-center justify-center border-b px-4 py-3 pe-14">
+          <SheetTitle className="text-center">Ask about Akshay</SheetTitle>
+          <SheetClose asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="absolute end-4 top-1/2 -translate-y-1/2"
+              aria-label="Close"
+            >
+              <XIcon />
+            </Button>
+          </SheetClose>
         </SheetHeader>
 
         <Conversation className="min-h-0 flex-1">
@@ -292,7 +320,7 @@ export function PortfolioChatSheet({
         </Conversation>
 
         <div className="space-y-3 border-t p-4">
-          {suggestions.length > 0 ? (
+          {showFollowUpSuggestions ? (
             <Suggestions>
               {suggestions.map((suggestion) => (
                 <Suggestion
@@ -303,13 +331,24 @@ export function PortfolioChatSheet({
               ))}
             </Suggestions>
           ) : null}
+          {showStarterSuggestions ? (
+            <Suggestions>
+              {starterSuggestions.map((item) => (
+                <Suggestion
+                  key={item.query}
+                  suggestion={item.label}
+                  onClick={() => void sendMessage(item.query)}
+                />
+              ))}
+            </Suggestions>
+          ) : null}
           <PromptInput
             value={input}
             onValueChange={setInput}
             onSubmit={(value) => void sendMessage(value)}
             onStop={handleStop}
             status={status}
-            placeholder="Ask a follow-up…"
+            placeholder={items.length === 0 ? "Why hire Akshay?" : "Ask a follow-up…"}
           />
         </div>
       </SheetContent>

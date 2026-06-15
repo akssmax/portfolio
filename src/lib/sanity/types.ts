@@ -9,6 +9,9 @@ export type SanityImage = {
   alt?: string
 }
 
+export type WorkSection = "recentProject" | "caseStudy"
+export type BuildBadge = "built-with-ai" | "pre-llm"
+
 export type ProjectCard = {
   _id: string
   title: string
@@ -16,6 +19,8 @@ export type ProjectCard = {
   description: string
   tag: string
   featured: boolean
+  workSection?: WorkSection | null
+  buildBadge?: BuildBadge | null
   coverImage?: SanityImage | null
   coverImageUrl?: string | null
   year?: string | null
@@ -114,11 +119,13 @@ export type CollaboratorsBlock = {
   _type: "collaborators"
   _key: string
   subtitle?: string | null
+  teamUrl?: string | null
   items: Array<{
     name: string
     role: string
     avatarSrc?: string | null
     initials?: string | null
+    profileUrl?: string | null
     _key?: string
   }>
 }

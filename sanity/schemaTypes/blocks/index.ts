@@ -312,6 +312,12 @@ export const collaborators = defineType({
   fields: [
     defineField({ name: "subtitle", type: "string" }),
     defineField({
+      name: "teamUrl",
+      title: "Team page URL",
+      type: "url",
+      description: "Optional link to a team or about page for the collaborators listed.",
+    }),
+    defineField({
       name: "items",
       type: "array",
       of: [
@@ -322,6 +328,7 @@ export const collaborators = defineType({
             defineField({ name: "role", type: "string", validation: (rule) => rule.required() }),
             defineField({ name: "avatarSrc", type: "string" }),
             defineField({ name: "initials", type: "string" }),
+            defineField({ name: "profileUrl", type: "url" }),
           ],
           preview: { select: { title: "name", subtitle: "role" } },
         }),

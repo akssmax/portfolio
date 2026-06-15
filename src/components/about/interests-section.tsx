@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 
 import { Badge } from "@/components/ui/badge"
+import { getInterestIcon } from "@/lib/interest-icons"
 import { profile } from "@/lib/profile"
 
 export function InterestsSection() {
@@ -50,11 +51,19 @@ export function InterestsSection() {
               Interests
             </h2>
             <div className="mt-6 flex flex-wrap gap-2">
-              {profile.interests.map((interest) => (
-                <Badge key={interest} variant="outline">
-                  {interest}
-                </Badge>
-              ))}
+              {profile.interests.map((interest) => {
+                const Icon = getInterestIcon(interest)
+                return (
+                  <Badge
+                    key={interest}
+                    variant="outline"
+                    className="h-auto gap-1.5 py-1 ps-2 pe-2.5"
+                  >
+                    <Icon aria-hidden className="size-3.5 shrink-0 opacity-70" />
+                    {interest}
+                  </Badge>
+                )
+              })}
             </div>
           </motion.div>
         </div>

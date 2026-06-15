@@ -23,6 +23,18 @@ export function CollaboratorsBlockComponent({
       {block.subtitle ? (
         <p className="text-sm text-muted-foreground">{block.subtitle}</p>
       ) : null}
+      {block.teamUrl ? (
+        <p className="text-sm">
+          <a
+            href={block.teamUrl}
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View team
+          </a>
+        </p>
+      ) : null}
       <div className="grid gap-4 sm:grid-cols-2">
         {block.items.map((person) => (
           <div
@@ -36,7 +48,18 @@ export function CollaboratorsBlockComponent({
               <AvatarFallback>{getInitials(person.name, person.initials)}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium text-foreground">{person.name}</p>
+              {person.profileUrl ? (
+                <a
+                  href={person.profileUrl}
+                  className="font-medium text-foreground underline-offset-4 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {person.name}
+                </a>
+              ) : (
+                <p className="font-medium text-foreground">{person.name}</p>
+              )}
               <p className="text-sm text-muted-foreground">{person.role}</p>
             </div>
           </div>

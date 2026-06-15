@@ -1,4 +1,5 @@
 const DEFAULT_COLOR_FALLBACK = "#FF354B"
+const CANVAS_SENTINEL = "#010101"
 
 function rgbStringToHex(rgb: string, fallback: string): string {
   const rgbaMatch = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
@@ -23,7 +24,7 @@ function rgbStringToHex(rgb: string, fallback: string): string {
 }
 
 function canvasColorToHex(color: string, fallback: string): string {
-  if (typeof document === "undefined") return fallback
+  if (typeof document === "undefined" || !color.trim()) return fallback
 
   try {
     const canvas = document.createElement("canvas")
@@ -32,10 +33,12 @@ function canvasColorToHex(color: string, fallback: string): string {
     const context = canvas.getContext("2d")
     if (!context) return fallback
 
-    context.fillStyle = "#010101"
+    context.fillStyle = CANVAS_SENTINEL
     context.fillStyle = color
 
     const normalized = context.fillStyle
+    if (normalized === CANVAS_SENTINEL) return fallback
+
     if (normalized.startsWith("#")) {
       return normalized.length === 7 ? normalized.toUpperCase() : fallback
     }
@@ -47,6 +50,8 @@ function canvasColorToHex(color: string, fallback: string): string {
 }
 
 function normalizeComputedColorToHex(color: string, fallback: string): string {
+  if (!color.trim()) return fallback
+
   if (color.startsWith("#")) {
     return color.length === 7 ? color.toUpperCase() : fallback
   }
@@ -57,23 +62,40 @@ function normalizeComputedColorToHex(color: string, fallback: string): string {
   return canvasColorToHex(color, fallback)
 }
 
+function readRootCssVariable(variable: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim()
+}
+
+function withColorProbe(
+  styleColor: string,
+  callback: (computedColor: string) => string,
+  property: "color" | "backgroundColor" = "color",
+): string {
+  const probe = document.createElement("span")
+  probe.style[property] = styleColor
+  probe.style.position = "absolute"
+  probe.style.visibility = "hidden"
+  probe.style.pointerEvents = "none"
+  document.documentElement.appendChild(probe)
+
+  const computed = getComputedStyle(probe)[property]
+  document.documentElement.removeChild(probe)
+
+  return callback(computed)
+}
+
 export function resolveCssColorToHex(
   color: string,
   fallback = DEFAULT_COLOR_FALLBACK,
 ): string {
   if (typeof document === "undefined") return fallback
 
-  const probe = document.createElement("span")
-  probe.style.color = color
-  probe.style.position = "absolute"
-  probe.style.visibility = "hidden"
-  probe.style.pointerEvents = "none"
-  document.body.appendChild(probe)
+  const fromRaw = canvasColorToHex(color, "")
+  if (fromRaw) return fromRaw
 
-  const computed = getComputedStyle(probe).color
-  document.body.removeChild(probe)
-
-  const resolved = normalizeComputedColorToHex(computed, "")
+  const resolved = withColorProbe(color, (computed) =>
+    normalizeComputedColorToHex(computed, ""),
+  )
   if (resolved) return resolved
 
   return canvasColorToHex(color, fallback)
@@ -85,18 +107,25 @@ export function resolveCssVariableToHex(
 ): string {
   if (typeof document === "undefined") return fallback
 
-  const probe = document.createElement("span")
-  probe.style.color = `var(${variable})`
-  probe.style.position = "absolute"
-  probe.style.visibility = "hidden"
-  probe.style.pointerEvents = "none"
-  document.body.appendChild(probe)
+  const normalizedVariable = variable.startsWith("--") ? variable : `--${variable}`
 
-  const computed = getComputedStyle(probe).color
-  document.body.removeChild(probe)
+  const rawValue = readRootCssVariable(normalizedVariable)
+  if (rawValue) {
+    const fromRaw = canvasColorToHex(rawValue, "")
+    if (fromRaw) return fromRaw
+  }
 
-  const resolved = normalizeComputedColorToHex(computed, "")
-  if (resolved) return resolved
+  const fromComputed = withColorProbe(`var(${normalizedVariable})`, (computed) =>
+    normalizeComputedColorToHex(computed, ""),
+  )
+  if (fromComputed) return fromComputed
 
-  return fallback
+  const fromBackground = withColorProbe(
+    `var(${normalizedVariable})`,
+    (computed) => normalizeComputedColorToHex(computed, ""),
+    "backgroundColor",
+  )
+  if (fromBackground) return fromBackground
+
+  return resolveCssColorToHex(`var(${normalizedVariable})`, fallback)
 }
