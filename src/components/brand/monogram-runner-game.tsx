@@ -1,12 +1,42 @@
 "use client"
 
 import { ArrowLeft, RotateCcw } from "lucide-react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useWebHaptics } from "web-haptics/react"
 
 import {
   MONOGRAM_ACCENT,
   MONOGRAM_MAIN,
 } from "@/lib/brand/monogram-mark"
+import {
+  readCanvasThemeColors,
+  syncCanvasSize,
+  type CanvasThemeColors,
+} from "@/lib/brand/runner-canvas-theme"
+import {
+  getNextObstacleGap,
+  getScore,
+  getTargetSpeed,
+  INITIAL_SPEED,
+  lerpSpeed,
+} from "@/lib/brand/runner-difficulty"
+import {
+  createParticlePool,
+  drawParticles,
+  getScoreEffectTier,
+  initAmbientParticles,
+  resetParticlePool,
+  spawnLandingPuff,
+  spawnScoreTierBurst,
+  updateParticles,
+} from "@/lib/brand/runner-particles"
+import {
+  drawMilestoneObstacle,
+  getMilestoneByIndex,
+  getMilestoneIndex,
+  preloadMilestoneIcons,
+  type MilestoneId,
+} from "@/lib/brand/runner-milestones"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -16,15 +46,14 @@ const JUMP_VELOCITY = 10.5
 const GROUND_PADDING = 12
 const PLAYER_HEIGHT_RATIO = 0.18
 const MAX_JUMP_HEIGHT_RATIO = 0.42
-const INITIAL_SPEED = 5.5
-const MAX_SPEED = 13
-const MIN_OBSTACLE_GAP = 280
-const MAX_OBSTACLE_GAP = 520
+const OBSTACLE_WIDTH = 44
+const COLOR_CACHE_FRAMES = 30
 
 type Obstacle = {
   x: number
   width: number
   height: number
+  milestoneId: MilestoneId
 }
 
 type GamePhase = "running" | "gameOver"
@@ -37,16 +66,12 @@ type GameState = {
   distance: number
   speed: number
   nextObstacleIn: number
+  maxMilestoneIndex: number
 }
 
-type ThemeColors = {
-  foreground: string
-}
-
-function readThemeColors(container: HTMLElement): ThemeColors {
-  return {
-    foreground: getComputedStyle(container).color,
-  }
+type GameOverState = {
+  score: number
+  milestoneLabel: string
 }
 
 function createInitialState(width: number): GameState {
@@ -58,18 +83,21 @@ function createInitialState(width: number): GameState {
     distance: 0,
     speed: INITIAL_SPEED,
     nextObstacleIn: width * 0.6,
+    maxMilestoneIndex: 0,
   }
 }
 
-function spawnObstacle(width: number): Obstacle {
+function spawnObstacle(width: number, distance: number): Obstacle {
+  const milestoneIndex = getMilestoneIndex(distance)
+  const milestone = getMilestoneByIndex(milestoneIndex)
   const tall = Math.random() > 0.65
-  const obstacleWidth = tall ? 18 : 14 + Math.random() * 10
-  const obstacleHeight = tall ? 52 : 28 + Math.random() * 12
+  const obstacleHeight = tall ? 58 : 40
 
   return {
-    x: width + obstacleWidth,
-    width: obstacleWidth,
+    x: width + OBSTACLE_WIDTH,
+    width: OBSTACLE_WIDTH,
     height: obstacleHeight,
+    milestoneId: milestone.id,
   }
 }
 
@@ -100,14 +128,40 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
   const sizeRef = useRef({ width: 0, height: 0, dpr: 1 })
   const jumpHeldRef = useRef(false)
   const uiPhaseRef = useRef<GamePhase>("running")
-  const [gameOverScore, setGameOverScore] = useState<number | null>(null)
+  const milestoneIconsRef = useRef<Map<MilestoneId, HTMLCanvasElement>>(new Map())
+  const iconColorRef = useRef<string | null>(null)
+  const lastEffectTierRef = useRef(0)
+  const particlePoolRef = useRef(createParticlePool())
+  const colorsCacheRef = useRef<CanvasThemeColors | null>(null)
+  const colorFrameRef = useRef(0)
+  const tabVisibleRef = useRef(true)
+  const [gameOverState, setGameOverState] = useState<GameOverState | null>(null)
+  const { trigger, isSupported } = useWebHaptics()
+  const triggerHapticRef = useRef(trigger)
+  triggerHapticRef.current = trigger
+
+  const playHaptic = useCallback(
+    (
+      input: Parameters<NonNullable<typeof trigger>>[0],
+      options?: Parameters<NonNullable<typeof trigger>>[1],
+    ) => {
+      if (!isSupported) return
+      void triggerHapticRef.current?.(input, options)
+    },
+    [isSupported],
+  )
+  const playHapticRef = useRef(playHaptic)
+  playHapticRef.current = playHaptic
 
   const restart = useCallback(() => {
     stateRef.current = createInitialState(sizeRef.current.width)
     jumpHeldRef.current = false
     uiPhaseRef.current = "running"
-    setGameOverScore(null)
-  }, [])
+    lastEffectTierRef.current = 0
+    resetParticlePool(particlePoolRef.current)
+    setGameOverState(null)
+    playHaptic("success")
+  }, [playHaptic])
 
   const startJump = useCallback(() => {
     const state = stateRef.current
@@ -117,8 +171,9 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     }
     if (state.playerY <= 0.5 && state.playerVy <= 0) {
       state.playerVy = JUMP_VELOCITY
+      playHaptic(16, { intensity: 0.45 })
     }
-  }, [restart])
+  }, [playHaptic, restart])
 
   const setJumpHeld = useCallback((held: boolean) => {
     jumpHeldRef.current = held
@@ -128,13 +183,13 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     onExit()
   }, [onExit])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     mainPathRef.current = new Path2D(MONOGRAM_MAIN)
     accentPathRef.current = new Path2D(MONOGRAM_ACCENT)
     containerRef.current?.focus()
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = containerRef.current
     const canvas = canvasRef.current
     if (!container || !canvas) return
@@ -142,159 +197,294 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
+    let iconsReady = false
+    let active = true
+    let lastTime = performance.now()
+    let wasAirborne = false
+
+    const readColors = (): CanvasThemeColors => {
+      colorFrameRef.current += 1
+      if (!colorsCacheRef.current || colorFrameRef.current >= COLOR_CACHE_FRAMES) {
+        colorsCacheRef.current = readCanvasThemeColors(container)
+        colorFrameRef.current = 0
+      }
+      return colorsCacheRef.current
+    }
+
+    const ensureIcons = async (color: string) => {
+      if (!active || (iconsReady && iconColorRef.current === color)) return
+      try {
+        const icons = await preloadMilestoneIcons(color)
+        if (!active) return
+        milestoneIconsRef.current = icons
+        iconColorRef.current = color
+        iconsReady = true
+      } catch {
+        // Icons are optional; labels still render.
+      }
+    }
+
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      const width = container.clientWidth
-      const height = container.clientHeight
-      sizeRef.current = { width, height, dpr }
-      canvas.width = Math.floor(width * dpr)
-      canvas.height = Math.floor(height * dpr)
-      canvas.style.width = `${width}px`
-      canvas.style.height = `${height}px`
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      const size = syncCanvasSize(canvas, container)
+      sizeRef.current = size
+      colorsCacheRef.current = readCanvasThemeColors(container)
+      colorFrameRef.current = 0
+      const colors = colorsCacheRef.current
+      if (colors.foreground !== iconColorRef.current) {
+        iconsReady = false
+        void ensureIcons(colors.foreground)
+      }
     }
 
     resize()
-    stateRef.current = createInitialState(container.clientWidth)
+    stateRef.current = createInitialState(sizeRef.current.width)
     uiPhaseRef.current = "running"
-    setGameOverScore(null)
+    lastEffectTierRef.current = 0
+    resetParticlePool(particlePoolRef.current)
+    setGameOverState(null)
+    void ensureIcons(readColors().foreground)
+    const initialColors = readColors()
+    initAmbientParticles(
+      particlePoolRef.current,
+      sizeRef.current.width,
+      sizeRef.current.height,
+      INITIAL_SPEED,
+      initialColors.foreground,
+      0,
+      {
+        foreground: initialColors.foreground,
+        muted: initialColors.muted,
+        primary: initialColors.primary,
+      },
+    )
 
     const observer = new ResizeObserver(resize)
     observer.observe(container)
 
-    let lastTime = performance.now()
-
     const tick = (time: number) => {
-      const dt = Math.min((time - lastTime) / 16.67, 2.5)
-      lastTime = time
+      if (!active || !tabVisibleRef.current) return
 
-      const { width, height } = sizeRef.current
-      if (width <= 0 || height <= 0) {
-        rafRef.current = requestAnimationFrame(tick)
-        return
-      }
+      try {
+        const dt = Math.min((time - lastTime) / 16.67, 2.5)
+        lastTime = time
 
-      const groundY = height - GROUND_PADDING
-      const playerHeight = Math.max(28, Math.min(48, height * PLAYER_HEIGHT_RATIO))
-      const maxJumpHeight = Math.min(
-        height * MAX_JUMP_HEIGHT_RATIO,
-        groundY - playerHeight - 8,
-      )
-      const playerX = width * 0.1
-      const scale = playerHeight / 153
-      const playerWidth = 205 * scale
-      const state = stateRef.current
-      const colors = readThemeColors(container)
-
-      if (state.phase === "running") {
-        state.distance += state.speed * dt
-        state.speed = Math.min(MAX_SPEED, state.speed + 0.002 * dt)
-
-        const gravity =
-          jumpHeldRef.current && state.playerVy > 0 ? GRAVITY_HOLD : GRAVITY
-
-        state.playerVy -= gravity * dt
-        state.playerY += state.playerVy * dt
-
-        if (state.playerY <= 0) {
-          state.playerY = 0
-          state.playerVy = 0
-        } else if (state.playerY >= maxJumpHeight) {
-          state.playerY = maxJumpHeight
-          state.playerVy = Math.min(state.playerVy, 0)
+        let { width, height } = sizeRef.current
+        if (width <= 0 || height <= 0) {
+          const size = syncCanvasSize(canvas, container)
+          sizeRef.current = size
+          width = size.width
+          height = size.height
         }
 
-        state.nextObstacleIn -= state.speed * dt
-        if (state.nextObstacleIn <= 0) {
-          state.obstacles.push(spawnObstacle(width))
-          state.nextObstacleIn =
-            MIN_OBSTACLE_GAP +
-            Math.random() * (MAX_OBSTACLE_GAP - MIN_OBSTACLE_GAP)
+        if (width <= 0 || height <= 0) {
+          rafRef.current = requestAnimationFrame(tick)
+          return
         }
 
-        state.obstacles = state.obstacles
-          .map((obstacle) => ({ ...obstacle, x: obstacle.x - state.speed * dt }))
-          .filter((obstacle) => obstacle.x + obstacle.width > 0)
-
-        const hitboxInset = 6
-        const playerBox = {
-          x: playerX + hitboxInset,
-          y: groundY - playerHeight + hitboxInset - state.playerY,
-          w: playerWidth - hitboxInset * 2,
-          h: playerHeight - hitboxInset * 2,
+        const groundY = height - GROUND_PADDING
+        const playerHeight = Math.max(28, Math.min(48, height * PLAYER_HEIGHT_RATIO))
+        const maxJumpHeight = Math.min(
+          height * MAX_JUMP_HEIGHT_RATIO,
+          groundY - playerHeight - 8,
+        )
+        const playerX = width * 0.1
+        const scale = playerHeight / 153
+        const playerWidth = 205 * scale
+        const state = stateRef.current
+        const colors = readColors()
+        const particleColors = {
+          foreground: colors.foreground,
+          muted: colors.muted,
+          primary: colors.primary,
         }
+
+        if (state.phase === "running") {
+          const targetSpeed = getTargetSpeed(state.distance)
+          state.speed = lerpSpeed(state.speed, targetSpeed, dt)
+          state.distance += state.speed * dt
+
+          const currentMilestoneIndex = getMilestoneIndex(state.distance)
+          if (currentMilestoneIndex > state.maxMilestoneIndex) {
+            state.maxMilestoneIndex = currentMilestoneIndex
+          }
+
+          const score = getScore(state.distance)
+          const effectTier = getScoreEffectTier(score)
+          if (effectTier > lastEffectTierRef.current) {
+            lastEffectTierRef.current = effectTier
+            playHapticRef.current("nudge")
+            spawnScoreTierBurst(
+              particlePoolRef.current,
+              effectTier,
+              height,
+              state.speed,
+              particleColors,
+            )
+          }
+
+          const gravity =
+            jumpHeldRef.current && state.playerVy > 0 ? GRAVITY_HOLD : GRAVITY
+
+          state.playerVy -= gravity * dt
+          state.playerY += state.playerVy * dt
+
+          if (state.playerY <= 0) {
+            if (wasAirborne) {
+              playHapticRef.current(10, { intensity: 0.28 })
+              spawnLandingPuff(
+                particlePoolRef.current,
+                playerX + playerWidth * 0.35,
+                groundY,
+                colors.foreground,
+              )
+              wasAirborne = false
+            }
+            state.playerY = 0
+            state.playerVy = 0
+          } else {
+            wasAirborne = true
+            if (state.playerY >= maxJumpHeight) {
+              state.playerY = maxJumpHeight
+              state.playerVy = Math.min(state.playerVy, 0)
+            }
+          }
+
+          state.nextObstacleIn -= state.speed * dt
+          if (state.nextObstacleIn <= 0) {
+            state.obstacles.push(spawnObstacle(width, state.distance))
+            state.nextObstacleIn = getNextObstacleGap(state.speed)
+          }
+
+          state.obstacles = state.obstacles
+            .map((obstacle) => ({ ...obstacle, x: obstacle.x - state.speed * dt }))
+            .filter((obstacle) => obstacle.x + obstacle.width > 0)
+
+          const hitboxInset = 6
+          const playerBox = {
+            x: playerX + hitboxInset,
+            y: groundY - playerHeight + hitboxInset - state.playerY,
+            w: playerWidth - hitboxInset * 2,
+            h: playerHeight - hitboxInset * 2,
+          }
+
+          for (const obstacle of state.obstacles) {
+            const obstacleBox = {
+              x: obstacle.x,
+              y: groundY - obstacle.height,
+              w: obstacle.width,
+              h: obstacle.height,
+            }
+            if (rectsOverlap(playerBox, obstacleBox)) {
+              state.phase = "gameOver"
+              if (uiPhaseRef.current !== "gameOver") {
+                uiPhaseRef.current = "gameOver"
+                const milestone = getMilestoneByIndex(state.maxMilestoneIndex)
+                setGameOverState({
+                  score: Math.floor(state.distance / 10),
+                  milestoneLabel: milestone.label,
+                })
+                playHapticRef.current("error")
+              }
+              break
+            }
+          }
+
+          updateParticles(
+            particlePoolRef.current,
+            dt,
+            state.speed,
+            width,
+            height,
+            particleColors,
+            effectTier,
+            true,
+          )
+        } else {
+          const score = getScore(state.distance)
+          updateParticles(
+            particlePoolRef.current,
+            dt,
+            state.speed,
+            width,
+            height,
+            particleColors,
+            getScoreEffectTier(score),
+            false,
+          )
+        }
+
+        ctx.clearRect(0, 0, width, height)
+
+        ctx.fillStyle = colors.background
+        ctx.fillRect(0, 0, width, height)
+
+        drawParticles(ctx, particlePoolRef.current)
+
+        ctx.strokeStyle = colors.foreground
+        ctx.globalAlpha = 0.35
+        ctx.lineWidth = 1.5
+        ctx.beginPath()
+        ctx.moveTo(0, groundY + 0.5)
+        ctx.lineTo(width, groundY + 0.5)
+        ctx.stroke()
+        ctx.globalAlpha = 1
 
         for (const obstacle of state.obstacles) {
-          const obstacleBox = {
-            x: obstacle.x,
-            y: groundY - obstacle.height,
-            w: obstacle.width,
-            h: obstacle.height,
-          }
-          if (rectsOverlap(playerBox, obstacleBox)) {
-            state.phase = "gameOver"
-            if (uiPhaseRef.current !== "gameOver") {
-              uiPhaseRef.current = "gameOver"
-              setGameOverScore(Math.floor(state.distance / 10))
-            }
-            break
-          }
+          drawMilestoneObstacle(
+            ctx,
+            obstacle,
+            groundY,
+            colors.foreground,
+            milestoneIconsRef.current,
+          )
         }
-      }
 
-      ctx.clearRect(0, 0, width, height)
+        const mainPath = mainPathRef.current
+        const accentPath = accentPathRef.current
+        if (mainPath && accentPath) {
+          ctx.save()
+          ctx.translate(playerX, groundY - playerHeight - state.playerY)
+          ctx.scale(scale, scale)
+          ctx.translate(64, 0)
+          ctx.fillStyle = colors.foreground
+          ctx.fill(mainPath)
+          ctx.fill(accentPath)
+          ctx.restore()
+        }
 
-      ctx.strokeStyle = colors.foreground
-      ctx.globalAlpha = 0.2
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.moveTo(0, groundY + 0.5)
-      ctx.lineTo(width, groundY + 0.5)
-      ctx.stroke()
-      ctx.globalAlpha = 1
-
-      for (const obstacle of state.obstacles) {
         ctx.fillStyle = colors.foreground
-        ctx.globalAlpha = 0.45
-        ctx.fillRect(
-          obstacle.x,
-          groundY - obstacle.height,
-          obstacle.width,
-          obstacle.height,
+        ctx.globalAlpha = 0.7
+        ctx.font = "12px system-ui, sans-serif"
+        ctx.textAlign = "right"
+        ctx.textBaseline = "alphabetic"
+        ctx.fillText(
+          String(Math.floor(state.distance / 10)).padStart(5, "0"),
+          width - 12,
+          20,
         )
         ctx.globalAlpha = 1
+      } catch {
+        // Keep the loop alive even if a frame fails.
       }
-
-      const mainPath = mainPathRef.current
-      const accentPath = accentPathRef.current
-      if (mainPath && accentPath) {
-        ctx.save()
-        ctx.translate(playerX, groundY - playerHeight - state.playerY)
-        ctx.scale(scale, scale)
-        ctx.translate(64, 0)
-        ctx.fillStyle = colors.foreground
-        ctx.fill(mainPath)
-        ctx.fill(accentPath)
-        ctx.restore()
-      }
-
-      ctx.fillStyle = colors.foreground
-      ctx.globalAlpha = 0.7
-      ctx.font = "12px system-ui, sans-serif"
-      ctx.textAlign = "right"
-      ctx.fillText(
-        String(Math.floor(state.distance / 10)).padStart(5, "0"),
-        width - 12,
-        20,
-      )
-      ctx.globalAlpha = 1
 
       rafRef.current = requestAnimationFrame(tick)
     }
 
     rafRef.current = requestAnimationFrame(tick)
 
+    const onVisibilityChange = () => {
+      tabVisibleRef.current = document.visibilityState === "visible"
+      if (tabVisibleRef.current && active) {
+        lastTime = performance.now()
+        rafRef.current = requestAnimationFrame(tick)
+      }
+    }
+
+    document.addEventListener("visibilitychange", onVisibilityChange)
+
     return () => {
+      active = false
+      document.removeEventListener("visibilitychange", onVisibilityChange)
       observer.disconnect()
       cancelAnimationFrame(rafRef.current)
     }
@@ -343,7 +533,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
       aria-label="Monogram runner game"
       tabIndex={0}
       className={cn(
-        "relative h-32 w-full max-w-4xl shrink-0 cursor-pointer outline-none sm:h-40 md:h-48 lg:h-56 xl:max-w-5xl",
+        "relative h-32 w-full max-w-4xl shrink-0 cursor-pointer overflow-hidden rounded-lg border border-border/60 bg-background text-foreground outline-none sm:h-40 md:h-48 lg:h-56 xl:max-w-5xl",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
@@ -374,9 +564,13 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
         <ArrowLeft className="size-3.5" aria-hidden />
         Back
       </Button>
-      <canvas ref={canvasRef} className="block size-full touch-none" aria-hidden />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 block h-full w-full touch-none"
+        aria-hidden
+      />
 
-      {gameOverScore !== null ? (
+      {gameOverState !== null ? (
         <div
           className="absolute inset-0 z-20 flex items-center justify-center bg-background/80 p-3 backdrop-blur-sm"
           role="dialog"
@@ -392,9 +586,12 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
                 Game over
               </p>
               <p className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
-                {gameOverScore}
+                {gameOverState.score}
               </p>
               <p className="text-xs text-muted-foreground">points</p>
+              <p className="text-xs text-muted-foreground">
+                Made it to: {gameOverState.milestoneLabel}
+              </p>
             </div>
 
             <div className="mt-4 flex flex-col gap-2">

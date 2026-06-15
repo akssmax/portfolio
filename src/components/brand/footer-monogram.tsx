@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import {
   motion,
   useReducedMotion,
@@ -9,6 +9,11 @@ import {
 } from "motion/react"
 
 import { MonogramRunnerGame } from "@/components/brand/monogram-runner-game"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import {
   MONOGRAM_ACCENT,
@@ -252,6 +257,8 @@ export type FooterMonogramProps = {
   wrapperClassName?: string
   className?: string
   enableRunnerGame?: boolean
+  runnerActive?: boolean
+  onRunnerActiveChange?: (active: boolean) => void
 }
 
 function MonogramSvg({
@@ -371,9 +378,25 @@ export function FooterMonogram({
   wrapperClassName,
   className,
   enableRunnerGame = false,
+  runnerActive: runnerActiveProp,
+  onRunnerActiveChange,
 }: FooterMonogramProps) {
   const shouldReduceMotion = useReducedMotion()
-  const [runnerActive, setRunnerActive] = useState(false)
+  const [internalRunnerActive, setInternalRunnerActive] = useState(false)
+  const isRunnerControlled = runnerActiveProp !== undefined
+  const runnerActive = isRunnerControlled ? runnerActiveProp : internalRunnerActive
+
+  const setRunnerActive = useCallback(
+    (active: boolean) => {
+      if (isRunnerControlled) {
+        onRunnerActiveChange?.(active)
+      } else {
+        setInternalRunnerActive(active)
+        onRunnerActiveChange?.(active)
+      }
+    },
+    [isRunnerControlled, onRunnerActiveChange],
+  )
   const useMotion = !shouldReduceMotion && animation !== "none"
   const isLoop = animation === "loop" && useMotion
   const canPlayRunner =
@@ -416,17 +439,32 @@ export function FooterMonogram({
       {...containerMotionProps}
     >
       {canPlayRunner && runnerActive ? (
-        <MonogramRunnerGame onExit={() => setRunnerActive(false)} />
+        <MonogramRunnerGame
+          onExit={() => setRunnerActive(false)}
+          className="h-40 sm:h-52 md:h-60 lg:h-72"
+        />
       ) : canPlayRunner ? (
-        <button
-          type="button"
-          className="cursor-pointer border-0 bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          onClick={() => setRunnerActive(true)}
-          aria-label="Start monogram runner game"
-        >
-          <span className="sr-only">Easter egg: click to play a mini runner game</span>
-          {monogramSvg}
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              className={cn(
+                "cursor-pointer border-0 bg-transparent p-0 outline-none",
+                "origin-bottom transition-transform duration-300 ease-out motion-reduce:transition-none",
+                !shouldReduceMotion && "hover:scale-[1.05]",
+                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              )}
+              onClick={() => setRunnerActive(true)}
+              aria-label="Start monogram runner game"
+            >
+              <span className="sr-only">Easter egg: click to play a mini runner game</span>
+              {monogramSvg}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={10}>
+            Psst… click to play a mini runner game
+          </TooltipContent>
+        </Tooltip>
       ) : (
         monogramSvg
       )}

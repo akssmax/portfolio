@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowUpRight } from "lucide-react"
 
-import { FooterMonogram } from "@/components/brand/footer-monogram"
 import { Logo } from "@/components/brand/logo"
+import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
 import { profile } from "@/lib/profile"
 
@@ -94,12 +94,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-border py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {profile.name}</p>
-          <p>{profile.location}</p>
-        </div>
-
-        <FooterMonogram animation="loop" enableRunnerGame />
+        <FooterRunnerSection />
       </div>
     </footer>
   )
