@@ -537,6 +537,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
 
         let playerScaleX = 1
         let playerScaleY = 1
+        let playerRotation = 0
 
         if (state.phase === "running") {
           const targetSpeed = getTargetSpeed(state.distance)
@@ -681,6 +682,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
           )
           playerScaleX = playerMotion.scaleX
           playerScaleY = playerMotion.scaleY
+          playerRotation = playerMotion.rotation
 
           state.nextObstacleIn -= state.speed * dt
           if (state.nextObstacleIn <= 0) {
@@ -782,10 +784,11 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
         if (mainPath && accentPath) {
           const drawY = groundY - playerHeight - state.playerY
           const feetY = groundY - state.playerY
-          const pivotX = playerX + playerWidth * 0.5
+          const pivotX = playerX + playerWidth * 0.42
 
           ctx.save()
           ctx.translate(pivotX, feetY)
+          ctx.rotate(playerRotation)
           ctx.scale(playerScaleX, playerScaleY)
           ctx.translate(-pivotX, -feetY)
           ctx.translate(playerX, drawY)
@@ -872,7 +875,7 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
       aria-label="Monogram runner game"
       tabIndex={0}
       className={cn(
-        "relative h-32 w-full max-w-4xl shrink-0 cursor-pointer overflow-hidden rounded-lg border border-border/60 bg-background text-foreground outline-none sm:h-40 md:h-48 lg:h-56 xl:max-w-5xl",
+        "relative size-full w-full cursor-pointer overflow-hidden rounded-lg border border-border/60 bg-background text-foreground outline-none",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         isFullscreen &&
           "fixed inset-0 z-[100] h-screen w-screen max-w-none rounded-none border-0 shadow-none",
@@ -889,22 +892,35 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
       onPointerLeave={() => setJumpHeld(false)}
       onPointerCancel={() => setJumpHeld(false)}
     >
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
+      <div
         data-runner-ui
-        className="absolute start-2 top-2 z-10 h-7 gap-1 bg-background/90 px-2 text-xs shadow-sm backdrop-blur-sm"
-        onPointerDown={(event) => event.stopPropagation()}
-        onClick={(event) => {
-          event.stopPropagation()
-          exit()
-        }}
-        aria-label="Exit monogram runner game"
+        className={cn(
+          "absolute start-2 top-2 z-10 flex max-w-[min(100%,24rem)] flex-nowrap items-center gap-2",
+          isFullscreen && "start-4 top-4 gap-3",
+        )}
       >
-        <ArrowLeft className="size-3.5" aria-hidden />
-        Back
-      </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="h-7 shrink-0 gap-1 bg-background/90 px-2 text-xs shadow-sm backdrop-blur-sm"
+          onPointerDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation()
+            exit()
+          }}
+          aria-label="Exit monogram runner game"
+        >
+          <ArrowLeft className="size-3.5" aria-hidden />
+          Back
+        </Button>
+
+        {eraToast ? (
+          <div className="pointer-events-none min-w-0 leading-tight" aria-live="polite">
+            <p className="truncate text-[10px] font-medium text-foreground/70">{eraToast.label}</p>
+          </div>
+        ) : null}
+      </div>
 
       <div
         data-runner-ui
@@ -962,18 +978,6 @@ export function MonogramRunnerGame({ onExit, className }: MonogramRunnerGameProp
         </div>
       </div>
 
-      {eraToast ? (
-        <div
-          data-runner-ui
-          className="pointer-events-none absolute inset-x-0 top-12 z-10 flex justify-center px-4 sm:top-14"
-          aria-live="polite"
-        >
-          <div className="max-w-xs rounded-md border border-border/60 bg-background/92 px-3 py-2 text-center shadow-sm backdrop-blur-sm">
-            <p className="text-xs font-semibold text-foreground">{eraToast.label}</p>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">{eraToast.tagline}</p>
-          </div>
-        </div>
-      ) : null}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block h-full w-full touch-none"

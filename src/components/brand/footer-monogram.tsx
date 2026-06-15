@@ -430,9 +430,11 @@ export function FooterMonogram({
   return (
     <motion.div
       className={cn(
-        "group/monogram flex w-full justify-center overflow-hidden",
-        size === "footer" && "pt-4 pb-10 sm:pt-6 sm:pb-12",
-        canPlayRunner && runnerActive && "relative w-full items-end",
+        "group/monogram flex w-full overflow-hidden",
+        size === "footer" && !(canPlayRunner && runnerActive) && "pt-4 pb-10 sm:pt-6 sm:pb-12",
+        canPlayRunner && runnerActive &&
+          "relative min-h-[256px] w-full sm:min-h-[320px] md:min-h-[360px] lg:min-h-[400px]",
+        !(canPlayRunner && runnerActive) && "justify-center",
         wrapperClassName,
       )}
       variants={useMotion ? containerVariants : undefined}
@@ -441,7 +443,7 @@ export function FooterMonogram({
       {canPlayRunner && runnerActive ? (
         <MonogramRunnerGame
           onExit={() => setRunnerActive(false)}
-          className="h-40 sm:h-52 md:h-60 lg:h-72"
+          className="absolute inset-0 max-w-none rounded-none border-0"
         />
       ) : canPlayRunner ? (
         <Tooltip>

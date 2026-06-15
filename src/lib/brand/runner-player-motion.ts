@@ -6,16 +6,21 @@ export type PlayerMotionState = {
 }
 
 export const ANTICIPATE_MS = 52
-export const LAND_RECOVER_MS = 95
+export const LAND_RECOVER_MS = 100
 export const CHAIN_JUMP_WINDOW_MS = 160
 
 export type PlayerMotionVisual = {
   scaleX: number
   scaleY: number
+  rotation: number
   shouldLaunch: boolean
 }
 
 export type JumpStartResult = "anticipate" | "instant" | "blocked"
+
+const TRI_POSE = {
+  idle: { scaleX: 1, scaleY: 1, rotation: 0 },
+} as const
 
 export function createPlayerMotionState(): PlayerMotionState {
   return {
@@ -64,24 +69,88 @@ export function advanceGroundedTime(motion: PlayerMotionState, dtMs: number, onG
   }
 }
 
-function easeOutQuad(t: number) {
-  return 1 - (1 - t) * (1 - t)
-}
-
 function easeInQuad(t: number) {
   return t * t
 }
 
-function getApexPose(heightRatio: number, playerVy: number) {
-  const velocityDamp = Math.exp(-((playerVy / 2.2) ** 2))
-  const heightWeight = Math.min(1, heightRatio * 1.15)
-  const apexBlend = velocityDamp * heightWeight
+function easeOutCubic(t: number) {
+  return 1 - (1 - t) ** 3
+}
 
-  return {
-    scaleX: 1 + apexBlend * 0.16,
-    scaleY: 1 - apexBlend * 0.2,
-    apexBlend,
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t
+}
+
+function makeVisual(
+  scaleX: number,
+  scaleY: number,
+  rotation: number,
+  shouldLaunch = false,
+): PlayerMotionVisual {
+  return { scaleX, scaleY, rotation, shouldLaunch }
+}
+
+/** Triangle loads weight into its base before takeoff. */
+function getAnticipationPose(progress: number): PlayerMotionVisual {
+  const eased = easeInQuad(progress)
+  return makeVisual(
+    lerp(1, 1.16, eased),
+    lerp(1, 0.74, eased),
+    lerp(0, -0.055, eased),
+  )
+}
+
+/** Base widens and flattens on impact, then springs back. */
+function getLandingPose(progress: number): PlayerMotionVisual {
+  const eased = easeOutCubic(progress)
+  const impact = 1 - eased
+  return makeVisual(
+    lerp(1, 1.22, impact),
+    lerp(1, 0.72, impact),
+    lerp(0, 0.04, impact * (1 - eased)),
+  )
+}
+
+/** Point stretches up on launch; tip leads on the way down. */
+function getAirborneTrianglePose(
+  playerY: number,
+  playerVy: number,
+  maxJumpHeight: number,
+): PlayerMotionVisual {
+  const heightRatio = maxJumpHeight > 0 ? Math.min(1, playerY / maxJumpHeight) : 0
+  const speed = Math.min(1, Math.abs(playerVy) / 11)
+  const vyNorm = Math.max(-1, Math.min(1, playerVy / 11))
+
+  const nearApex = Math.exp(-((playerVy / 2.4) ** 2)) * Math.min(1, heightRatio * 1.2 + 0.15)
+
+  if (nearApex > 0.45 && Math.abs(playerVy) < 1.4) {
+    return makeVisual(
+      lerp(1, 1.04, nearApex),
+      lerp(1, 0.95, nearApex),
+      lerp(0, -0.025, nearApex),
+    )
   }
+
+  if (playerVy > 0.35) {
+    const launchStrength = speed * (heightRatio < 0.3 ? 1 : 0.35)
+    return makeVisual(
+      lerp(1, 0.88, launchStrength),
+      lerp(1, 1.2, launchStrength),
+      lerp(0, -0.09, launchStrength * (0.6 + (1 - heightRatio) * 0.4)),
+    )
+  }
+
+  if (playerVy < -0.35) {
+    const fallStrength = speed * (0.55 + heightRatio * 0.45)
+    const tipLead = lerp(0.1, 0.22, fallStrength)
+    return makeVisual(
+      lerp(1, 0.9, fallStrength * 0.7),
+      lerp(1, 1.14, fallStrength),
+      lerp(0, tipLead, fallStrength) * (playerVy < 0 ? 1 : -1),
+    )
+  }
+
+  return makeVisual(1, 1, vyNorm * -0.03)
 }
 
 export function updatePlayerMotionVisual(
@@ -92,7 +161,6 @@ export function updatePlayerMotionVisual(
   maxJumpHeight: number,
 ): PlayerMotionVisual {
   let shouldLaunch = false
-  const anticipateDuration = ANTICIPATE_MS
 
   if (dtMs > 0 && motion.anticipateMs > 0) {
     motion.anticipateMs = Math.max(0, motion.anticipateMs - dtMs)
@@ -107,72 +175,32 @@ export function updatePlayerMotionVisual(
   }
 
   if (motion.anticipateMs > 0) {
-    const progress = 1 - motion.anticipateMs / anticipateDuration
-    const eased = easeInQuad(progress)
-    return {
-      scaleX: 1 + eased * 0.1,
-      scaleY: 1 - eased * 0.13,
-      shouldLaunch,
-    }
+    const progress = 1 - motion.anticipateMs / ANTICIPATE_MS
+    const pose = getAnticipationPose(progress)
+    return { ...pose, shouldLaunch }
   }
 
   if (motion.landRecoverMs > 0) {
     const progress = 1 - motion.landRecoverMs / LAND_RECOVER_MS
-    const eased = easeOutQuad(progress)
-    return {
-      scaleX: 1.12 - eased * 0.12,
-      scaleY: 0.87 + eased * 0.13,
-      shouldLaunch: false,
-    }
+    return getLandingPose(progress)
   }
 
   if (playerY > 0.5) {
-    const speed = Math.min(1, Math.abs(playerVy) / 11)
-    const heightRatio = maxJumpHeight > 0 ? playerY / maxJumpHeight : 0
-    const apex = getApexPose(heightRatio, playerVy)
-
-    if (apex.apexBlend > 0.35 && Math.abs(playerVy) < 1.6) {
-      return {
-        scaleX: apex.scaleX,
-        scaleY: apex.scaleY,
-        shouldLaunch,
-      }
-    }
-
-    if (playerVy > 0.4) {
-      const takeoffWeight = heightRatio < 0.35 ? 1 - heightRatio / 0.35 : 0.12
-      const stretch = speed * (0.5 + takeoffWeight * 0.5)
-      return {
-        scaleX: 1 - stretch * 0.1,
-        scaleY: 1 + stretch * 0.17,
-        shouldLaunch,
-      }
-    }
-
-    if (playerVy < -0.4) {
-      const fallStretch = speed * (0.4 + Math.min(0.5, heightRatio * 0.7))
-      return {
-        scaleX: 1 - fallStretch * 0.08,
-        scaleY: 1 + fallStretch * 0.14,
-        shouldLaunch,
-      }
-    }
-
-    return { scaleX: apex.scaleX, scaleY: apex.scaleY, shouldLaunch }
+    return getAirborneTrianglePose(playerY, playerVy, maxJumpHeight)
   }
 
-  return { scaleX: 1, scaleY: 1, shouldLaunch }
+  return { ...TRI_POSE.idle, shouldLaunch }
 }
 
 export function getDescentGravity(baseGravity: number, playerVy: number): number {
   if (playerVy >= 0) return baseGravity
   const fallSpeed = Math.min(1, Math.abs(playerVy) / 12)
-  return baseGravity * (0.9 + fallSpeed * 0.22)
+  return baseGravity * (0.88 + fallSpeed * 0.24)
 }
 
 export function getApexGravityMultiplier(playerVy: number, heightRatio: number): number {
   if (playerVy <= 0) return 1
-  const nearApex = Math.exp(-((playerVy / 3.4) ** 2))
+  const nearApex = Math.exp(-((playerVy / 3.2) ** 2))
   const highEnough = Math.min(1, heightRatio * 1.1)
-  return 1 - nearApex * highEnough * 0.28
+  return 1 - nearApex * highEnough * 0.32
 }
