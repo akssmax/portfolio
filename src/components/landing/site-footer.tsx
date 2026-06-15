@@ -11,7 +11,6 @@ const siteLinks = [
   { label: "About", to: "/about" as const },
   { label: "Projects", to: "/projects" as const },
   { label: "Blog", to: "/blog" as const },
-  { label: "Skills", href: "/#skills" },
   { label: "Design System", to: "/design-system" as const },
 ] as const
 
@@ -100,7 +99,7 @@ export function SiteFooter() {
           <p>{profile.location}</p>
         </div>
 
-        <FooterMonogram animation="loop" />
+        <FooterMonogram animation="loop" enableRunnerGame />
       </div>
     </footer>
   )

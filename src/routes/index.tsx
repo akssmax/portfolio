@@ -8,6 +8,7 @@ import { HeroSection } from "@/components/landing/hero-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
+import { TestimonialsSection } from "@/components/landing/testimonials-section"
 import { WorkSection } from "@/components/landing/work-section"
 import { getHomeWorkSections } from "@/lib/sanity/projects"
 
@@ -32,6 +33,9 @@ function HomePage() {
         </ErrorBoundary>
         <ErrorBoundary title="Experience section failed" showHeader={false}>
           <ExperienceSection />
+        </ErrorBoundary>
+        <ErrorBoundary title="Testimonials section failed" showHeader={false}>
+          <TestimonialsSection />
         </ErrorBoundary>
         <ErrorBoundary title="Skills section failed" showHeader={false}>
           <SkillsSection />

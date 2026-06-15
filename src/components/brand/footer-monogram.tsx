@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   motion,
   useReducedMotion,
@@ -7,6 +8,7 @@ import {
   type Variants,
 } from "motion/react"
 
+import { MonogramRunnerGame } from "@/components/brand/monogram-runner-game"
 import { cn } from "@/lib/utils"
 import {
   MONOGRAM_ACCENT,
@@ -249,6 +251,114 @@ export type FooterMonogramProps = {
   strokeWidth?: number
   wrapperClassName?: string
   className?: string
+  enableRunnerGame?: boolean
+}
+
+function MonogramSvg({
+  animation,
+  size,
+  fillTone,
+  strokeTone,
+  trigger,
+  strokeWidth,
+  className,
+  useMotion,
+}: {
+  animation: MonogramAnimation
+  size: MonogramSize
+  fillTone: keyof typeof fillToneClasses
+  strokeTone: keyof typeof strokeToneClasses
+  trigger: MonogramTrigger
+  strokeWidth: number
+  className?: string
+  useMotion: boolean
+}) {
+  const config = getAnimationConfig(animation)
+  const isLoop = animation === "loop" && useMotion
+  const interactionVariant = trigger === "always" ? "hover" : undefined
+
+  const loopStrokeTransition: Transition = {
+    duration: 2.2,
+    ease: "easeInOut",
+    repeat: Infinity,
+  }
+
+  return (
+    <motion.svg
+      viewBox={MONOGRAM_VIEWBOX}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className={cn(
+        sizeClasses[size],
+        fillToneClasses[fillTone],
+        config.svgClassName,
+        className,
+      )}
+      variants={useMotion ? config.svgVariants : undefined}
+      style={{ originX: 0.5, originY: 1 }}
+    >
+      <motion.path
+        d={MONOGRAM_MAIN}
+        fill="currentColor"
+        variants={useMotion ? (config.mainFillVariants ?? config.fillVariants) : undefined}
+        animate={interactionVariant}
+        style={{ originX: "0.2", originY: "0.5" }}
+      />
+      <motion.path
+        d={MONOGRAM_ACCENT}
+        fill="currentColor"
+        variants={useMotion ? (config.accentFillVariants ?? config.fillVariants) : undefined}
+        animate={interactionVariant}
+        style={{ originX: "0.75", originY: "0.75" }}
+      />
+
+      {useMotion && config.showStroke ? (
+        <>
+          <motion.path
+            d={MONOGRAM_MAIN}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={strokeWidth}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            className={strokeToneClasses[strokeTone]}
+            variants={isLoop ? undefined : config.mainStrokeVariants}
+            transition={isLoop ? loopStrokeTransition : config.strokeTransition}
+            animate={
+              isLoop
+                ? { pathLength: [0, 1, 0], opacity: [0.15, 1, 0.15] }
+                : trigger === "always"
+                  ? { pathLength: 1, opacity: 1 }
+                  : interactionVariant
+            }
+          />
+          <motion.path
+            d={MONOGRAM_ACCENT}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={strokeWidth}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            className={strokeToneClasses[strokeTone]}
+            variants={isLoop ? undefined : config.accentStrokeVariants}
+            transition={
+              isLoop
+                ? { ...loopStrokeTransition, delay: 0.35 }
+                : (config.accentStrokeTransition ?? config.strokeTransition)
+            }
+            animate={
+              isLoop
+                ? { pathLength: [0, 1, 0], opacity: [0.15, 1, 0.15] }
+                : trigger === "always"
+                  ? { pathLength: 1, opacity: 1 }
+                  : interactionVariant
+            }
+          />
+        </>
+      ) : null}
+    </motion.svg>
+  )
 }
 
 export function FooterMonogram({
@@ -260,11 +370,14 @@ export function FooterMonogram({
   strokeWidth = 2.5,
   wrapperClassName,
   className,
+  enableRunnerGame = false,
 }: FooterMonogramProps) {
   const shouldReduceMotion = useReducedMotion()
-  const config = getAnimationConfig(animation)
+  const [runnerActive, setRunnerActive] = useState(false)
   const useMotion = !shouldReduceMotion && animation !== "none"
   const isLoop = animation === "loop" && useMotion
+  const canPlayRunner =
+    enableRunnerGame && size === "footer" && !shouldReduceMotion
 
   const containerMotionProps = useMotion
     ? isLoop
@@ -278,98 +391,45 @@ export function FooterMonogram({
           }
     : {}
 
-  const interactionVariant = trigger === "always" ? "hover" : undefined
-
-  const loopStrokeTransition: Transition = {
-    duration: 2.2,
-    ease: "easeInOut",
-    repeat: Infinity,
-  }
+  const monogramSvg = (
+    <MonogramSvg
+      animation={animation}
+      size={size}
+      fillTone={fillTone}
+      strokeTone={strokeTone}
+      trigger={trigger}
+      strokeWidth={strokeWidth}
+      className={className}
+      useMotion={useMotion}
+    />
+  )
 
   return (
     <motion.div
       className={cn(
         "group/monogram flex w-full justify-center overflow-hidden",
         size === "footer" && "pt-4 pb-10 sm:pt-6 sm:pb-12",
+        canPlayRunner && runnerActive && "relative w-full items-end",
         wrapperClassName,
       )}
       variants={useMotion ? containerVariants : undefined}
       {...containerMotionProps}
     >
-      <motion.svg
-        viewBox={MONOGRAM_VIEWBOX}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        className={cn(
-          sizeClasses[size],
-          fillToneClasses[fillTone],
-          config.svgClassName,
-          className,
-        )}
-        variants={useMotion ? config.svgVariants : undefined}
-        style={{ originX: 0.5, originY: 1 }}
-      >
-        <motion.path
-          d={MONOGRAM_MAIN}
-          fill="currentColor"
-          variants={useMotion ? (config.mainFillVariants ?? config.fillVariants) : undefined}
-          animate={interactionVariant}
-          style={{ originX: "0.2", originY: "0.5" }}
-        />
-        <motion.path
-          d={MONOGRAM_ACCENT}
-          fill="currentColor"
-          variants={useMotion ? (config.accentFillVariants ?? config.fillVariants) : undefined}
-          animate={interactionVariant}
-          style={{ originX: "0.75", originY: "0.75" }}
-        />
-
-        {useMotion && config.showStroke ? (
-          <>
-            <motion.path
-              d={MONOGRAM_MAIN}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={strokeWidth}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              className={strokeToneClasses[strokeTone]}
-              variants={isLoop ? undefined : config.mainStrokeVariants}
-              transition={isLoop ? loopStrokeTransition : config.strokeTransition}
-              animate={
-                isLoop
-                  ? { pathLength: [0, 1, 0], opacity: [0.15, 1, 0.15] }
-                  : trigger === "always"
-                    ? { pathLength: 1, opacity: 1 }
-                    : interactionVariant
-              }
-            />
-            <motion.path
-              d={MONOGRAM_ACCENT}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={strokeWidth}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              className={strokeToneClasses[strokeTone]}
-              variants={isLoop ? undefined : config.accentStrokeVariants}
-              transition={
-                isLoop
-                  ? { ...loopStrokeTransition, delay: 0.35 }
-                  : (config.accentStrokeTransition ?? config.strokeTransition)
-              }
-              animate={
-                isLoop
-                  ? { pathLength: [0, 1, 0], opacity: [0.15, 1, 0.15] }
-                  : trigger === "always"
-                    ? { pathLength: 1, opacity: 1 }
-                    : interactionVariant
-              }
-            />
-          </>
-        ) : null}
-      </motion.svg>
+      {canPlayRunner && runnerActive ? (
+        <MonogramRunnerGame onExit={() => setRunnerActive(false)} />
+      ) : canPlayRunner ? (
+        <button
+          type="button"
+          className="cursor-pointer border-0 bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          onClick={() => setRunnerActive(true)}
+          aria-label="Start monogram runner game"
+        >
+          <span className="sr-only">Easter egg: click to play a mini runner game</span>
+          {monogramSvg}
+        </button>
+      ) : (
+        monogramSvg
+      )}
     </motion.div>
   )
 }
