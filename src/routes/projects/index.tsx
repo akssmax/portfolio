@@ -1,14 +1,16 @@
+"use client"
+
+import { useRef } from "react"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 
-import { RouteError } from "@/components/route-error"
-
-import {
-  InteractiveStrandsBackground,
-  useInteractiveStrands,
-} from "@/components/projects/interactive-strands-background"
-import { ProjectGrid } from "@/components/projects/project-grid"
+import { ErrorBoundary } from "@/components/error-boundary"
+import Lightfall from "@/components/Lightfall"
 import { SiteHeader } from "@/components/landing/site-header"
+import { ProjectGrid } from "@/components/projects/project-grid"
+import { RouteError } from "@/components/route-error"
+import { useInView } from "@/hooks/use-in-view"
+import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
 import { getAllProjects } from "@/lib/sanity/projects"
 
 export const Route = createFileRoute("/projects/")({
@@ -17,8 +19,7 @@ export const Route = createFileRoute("/projects/")({
       { title: "Projects — Akshay Saini" },
       {
         name: "description",
-        content:
-          "Selected design engineering projects and case studies.",
+        content: "Selected design engineering projects and case studies.",
       },
     ],
   }),
@@ -30,26 +31,31 @@ export const Route = createFileRoute("/projects/")({
 function ProjectsIndexPage() {
   const projects = Route.useLoaderData()
   const shouldReduceMotion = useReducedMotion()
-  const { dynamicPropsRef, mouseHandlers } = useInteractiveStrands()
+  const mainRef = useRef<HTMLElement>(null)
+  const isMainInView = useInView(mainRef, { threshold: 0.08, initialInView: true })
 
   return (
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main
+        ref={mainRef}
         className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
-        {...(!shouldReduceMotion ? mouseHandlers : {})}
       >
-        <div
-          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-          aria-hidden
-        >
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
           {!shouldReduceMotion ? (
-            <InteractiveStrandsBackground
-              dynamicPropsRef={dynamicPropsRef}
-              className="absolute inset-0"
-            />
+            <ErrorBoundary title="Background animation failed" showHeader={false}>
+              <Lightfall
+                className="absolute inset-0"
+                {...HERO_LIGHTFALL_CONFIG}
+                pointerRootRef={mainRef}
+                paused={!isMainInView}
+              />
+            </ErrorBoundary>
           ) : null}
-          <div className="absolute inset-0 bg-background/75" />
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
+            aria-hidden
+          />
         </div>
 
         <motion.div

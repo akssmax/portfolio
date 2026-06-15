@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowUpRight } from "lucide-react"
 
+import { FooterMonogram } from "@/components/brand/footer-monogram"
 import { Logo } from "@/components/brand/logo"
 import { PrideFlag } from "@/components/landing/pride-flag"
 import { profile } from "@/lib/profile"
@@ -97,6 +98,8 @@ export function SiteFooter() {
           <p>© {new Date().getFullYear()} {profile.name}</p>
           <p>{profile.location}</p>
         </div>
+
+        <FooterMonogram animation="loop" />
       </div>
     </footer>
   )

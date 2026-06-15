@@ -135,6 +135,11 @@ export const customEntries: DocEntry[] = [
     "custom"
   ),
   entry(
+    "footer-monogram",
+    "Large footer watermark monogram with Framer Motion animation variants.",
+    "custom"
+  ),
+  entry(
     "scrollbars",
     "Brand-colored scrollbars with transparent tracks for native and Radix scroll areas.",
     "custom"

@@ -10,6 +10,7 @@ import {
   WorkSectionDemo,
 } from "@/components/design-system/demos/custom-demos"
 import { AiElementsDemo } from "@/components/design-system/demos/ai-elements-demo"
+import { FooterMonogramDemo } from "@/components/design-system/demos/footer-monogram-demo"
 import { M3ShapesDemo } from "@/components/design-system/demos/m3-shapes-demo"
 import { ScrollbarDemo } from "@/components/design-system/demos/scrollbar-demo"
 import { PlaceholderDemo } from "@/components/design-system/demos/placeholder-demo"
@@ -132,6 +133,7 @@ export const componentDemos: Record<string, ComponentType> = {
   "toggle-group": ToggleGroupDemo,
   tooltip: TooltipDemo,
   "m3-shapes": M3ShapesDemo,
+  "footer-monogram": FooterMonogramDemo,
   scrollbars: ScrollbarDemo,
   "mode-toggle": ModeToggleDemo,
   "theme-customizer": ThemeCustomizerDemo,
