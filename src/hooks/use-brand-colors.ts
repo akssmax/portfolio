@@ -47,6 +47,7 @@ export function useStrandColors(): [string, string, string] {
     appearance.neutral,
     appearance.font,
     appearance.radius,
+    appearance.customBrandColor,
     theme,
     resolvedTheme,
   ])
@@ -78,6 +79,7 @@ export function useBrandColors(): BrandColors {
     appearance.neutral,
     appearance.font,
     appearance.radius,
+    appearance.customBrandColor,
     theme,
     resolvedTheme,
   ])

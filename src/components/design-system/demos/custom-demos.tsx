@@ -6,10 +6,15 @@ import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
 import { WorkSection } from "@/components/landing/work-section"
 import { ModeToggle } from "@/components/mode-toggle"
+import { ThemeCustomizer } from "@/components/theme-customizer"
 import { getFallbackFeaturedProjects } from "@/lib/sanity/fallback-projects"
 
 export function ModeToggleDemo() {
   return <ModeToggle />
+}
+
+export function ThemeCustomizerDemo() {
+  return <ThemeCustomizer />
 }
 
 export function SiteHeaderDemo() {

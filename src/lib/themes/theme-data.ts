@@ -35,7 +35,7 @@ const NEUTRAL_TOKEN_KEYS = [
   "sidebar-border",
 ] as const
 
-const BRAND_TOKEN_KEYS = [
+export const BRAND_TOKEN_KEYS = [
   "primary",
   "primary-foreground",
   "secondary",
@@ -68,7 +68,7 @@ function nd(partial: Partial<ThemeTokens>): ThemeTokens {
   return partial as ThemeTokens
 }
 
-function brandLight(
+export function brandLight(
   primary: string,
   partial: Partial<ThemeTokens> = {},
 ): ThemeTokens {
@@ -101,7 +101,7 @@ function brandLight(
   } as ThemeTokens
 }
 
-function brandDark(
+export function brandDark(
   primary: string,
   partial: Partial<ThemeTokens> = {},
 ): ThemeTokens {

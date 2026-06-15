@@ -5,6 +5,12 @@ import { Palette } from "lucide-react"
 import { useAppearance } from "@/components/appearance-provider"
 import { Button } from "@/components/ui/button"
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -13,13 +19,23 @@ import { CustomScrollbar } from "@/components/ui/custom-scrollbar"
 import { Separator } from "@/components/ui/separator"
 
 import { ColorPresetGrid } from "./theme-customizer/color-preset-grid"
+import { ColorVisionPicker } from "./theme-customizer/color-vision-picker"
 import { FontPicker } from "./theme-customizer/font-picker"
+import { FontScalePicker } from "./theme-customizer/font-scale-picker"
 import { ModePicker } from "./theme-customizer/mode-picker"
 import { RadiusPicker } from "./theme-customizer/radius-picker"
 
 export function ThemeCustomizer() {
-  const { appearance, setPalette, setNeutral, setFont, setRadius, mounted } =
-    useAppearance()
+  const {
+    appearance,
+    setPalette,
+    setNeutral,
+    setFont,
+    setRadius,
+    setColorVision,
+    setFontScale,
+    mounted,
+  } = useAppearance()
 
   if (!mounted) {
     return (
@@ -76,6 +92,32 @@ export function ThemeCustomizer() {
           </p>
           <RadiusPicker activeRadius={appearance.radius} onSelect={setRadius} />
         </section>
+
+        <Separator />
+
+        <Accordion type="single" collapsible>
+          <AccordionItem value="accessibility" className="border-none">
+            <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
+              Accessibility
+            </AccordionTrigger>
+            <AccordionContent className="space-y-3 pb-2">
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">Color vision</p>
+                <ColorVisionPicker
+                  activeColorVision={appearance.colorVision}
+                  onSelect={setColorVision}
+                />
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">Text size</p>
+                <FontScalePicker
+                  activeFontScale={appearance.fontScale}
+                  onSelect={setFontScale}
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <Separator />
 

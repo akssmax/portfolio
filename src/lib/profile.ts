@@ -4,7 +4,10 @@ export const profile = {
   role: "Design Engineer",
   company: "100x.bot",
   location: "Bengaluru, India",
-  resumePath: "/resume/akshay-saini-resume.pdf",
+  portrait: {
+    src: "/images/portraits/selfie-2026-03-27.png",
+    shape: "arch",
+  },
   tagline:
     "I design and build product UI for founders and early teams — from Figma to React, so you ship faster with less rework.",
   bio: "With nearly 8 years in product and UX design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.",
@@ -13,6 +16,7 @@ export const profile = {
     phone: "+91 8168238248",
   },
   links: {
+    website: "https://akshaysaini.xyz/",
     linkedin: "https://www.linkedin.com/in/akssmax/",
     github: "https://github.com/akssmax",
     dribbble: "https://dribbble.com/akssmax",
@@ -132,6 +136,12 @@ export const profile = {
       logoSrc: "/tools/googleanalytics.svg",
     },
     {
+      name: "PostHog",
+      category: "Analytics",
+      note: "User analytics",
+      logoSrc: "/tools/posthog.svg",
+    },
+    {
       name: "Notion",
       category: "Ops",
       note: "Project management",
@@ -142,6 +152,24 @@ export const profile = {
       category: "Design",
       note: "UI animation",
       logoSrc: "/tools/jitter.svg",
+    },
+    {
+      name: "Cursor",
+      category: "Coding tools",
+      note: "AI-native code editor",
+      logoSrc: "/tools/cursor.svg",
+    },
+    {
+      name: "Antigravity",
+      category: "Coding tools",
+      note: "Agentic coding",
+      logoSrc: "/tools/antigravity.svg",
+    },
+    {
+      name: "v0",
+      category: "Coding tools",
+      note: "React UI generation",
+      logoSrc: "/tools/v0.svg",
     },
   ],
   experience: [

@@ -145,6 +145,11 @@ export const customEntries: DocEntry[] = [
     "custom"
   ),
   entry(
+    "theme-customizer",
+    "Popover for brand colors, fonts, radius, accessibility, and light/dark mode.",
+    "custom"
+  ),
+  entry(
     "site-header",
     "Portfolio navigation header with anchor links.",
     "custom"
@@ -187,6 +192,7 @@ export const designSystemNav = {
     { title: "Introduction", href: "/design-system" },
     { title: "Colors", href: "/design-system/colors" },
     { title: "Typography", href: "/design-system/typography" },
+    { title: "Accessibility", href: "/design-system/accessibility" },
     { title: "Scrollbars", href: "/design-system/scrollbars" },
   ],
   components: componentEntries.map((e) => ({

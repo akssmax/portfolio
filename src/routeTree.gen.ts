@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -18,9 +19,17 @@ import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
 import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
 import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
+import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
+import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
+import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
 
+const ResumeRoute = ResumeRouteImport.update({
+  id: '/resume',
+  path: '/resume',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -66,6 +75,12 @@ const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
   path: '/colors',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
+const DesignSystemAccessibilityRoute =
+  DesignSystemAccessibilityRouteImport.update({
+    id: '/accessibility',
+    path: '/accessibility',
+    getParentRoute: () => DesignSystemRouteRoute,
+  } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -77,30 +92,48 @@ const DesignSystemComponentsSlugRoute =
     path: '/components/$slug',
     getParentRoute: () => DesignSystemRouteRoute,
   } as any)
+const ApiResumeUnlockRoute = ApiResumeUnlockRouteImport.update({
+  id: '/api/resume/unlock',
+  path: '/api/resume/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
+  id: '/api/resume/session',
+  path: '/api/resume/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/api/resume/session': typeof ApiResumeSessionRoute
+  '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system': typeof DesignSystemIndexRoute
   '/projects': typeof ProjectsIndexRoute
+  '/api/resume/session': typeof ApiResumeSessionRoute
+  '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRoutesById {
@@ -108,13 +141,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
+  '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/api/resume/session': typeof ApiResumeSessionRoute
+  '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
 }
 export interface FileRouteTypes {
@@ -123,38 +160,50 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/about'
+    | '/resume'
     | '/api/chat'
+    | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system/'
     | '/projects/'
+    | '/api/resume/session'
+    | '/api/resume/unlock'
     | '/design-system/components/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/resume'
     | '/api/chat'
+    | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system'
     | '/projects'
+    | '/api/resume/session'
+    | '/api/resume/unlock'
     | '/design-system/components/$slug'
   id:
     | '__root__'
     | '/'
     | '/design-system'
     | '/about'
+    | '/resume'
     | '/api/chat'
+    | '/design-system/accessibility'
     | '/design-system/colors'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
     | '/design-system/'
     | '/projects/'
+    | '/api/resume/session'
+    | '/api/resume/unlock'
     | '/design-system/components/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -162,13 +211,23 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ApiResumeSessionRoute: typeof ApiResumeSessionRoute
+  ApiResumeUnlockRoute: typeof ApiResumeUnlockRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/resume': {
+      id: '/resume'
+      path: '/resume'
+      fullPath: '/resume'
+      preLoaderRoute: typeof ResumeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -232,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemColorsRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/design-system/accessibility': {
+      id: '/design-system/accessibility'
+      path: '/accessibility'
+      fullPath: '/design-system/accessibility'
+      preLoaderRoute: typeof DesignSystemAccessibilityRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -246,10 +312,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemComponentsSlugRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/api/resume/unlock': {
+      id: '/api/resume/unlock'
+      path: '/api/resume/unlock'
+      fullPath: '/api/resume/unlock'
+      preLoaderRoute: typeof ApiResumeUnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resume/session': {
+      id: '/api/resume/session'
+      path: '/api/resume/session'
+      fullPath: '/api/resume/session'
+      preLoaderRoute: typeof ApiResumeSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface DesignSystemRouteRouteChildren {
+  DesignSystemAccessibilityRoute: typeof DesignSystemAccessibilityRoute
   DesignSystemColorsRoute: typeof DesignSystemColorsRoute
   DesignSystemScrollbarsRoute: typeof DesignSystemScrollbarsRoute
   DesignSystemTypographyRoute: typeof DesignSystemTypographyRoute
@@ -258,6 +339,7 @@ interface DesignSystemRouteRouteChildren {
 }
 
 const DesignSystemRouteRouteChildren: DesignSystemRouteRouteChildren = {
+  DesignSystemAccessibilityRoute: DesignSystemAccessibilityRoute,
   DesignSystemColorsRoute: DesignSystemColorsRoute,
   DesignSystemScrollbarsRoute: DesignSystemScrollbarsRoute,
   DesignSystemTypographyRoute: DesignSystemTypographyRoute,
@@ -272,9 +354,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ApiResumeSessionRoute: ApiResumeSessionRoute,
+  ApiResumeUnlockRoute: ApiResumeUnlockRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

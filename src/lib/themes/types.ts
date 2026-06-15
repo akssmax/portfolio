@@ -39,6 +39,15 @@ export type FontPresetId =
 
 export type RadiusPresetId = "default" | "soft" | "sharp"
 
+export type ColorVisionPresetId =
+  | "none"
+  | "protanopia"
+  | "deuteranopia"
+  | "tritanopia"
+  | "achromatopsia"
+
+export type FontScalePresetId = "100" | "112" | "125" | "150"
+
 export type ThemePresetCategory = "brand" | "neutral"
 
 export type ThemePreset = {
@@ -63,11 +72,26 @@ export type RadiusPreset = {
   value: string
 }
 
+export type ColorVisionPreset = {
+  id: ColorVisionPresetId
+  label: string
+  description: string
+}
+
+export type FontScalePreset = {
+  id: FontScalePresetId
+  label: string
+  scale: number
+}
+
 export type AppearanceState = {
   palette: BrandPresetId
   neutral: NeutralPresetId | null
   font: FontPresetId
   radius: RadiusPresetId
+  customBrandColor: string | null
+  colorVision: ColorVisionPresetId
+  fontScale: FontScalePresetId
 }
 
 export const APPEARANCE_STORAGE_KEYS = {
@@ -75,6 +99,9 @@ export const APPEARANCE_STORAGE_KEYS = {
   neutral: "appearance-neutral",
   font: "appearance-font",
   radius: "appearance-radius",
+  customBrandColor: "appearance-custom-brand-color",
+  colorVision: "appearance-color-vision",
+  fontScale: "appearance-font-scale",
 } as const
 
 export const DEFAULT_APPEARANCE: AppearanceState = {
@@ -82,4 +109,7 @@ export const DEFAULT_APPEARANCE: AppearanceState = {
   neutral: "stone",
   font: "geist-pixel-square",
   radius: "default",
+  customBrandColor: null,
+  colorVision: "none",
+  fontScale: "100",
 }

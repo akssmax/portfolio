@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { Download, GraduationCap, Mail, MapPin, Phone } from "lucide-react"
+import { GraduationCap, Mail, MapPin, Phone } from "lucide-react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { DownloadResumeButton } from "@/features/resume/download-resume-button"
 import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
 import { profile } from "@/lib/profile"
 
@@ -97,12 +97,7 @@ export function AboutHero() {
             <Badge variant="secondary" className="w-fit">
               {profile.role} @ {profile.company}
             </Badge>
-            <Button variant="outline" size="sm" className="w-fit" asChild>
-              <a href={profile.resumePath} download>
-                <Download aria-hidden />
-                Download resume
-              </a>
-            </Button>
+            <DownloadResumeButton />
           </motion.aside>
         </div>
       </motion.div>

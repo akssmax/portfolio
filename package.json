@@ -29,6 +29,7 @@
     "@fontsource-variable/source-serif-4": "^5.2.9",
     "@portabletext/react": "^6.2.0",
     "@portabletext/toolkit": "^5.0.2",
+    "@react-pdf/renderer": "^4.5.1",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
     "@streamdown/code": "^1.1.1",

@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react"
+import { useTheme } from "next-themes"
 
 import {
   applyAppearanceToDocument,
@@ -18,7 +19,9 @@ import { DEFAULT_APPEARANCE } from "@/lib/themes/registry"
 import type {
   AppearanceState,
   BrandPresetId,
+  ColorVisionPresetId,
   FontPresetId,
+  FontScalePresetId,
   NeutralPresetId,
   RadiusPresetId,
 } from "@/lib/themes/types"
@@ -29,6 +32,10 @@ type AppearanceContextValue = {
   setNeutral: (neutral: NeutralPresetId | null) => void
   setFont: (font: FontPresetId) => void
   setRadius: (radius: RadiusPresetId) => void
+  setColorVision: (colorVision: ColorVisionPresetId) => void
+  setFontScale: (fontScale: FontScalePresetId) => void
+  setCustomBrandColor: (color: string) => void
+  clearCustomBrandColor: () => void
   mounted: boolean
 }
 
@@ -37,6 +44,7 @@ const AppearanceContext = createContext<AppearanceContextValue | null>(null)
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
   const [appearance, setAppearance] = useState<AppearanceState>(DEFAULT_APPEARANCE)
   const [mounted, setMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     const stored = readAppearanceFromStorage()
@@ -44,6 +52,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     applyAppearanceToDocument(stored)
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+    applyAppearanceToDocument(appearance)
+  }, [appearance, mounted, resolvedTheme])
 
   const updateAppearance = useCallback(
     (updater: (prev: AppearanceState) => AppearanceState) => {
@@ -59,7 +72,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
   const setPalette = useCallback(
     (palette: BrandPresetId) => {
-      updateAppearance((prev) => ({ ...prev, palette }))
+      updateAppearance((prev) => ({
+        ...prev,
+        palette,
+        customBrandColor: null,
+      }))
     },
     [updateAppearance],
   )
@@ -85,6 +102,31 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     [updateAppearance],
   )
 
+  const setColorVision = useCallback(
+    (colorVision: ColorVisionPresetId) => {
+      updateAppearance((prev) => ({ ...prev, colorVision }))
+    },
+    [updateAppearance],
+  )
+
+  const setFontScale = useCallback(
+    (fontScale: FontScalePresetId) => {
+      updateAppearance((prev) => ({ ...prev, fontScale }))
+    },
+    [updateAppearance],
+  )
+
+  const setCustomBrandColor = useCallback(
+    (color: string) => {
+      updateAppearance((prev) => ({ ...prev, customBrandColor: color }))
+    },
+    [updateAppearance],
+  )
+
+  const clearCustomBrandColor = useCallback(() => {
+    updateAppearance((prev) => ({ ...prev, customBrandColor: null }))
+  }, [updateAppearance])
+
   const value = useMemo(
     () => ({
       appearance,
@@ -92,9 +134,24 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
       setNeutral,
       setFont,
       setRadius,
+      setColorVision,
+      setFontScale,
+      setCustomBrandColor,
+      clearCustomBrandColor,
       mounted,
     }),
-    [appearance, setPalette, setNeutral, setFont, setRadius, mounted],
+    [
+      appearance,
+      setPalette,
+      setNeutral,
+      setFont,
+      setRadius,
+      setColorVision,
+      setFontScale,
+      setCustomBrandColor,
+      clearCustomBrandColor,
+      mounted,
+    ],
   )
 
   return (

@@ -2,15 +2,14 @@ import { useId } from "react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import {
+  LOGOMARK_ACCENT,
+  LOGOMARK_MAIN,
+} from "@/lib/brand/logo-paths"
 
 type LogoProps = {
   className?: string
 }
-
-const LOGOMARK_MAIN =
-  "M133.813 208H0L138.667 0L174.529 53.7853L107.571 154.215H169.797L133.813 208Z"
-const LOGOMARK_ACCENT =
-  "M194.81 208L230.655 154.215H169.798L205.591 100.343L277.386 208H194.81Z"
 
 const WORDMARK_PATHS = [
   "M363.636 72.8866H332.644L327.67 87.5506H306.488L336.544 4.48926H359.979L390.035 87.5506H368.611L363.636 72.8866ZM348.14 26.8666L337.966 57.2693H358.436L348.14 26.8666Z",

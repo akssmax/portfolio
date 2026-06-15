@@ -54,6 +54,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       data-neutral="stone"
       data-font="geist-pixel-square"
       data-radius="default"
+      data-color-vision="none"
+      data-font-scale="100"
     >
       <head>
         <HeadContent />

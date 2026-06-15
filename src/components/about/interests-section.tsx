@@ -1,16 +1,24 @@
 import { motion, useReducedMotion } from "motion/react"
 import { ArrowUpRight } from "lucide-react"
 
+import {
+  DribbbleIcon,
+  GithubIcon,
+  LinkedinIcon,
+  MediumIcon,
+  YoutubeIcon,
+} from "@/components/icons/social-icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { DownloadResumeButton } from "@/features/resume/download-resume-button"
 import { profile } from "@/lib/profile"
 
 const socialLinks = [
-  { label: "LinkedIn", href: profile.links.linkedin },
-  { label: "GitHub", href: profile.links.github },
-  { label: "Dribbble", href: profile.links.dribbble },
-  { label: "Medium", href: profile.links.medium },
-  { label: "YouTube", href: profile.links.youtube },
+  { label: "LinkedIn", href: profile.links.linkedin, Icon: LinkedinIcon },
+  { label: "GitHub", href: profile.links.github, Icon: GithubIcon },
+  { label: "Dribbble", href: profile.links.dribbble, Icon: DribbbleIcon },
+  { label: "Medium", href: profile.links.medium, Icon: MediumIcon },
+  { label: "YouTube", href: profile.links.youtube, Icon: YoutubeIcon },
 ] as const
 
 export function InterestsSection() {
@@ -78,15 +86,16 @@ export function InterestsSection() {
         >
           <h2 className="text-lg font-semibold text-foreground">Connect</h2>
           <nav className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-            {socialLinks.map((item) => (
+            {socialLinks.map(({ label, href, Icon }) => (
               <a
-                key={item.label}
-                href={item.href}
+                key={label}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 text-sm text-foreground transition-colors hover:text-primary"
+                className="group inline-flex items-center gap-2 text-sm text-foreground transition-colors hover:text-primary"
               >
-                {item.label}
+                <Icon className="shrink-0 opacity-70 transition-opacity group-hover:opacity-100" />
+                {label}
                 <ArrowUpRight className="size-3.5 opacity-60 transition-transform group-hover:-translate-y-px group-hover:translate-x-px group-hover:opacity-100" />
               </a>
             ))}
@@ -95,11 +104,7 @@ export function InterestsSection() {
             <Button asChild>
               <a href="/#contact">Get in touch</a>
             </Button>
-            <Button variant="outline" asChild>
-              <a href={profile.resumePath} download>
-                Download resume
-              </a>
-            </Button>
+            <DownloadResumeButton showIcon={false} size="default" />
           </div>
         </motion.div>
       </motion.div>

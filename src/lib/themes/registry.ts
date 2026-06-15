@@ -2,8 +2,12 @@ import { THEME_PRESET_DATA, NEUTRAL_THEME_PRESET_IDS } from "./theme-data"
 import type {
   AppearanceState,
   BrandPresetId,
+  ColorVisionPreset,
+  ColorVisionPresetId,
   FontPreset,
   FontPresetId,
+  FontScalePreset,
+  FontScalePresetId,
   NeutralPresetId,
   RadiusPreset,
   RadiusPresetId,
@@ -122,6 +126,41 @@ export const RADIUS_PRESETS: RadiusPreset[] = [
   { id: "sharp", label: "Sharp", value: "0.375rem" },
 ]
 
+export const COLOR_VISION_PRESETS: ColorVisionPreset[] = [
+  {
+    id: "none",
+    label: "None",
+    description: "Default theme colors",
+  },
+  {
+    id: "protanopia",
+    label: "Protanopia",
+    description: "Red–green safe palette",
+  },
+  {
+    id: "deuteranopia",
+    label: "Deuteranopia",
+    description: "Red–green safe palette",
+  },
+  {
+    id: "tritanopia",
+    label: "Tritanopia",
+    description: "Blue–yellow safe palette",
+  },
+  {
+    id: "achromatopsia",
+    label: "Achromatopsia",
+    description: "High-contrast grayscale charts",
+  },
+]
+
+export const FONT_SCALE_PRESETS: FontScalePreset[] = [
+  { id: "100", label: "100%", scale: 1 },
+  { id: "112", label: "112%", scale: 1.12 },
+  { id: "125", label: "125%", scale: 1.25 },
+  { id: "150", label: "150%", scale: 1.5 },
+]
+
 export function isThemePresetId(value: string): value is ThemePresetId {
   return THEME_PRESETS.some((preset) => preset.id === value)
 }
@@ -142,12 +181,23 @@ export function isRadiusPresetId(value: string): value is RadiusPresetId {
   return RADIUS_PRESETS.some((preset) => preset.id === value)
 }
 
+export function isColorVisionPresetId(value: string): value is ColorVisionPresetId {
+  return COLOR_VISION_PRESETS.some((preset) => preset.id === value)
+}
+
+export function isFontScalePresetId(value: string): value is FontScalePresetId {
+  return FONT_SCALE_PRESETS.some((preset) => preset.id === value)
+}
+
 export function parseAppearanceState(
   partial?: {
     palette?: string | null
     neutral?: string | null
     font?: string | null
     radius?: string | null
+    customBrandColor?: string | null
+    colorVision?: string | null
+    fontScale?: string | null
   },
 ): AppearanceState {
   const storedNeutral =
@@ -165,6 +215,14 @@ export function parseAppearanceState(
     }
   }
 
+  const customBrandColor =
+    partial?.customBrandColor &&
+    /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(partial.customBrandColor.trim())
+      ? partial.customBrandColor.trim().length === 4
+        ? `#${partial.customBrandColor[1]}${partial.customBrandColor[1]}${partial.customBrandColor[2]}${partial.customBrandColor[2]}${partial.customBrandColor[3]}${partial.customBrandColor[3]}`.toUpperCase()
+        : partial.customBrandColor.trim().toUpperCase()
+      : null
+
   return {
     palette,
     neutral,
@@ -176,6 +234,15 @@ export function parseAppearanceState(
       partial?.radius && isRadiusPresetId(partial.radius)
         ? partial.radius
         : DEFAULT_APPEARANCE.radius,
+    customBrandColor,
+    colorVision:
+      partial?.colorVision && isColorVisionPresetId(partial.colorVision)
+        ? partial.colorVision
+        : DEFAULT_APPEARANCE.colorVision,
+    fontScale:
+      partial?.fontScale && isFontScalePresetId(partial.fontScale)
+        ? partial.fontScale
+        : DEFAULT_APPEARANCE.fontScale,
   }
 }
 

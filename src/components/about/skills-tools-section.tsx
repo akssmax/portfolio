@@ -4,7 +4,28 @@ import { TechLogo } from "@/components/projects/blocks/tech-logo"
 import { Badge } from "@/components/ui/badge"
 import { profile } from "@/lib/profile"
 
-const toolCategories = [...new Set(profile.tools.map((tool) => tool.category))]
+const toolCategoryOrder = [
+  "Design",
+  "Coding tools",
+  "Research",
+  "Build",
+  "Analytics",
+  "Ops",
+] as const
+
+const toolCategories = [
+  ...toolCategoryOrder.filter((category) =>
+    profile.tools.some((tool) => tool.category === category),
+  ),
+  ...new Set(
+    profile.tools
+      .map((tool) => tool.category)
+      .filter(
+        (category) =>
+          !toolCategoryOrder.includes(category as (typeof toolCategoryOrder)[number]),
+      ),
+  ),
+]
 
 export function SkillsToolsSection() {
   const shouldReduceMotion = useReducedMotion()

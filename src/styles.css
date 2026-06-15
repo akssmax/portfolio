@@ -14,6 +14,7 @@
 @import "./lib/themes/themes/fonts.css";
 @import "./lib/themes/themes/radius.css";
 @import "./lib/themes/themes/surfaces.css";
+@import "./lib/themes/themes/accessibility.css";
 @import "./styles/scrollbars.css";
 
 @custom-variant dark (&:is(.dark *));
