@@ -19,11 +19,22 @@ type CompanyLogoBarProps = {
   label?: string
 }
 
-const svgLogoClassName =
-  "h-7 w-auto max-w-[6.5rem] text-muted-foreground opacity-55 transition duration-200 group-hover:scale-105 group-hover:text-foreground group-hover:opacity-100 dark:opacity-60"
+const LOGO_HEIGHT_CLASS = "h-7"
+const LOGO_MAX_WIDTH_CLASS = "max-w-[6.5rem]"
 
-const imgLogoClassName =
-  "h-7 w-auto max-w-[6.5rem] object-contain opacity-55 grayscale transition duration-200 group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-0 dark:opacity-60 dark:group-hover:invert"
+const logoSlotClassName = cn(
+  "flex items-center",
+  LOGO_HEIGHT_CLASS,
+  LOGO_MAX_WIDTH_CLASS,
+)
+
+const svgLogoClassName = cn(
+  "block h-full w-auto max-w-full text-muted-foreground opacity-55 transition duration-200 group-hover:scale-105 group-hover:text-foreground group-hover:opacity-100 dark:opacity-60",
+)
+
+const imgLogoClassName = cn(
+  "block h-full w-auto max-w-full object-contain object-left opacity-55 grayscale transition duration-200 group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-0 dark:opacity-60 dark:group-hover:invert",
+)
 
 function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) {
   const [failed, setFailed] = useState(false)
@@ -35,7 +46,9 @@ function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) 
     ) : logoSrc === "/companies/100x-bot.svg" ? (
       <HundredXLogo title={name} className={svgLogoClassName} />
     ) : failed ? (
-      <span className="text-sm font-medium text-muted-foreground">{name}</span>
+      <span className="text-sm font-medium leading-none text-muted-foreground">
+        {name}
+      </span>
     ) : (
       <img
         src={logoSrc}
@@ -47,7 +60,7 @@ function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) 
     )
 
   const triggerClassName =
-    "group inline-flex rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    "group inline-flex h-7 max-w-[6.5rem] items-center rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 
   const trigger = websiteUrl ? (
     <a
@@ -56,10 +69,12 @@ function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) 
       rel="noopener noreferrer"
       className={triggerClassName}
     >
-      {logo}
+      <span className={logoSlotClassName}>{logo}</span>
     </a>
   ) : (
-    <span className={triggerClassName}>{logo}</span>
+    <span className={triggerClassName}>
+      <span className={logoSlotClassName}>{logo}</span>
+    </span>
   )
 
   return (
@@ -100,7 +115,7 @@ export function CompanyLogoBar({
         aria-label="Companies worked with"
       >
         {employers.map((employer) => (
-          <li key={employer.name}>
+          <li key={employer.name} className="flex h-7 items-center">
             <LogoBarItem {...employer} />
           </li>
         ))}

@@ -1,6 +1,6 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { motion, useReducedMotion } from "motion/react"
+import { createFileRoute } from "@tanstack/react-router"
 
+import { AboutConnectSection } from "@/components/about/about-connect-section"
 import { AboutHero } from "@/components/about/about-hero"
 import { EducationSection } from "@/components/about/education-section"
 import { ExperienceTimeline } from "@/components/about/experience-timeline"
@@ -24,8 +24,6 @@ export const Route = createFileRoute("/about")({
 })
 
 function AboutPage() {
-  const shouldReduceMotion = useReducedMotion()
-
   return (
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
@@ -35,21 +33,7 @@ function AboutPage() {
         <EducationSection />
         <SkillsToolsSection />
         <InterestsSection />
-        <motion.div
-          className="border-t border-border py-8"
-          initial={shouldReduceMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <Link
-              to="/"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Back to home
-            </Link>
-          </div>
-        </motion.div>
+        <AboutConnectSection />
       </main>
       <SiteFooter />
     </div>

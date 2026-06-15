@@ -32,7 +32,6 @@ import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
@@ -227,9 +226,6 @@ export function PortfolioChatSheet({
       >
         <SheetHeader className="border-b px-4 py-4">
           <SheetTitle>Ask about Akshay</SheetTitle>
-          <SheetDescription>
-            AI assistant grounded in portfolio projects, experience, and skills.
-          </SheetDescription>
         </SheetHeader>
 
         <Conversation className="min-h-0 flex-1">

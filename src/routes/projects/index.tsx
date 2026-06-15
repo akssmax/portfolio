@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { ErrorBoundary } from "@/components/error-boundary"
 import Lightfall from "@/components/Lightfall"
 import { SiteHeader } from "@/components/landing/site-header"
+import { SiteFooter } from "@/components/landing/site-footer"
 import { ProjectGrid } from "@/components/projects/project-grid"
 import { RouteError } from "@/components/route-error"
 import { useInView } from "@/hooks/use-in-view"
@@ -85,6 +86,7 @@ function ProjectsIndexPage() {
           <ProjectGrid projects={projects} animated={false} />
         </motion.div>
       </main>
+      <SiteFooter />
     </div>
   )
 }

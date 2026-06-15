@@ -6,13 +6,8 @@ import { motion, useReducedMotion } from "motion/react"
 import { PromptInput } from "@/components/ai-elements/prompt-input"
 import { PortfolioChatSheet } from "@/components/landing/portfolio-chat-sheet"
 import { Suggestion } from "@/components/ai-elements/suggestion"
+import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
 import { cn } from "@/lib/utils"
-
-const HERO_SUGGESTIONS = [
-  { label: "Why hire?", query: "Why should we hire Akshay?" },
-  { label: "About Kodo", query: "Tell me about the Kodo project" },
-  { label: "Design systems", query: "What design systems experience does Akshay have?" },
-] as const
 
 type AskAiPromptProps = {
   className?: string
@@ -23,6 +18,7 @@ export function AskAiPrompt({ className }: AskAiPromptProps) {
   const [input, setInput] = useState("")
   const [sheetOpen, setSheetOpen] = useState(false)
   const [initialMessage, setInitialMessage] = useState<string | null>(null)
+  const [suggestions] = useState(() => getRandomHeroPromptSuggestions())
 
   const openWithMessage = useCallback((message: string) => {
     setInitialMessage(message)
@@ -62,13 +58,13 @@ export function AskAiPrompt({ className }: AskAiPromptProps) {
             singleLine
           />
           <div className="flex flex-wrap gap-1.5">
-            {HERO_SUGGESTIONS.map((item) => (
+            {suggestions.map((item) => (
               <Suggestion
-                key={item.label}
+                key={item.query}
                 suggestion={item.label}
                 onClick={() => handleSuggestion(item.query)}
                 size="sm"
-                className="h-7 rounded-full px-2.5 text-xs"
+                className="h-7 shrink-0 rounded-full px-2.5 text-xs whitespace-nowrap"
               />
             ))}
           </div>
