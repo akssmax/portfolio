@@ -8,15 +8,11 @@ import { ResumeLogomark } from "./resume-logomark"
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
+    position: "relative",
     fontFamily: "Helvetica",
     fontSize: 10,
     lineHeight: 1.45,
     color: "#171717",
-  },
-  sidebar: {
-    width: 52,
-    position: "relative",
   },
   sidebarStripe: {
     position: "absolute",
@@ -26,11 +22,10 @@ const styles = StyleSheet.create({
     width: 8,
   },
   content: {
-    flex: 1,
     paddingTop: 34,
     paddingBottom: 36,
     paddingRight: 40,
-    paddingLeft: 8,
+    paddingLeft: 60,
   },
   header: {
     marginBottom: 20,
@@ -174,6 +169,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  footerMark: {
+    width: 18,
+    height: 13.4,
+  },
   footerText: {
     fontSize: 8,
     color: "#737373",
@@ -217,9 +216,10 @@ export function DesignerResumeLayout({
 
   return (
     <Page size="A4" style={styles.page}>
-      <View style={styles.sidebar}>
-        <View style={[styles.sidebarStripe, { backgroundColor: brandColor }]} />
-      </View>
+      <View
+        fixed
+        style={[styles.sidebarStripe, { backgroundColor: brandColor }]}
+      />
 
       <View style={styles.content}>
         <View style={[styles.header, { backgroundColor: tint }]}>
@@ -439,7 +439,9 @@ export function DesignerResumeLayout({
         ) : null}
 
         <View style={styles.footer}>
-          <ResumeLogomark brandColor={brandColor} width={18} />
+          <View style={styles.footerMark}>
+            <ResumeLogomark brandColor={brandColor} width={18} />
+          </View>
           <Text style={styles.footerText}>Akshay Saini · Design Engineer</Text>
         </View>
       </View>
