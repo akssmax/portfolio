@@ -16,6 +16,7 @@
     "capture:chat-shell": "node --import tsx scripts/capture-chat-shell-screenshots.ts",
     "capture:kodo": "node --import tsx scripts/capture-kodo-screenshots.ts",
     "generate:themes": "node --import tsx scripts/generate-theme-css.ts",
+    "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
     "build:rag": "node --env-file=.env.local --import tsx scripts/build-rag-index.ts",
     "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts"
   },

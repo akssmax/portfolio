@@ -8,14 +8,13 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import {
+  MONOGRAM_ACCENT,
+  MONOGRAM_MAIN,
+  MONOGRAM_VIEWBOX,
+} from "@/lib/brand/monogram-mark"
 
-export const MONOGRAM_VIEWBOX = "-64 0 205 153"
-
-export const MONOGRAM_MAIN =
-  "M34.9006 153H-64L38.4806 0L64.9829 39.5669L15.5068 113.433H61.4801L34.9006 153Z"
-
-export const MONOGRAM_ACCENT =
-  "M79.9728 153L106.462 113.433H61.4805L87.9441 73.8148L141 153H79.9728Z"
+export { MONOGRAM_ACCENT, MONOGRAM_MAIN, MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 
 export const MONOGRAM_ANIMATIONS = [
   {
