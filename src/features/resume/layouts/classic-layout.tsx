@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     color: "#171717",
   },
   header: {
-    marginBottom: 18,
+    marginBottom: 16,
     paddingBottom: 12,
     borderBottomWidth: 2,
   },

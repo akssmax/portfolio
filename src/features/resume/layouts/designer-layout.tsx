@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import { hexToRgba } from "../color-utils"
+import { resolvePdfAssetUrl } from "../pdf-asset-url"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 
@@ -15,9 +16,6 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     width: 52,
-    paddingTop: 36,
-    paddingHorizontal: 14,
-    alignItems: "center",
     position: "relative",
   },
   sidebarStripe: {
@@ -36,9 +34,8 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    padding: 14,
+    borderRadius: 8,
   },
   headerRow: {
     flexDirection: "row",
@@ -47,13 +44,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   portrait: {
-    width: 52,
-    height: 52,
+    width: 72,
+    height: 72,
     borderRadius: 12,
     objectFit: "cover",
   },
   headerText: {
     flex: 1,
+    paddingTop: 2,
   },
   headerLine: {
     paddingBottom: 8,
@@ -66,7 +64,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 11,
     fontWeight: 700,
-    color: "#404040",
   },
   meta: {
     fontSize: 9,
@@ -76,7 +73,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 6,
-    marginTop: 8,
   },
   contactPill: {
     paddingVertical: 4,
@@ -91,7 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    paddingBottom: 8,
+    marginBottom: 8,
   },
   sectionAccent: {
     width: 14,
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 700,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 0.8,
     color: "#0F1923",
   },
   paragraph: {
@@ -120,10 +116,24 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingBottom: 4,
   },
+  jobTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    flex: 1,
+    minWidth: 0,
+  },
+  jobLogo: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    objectFit: "contain",
+  },
   jobTitle: {
     fontSize: 10.5,
     fontWeight: 700,
     color: "#171717",
+    flex: 1,
   },
   jobMeta: {
     fontSize: 8.5,
@@ -153,6 +163,7 @@ const styles = StyleSheet.create({
   },
   link: {
     textDecoration: "none",
+    marginBottom: 4,
   },
   footer: {
     marginTop: 8,
@@ -189,6 +200,10 @@ function Section({
   )
 }
 
+function formatWebsiteLabel(url: string) {
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+}
+
 export function DesignerResumeLayout({
   document,
   brandColor,
@@ -198,26 +213,16 @@ export function DesignerResumeLayout({
 }) {
   const tint = hexToRgba(brandColor, 0.08)
   const pillBackground = hexToRgba(brandColor, 0.12)
+  const pillBorder = hexToRgba(brandColor, 0.25)
 
   return (
     <Page size="A4" style={styles.page}>
       <View style={styles.sidebar}>
         <View style={[styles.sidebarStripe, { backgroundColor: brandColor }]} />
-        <ResumeLogomark brandColor={brandColor} width={24} />
       </View>
 
       <View style={styles.content}>
-        <View
-          style={[
-            styles.header,
-            {
-              backgroundColor: tint,
-              padding: 14,
-              borderRadius: 8,
-              borderBottomWidth: 0,
-            },
-          ]}
-        >
+        <View style={[styles.header, { backgroundColor: tint }]}>
           <View style={styles.headerRow}>
             <View style={styles.headerText}>
               <View style={styles.headerLine}>
@@ -234,11 +239,7 @@ export function DesignerResumeLayout({
             </View>
             {document.portrait ? (
               <Image
-                src={
-                  typeof window !== "undefined"
-                    ? `${window.location.origin}${document.portrait.src}`
-                    : document.portrait.src
-                }
+                src={resolvePdfAssetUrl(document.portrait.src)}
                 style={styles.portrait}
               />
             ) : null}
@@ -269,7 +270,7 @@ export function DesignerResumeLayout({
                     { backgroundColor: pillBackground, color: brandColor },
                   ]}
                 >
-                  {document.contact.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                  {formatWebsiteLabel(document.contact.website)}
                 </Text>
               ) : null}
             </View>
@@ -294,9 +295,17 @@ export function DesignerResumeLayout({
                 style={[styles.job, { borderLeftColor: brandColor }]}
               >
                 <View style={styles.jobHeader}>
-                  <Text style={styles.jobTitle}>
-                    {job.role} · {job.company}
-                  </Text>
+                  <View style={styles.jobTitleRow}>
+                    {job.logoSrc ? (
+                      <Image
+                        src={resolvePdfAssetUrl(job.logoSrc)}
+                        style={styles.jobLogo}
+                      />
+                    ) : null}
+                    <Text style={styles.jobTitle}>
+                      {job.role} · {job.company}
+                    </Text>
+                  </View>
                   <Text style={styles.jobMeta}>
                     {job.period}
                     {"\n"}
@@ -340,7 +349,7 @@ export function DesignerResumeLayout({
                     styles.skillPill,
                     {
                       backgroundColor: pillBackground,
-                      borderColor: hexToRgba(brandColor, 0.25),
+                      borderColor: pillBorder,
                       color: "#262626",
                     },
                   ]}
@@ -388,7 +397,7 @@ export function DesignerResumeLayout({
                     styles.skillPill,
                     {
                       backgroundColor: pillBackground,
-                      borderColor: hexToRgba(brandColor, 0.25),
+                      borderColor: pillBorder,
                       color: "#262626",
                     },
                   ]}
@@ -407,7 +416,7 @@ export function DesignerResumeLayout({
                 src={document.contact.website}
                 style={[styles.link, { color: brandColor }]}
               >
-                <Text style={styles.paragraph}>{document.contact.website}</Text>
+                <Text>{document.contact.website}</Text>
               </Link>
             ) : null}
             {document.contact.linkedin ? (
@@ -415,7 +424,7 @@ export function DesignerResumeLayout({
                 src={document.contact.linkedin}
                 style={[styles.link, { color: brandColor }]}
               >
-                <Text style={styles.paragraph}>{document.contact.linkedin}</Text>
+                <Text>{document.contact.linkedin}</Text>
               </Link>
             ) : null}
             {document.contact.github ? (
@@ -423,7 +432,7 @@ export function DesignerResumeLayout({
                 src={document.contact.github}
                 style={[styles.link, { color: brandColor }]}
               >
-                <Text style={styles.paragraph}>{document.contact.github}</Text>
+                <Text>{document.contact.github}</Text>
               </Link>
             ) : null}
           </Section>
