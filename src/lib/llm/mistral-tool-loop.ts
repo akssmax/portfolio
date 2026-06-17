@@ -12,6 +12,8 @@ export type MistralToolLoopOptions = {
   maxTokens?: number
   responseFormat?: { type: "json_object" }
   enableTools?: boolean
+  /** When false, the final assistant reply is returned in `content` but not appended to `messages` (for streaming). */
+  appendFinalAssistant?: boolean
   toolContext?: ToolExecutionContext
   onToolStart?: (payload: { name: string; query?: string }) => void
   onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void
@@ -83,6 +85,7 @@ export async function runMistralToolLoop(
   const messages = [...options.messages]
   const searchesUsed = { count: 0 }
   const enableTools = options.enableTools ?? true
+  const appendFinalAssistant = options.appendFinalAssistant ?? true
 
   for (let round = 0; round < maxRounds; round += 1) {
     const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -166,7 +169,9 @@ export async function runMistralToolLoop(
     }
 
     const content = assistantMessage?.content ?? ""
-    messages.push({ role: "assistant", content })
+    if (appendFinalAssistant) {
+      messages.push({ role: "assistant", content })
+    }
     return { messages, content }
   }
 
@@ -192,7 +197,9 @@ export async function runMistralToolLoop(
 
   const payload = (await finalResponse.json()) as MistralCompletionResponse
   const content = payload.choices?.[0]?.message?.content ?? ""
-  messages.push({ role: "assistant", content })
+  if (appendFinalAssistant) {
+    messages.push({ role: "assistant", content })
+  }
   return { messages, content }
 }
 

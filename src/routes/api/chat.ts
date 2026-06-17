@@ -285,6 +285,7 @@ export const Route = createFileRoute("/api/chat")({
                 messages: finalMessages,
                 maxRounds: 2,
                 maxSearches: 3,
+                appendFinalAssistant: false,
                 temperature: validation.temperature,
                 maxTokens: validation.maxTokens,
                 toolContext: {

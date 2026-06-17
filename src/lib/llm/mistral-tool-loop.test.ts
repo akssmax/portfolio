@@ -72,4 +72,32 @@ describe("runMistralToolLoop", () => {
     expect(result.content).toBe("Final answer")
     expect(mistralCalls).toBe(2)
   })
+
+  it("can defer appending the final assistant message for streaming", async () => {
+    const fetchMock = vi.fn(async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              finish_reason: "stop",
+              message: { role: "assistant", content: "Stream me" },
+            },
+          ],
+        }),
+        { status: 200 },
+      ),
+    )
+
+    vi.stubGlobal("fetch", fetchMock)
+
+    const result = await runMistralToolLoop({
+      apiKey: "test-key",
+      model: "mistral-small-latest",
+      messages: [{ role: "user", content: "Hello" }],
+      appendFinalAssistant: false,
+    })
+
+    expect(result.content).toBe("Stream me")
+    expect(result.messages).toEqual([{ role: "user", content: "Hello" }])
+  })
 })
