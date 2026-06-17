@@ -28,7 +28,7 @@ const MORPH_DURATION = 0.75
 export const MORPH_IMAGE_FADE_DELAY = 0.28
 export const MORPH_IMAGE_FADE_DURATION = 0.45
 export const AUTO_CYCLE_INTERVAL_MS = 6000
-const INDEX_STORAGE_KEY = "hero-portrait-index"
+const INDEX_STORAGE_KEY = "hero-portrait-index-v2"
 
 export function readStoredHeroPortraitIndex(length: number) {
   if (typeof sessionStorage === "undefined" || length < 1) return 0

@@ -6,6 +6,10 @@ import {
   getM3ShapeSrc,
   type M3ShapeId,
 } from "@/lib/m3-shapes"
+import {
+  M3_PORTRAIT_FRAMING,
+  M3_SHAPE_VIEWBOX,
+} from "@/lib/m3-shape-paths"
 import { cn } from "@/lib/utils"
 
 export function getM3ShapeMaskStyle(shape: M3ShapeId): CSSProperties {
@@ -213,7 +217,10 @@ export function M3ShapeImage({
     <div
       role="img"
       aria-label={alt}
-      className={cn("relative block shrink-0 bg-transparent", className)}
+      className={cn(
+        "relative block shrink-0 overflow-hidden bg-primary",
+        className,
+      )}
       style={{
         ...getM3ShapeMaskStyle(shape),
         ...style,
@@ -225,7 +232,11 @@ export function M3ShapeImage({
         alt=""
         aria-hidden
         draggable={false}
-        className="block size-full object-cover"
+        className="relative block size-full object-contain"
+        style={{
+          transform: `translateY(${(M3_PORTRAIT_FRAMING.yOffset / M3_SHAPE_VIEWBOX) * 100}%) scale(${M3_PORTRAIT_FRAMING.scale})`,
+          transformOrigin: "center center",
+        }}
       />
     </div>
   )

@@ -5,27 +5,17 @@ import type { M3ShapeId } from "@/lib/m3-shapes"
 /** Shapes that support SVG path morphing in M3FeatureImage. */
 const MORPHABLE_SHAPE_POOL = Object.keys(m3ShapePaths) as M3ShapeId[]
 
-/** All available selfies — existing set plus newer ones. */
+/** Transparent cutout selfies — brand color shows through the M3 shape behind them. */
 const HERO_SELFIE_SOURCES = [
   "/images/portraits/01.webp",
   "/images/portraits/02.webp",
   "/images/portraits/03.webp",
   "/images/portraits/04.webp",
-  "/images/portraits/05.webp",
-  "/images/portraits/06.webp",
-  "/images/portraits/07.webp",
-  "/images/portraits/08.webp",
-  "/images/portraits/selfie-2026-02-03.webp",
-  "/images/portraits/selfie-2026-02-14-a.webp",
-  "/images/portraits/selfie-2026-02-14-b.webp",
-  "/images/portraits/selfie-2026-03-04.webp",
-  "/images/portraits/selfie-2026-03-05.webp",
-  "/images/portraits/selfie-2026-03-27.webp",
 ] as const
 
 export const HERO_PORTRAIT_SLOT_COUNT = HERO_SELFIE_SOURCES.length
 
-const SHUFFLE_STORAGE_KEY = "hero-portrait-shuffle-v3"
+const SHUFFLE_STORAGE_KEY = "hero-portrait-shuffle-v5"
 
 function shuffleInPlace<T>(items: T[]) {
   for (let i = items.length - 1; i > 0; i--) {

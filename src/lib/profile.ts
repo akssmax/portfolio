@@ -124,7 +124,7 @@ export const profile = {
   company: "100x.bot",
   location: "Bengaluru, India",
   portrait: {
-    src: "/images/portraits/selfie-2026-03-27.png",
+    src: "/images/portraits/02.png",
     shape: "arch",
   },
   tagline:

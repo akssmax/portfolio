@@ -2,7 +2,10 @@
 
 import { useId } from "react"
 
-import { M3_SHAPE_VIEWBOX } from "@/lib/m3-shape-paths"
+import {
+  getM3PortraitImageTransform,
+  M3_SHAPE_VIEWBOX,
+} from "@/lib/m3-shape-paths"
 import { cn } from "@/lib/utils"
 
 type M3ShapeMorphImageProps = {
@@ -13,6 +16,29 @@ type M3ShapeMorphImageProps = {
   alt: string
   className?: string
   priority?: boolean
+}
+
+function PortraitImage({
+  src,
+  opacity,
+  priority,
+}: {
+  src: string
+  opacity: number
+  priority?: boolean
+}) {
+  return (
+    <g transform={getM3PortraitImageTransform()}>
+      <image
+        href={src}
+        width={M3_SHAPE_VIEWBOX}
+        height={M3_SHAPE_VIEWBOX}
+        preserveAspectRatio="xMidYMid meet"
+        opacity={opacity}
+        {...(priority ? { "data-fetchpriority": "high" } : {})}
+      />
+    </g>
+  )
 }
 
 /** Portrait clipped to a morphing M3 SVG path. */
@@ -30,7 +56,7 @@ export function M3ShapeMorphImage({
   return (
     <svg
       viewBox={`0 0 ${M3_SHAPE_VIEWBOX} ${M3_SHAPE_VIEWBOX}`}
-      className={cn("block shrink-0 bg-transparent", className)}
+      className={cn("block shrink-0 text-primary", className)}
       preserveAspectRatio="none"
       role="img"
       aria-label={alt}
@@ -40,25 +66,13 @@ export function M3ShapeMorphImage({
           <path d={pathD} />
         </clipPath>
       </defs>
-      <image
-        href={src}
-        width={M3_SHAPE_VIEWBOX}
-        height={M3_SHAPE_VIEWBOX}
-        preserveAspectRatio="xMidYMid slice"
-        clipPath={`url(#${clipId})`}
-        opacity={1 - imageMix}
-        {...(priority ? { "data-fetchpriority": "high" } : {})}
-      />
-      {nextSrc ? (
-        <image
-          href={nextSrc}
-          width={M3_SHAPE_VIEWBOX}
-          height={M3_SHAPE_VIEWBOX}
-          preserveAspectRatio="xMidYMid slice"
-          clipPath={`url(#${clipId})`}
-          opacity={imageMix}
-        />
-      ) : null}
+      <g clipPath={`url(#${clipId})`}>
+        <path d={pathD} fill="currentColor" />
+        <PortraitImage src={src} opacity={1 - imageMix} priority={priority} />
+        {nextSrc ? (
+          <PortraitImage src={nextSrc} opacity={imageMix} />
+        ) : null}
+      </g>
     </svg>
   )
 }
