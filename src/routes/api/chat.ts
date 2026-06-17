@@ -12,7 +12,12 @@ import {
   getClientIp,
   rateLimitHeaders,
   CHAT_RATE_LIMIT,
+  WEB_SEARCH_RATE_LIMIT,
 } from "@/lib/rag/rate-limit"
+import {
+  runMistralToolLoop,
+  streamMistralCompletion,
+} from "@/lib/llm/mistral-tool-loop"
 
 type ChatRequestBody = {
   model?: string
@@ -219,7 +224,8 @@ export const Route = createFileRoute("/api/chat")({
           return jsonError(500, "missing_api_key", "MISTRAL_API_KEY is not configured.")
         }
 
-        const rate = checkRateLimit(`chat:${getClientIp(request)}`, CHAT_RATE_LIMIT)
+        const clientIp = getClientIp(request)
+        const rate = checkRateLimit(`chat:${clientIp}`, CHAT_RATE_LIMIT)
         if (!rate.allowed) {
           return Response.json(
             { error: { code: "rate_limited", message: "Too many requests. Please try again later." } },
@@ -273,19 +279,42 @@ export const Route = createFileRoute("/api/chat")({
         const stream = new ReadableStream({
           async start(streamController) {
             try {
-              const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${apiKey}`,
-                  "Content-Type": "application/json",
+              const { messages: toolAwareMessages } = await runMistralToolLoop({
+                apiKey,
+                model: validation.model,
+                messages: finalMessages,
+                maxRounds: 2,
+                maxSearches: 3,
+                temperature: validation.temperature,
+                maxTokens: validation.maxTokens,
+                toolContext: {
+                  beforeSearch: () => {
+                    const searchRate = checkRateLimit(
+                      `web_search:${clientIp}`,
+                      WEB_SEARCH_RATE_LIMIT,
+                    )
+                    return searchRate.allowed
+                      ? { allowed: true }
+                      : {
+                          allowed: false,
+                          error: "Web search rate limit exceeded. Try again later.",
+                        }
+                  },
                 },
-                body: JSON.stringify({
-                  model: validation.model,
-                  messages: finalMessages,
-                  max_tokens: validation.maxTokens,
-                  temperature: validation.temperature,
-                  stream: true,
-                }),
+                onToolStart: (payload) => {
+                  writeSse(streamController, "tool_start", payload)
+                },
+                onToolEnd: (payload) => {
+                  writeSse(streamController, "tool_end", payload)
+                },
+              })
+
+              const response = await streamMistralCompletion({
+                apiKey,
+                model: validation.model,
+                messages: toolAwareMessages,
+                temperature: validation.temperature,
+                maxTokens: validation.maxTokens,
                 signal: controller.signal,
               })
 

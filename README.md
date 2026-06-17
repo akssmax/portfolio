@@ -78,6 +78,41 @@ npm run build:rag:stub
 5. Off-topic questions are declined politely
 6. Design system → AI Elements demo renders conversation components
 
+## Web search (Brave Search API)
+
+Portfolio chat and the public resume generator use a shared `web_search` tool backed by the [Brave Search API](https://api-dashboard.search.brave.com/).
+
+### Setup
+
+1. Create a free account at [api-dashboard.search.brave.com](https://api-dashboard.search.brave.com/)
+2. Generate an API key and add to `.env.local` (server-only):
+
+```env
+BRAVE_SEARCH_API_KEY=your-api-key
+```
+
+3. Add the same variable in your Vercel project settings for production
+
+Free tier includes ~2,000 queries/month — enough for portfolio chat and resume generation with existing rate limits.
+
+## AI Resume Builder
+
+| Route | Audience | Description |
+|-------|----------|-------------|
+| `/resume` | Owner (password) | Static profile from `src/lib/profile.ts` |
+| `/tools/resume` | Public visitors | LinkedIn URL → Brave Search + Mistral → PDF |
+
+Rate limits: **3 resume generations / 24h per IP**; **30 web searches / hr per IP** across chat and resume.
+
+### Manual QA checklist
+
+1. Work grid shows **Resume Builder** card linking to `/projects/resume-builder`
+2. Case study has **Try it** → `/tools/resume` and **Owner workspace** → `/resume`
+3. `/tools/resume` accepts LinkedIn URL, streams progress, shows preview + PDF download
+4. Optional pasted profile text improves thin search results
+5. Portfolio chat shows **Searching…** chip when `web_search` runs
+6. Rate limit messaging appears after 3 resume generations in 24h
+
 ## Adding components
 
 To add components to your app, run the following command:

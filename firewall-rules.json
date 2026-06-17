@@ -46,5 +46,29 @@
         }
       }
     }
+  },
+  {
+    "name": "Rate limit resume generate",
+    "active": true,
+    "conditionGroup": [
+      {
+        "conditions": [
+          { "type": "path", "op": "eq", "value": "/api/resume/generate" },
+          { "type": "method", "op": "eq", "value": "POST" }
+        ]
+      }
+    ],
+    "action": {
+      "mitigate": {
+        "action": "rate_limit",
+        "rateLimit": {
+          "algo": "fixed_window",
+          "window": 86400,
+          "limit": 3,
+          "keys": ["ip"],
+          "action": "deny"
+        }
+      }
+    }
   }
 ]

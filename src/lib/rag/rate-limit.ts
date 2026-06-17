@@ -17,6 +17,16 @@ export const UNLOCK_RATE_LIMIT: RateLimitConfig = {
   maxRequests: 5,
 }
 
+export const WEB_SEARCH_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 60 * 60 * 1000,
+  maxRequests: 30,
+}
+
+export const RESUME_GEN_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 24 * 60 * 60 * 1000,
+  maxRequests: process.env.NODE_ENV === "development" ? 50 : 3,
+}
+
 export function checkRateLimit(
   key: string,
   config: RateLimitConfig = CHAT_RATE_LIMIT,

@@ -90,6 +90,16 @@ export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
               </a>
             </Button>
           ) : null}
+          {project.slug === "resume-builder" ? (
+            <div className="flex flex-wrap gap-3">
+              <Button asChild>
+                <Link to="/tools/resume">Try it</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/resume">Owner workspace</Link>
+              </Button>
+            </div>
+          ) : null}
         </div>
 
         {metaItems.length > 0 ? (

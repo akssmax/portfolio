@@ -10,6 +10,7 @@ type DownloadResumeOptions = {
   sections: ResumeSectionConfig
   brandColor: string
   layout: ResumeLayoutId
+  document?: import("./types").ResumeDocument
 }
 
 export function useDownloadResume() {
@@ -17,17 +18,17 @@ export function useDownloadResume() {
   const [error, setError] = useState<string | null>(null)
 
   const downloadResume = useCallback(
-    async ({ sections, brandColor, layout }: DownloadResumeOptions) => {
+    async ({ sections, brandColor, layout, document }: DownloadResumeOptions) => {
       setIsGenerating(true)
       setError(null)
 
       try {
-        const document = buildResumeDocument(sections)
+        const resumeDocument = document ?? buildResumeDocument(sections)
         await downloadResumePdf({
-          document,
+          document: resumeDocument,
           brandColor,
           layout,
-          filename: getResumeFilename(document.name, layout),
+          filename: getResumeFilename(resumeDocument.name, layout),
         })
       } catch (cause) {
         setError(

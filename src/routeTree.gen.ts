@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as ToolsResumeRouteImport } from './routes/tools/resume'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
 import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
@@ -26,6 +27,7 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
 import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
+import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
 
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
@@ -60,6 +62,11 @@ const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsResumeRoute = ToolsResumeRouteImport.update({
+  id: '/tools/resume',
+  path: '/tools/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
@@ -114,6 +121,11 @@ const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
   path: '/api/resume/session',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
+  id: '/api/resume/generate',
+  path: '/api/resume/generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -127,9 +139,11 @@ export interface FileRoutesByFullPath {
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/tools/resume': typeof ToolsResumeRoute
   '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -145,9 +159,11 @@ export interface FileRoutesByTo {
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/tools/resume': typeof ToolsResumeRoute
   '/blog': typeof BlogIndexRoute
   '/design-system': typeof DesignSystemIndexRoute
   '/projects': typeof ProjectsIndexRoute
+  '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -165,9 +181,11 @@ export interface FileRoutesById {
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/tools/resume': typeof ToolsResumeRoute
   '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -186,9 +204,11 @@ export interface FileRouteTypes {
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/tools/resume'
     | '/blog/'
     | '/design-system/'
     | '/projects/'
+    | '/api/resume/generate'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -204,9 +224,11 @@ export interface FileRouteTypes {
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/tools/resume'
     | '/blog'
     | '/design-system'
     | '/projects'
+    | '/api/resume/generate'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -223,9 +245,11 @@ export interface FileRouteTypes {
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
+    | '/tools/resume'
     | '/blog/'
     | '/design-system/'
     | '/projects/'
+    | '/api/resume/generate'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -239,8 +263,10 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   BlogSlugRoute: typeof BlogSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ToolsResumeRoute: typeof ToolsResumeRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ApiResumeGenerateRoute: typeof ApiResumeGenerateRoute
   ApiResumeSessionRoute: typeof ApiResumeSessionRoute
   ApiResumeUnlockRoute: typeof ApiResumeUnlockRoute
 }
@@ -294,6 +320,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/resume': {
+      id: '/tools/resume'
+      path: '/tools/resume'
+      fullPath: '/tools/resume'
+      preLoaderRoute: typeof ToolsResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/$slug': {
@@ -366,6 +399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeSessionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/resume/generate': {
+      id: '/api/resume/generate'
+      path: '/api/resume/generate'
+      fullPath: '/api/resume/generate'
+      preLoaderRoute: typeof ApiResumeGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -398,8 +438,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   BlogSlugRoute: BlogSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
+  ToolsResumeRoute: ToolsResumeRoute,
   BlogIndexRoute: BlogIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ApiResumeGenerateRoute: ApiResumeGenerateRoute,
   ApiResumeSessionRoute: ApiResumeSessionRoute,
   ApiResumeUnlockRoute: ApiResumeUnlockRoute,
 }

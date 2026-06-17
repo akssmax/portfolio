@@ -220,6 +220,38 @@ export function PortfolioChatPanel({
               ),
             )
           },
+          onToolStart: (payload) => {
+            setItems((prev) =>
+              prev.map((item) =>
+                item.id === assistantId
+                  ? {
+                      ...item,
+                      meta: {
+                        ...item.meta,
+                        searching: true,
+                        searchQuery: payload.query,
+                      },
+                    }
+                  : item,
+              ),
+            )
+          },
+          onToolEnd: () => {
+            setItems((prev) =>
+              prev.map((item) =>
+                item.id === assistantId
+                  ? {
+                      ...item,
+                      meta: {
+                        ...item.meta,
+                        searching: false,
+                        searchQuery: undefined,
+                      },
+                    }
+                  : item,
+              ),
+            )
+          },
           onComplete: () => {
             flushTokens(assistantId)
             setStatus("ready")
@@ -299,6 +331,7 @@ export function PortfolioChatPanel({
               const text = getMessageText(item.message)
               const isAssistant = item.message.role === "assistant"
               const isStreamingEmpty = isAssistant && !text && status === "streaming"
+              const isSearching = isAssistant && item.meta?.searching
               const isLatestAssistant = isAssistant && item.id === lastAssistantId
               const showFeedbackBar =
                 isAssistant &&
@@ -308,7 +341,11 @@ export function PortfolioChatPanel({
               return (
                 <Message key={item.id} from={item.message.role}>
                   <MessageContent>
-                    {isStreamingEmpty ? (
+                    {isSearching ? (
+                      <Shimmer className="text-sm">
+                        {`Searching${item.meta?.searchQuery ? ` “${item.meta.searchQuery.slice(0, 48)}”` : ""}…`}
+                      </Shimmer>
+                    ) : isStreamingEmpty ? (
                       <Shimmer className="text-sm">Thinking…</Shimmer>
                     ) : isAssistant ? (
                       <MessageResponse

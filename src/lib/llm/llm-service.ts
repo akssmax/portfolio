@@ -22,6 +22,8 @@ export interface StreamChatOptions extends LlmChatRequest {
   onReasoning?: (reasoning: ReasoningMeta) => void
   onSources?: (sources: ChatSource[]) => void
   onCitations?: (citations: Citation[]) => void
+  onToolStart?: (payload: { name: string; query?: string }) => void
+  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void
   onComplete?: (result: StreamChatResult) => void
   signal?: AbortSignal
   chatApiPath?: string
@@ -67,6 +69,8 @@ async function streamSseResponse(
   onReasoning?: (reasoning: ReasoningMeta) => void,
   onSources?: (sources: ChatSource[]) => void,
   onCitations?: (citations: Citation[]) => void,
+  onToolStart?: (payload: { name: string; query?: string }) => void,
+  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void,
 ): Promise<StreamDonePayload | null> {
   if (!response.body) {
     throw new Error("Missing response body from /api/chat")
@@ -145,6 +149,34 @@ async function streamSseResponse(
       } catch {
         // ignore
       }
+    } else if (parsed.event === "tool_start") {
+      try {
+        const payload = JSON.parse(parsed.data) as { name?: string; query?: string }
+        if (typeof payload.name === "string") {
+          onToolStart?.({ name: payload.name, query: payload.query })
+        }
+      } catch {
+        // ignore
+      }
+    } else if (parsed.event === "tool_end") {
+      try {
+        const payload = JSON.parse(parsed.data) as {
+          name?: string
+          query?: string
+          resultCount?: number
+          error?: string
+        }
+        if (typeof payload.name === "string") {
+          onToolEnd?.({
+            name: payload.name,
+            query: payload.query,
+            resultCount: payload.resultCount,
+            error: payload.error,
+          })
+        }
+      } catch {
+        // ignore
+      }
     } else if (parsed.event === "error") {
       try {
         const payload = JSON.parse(parsed.data) as { message?: string }
@@ -190,6 +222,8 @@ async function requestChat(
   onReasoning: ((reasoning: ReasoningMeta) => void) | undefined,
   onSources: ((sources: ChatSource[]) => void) | undefined,
   onCitations: ((citations: Citation[]) => void) | undefined,
+  onToolStart: ((payload: { name: string; query?: string }) => void) | undefined,
+  onToolEnd: ((payload: { name: string; query?: string; resultCount?: number; error?: string }) => void) | undefined,
   chatApiPath: string,
 ): Promise<StreamChatResult> {
   const response = await fetch(chatApiPath, {
@@ -217,6 +251,8 @@ async function requestChat(
     onReasoning,
     onSources,
     onCitations,
+    onToolStart,
+    onToolEnd,
   )
 
   return {
@@ -234,6 +270,8 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
     onReasoning,
     onSources,
     onCitations,
+    onToolStart,
+    onToolEnd,
     onComplete,
     signal,
     chatApiPath = "/api/chat",
@@ -249,6 +287,8 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onReasoning,
       onSources,
       onCitations,
+      onToolStart,
+      onToolEnd,
       chatApiPath,
     )
     onComplete?.(result)
@@ -272,6 +312,8 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onReasoning,
       onSources,
       onCitations,
+      onToolStart,
+      onToolEnd,
       chatApiPath,
     )
     onComplete?.(result)

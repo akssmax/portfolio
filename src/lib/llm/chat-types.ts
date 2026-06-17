@@ -7,6 +7,8 @@ export type AssistantMeta = {
   sources?: ChatSource[]
   citations?: Array<{ label: string; href: string }>
   feedback?: "up" | "down"
+  searching?: boolean
+  searchQuery?: string
 }
 
 export type ChatItem = {

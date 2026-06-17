@@ -15,10 +15,16 @@ export type ChatCompletionStatus =
   | "upstream_error"
   | "aborted_by_user"
 
-export interface LlmChatMessage {
-  role: "system" | "user" | "assistant"
-  content: string
+export type LlmToolCall = {
+  id: string
+  name: string
+  arguments: string
 }
+
+export type LlmChatMessage =
+  | { role: "system" | "user" | "assistant"; content: string }
+  | { role: "assistant"; content: string; tool_calls: LlmToolCall[] }
+  | { role: "tool"; content: string; name: string; tool_call_id: string }
 
 export interface LlmChatRequest {
   model: MistralModel

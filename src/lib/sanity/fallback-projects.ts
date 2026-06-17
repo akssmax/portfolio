@@ -661,6 +661,89 @@ export const fallbackProjects: Project[] = [
     ],
   },
   {
+    _id: "fallback-resume-builder",
+    title: "Resume Builder",
+    slug: "resume-builder",
+    description:
+      "AI-assisted resume builder — PDF export, brand theming, and a public LinkedIn-to-resume flow for visitors.",
+    tag: "Product UI / Tool",
+    featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
+    year: "2026",
+    role: "Design Engineer",
+    client: "Portfolio",
+    tools: ["Mistral", "Brave Search", "@react-pdf/renderer", "TanStack Start"],
+    publishedAt: "2026-06-13T00:00:00.000Z",
+    seo: {
+      metaTitle: "Resume Builder — Case Study",
+      metaDescription:
+        "How a password-protected owner workspace and public AI LinkedIn import flow share one PDF pipeline, Mistral tool calls, and Brave Search web search.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "rb-h-problem",
+        title: "Problem",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rb-rt-problem",
+        body: [
+          textBlock(
+            "rb-rt-problem-1",
+            "Visitors wanted a tangible demo of the AI tooling behind the portfolio — not just chat, but a workflow that produces a downloadable artifact. The owner path also needed a fast way to tailor PDF resumes without rebuilding layouts each time.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rb-h-shipped",
+        title: "What I shipped",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rb-rt-shipped",
+        body: bulletList("rb-shipped", [
+          "Owner workspace at /resume — password-protected, seeded from static profile data, live HTML preview, client-side PDF via @react-pdf/renderer.",
+          "Public tool at /tools/resume — LinkedIn URL plus optional pasted summary, Brave Search, Mistral tool loop, structured ResumeDocument JSON, same PDF pipeline.",
+          "Portfolio chat web_search tool — shared Mistral tool executor and Brave Search client for grounded answers about external companies and current events.",
+          "Work section case study with Try it CTA and rate limits (3 resume generations / 24h per IP).",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rb-h-stack",
+        title: "Stack",
+      },
+      {
+        _type: "techStack",
+        _key: "rb-tech",
+        items: [
+          { name: "Mistral", logoSrc: "/projects/chat-shell/tech/mistral.svg" },
+          { name: "React", logoSrc: "/projects/100x/tech/react.svg" },
+          { name: "TypeScript", logoSrc: "/projects/100x/tech/typescript.svg" },
+          { name: "TanStack Start", logoSrc: "/projects/100x/tech/vite.svg" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rb-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rb-rt-outcome",
+        body: [
+          textBlock(
+            "rb-rt-outcome-1",
+            "One resume document schema powers owner and visitor flows. Web search runs via the Brave Search API with per-IP rate limits and a capped number of tool calls per request to control cost and abuse.",
+          ),
+        ],
+      },
+    ],
+  },
+  {
     _id: "fallback-v1-100x-proto",
     title: "100x Agent Extension",
     slug: "v1-100x-proto",

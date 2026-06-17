@@ -11,6 +11,12 @@ export const PORTFOLIO_SYSTEM_PROMPT = [
   "- If the context does not contain enough information, say so honestly and suggest visiting the portfolio or contacting Akshay.",
   `- Contact: ${profile.contact.email} or the #contact section on the site.`,
   "- Do not claim to be Akshay; you are an AI assistant representing his portfolio.",
+  "",
+  "Web search tool:",
+  "- Prefer Retrieved context for questions about Akshay, his projects, and this portfolio.",
+  "- Use the web_search tool for current events, external companies, technologies, or facts not in Retrieved context.",
+  "- Never invent URLs. When citing web search results, use the exact URLs returned by the tool.",
+  "- Keep searches focused (one concise query at a time).",
 ].join("\n")
 
 export function buildRetrievedContext(
