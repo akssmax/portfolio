@@ -13,31 +13,33 @@ import {
 const DotGrid = lazy(() => import("@/components/DotGrid"))
 
 const DOT_GRID_CLASS = "absolute inset-0 h-full w-full p-0"
+
+/** CSS-only dots — always works, no canvas or color-mix required. */
 const STATIC_DOT_GRID_STYLE = {
   backgroundImage:
-    "radial-gradient(circle, color-mix(in oklch, var(--primary-foreground) 55%, var(--primary)) 1.5px, transparent 1.5px)",
+    "radial-gradient(circle, rgba(255, 255, 255, 0.45) 1.5px, transparent 1.5px)",
   backgroundSize: "24px 24px",
 } as const
+
+function StaticDotGrid() {
+  return (
+    <div className="absolute inset-0" style={STATIC_DOT_GRID_STYLE} aria-hidden />
+  )
+}
 
 export function ContactDotGridBackground() {
   const shouldReduceMotion = useReducedMotion()
   const containerRef = useRef<HTMLDivElement>(null)
-  const inView = useInView(containerRef, { threshold: 0.05, initialInView: false })
   const { appearance, mounted } = useAppearance()
   const { primary, primaryForeground } = useBrandColors()
+  const inView = useInView(containerRef, {
+    threshold: 0.05,
+    initialInView: true,
+    rootMargin: "120px 0px",
+    enabled: mounted,
+  })
 
-  if (shouldReduceMotion) {
-    return (
-      <div
-        className="absolute inset-0"
-        style={STATIC_DOT_GRID_STYLE}
-      />
-    )
-  }
-
-  if (!mounted) {
-    return <div className="absolute inset-0" style={STATIC_DOT_GRID_STYLE} />
-  }
+  const showInteractive = mounted && !shouldReduceMotion && inView
 
   const { baseColor, activeColor } = getPrimarySurfaceDotColors(
     primary,
@@ -47,8 +49,9 @@ export function ContactDotGridBackground() {
 
   return (
     <div ref={containerRef} className="absolute inset-0">
-      {inView ? (
-        <Suspense fallback={<div className={DOT_GRID_CLASS} style={STATIC_DOT_GRID_STYLE} />}>
+      {!showInteractive ? <StaticDotGrid /> : null}
+      {showInteractive ? (
+        <Suspense fallback={<StaticDotGrid />}>
           <DotGrid
             key={dotGridKey}
             className={DOT_GRID_CLASS}

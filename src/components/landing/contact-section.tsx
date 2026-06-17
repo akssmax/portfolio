@@ -14,7 +14,7 @@ export function ContactSection() {
       id="contact"
       className="relative overflow-hidden border-t border-primary/30 bg-primary text-primary-foreground"
     >
-      <div className="absolute inset-0 opacity-40" aria-hidden>
+      <div className="absolute inset-0 opacity-55" aria-hidden>
         <ContactDotGridBackground />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />
       </div>

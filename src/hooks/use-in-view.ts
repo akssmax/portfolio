@@ -3,6 +3,8 @@ import { useEffect, useState, type RefObject } from "react"
 type UseInViewOptions = IntersectionObserverInit & {
   /** Assumed visible before the observer runs (helps above-the-fold content). */
   initialInView?: boolean
+  /** Re-subscribe when this toggles (e.g. after a deferred mount attaches the ref). */
+  enabled?: boolean
 }
 
 export function useInView<T extends Element>(
@@ -12,11 +14,14 @@ export function useInView<T extends Element>(
     threshold = 0,
     root = null,
     rootMargin = "0px",
+    enabled = true,
   }: UseInViewOptions = {},
 ): boolean {
   const [inView, setInView] = useState(initialInView)
 
   useEffect(() => {
+    if (!enabled) return
+
     const node = ref.current
     if (!node || typeof IntersectionObserver === "undefined") return
 
@@ -29,7 +34,7 @@ export function useInView<T extends Element>(
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [ref, root, rootMargin, threshold])
+  }, [enabled, ref, root, rootMargin, threshold])
 
   return inView
 }
