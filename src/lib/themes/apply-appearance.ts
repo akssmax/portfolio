@@ -5,6 +5,11 @@ import {
   deriveBrandTokens,
 } from "@/features/brand-color/derive-brand-tokens"
 import {
+  resolveThemeMode,
+  syncDocumentThemeClass,
+  type ThemeMode,
+} from "@/lib/themes/resolve-theme-mode"
+import {
   applyColorVisionTokens,
   buildColorVisionInitScriptFragment,
   clearColorVisionTokens,
@@ -38,18 +43,16 @@ const FONT_SCALE_BY_ID = Object.fromEntries(
   FONT_SCALE_PRESETS.map((preset) => [preset.id, String(preset.scale)]),
 ) as Record<FontScalePresetId, string>
 
-function isDarkMode(root: HTMLElement): boolean {
-  if (root.classList.contains("dark")) return true
-  if (root.classList.contains("light")) return false
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
+type ApplyAppearanceOptions = {
+  /** next-themes resolved value — keeps brand CSS selectors in sync on system mode. */
+  resolvedTheme?: string | null
 }
 
-function applyCustomBrandColor(root: HTMLElement, customBrandColor: string | null) {
+function applyCustomBrandColor(root: HTMLElement, customBrandColor: string | null, isDark: boolean) {
   if (customBrandColor) {
     applyCustomBrandTokens(
       root,
-      deriveBrandTokens(customBrandColor, isDarkMode(root)),
+      deriveBrandTokens(customBrandColor, isDark),
     )
     return
   }
@@ -57,8 +60,15 @@ function applyCustomBrandColor(root: HTMLElement, customBrandColor: string | nul
   clearCustomBrandTokens(root)
 }
 
-export function applyAppearanceToDocument(state: AppearanceState) {
+export function applyAppearanceToDocument(
+  state: AppearanceState,
+  options?: ApplyAppearanceOptions,
+) {
   const root = document.documentElement
+  const mode: ThemeMode = resolveThemeMode(root, options?.resolvedTheme)
+
+  // Brand preset CSS uses `.dark[data-theme="…"]` — keep the html class aligned.
+  syncDocumentThemeClass(root, mode)
 
   root.setAttribute("data-theme", state.palette)
 
@@ -74,9 +84,9 @@ export function applyAppearanceToDocument(state: AppearanceState) {
   root.style.setProperty("--radius-base", RADIUS_BY_ID[state.radius])
   root.style.setProperty("--font-scale", FONT_SCALE_BY_ID[state.fontScale])
 
-  const isDark = isDarkMode(root)
+  const isDark = mode === "dark"
   clearColorVisionTokens(root)
-  applyCustomBrandColor(root, state.customBrandColor)
+  applyCustomBrandColor(root, state.customBrandColor, isDark)
   if (state.colorVision !== "none") {
     applyColorVisionTokens(root, state.colorVision, isDark)
   }
@@ -168,4 +178,4 @@ const COLOR_VISION_INIT = buildColorVisionInitScriptFragment(
 const FAVICON_INIT = buildFaviconInitScriptFragment()
 
 /** Inline script string for FOUC prevention — injected in __root.tsx */
-export const APPEARANCE_INIT_SCRIPT = `(function(){try{var p=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.palette}")||"${DEFAULT_APPEARANCE.palette}";var n=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.neutral}")||"${DEFAULT_APPEARANCE.neutral}";var f=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.font}")||"${DEFAULT_APPEARANCE.font}";var r=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.radius}")||"${DEFAULT_APPEARANCE.radius}";var cv=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.colorVision}")||"${DEFAULT_APPEARANCE.colorVision}";var fs=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.fontScale}")||"${DEFAULT_APPEARANCE.fontScale}";var rv={default:"0.625rem",soft:"0.875rem",sharp:"0.375rem"};var fsv={"100":"1","112":"1.12","125":"1.25","150":"1.5"};var root=document.documentElement;root.setAttribute("data-theme",p);root.setAttribute("data-neutral",n);root.setAttribute("data-font",f);root.setAttribute("data-radius",r);root.setAttribute("data-color-vision",cv);root.setAttribute("data-font-scale",fs);root.style.setProperty("--radius-base",rv[r]||rv.default);root.style.setProperty("--font-scale",fsv[fs]||fsv["100"]);var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches)){root.classList.add("dark")};${CUSTOM_BRAND_INIT}${COLOR_VISION_INIT}${FAVICON_INIT}}catch(e){}})();`
+export const APPEARANCE_INIT_SCRIPT = `(function(){try{var p=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.palette}")||"${DEFAULT_APPEARANCE.palette}";var n=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.neutral}")||"${DEFAULT_APPEARANCE.neutral}";var f=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.font}")||"${DEFAULT_APPEARANCE.font}";var r=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.radius}")||"${DEFAULT_APPEARANCE.radius}";var cv=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.colorVision}")||"${DEFAULT_APPEARANCE.colorVision}";var fs=localStorage.getItem("${APPEARANCE_STORAGE_KEYS.fontScale}")||"${DEFAULT_APPEARANCE.fontScale}";var rv={default:"0.625rem",soft:"0.875rem",sharp:"0.375rem"};var fsv={"100":"1","112":"1.12","125":"1.25","150":"1.5"};var root=document.documentElement;root.setAttribute("data-theme",p);root.setAttribute("data-neutral",n);root.setAttribute("data-font",f);root.setAttribute("data-radius",r);root.setAttribute("data-color-vision",cv);root.setAttribute("data-font-scale",fs);root.style.setProperty("--radius-base",rv[r]||rv.default);root.style.setProperty("--font-scale",fsv[fs]||fsv["100"]);var t=localStorage.getItem("theme")||"system";var prefersDark=window.matchMedia("(prefers-color-scheme: dark)").matches;var mode="light";if(t==="dark"){mode="dark";}else if(t==="system"){mode=prefersDark?"dark":"light";}root.classList.remove("light","dark");root.classList.add(mode);${CUSTOM_BRAND_INIT}${COLOR_VISION_INIT}${FAVICON_INIT}}catch(e){}})();`

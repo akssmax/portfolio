@@ -99,7 +99,10 @@ export function PromptInput({
             aria-label="Chat message"
           />
         )}
-        <InputGroupAddon align={addonAlign}>
+        <InputGroupAddon
+          align={addonAlign}
+          className={singleLine ? undefined : "justify-end"}
+        >
           {isStreaming ? (
             <InputGroupButton
               type="button"

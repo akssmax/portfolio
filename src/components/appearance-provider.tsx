@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react"
 import { useTheme } from "next-themes"
@@ -17,6 +18,7 @@ import {
 } from "@/lib/themes/apply-appearance"
 import { loadFontPreset } from "@/lib/themes/font-loader"
 import { DEFAULT_APPEARANCE } from "@/lib/themes/registry"
+import { syncDocumentThemeClass } from "@/lib/themes/resolve-theme-mode"
 import type {
   AppearanceState,
   BrandPresetId,
@@ -45,28 +47,52 @@ const AppearanceContext = createContext<AppearanceContextValue | null>(null)
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
   const [appearance, setAppearance] = useState<AppearanceState>(DEFAULT_APPEARANCE)
   const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
+  const { resolvedTheme, theme } = useTheme()
+  const resolvedThemeRef = useRef(resolvedTheme)
+  resolvedThemeRef.current = resolvedTheme
+
+  const runApplyAppearance = useCallback((state: AppearanceState) => {
+    applyAppearanceToDocument(state, {
+      resolvedTheme: resolvedThemeRef.current,
+    })
+  }, [])
 
   useEffect(() => {
     const stored = readAppearanceFromStorage()
     setAppearance(stored)
     void loadFontPreset(stored.font).then(() => {
-      applyAppearanceToDocument(stored)
+      runApplyAppearance(stored)
       setMounted(true)
     })
-  }, [])
+  }, [runApplyAppearance])
 
   useEffect(() => {
     if (!mounted) return
-    applyAppearanceToDocument(appearance)
-  }, [appearance, mounted, resolvedTheme])
+    runApplyAppearance(appearance)
+  }, [appearance, mounted, resolvedTheme, runApplyAppearance])
+
+  useEffect(() => {
+    if (!mounted || theme !== "system") return
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
+    const handleChange = () => {
+      const mode = media.matches ? "dark" : "light"
+      syncDocumentThemeClass(document.documentElement, mode)
+      applyAppearanceToDocument(appearance, { resolvedTheme: mode })
+    }
+
+    media.addEventListener("change", handleChange)
+    return () => media.removeEventListener("change", handleChange)
+  }, [appearance, mounted, theme])
 
   const updateAppearance = useCallback(
     (updater: (prev: AppearanceState) => AppearanceState) => {
       setAppearance((prev) => {
         const next = updater(prev)
         writeAppearanceToStorage(next)
-        applyAppearanceToDocument(next)
+        applyAppearanceToDocument(next, {
+          resolvedTheme: resolvedThemeRef.current,
+        })
         return next
       })
     },
