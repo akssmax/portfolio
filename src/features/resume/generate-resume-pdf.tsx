@@ -1,5 +1,6 @@
 import { resolvePdfBrandColor } from "./color-utils"
 import { ResumePdfDocument } from "./layouts/resume-pdf-document"
+import { resolveDocumentImages } from "./pdf-image-utils"
 import type { ResumeDocument, ResumeLayoutId } from "./types"
 
 export async function generateResumePdf(
@@ -10,9 +11,11 @@ export async function generateResumePdf(
   const { pdf } = await import("@react-pdf/renderer")
   const pdfBrandColor = resolvePdfBrandColor(brandColor)
 
+  const documentWithImages = await resolveDocumentImages(document)
+
   return pdf(
     <ResumePdfDocument
-      document={document}
+      document={documentWithImages}
       brandColor={pdfBrandColor}
       layout={layout}
     />,

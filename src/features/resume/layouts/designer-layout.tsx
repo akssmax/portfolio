@@ -2,7 +2,6 @@ import type { ReactNode } from "react"
 import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import { hexToRgba } from "../color-utils"
-import { resolvePdfAssetUrl } from "../pdf-asset-url"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 
@@ -305,10 +304,7 @@ export function DesignerResumeLayout({
             </View>
           </View>
           {document.portrait ? (
-            <Image
-              src={resolvePdfAssetUrl(document.portrait.src)}
-              style={styles.portrait}
-            />
+            <Image src={document.portrait.src} style={styles.portrait} />
           ) : null}
         </View>
 
@@ -364,10 +360,7 @@ export function DesignerResumeLayout({
               <View wrap={false} minPresenceAhead={48} style={styles.jobHeader}>
                 <View style={styles.jobTitleRow}>
                   {job.logoSrc ? (
-                    <Image
-                      src={resolvePdfAssetUrl(job.logoSrc)}
-                      style={styles.jobLogo}
-                    />
+                    <Image src={job.logoSrc} style={styles.jobLogo} />
                   ) : null}
                   <Text style={styles.jobTitle}>
                     {job.role} · {job.company}
