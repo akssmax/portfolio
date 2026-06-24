@@ -9,13 +9,12 @@ const MORPHABLE_SHAPE_POOL = Object.keys(m3ShapePaths) as M3ShapeId[]
 const HERO_SELFIE_SOURCES = [
   "/images/portraits/01.webp",
   "/images/portraits/02.webp",
-  "/images/portraits/03.webp",
   "/images/portraits/04.webp",
 ] as const
 
 export const HERO_PORTRAIT_SLOT_COUNT = HERO_SELFIE_SOURCES.length
 
-const SHUFFLE_STORAGE_KEY = "hero-portrait-shuffle-v5"
+const SHUFFLE_STORAGE_KEY = "hero-portrait-shuffle-v6"
 
 function shuffleInPlace<T>(items: T[]) {
   for (let i = items.length - 1; i > 0; i--) {

@@ -19,10 +19,6 @@ const SOURCES = [
     output: "02.png",
   },
   {
-    input: "B612_20250603_174926_499-3ba3d56f-a064-4bc5-a22d-381f8f99e456.png",
-    output: "03.png",
-  },
-  {
     input: "Selfie_2026-06-17_at_19.27.47-33fa834a-9fc1-45d9-87bc-e6d633f79785.png",
     output: "04.png",
   },
