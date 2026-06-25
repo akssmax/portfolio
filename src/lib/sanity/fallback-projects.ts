@@ -102,7 +102,7 @@ export const fallbackProjects: Project[] = [
     role: "Design Engineer",
     client: "100x.Bot",
     tools: ["Cursor"],
-    publishedAt: "2026-03-01T00:00:00.000Z",
+    publishedAt: "2026-06-10T00:00:00.000Z",
     seo: {
       metaTitle: "100x.Bot Marketing Site — Case Study",
       metaDescription:
@@ -409,7 +409,7 @@ export const fallbackProjects: Project[] = [
     role: "Design Engineer",
     client: "100x",
     tools: ["Cursor", "Mistral"],
-    publishedAt: "2026-05-15T00:00:00.000Z",
+    publishedAt: "2026-06-15T00:00:00.000Z",
     seo: {
       metaTitle: "LLM Chat Shell — Case Study",
       metaDescription:
@@ -674,7 +674,7 @@ export const fallbackProjects: Project[] = [
     role: "Design Engineer",
     client: "Portfolio",
     tools: ["Mistral", "Brave Search", "@react-pdf/renderer", "TanStack Start"],
-    publishedAt: "2026-06-13T00:00:00.000Z",
+    publishedAt: "2026-06-01T00:00:00.000Z",
     seo: {
       metaTitle: "Resume Builder — Case Study",
       metaDescription:

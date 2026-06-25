@@ -4,14 +4,11 @@ import { useRef } from "react"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 
-import { ErrorBoundary } from "@/components/error-boundary"
-import Lightfall from "@/components/Lightfall"
+import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { WorkProjectGroup } from "@/components/projects/work-project-group"
 import { RouteError } from "@/components/route-error"
-import { useInView } from "@/hooks/use-in-view"
-import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
 import { getAllWorkSections } from "@/lib/sanity/projects"
 
 export const Route = createFileRoute("/projects/")({
@@ -33,7 +30,6 @@ function ProjectsIndexPage() {
   const { recentProjects, caseStudies, other } = Route.useLoaderData()
   const shouldReduceMotion = useReducedMotion()
   const mainRef = useRef<HTMLElement>(null)
-  const isMainInView = useInView(mainRef, { threshold: 0.08, initialInView: true })
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -42,17 +38,8 @@ function ProjectsIndexPage() {
         ref={mainRef}
         className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
       >
-        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-          {!shouldReduceMotion ? (
-            <ErrorBoundary title="Background animation failed" showHeader={false}>
-              <Lightfall
-                className="absolute inset-0"
-                {...HERO_LIGHTFALL_CONFIG}
-                pointerRootRef={mainRef}
-                paused={!isMainInView}
-              />
-            </ErrorBoundary>
-          ) : null}
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-45" aria-hidden>
+          <ContactDotGridBackground />
           <div
             className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
             aria-hidden
