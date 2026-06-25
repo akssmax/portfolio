@@ -14,15 +14,27 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useInView } from "@/hooks/use-in-view"
+import { useBrandColors } from "@/hooks/use-brand-colors"
 import { HERO_HEADLINES, HERO_TAGLINES } from "@/lib/hero-headlines"
 import {
   getRandomizedHeroPortraitItems,
   HERO_PORTRAIT_SLOT_COUNT,
 } from "@/lib/hero-portraits"
-import { HERO_LIGHTFALL_CONFIG } from "@/lib/pride-colors"
 import { profile } from "@/lib/profile"
 
-const Lightfall = lazy(() => import("@/components/Lightfall"))
+const DotField = lazy(() => import("@/components/DotField"))
+
+function hexToRgba(hex: string, alpha: number) {
+  const normalized = hex.replace("#", "").trim()
+  if (normalized.length !== 6) return `rgba(168, 85, 247, ${alpha})`
+  const r = Number.parseInt(normalized.slice(0, 2), 16)
+  const g = Number.parseInt(normalized.slice(2, 4), 16)
+  const b = Number.parseInt(normalized.slice(4, 6), 16)
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+    return `rgba(168, 85, 247, ${alpha})`
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -32,6 +44,7 @@ export function HeroSection() {
   const [headlineIndex, setHeadlineIndex] = useState(() =>
     readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % HERO_HEADLINES.length,
   )
+  const brandColors = useBrandColors()
 
   const handleMorphStart = useCallback((nextIndex: number) => {
     if (!isHeroInView) return
@@ -47,11 +60,17 @@ export function HeroSection() {
         {!shouldReduceMotion && isHeroInView ? (
           <ErrorBoundary title="Background animation failed" showHeader={false}>
             <Suspense fallback={null}>
-              <Lightfall
+              <DotField
                 className="absolute inset-0"
-                {...HERO_LIGHTFALL_CONFIG}
-                pointerRootRef={sectionRef}
-                paused={!isHeroInView}
+                dotRadius={1.5}
+                dotSpacing={14}
+                bulgeStrength={67}
+                glowRadius={160}
+                sparkle={false}
+                waveAmplitude={0}
+                gradientFrom={hexToRgba(brandColors.primary, 0.35)}
+                gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.25)}
+                glowColor={hexToRgba(brandColors.primary, 0.15)}
               />
             </Suspense>
           </ErrorBoundary>
