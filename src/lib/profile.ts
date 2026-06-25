@@ -112,6 +112,7 @@ const experience = [
   },
 ]
 
+
 function createProfileBio(periods: string[]) {
   const span = getDesignCareerSpanLabel(periods)
   return `With ${span.toLowerCase()} in design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.`

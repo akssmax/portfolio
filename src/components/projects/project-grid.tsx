@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 import { History, Sparkles } from "lucide-react"
 
+import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import {
   Card,
   CardDescription,
@@ -11,7 +12,6 @@ import {
 import { Tag } from "@/components/ui/tag"
 import { ProjectCardCover } from "@/components/projects/project-card-cover"
 import { getBuildBadgeLabel } from "@/lib/projects/build-badge"
-import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 
 const MotionCard = motion.create(Card)
 
@@ -59,7 +59,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       className="block h-full"
     >
       <MotionCard
-        className="h-full gap-4 overflow-hidden pt-0 transition-shadow hover:shadow-md"
+        className="group h-full gap-4 overflow-hidden pt-0 transition-shadow hover:shadow-md"
         {...hoverProps}
       >
         <ProjectCardCover project={project} />
@@ -98,7 +98,7 @@ const itemVariants = {
 }
 
 type ProjectGridProps = {
-  projects: ProjectCardType[]
+  projects: Array<ProjectCardType>
   animated?: boolean
 }
 

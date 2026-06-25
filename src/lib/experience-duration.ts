@@ -93,10 +93,10 @@ export function getExperienceTagLabel(referenceDate = new Date()): string {
 }
 
 export function getDesignCareerSpanLabel(
-  periods: string[],
+  _periods: string[],
   referenceDate = new Date(),
 ): string {
-  const start = getEarliestExperienceStart(periods, referenceDate)
+  const start = parseMonthYear(PRODUCT_EXPERIENCE_SINCE, referenceDate)
   if (!start) return "Nearly 1 year"
 
   const duration = intervalToDuration({
@@ -116,5 +116,5 @@ export function getExperienceSectionSubtitle(
   referenceDate = new Date(),
 ): string {
   const span = getDesignCareerSpanLabel(periods, referenceDate)
-  return `${span} in design across fintech, devtools, and AI — from graphic design to product.`
+  return `${span} in design across fintech, devtools, and AI.`
 }

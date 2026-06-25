@@ -23,6 +23,7 @@ type ResumePreviewProps = {
   isGenerating: boolean
   downloadDisabled: boolean
   error: string | null
+  onChange?: (updated: ResumeDocument) => void
 }
 
 export function ResumePreview({
@@ -34,6 +35,7 @@ export function ResumePreview({
   isGenerating,
   downloadDisabled,
   error,
+  onChange,
 }: ResumePreviewProps) {
   const brandColor = resolveResumeBrandColor(colorSelection, fallbackColor)
   const colorKey = getResumeColorSelectionKey(colorSelection)
@@ -45,7 +47,7 @@ export function ResumePreview({
           <div className="min-w-0">
             <p className="text-sm font-medium text-foreground">Preview</p>
             <p className="text-xs text-muted-foreground">
-              Live HTML preview of your current settings.
+              Live HTML preview of your current settings. Click text to edit inline.
             </p>
           </div>
           <Button
@@ -85,6 +87,7 @@ export function ResumePreview({
                 document={document}
                 brandColor={brandColor}
                 layout={layout}
+                onChange={onChange}
               />
             </div>
           </article>
@@ -93,6 +96,7 @@ export function ResumePreview({
     </div>
   )
 }
+
 
 export function useResumePreviewDocument(sections: ResumeSectionConfig) {
   return useMemo(() => buildResumeDocument(sections), [sections])

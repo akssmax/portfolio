@@ -4,6 +4,7 @@ import { cssColorWithAlpha } from "../../color-utils"
 import type { ResumeDocument } from "../../types"
 import { HtmlLogomark } from "./html-logomark"
 import { ResumePortraitImage } from "./resume-portrait-image"
+import { EditableText } from "./editable-text"
 
 function formatWebsiteLabel(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
@@ -12,6 +13,7 @@ function formatWebsiteLabel(url: string) {
 type DesignerHtmlResumeProps = {
   document: ResumeDocument
   brandColor: string
+  onChange?: (updated: ResumeDocument) => void
 }
 
 function Section({
@@ -39,7 +41,7 @@ function Section({
   )
 }
 
-export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeProps) {
+export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerHtmlResumeProps) {
   const tint = cssColorWithAlpha(brandColor, 0.08)
   const pillBackground = cssColorWithAlpha(brandColor, 0.12)
   const pillBorder = cssColorWithAlpha(brandColor, 0.25)
@@ -61,22 +63,38 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
           <div className="mb-2.5 flex items-start gap-3">
             <div className="min-w-0 flex-1 pt-0.5">
               <div className="pb-2">
-                <h1 className="text-2xl font-bold leading-tight text-[#0F1923]">
-                  {document.name}
-                </h1>
+                <EditableText
+                  value={document.name}
+                  onChange={onChange ? (val) => onChange({ ...document, name: val }) : undefined}
+                  tagName="h1"
+                  className="text-2xl font-bold leading-tight text-[#0F1923]"
+                  placeholder="Your Name"
+                />
               </div>
               <div className="pb-2">
-                <p className="text-[11px] font-bold" style={{ color: brandColor }}>
-                  {document.title}
-                </p>
+                <EditableText
+                  value={document.title}
+                  onChange={onChange ? (val) => onChange({ ...document, title: val }) : undefined}
+                  tagName="p"
+                  className="text-[11px] font-bold"
+                  style={{ color: brandColor }}
+                  placeholder="Professional Title"
+                />
               </div>
-              <p className="text-[9px] text-neutral-500">{document.location}</p>
+              <EditableText
+                value={document.location}
+                onChange={onChange ? (val) => onChange({ ...document, location: val }) : undefined}
+                tagName="p"
+                className="text-[9px] text-neutral-500"
+                placeholder="Location"
+              />
             </div>
             {document.portrait ? (
               <ResumePortraitImage
                 src={document.portrait.src}
                 shape={document.portrait.shape}
                 alt={`${document.name} portrait`}
+                brandColor={brandColor}
               />
             ) : null}
           </div>
@@ -87,20 +105,56 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
                 className="rounded-full px-2 py-1 text-[8.5px]"
                 style={{ backgroundColor: pillBackground, color: brandColor }}
               >
-                {document.contact.email}
+                <EditableText
+                  value={document.contact.email}
+                  onChange={
+                    onChange
+                      ? (val) =>
+                          onChange({
+                            ...document,
+                            contact: { ...document.contact!, email: val },
+                          })
+                      : undefined
+                  }
+                  placeholder="Email"
+                />
               </span>
               <span
                 className="rounded-full px-2 py-1 text-[8.5px]"
                 style={{ backgroundColor: pillBackground, color: brandColor }}
               >
-                {document.contact.phone}
+                <EditableText
+                  value={document.contact.phone}
+                  onChange={
+                    onChange
+                      ? (val) =>
+                          onChange({
+                            ...document,
+                            contact: { ...document.contact!, phone: val },
+                          })
+                      : undefined
+                  }
+                  placeholder="Phone"
+                />
               </span>
               {document.contact.website ? (
                 <span
                   className="rounded-full px-2 py-1 text-[8.5px]"
                   style={{ backgroundColor: pillBackground, color: brandColor }}
                 >
-                  {formatWebsiteLabel(document.contact.website)}
+                  <EditableText
+                    value={document.contact.website}
+                    onChange={
+                      onChange
+                        ? (val) =>
+                            onChange({
+                              ...document,
+                              contact: { ...document.contact!, website: val },
+                            })
+                        : undefined
+                    }
+                    placeholder="Website"
+                  />
                 </span>
               ) : null}
             </div>
@@ -109,19 +163,33 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
 
         {document.summary ? (
           <Section title="Summary" brandColor={brandColor}>
-            {document.summary.split("\n\n").map((paragraph) => (
-              <p key={paragraph.slice(0, 24)} className="mb-1 text-neutral-800">
-                {paragraph}
-              </p>
+            {document.summary.split("\n\n").map((paragraph, idx) => (
+              <EditableText
+                key={idx}
+                value={paragraph}
+                onChange={
+                  onChange
+                    ? (val) => {
+                        const paragraphs = document.summary!.split("\n\n")
+                        paragraphs[idx] = val
+                        onChange({ ...document, summary: paragraphs.join("\n\n") })
+                      }
+                    : undefined
+                }
+                tagName="p"
+                singleLine={false}
+                className="mb-1 text-neutral-800"
+                placeholder="Summary paragraph"
+              />
             ))}
           </Section>
         ) : null}
 
         {document.experience?.length ? (
           <Section title="Experience" brandColor={brandColor}>
-            {document.experience.map((job) => (
+            {document.experience.map((job, jobIdx) => (
               <article
-                key={`${job.company}-${job.period}`}
+                key={`${job.company}-${job.period}-${jobIdx}`}
                 className="mb-3 pl-2.5"
                 style={{ borderLeft: `2px solid ${brandColor}` }}
               >
@@ -130,23 +198,105 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
                     <CompanyLogo
                       src={job.logoSrc}
                       name={job.company}
-                      className="size-7 rounded-md p-1"
+                      className="size-7 rounded-md p-1 bg-white border border-neutral-200 text-neutral-900"
                     />
                     <p className="text-[10.5px] font-bold text-neutral-900">
-                      {job.role} · {job.company}
+                      <EditableText
+                        value={job.role}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newExp = [...document.experience!]
+                                newExp[jobIdx] = { ...job, role: val }
+                                onChange({ ...document, experience: newExp })
+                              }
+                            : undefined
+                        }
+                        placeholder="Role"
+                      />
+                      {" · "}
+                      <EditableText
+                        value={job.company}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newExp = [...document.experience!]
+                                newExp[jobIdx] = { ...job, company: val }
+                                onChange({ ...document, experience: newExp })
+                              }
+                            : undefined
+                        }
+                        placeholder="Company"
+                      />
                     </p>
                   </div>
-                  <p className="text-right text-[8.5px] text-neutral-500">
-                    {job.period}
+                  <div className="text-right text-[8.5px] text-neutral-500">
+                    <EditableText
+                      value={job.period}
+                      onChange={
+                        onChange
+                          ? (val) => {
+                              const newExp = [...document.experience!]
+                              newExp[jobIdx] = { ...job, period: val }
+                              onChange({ ...document, experience: newExp })
+                            }
+                          : undefined
+                      }
+                      placeholder="Period"
+                    />
                     <br />
-                    {job.location}
-                  </p>
+                    <EditableText
+                      value={job.location}
+                      onChange={
+                        onChange
+                          ? (val) => {
+                              const newExp = [...document.experience!]
+                              newExp[jobIdx] = { ...job, location: val }
+                              onChange({ ...document, experience: newExp })
+                            }
+                          : undefined
+                      }
+                      placeholder="Location"
+                    />
+                  </div>
                 </div>
-                <p className="mb-1 text-neutral-800">{job.description}</p>
+                <EditableText
+                  value={job.description}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newExp = [...document.experience!]
+                          newExp[jobIdx] = { ...job, description: val }
+                          onChange({ ...document, experience: newExp })
+                        }
+                      : undefined
+                  }
+                  tagName="p"
+                  singleLine={false}
+                  className="mb-1 text-neutral-800"
+                  placeholder="Job description"
+                />
                 {job.highlights?.length ? (
                   <ul className="mt-1 space-y-0.5 pl-2 text-[9.5px] text-neutral-700">
-                    {job.highlights.map((highlight) => (
-                      <li key={highlight}>• {highlight}</li>
+                    {job.highlights.map((highlight, hIdx) => (
+                      <li key={hIdx}>
+                        •{" "}
+                        <EditableText
+                          value={highlight}
+                          onChange={
+                            onChange
+                              ? (val) => {
+                                  const newHighlights = [...job.highlights!]
+                                  newHighlights[hIdx] = val
+                                  const newExp = [...document.experience!]
+                                  newExp[jobIdx] = { ...job, highlights: newHighlights }
+                                  onChange({ ...document, experience: newExp })
+                                }
+                              : undefined
+                          }
+                          placeholder="Highlight"
+                        />
+                      </li>
                     ))}
                   </ul>
                 ) : null}
@@ -157,29 +307,91 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
 
         {document.education ? (
           <Section title="Education" brandColor={brandColor}>
-            <p className="text-neutral-800">
-              {document.education.degree}
+            <div className="text-neutral-800">
+              <EditableText
+                value={document.education.degree}
+                onChange={
+                  onChange
+                    ? (val) =>
+                        onChange({
+                          ...document,
+                          education: { ...document.education!, degree: val },
+                        })
+                    : undefined
+                }
+                placeholder="Degree"
+              />
               <br />
-              {document.education.school} · {document.education.years}
+              <EditableText
+                value={document.education.school}
+                onChange={
+                  onChange
+                    ? (val) =>
+                        onChange({
+                          ...document,
+                          education: { ...document.education!, school: val },
+                        })
+                    : undefined
+                }
+                placeholder="School"
+              />
+              {" · "}
+              <EditableText
+                value={document.education.years}
+                onChange={
+                  onChange
+                    ? (val) =>
+                        onChange({
+                          ...document,
+                          education: { ...document.education!, years: val },
+                        })
+                    : undefined
+                }
+                placeholder="Years"
+              />
               <br />
-              {document.education.location}
-            </p>
+              <EditableText
+                value={document.education.location}
+                onChange={
+                  onChange
+                    ? (val) =>
+                        onChange({
+                          ...document,
+                          education: { ...document.education!, location: val },
+                        })
+                    : undefined
+                }
+                placeholder="Location"
+              />
+            </div>
           </Section>
         ) : null}
 
         {document.skills?.length ? (
           <Section title="Skills" brandColor={brandColor}>
             <div className="flex flex-wrap gap-1.5">
-              {document.skills.map((skill) => (
+              {document.skills.map((skill, sIdx) => (
                 <span
-                  key={skill}
+                  key={sIdx}
                   className="rounded-full border px-2 py-1 text-[8.5px] text-neutral-800"
                   style={{
                     backgroundColor: pillBackground,
                     borderColor: pillBorder,
                   }}
                 >
-                  {skill}
+                  <EditableText
+                    value={skill}
+                    onChange={
+                      onChange
+                        ? (val) => {
+                            const newSkills = [...document.skills!]
+                            newSkills[sIdx] = val
+                            onChange({ ...document, skills: newSkills })
+                          }
+                        : undefined
+                    }
+                    placeholder="Skill"
+                  />
                 </span>
               ))}
             </div>
@@ -188,15 +400,71 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
 
         {document.certifications?.length ? (
           <Section title="Certifications" brandColor={brandColor}>
-            {document.certifications.map((certification) => (
+            {document.certifications.map((certification, cIdx) => (
               <p
-                key={`${certification.title}-${certification.date}`}
+                key={`${certification.title}-${certification.date}-${cIdx}`}
                 className="mb-1 text-neutral-800"
               >
-                {certification.title} — {certification.issuer} ({certification.date})
-                {certification.credentialId
-                  ? ` · ID ${certification.credentialId}`
-                  : ""}
+                <EditableText
+                  value={certification.title}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newCertifications = [...document.certifications!]
+                          newCertifications[cIdx] = { ...certification, title: val }
+                          onChange({ ...document, certifications: newCertifications })
+                        }
+                      : undefined
+                  }
+                  placeholder="Certification Title"
+                />
+                {" — "}
+                <EditableText
+                  value={certification.issuer}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newCertifications = [...document.certifications!]
+                          newCertifications[cIdx] = { ...certification, issuer: val }
+                          onChange({ ...document, certifications: newCertifications })
+                        }
+                      : undefined
+                  }
+                  placeholder="Issuer"
+                />
+                {" ("}
+                <EditableText
+                  value={certification.date}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newCertifications = [...document.certifications!]
+                          newCertifications[cIdx] = { ...certification, date: val }
+                          onChange({ ...document, certifications: newCertifications })
+                        }
+                      : undefined
+                  }
+                  placeholder="Date"
+                />
+                {")"}
+                {certification.credentialId || onChange ? (
+                  <>
+                    {" · ID "}
+                    <EditableText
+                      value={certification.credentialId ?? ""}
+                      onChange={
+                        onChange
+                          ? (val) => {
+                              const newCertifications = [...document.certifications!]
+                              newCertifications[cIdx] = { ...certification, credentialId: val || undefined }
+                              onChange({ ...document, certifications: newCertifications })
+                            }
+                          : undefined
+                      }
+                      placeholder="Credential ID"
+                    />
+                  </>
+                ) : null}
               </p>
             ))}
           </Section>
@@ -204,9 +472,35 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
 
         {document.languages?.length ? (
           <Section title="Languages" brandColor={brandColor}>
-            {document.languages.map((language) => (
-              <p key={language.name} className="mb-1 text-neutral-800">
-                {language.name} — {language.level}
+            {document.languages.map((language, lIdx) => (
+              <p key={`${language.name}-${lIdx}`} className="mb-1 text-neutral-800">
+                <EditableText
+                  value={language.name}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newLanguages = [...document.languages!]
+                          newLanguages[lIdx] = { ...language, name: val }
+                          onChange({ ...document, languages: newLanguages })
+                        }
+                      : undefined
+                  }
+                  placeholder="Language"
+                />
+                {" — "}
+                <EditableText
+                  value={language.level}
+                  onChange={
+                    onChange
+                      ? (val) => {
+                          const newLanguages = [...document.languages!]
+                          newLanguages[lIdx] = { ...language, level: val }
+                          onChange({ ...document, languages: newLanguages })
+                        }
+                      : undefined
+                  }
+                  placeholder="Level"
+                />
               </p>
             ))}
           </Section>
@@ -215,16 +509,28 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
         {document.interests?.length ? (
           <Section title="Interests" brandColor={brandColor}>
             <div className="flex flex-wrap gap-1.5">
-              {document.interests.map((interest) => (
+              {document.interests.map((interest, iIdx) => (
                 <span
-                  key={interest}
+                  key={iIdx}
                   className="rounded-full border px-2 py-1 text-[8.5px] text-neutral-800"
                   style={{
                     backgroundColor: pillBackground,
                     borderColor: pillBorder,
                   }}
                 >
-                  {interest}
+                  <EditableText
+                    value={interest}
+                    onChange={
+                      onChange
+                        ? (val) => {
+                            const newInterests = [...document.interests!]
+                            newInterests[iIdx] = val
+                            onChange({ ...document, interests: newInterests })
+                          }
+                        : undefined
+                    }
+                    placeholder="Interest"
+                  />
                 </span>
               ))}
             </div>
@@ -234,31 +540,79 @@ export function DesignerHtmlResume({ document, brandColor }: DesignerHtmlResumeP
         {document.contact ? (
           <Section title="Links" brandColor={brandColor}>
             {document.contact.website ? (
-              <a
-                href={document.contact.website}
-                className="mb-1 block no-underline"
-                style={{ color: brandColor }}
-              >
-                {document.contact.website}
-              </a>
+              onChange ? (
+                <p className="mb-1">
+                  <EditableText
+                    value={document.contact.website}
+                    onChange={(val) =>
+                      onChange({
+                        ...document,
+                        contact: { ...document.contact!, website: val },
+                      })
+                    }
+                    style={{ color: brandColor }}
+                    placeholder="Website"
+                  />
+                </p>
+              ) : (
+                <a
+                  href={document.contact.website}
+                  className="mb-1 block no-underline"
+                  style={{ color: brandColor }}
+                >
+                  {formatWebsiteLabel(document.contact.website)}
+                </a>
+              )
             ) : null}
             {document.contact.linkedin ? (
-              <a
-                href={document.contact.linkedin}
-                className="mb-1 block no-underline"
-                style={{ color: brandColor }}
-              >
-                {document.contact.linkedin}
-              </a>
+              onChange ? (
+                <p className="mb-1">
+                  <EditableText
+                    value={document.contact.linkedin}
+                    onChange={(val) =>
+                      onChange({
+                        ...document,
+                        contact: { ...document.contact!, linkedin: val },
+                      })
+                    }
+                    style={{ color: brandColor }}
+                    placeholder="LinkedIn"
+                  />
+                </p>
+              ) : (
+                <a
+                  href={document.contact.linkedin}
+                  className="mb-1 block no-underline"
+                  style={{ color: brandColor }}
+                >
+                  {document.contact.linkedin}
+                </a>
+              )
             ) : null}
             {document.contact.github ? (
-              <a
-                href={document.contact.github}
-                className="block no-underline"
-                style={{ color: brandColor }}
-              >
-                {document.contact.github}
-              </a>
+              onChange ? (
+                <p>
+                  <EditableText
+                    value={document.contact.github}
+                    onChange={(val) =>
+                      onChange({
+                        ...document,
+                        contact: { ...document.contact!, github: val },
+                      })
+                    }
+                    style={{ color: brandColor }}
+                    placeholder="GitHub"
+                  />
+                </p>
+              ) : (
+                <a
+                  href={document.contact.github}
+                  className="block no-underline"
+                  style={{ color: brandColor }}
+                >
+                  {document.contact.github}
+                </a>
+              )
             ) : null}
           </Section>
         ) : null}

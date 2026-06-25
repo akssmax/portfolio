@@ -101,3 +101,21 @@ export function buildResumeDocument(
 
   return document
 }
+
+export function filterDocumentBySections(
+  document: ResumeDocument,
+  sections: ResumeSectionConfig,
+): ResumeDocument {
+  return {
+    ...document,
+    summary: sections.summary ? document.summary : undefined,
+    experience: sections.experience ? document.experience : undefined,
+    education: sections.education ? document.education : undefined,
+    skills: sections.skills ? document.skills : undefined,
+    contact: sections.contact ? document.contact : undefined,
+    certifications: sections.certifications ? document.certifications : undefined,
+    languages: sections.languages ? document.languages : undefined,
+    interests: sections.interests ? document.interests : undefined,
+  }
+}
+

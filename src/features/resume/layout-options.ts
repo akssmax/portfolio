@@ -17,4 +17,9 @@ export const RESUME_LAYOUT_OPTIONS: {
     label: "Designer",
     description: "Branded layout with logomark, accent sidebar, and hierarchy.",
   },
+  {
+    id: "modern",
+    label: "Modern",
+    description: "Two-column branded layout for a compact, structured presentation.",
+  },
 ]

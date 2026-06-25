@@ -113,7 +113,7 @@ const componentDescriptions: Record<string, string> = {
   tooltip: "Popup that displays information on hover.",
 }
 
-export const componentEntries: DocEntry[] = componentSlugs.map((slug) =>
+export const componentEntries: Array<DocEntry> = componentSlugs.map((slug) =>
   entry(
     slug,
     componentDescriptions[slug] ??
@@ -122,7 +122,7 @@ export const componentEntries: DocEntry[] = componentSlugs.map((slug) =>
   )
 )
 
-export const customEntries: DocEntry[] = [
+export const customEntries: Array<DocEntry> = [
   entry(
     "m3-shapes",
     "Material Design 3 expressive shapes for icon boxes, image clipping masks, and placeholders.",
@@ -131,6 +131,11 @@ export const customEntries: DocEntry[] = [
   entry(
     "footer-monogram",
     "Large footer watermark monogram with Framer Motion animation variants.",
+    "custom"
+  ),
+  entry(
+    "monogram-patterns",
+    "Subtle background patterns created using the brand's triangular monogram logo, animated with Framer Motion.",
     "custom"
   ),
   entry(
@@ -180,7 +185,7 @@ export const customEntries: DocEntry[] = [
   ),
 ]
 
-export const allDocEntries: DocEntry[] = [...componentEntries, ...customEntries]
+export const allDocEntries: Array<DocEntry> = [...componentEntries, ...customEntries]
 
 export const docEntryBySlug: Record<string, DocEntry> = Object.fromEntries(
   allDocEntries.map((e) => [e.slug, e])

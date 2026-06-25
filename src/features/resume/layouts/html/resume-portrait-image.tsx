@@ -9,6 +9,7 @@ type ResumePortraitImageProps = {
   shape?: string
   alt: string
   className?: string
+  brandColor?: string
 }
 
 export function ResumePortraitImage({
@@ -16,6 +17,7 @@ export function ResumePortraitImage({
   shape,
   alt,
   className,
+  brandColor,
 }: ResumePortraitImageProps) {
   const shapeId =
     shape && isM3ShapeId(shape) ? shape : DEFAULT_PORTRAIT_SHAPE
@@ -26,6 +28,7 @@ export function ResumePortraitImage({
       src={src}
       alt={alt}
       className={cn("size-[4.5rem] shrink-0", className)}
+      style={brandColor ? { backgroundColor: brandColor } : undefined}
     />
   )
 }

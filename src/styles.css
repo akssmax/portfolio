@@ -85,3 +85,10 @@
     @apply font-sans;
     }
 }
+
+[contenteditable="true"]:empty:before {
+  content: attr(data-placeholder);
+  color: #a3a3a3;
+  cursor: text;
+}
+

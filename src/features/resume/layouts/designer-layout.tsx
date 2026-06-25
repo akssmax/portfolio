@@ -4,6 +4,7 @@ import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 import { hexToRgba } from "../color-utils"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
+import { PdfCompanyLogo } from "./pdf-company-logo"
 
 const PAGE_MARGIN = {
   paddingTop: 34,
@@ -72,15 +73,16 @@ const styles = StyleSheet.create({
     color: "#737373",
   },
   header: {
-    marginBottom: 20,
-    padding: 14,
+    marginBottom: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     borderRadius: 8,
   },
   headerRow: {
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   portrait: {
     width: 72,
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   headerLine: {
-    paddingBottom: 8,
+    paddingBottom: 3,
   },
   name: {
     fontSize: 24,
@@ -162,11 +164,20 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
-  jobLogo: {
+  jobLogoContainer: {
     width: 28,
     height: 28,
     borderRadius: 6,
-    objectFit: "contain",
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  jobLogo: {
+    width: 18,
+    height: 18,
   },
   jobTitle: {
     fontSize: 10.5,
@@ -218,7 +229,7 @@ function Section({
   return (
     <View style={styles.section}>
       <View wrap={false} minPresenceAhead={40} style={styles.sectionHeader}>
-        <View style={[styles.sectionAccent, { backgroundColor: brandColor }]} />
+        <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
         <Text style={styles.sectionTitle}>{title}</Text>
       </View>
       {children}
@@ -241,7 +252,7 @@ function PageChrome({
     <>
       <View
         fixed
-        style={[styles.sidebarStripe, { backgroundColor: brandColor }]}
+        style={{ ...styles.sidebarStripe, backgroundColor: brandColor }}
       />
 
       <View
@@ -288,14 +299,14 @@ export function DesignerResumeLayout({
     <Page size="A4" style={styles.page}>
       <PageChrome document={document} brandColor={brandColor} />
 
-      <View style={[styles.header, { backgroundColor: tint }]}>
+      <View style={{ ...styles.header, backgroundColor: tint }}>
         <View style={styles.headerRow}>
           <View style={styles.headerText}>
             <View style={styles.headerLine}>
               <Text style={styles.name}>{document.name}</Text>
             </View>
             <View style={styles.headerLine}>
-              <Text style={[styles.title, { color: brandColor }]}>
+              <Text style={{ ...styles.title, color: brandColor }}>
                 {document.title}
               </Text>
             </View>
@@ -311,27 +322,30 @@ export function DesignerResumeLayout({
         {document.contact ? (
           <View style={styles.contactRow}>
             <Text
-              style={[
-                styles.contactPill,
-                { backgroundColor: pillBackground, color: brandColor },
-              ]}
+              style={{
+                ...styles.contactPill,
+                backgroundColor: pillBackground,
+                color: brandColor,
+              }}
             >
               {document.contact.email}
             </Text>
             <Text
-              style={[
-                styles.contactPill,
-                { backgroundColor: pillBackground, color: brandColor },
-              ]}
+              style={{
+                ...styles.contactPill,
+                backgroundColor: pillBackground,
+                color: brandColor,
+              }}
             >
               {document.contact.phone}
             </Text>
             {document.contact.website ? (
               <Text
-                style={[
-                  styles.contactPill,
-                  { backgroundColor: pillBackground, color: brandColor },
-                ]}
+                style={{
+                  ...styles.contactPill,
+                  backgroundColor: pillBackground,
+                  color: brandColor,
+                }}
               >
                 {formatWebsiteLabel(document.contact.website)}
               </Text>
@@ -355,12 +369,18 @@ export function DesignerResumeLayout({
           {document.experience.map((job) => (
             <View
               key={`${job.company}-${job.period}`}
-              style={[styles.job, { borderLeftColor: brandColor }]}
+              style={{ ...styles.job, borderLeftColor: brandColor }}
             >
               <View wrap={false} minPresenceAhead={48} style={styles.jobHeader}>
                 <View style={styles.jobTitleRow}>
                   {job.logoSrc ? (
-                    <Image src={job.logoSrc} style={styles.jobLogo} />
+                    <View style={styles.jobLogoContainer}>
+                      <PdfCompanyLogo
+                        logoSrc={job.logoSrc}
+                        name={job.company}
+                        style={styles.jobLogo}
+                      />
+                    </View>
                   ) : null}
                   <Text style={styles.jobTitle}>
                     {job.role} · {job.company}
@@ -407,14 +427,12 @@ export function DesignerResumeLayout({
             {document.skills.map((skill) => (
               <Text
                 key={skill}
-                style={[
-                  styles.skillPill,
-                  {
-                    backgroundColor: pillBackground,
-                    borderColor: pillBorder,
-                    color: "#262626",
-                  },
-                ]}
+                style={{
+                  ...styles.skillPill,
+                  backgroundColor: pillBackground,
+                  borderColor: pillBorder,
+                  color: "#262626",
+                }}
               >
                 {skill}
               </Text>
@@ -461,14 +479,12 @@ export function DesignerResumeLayout({
             {document.interests.map((interest) => (
               <Text
                 key={interest}
-                style={[
-                  styles.skillPill,
-                  {
-                    backgroundColor: pillBackground,
-                    borderColor: pillBorder,
-                    color: "#262626",
-                  },
-                ]}
+                style={{
+                  ...styles.skillPill,
+                  backgroundColor: pillBackground,
+                  borderColor: pillBorder,
+                  color: "#262626",
+                }}
               >
                 {interest}
               </Text>
@@ -482,7 +498,7 @@ export function DesignerResumeLayout({
           {document.contact.website ? (
             <Link
               src={document.contact.website}
-              style={[styles.link, { color: brandColor }]}
+              style={{ ...styles.link, color: brandColor }}
             >
               <Text>{document.contact.website}</Text>
             </Link>
@@ -490,7 +506,7 @@ export function DesignerResumeLayout({
           {document.contact.linkedin ? (
             <Link
               src={document.contact.linkedin}
-              style={[styles.link, { color: brandColor }]}
+              style={{ ...styles.link, color: brandColor }}
             >
               <Text>{document.contact.linkedin}</Text>
             </Link>
@@ -498,7 +514,7 @@ export function DesignerResumeLayout({
           {document.contact.github ? (
             <Link
               src={document.contact.github}
-              style={[styles.link, { color: brandColor }]}
+              style={{ ...styles.link, color: brandColor }}
             >
               <Text>{document.contact.github}</Text>
             </Link>

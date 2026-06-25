@@ -34,25 +34,9 @@ import { parseLinkedInProfileUrl } from "@/lib/linkedin/parse-linkedin-url"
 import { formatResumeValidationError } from "@/features/resume/validate-resume-document"
 
 import { usePublicResumeGenerate } from "./use-public-resume-generate"
+import { filterDocumentBySections } from "@/features/resume/build-resume-document"
 
 type WizardStep = "input" | "preview"
-
-function filterDocumentBySections(
-  document: ResumeDocument,
-  sections: ResumeSectionConfig,
-): ResumeDocument {
-  return {
-    ...document,
-    summary: sections.summary ? document.summary : undefined,
-    experience: sections.experience ? document.experience : undefined,
-    education: sections.education ? document.education : undefined,
-    skills: sections.skills ? document.skills : undefined,
-    contact: sections.contact ? document.contact : undefined,
-    certifications: sections.certifications ? document.certifications : undefined,
-    languages: sections.languages ? document.languages : undefined,
-    interests: sections.interests ? document.interests : undefined,
-  }
-}
 
 export function PublicResumeWizard() {
   const { appearance } = useAppearance()
@@ -66,6 +50,35 @@ export function PublicResumeWizard() {
   const [linkedinUrl, setLinkedinUrl] = useState("")
   const [profileText, setProfileText] = useState("")
   const [inputError, setInputError] = useState<string | null>(null)
+
+  const [editedDocument, setEditedDocument] = useState<ResumeDocument | null>(null)
+
+  useEffect(() => {
+    if (document) {
+      setEditedDocument(document)
+    } else {
+      setEditedDocument(null)
+    }
+  }, [document])
+
+  const handleDocumentChange = (updated: ResumeDocument) => {
+    setEditedDocument((prev) => {
+      if (!prev) return prev
+      const next = { ...prev }
+      if (updated.name !== undefined) next.name = updated.name
+      if (updated.title !== undefined) next.title = updated.title
+      if (updated.location !== undefined) next.location = updated.location
+      if (updated.summary !== undefined) next.summary = updated.summary
+      if (updated.experience !== undefined) next.experience = updated.experience
+      if (updated.education !== undefined) next.education = updated.education
+      if (updated.skills !== undefined) next.skills = updated.skills
+      if (updated.contact !== undefined) next.contact = updated.contact
+      if (updated.certifications !== undefined) next.certifications = updated.certifications
+      if (updated.languages !== undefined) next.languages = updated.languages
+      if (updated.interests !== undefined) next.interests = updated.interests
+      return next
+    })
+  }
 
   const defaults = useMemo(
     () => createInitialResumeBuilderState(appearance),
@@ -83,9 +96,10 @@ export function PublicResumeWizard() {
   }, [defaults])
 
   const brandColor = resolveResumeBrandColor(colorSelection, primary)
-  const previewDocument = document ? filterDocumentBySections(document, sections) : null
+  const previewDocument = editedDocument ? filterDocumentBySections(editedDocument, sections) : null
   const generationError = error
   const validationError = inputError ? formatResumeValidationError(inputError) : null
+
 
   const handleGenerate = async () => {
     setInputError(null)
@@ -256,6 +270,7 @@ export function PublicResumeWizard() {
                         !isResumeBrandColorValid(colorSelection)
                       }
                       error={downloadError}
+                      onChange={handleDocumentChange}
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-sm text-muted-foreground">

@@ -1,9 +1,45 @@
 import { motion, useReducedMotion } from "motion/react"
-import { Layout, Terminal, FileUser, Cpu, Sparkles } from "lucide-react"
+import { Cpu, FileUser, Layout, Sparkles, Terminal } from "lucide-react"
 
+import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
+import type {MonogramPatternTone, MonogramPatternVariant} from "@/components/brand/monogram-patterns";
 import { getImageUrl } from "@/lib/sanity/image"
 import { usesAvatarCardCover } from "@/lib/projects/project-card-placeholder"
-import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
+import {
+  MonogramPattern
+  
+  
+} from "@/components/brand/monogram-patterns"
+
+function getPatternVariantForSlug(slug: string): MonogramPatternVariant {
+  switch (slug) {
+    case "100x-landing-page":
+      return "offset"
+    case "100x-chat-shell":
+      return "diagonal"
+    case "resume-builder":
+      return "grid"
+    case "v1-100x-proto":
+      return "concentric"
+    default:
+      return "dots"
+  }
+}
+
+function getPatternToneForSlug(slug: string): MonogramPatternTone {
+  switch (slug) {
+    case "100x-landing-page":
+      return "accent"
+    case "100x-chat-shell":
+      return "primary"
+    case "resume-builder":
+      return "primary"
+    case "v1-100x-proto":
+      return "accent"
+    default:
+      return "muted"
+  }
+}
 
 const imageHoverVariants = {
   rest: { scale: 1 },
@@ -32,13 +68,14 @@ const iconVariants = {
 
 const PROJECT_ICON_CONFIG: Record<
   string,
-  {
-    Icon: React.ComponentType<{ className?: string }>
-    bgGradient: string
-    iconColor: string
-    glowColor: string
-    borderColor: string
-  }
+  | {
+      Icon: React.ComponentType<{ className?: string }>
+      bgGradient: string
+      iconColor: string
+      glowColor: string
+      borderColor: string
+    }
+  | undefined
 > = {
   "100x-landing-page": {
     Icon: Layout,
@@ -87,8 +124,12 @@ function ProjectIconPlaceholder({ project }: ProjectCardCoverProps) {
 
   return (
     <div className={`relative flex aspect-[16/10] items-center justify-center border-b border-border bg-gradient-to-b ${bgGradient} overflow-hidden`}>
-      {/* Subtle background dots/grid for a premium designer tech aesthetic */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(120,120,120,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(120,120,120,0.04)_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]" />
+      {/* Animated custom monogram background patterns */}
+      <MonogramPattern
+        variant={getPatternVariantForSlug(project.slug)}
+        tone={getPatternToneForSlug(project.slug)}
+        className="opacity-70 group-hover:opacity-95 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]"
+      />
       
       <motion.div
         variants={iconContainerVariants}

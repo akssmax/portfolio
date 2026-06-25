@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Loader2, Lock } from "lucide-react"
 
 import { useAppearance } from "@/components/appearance-provider"
@@ -26,13 +26,16 @@ import {
   loadResumeBuilderSettings,
   saveResumeBuilderSettings,
 } from "./resume-builder-storage"
-import { ResumePreview, useResumePreviewDocument } from "./resume-preview"
+import { ResumePreview } from "./resume-preview"
 import {
   resolveResumeBrandColor,
   type ResumeBrandColorSelection,
 } from "./resume-brand-color-utils"
 import { useDownloadResume } from "./use-download-resume"
-import type { ResumeLayoutId, ResumeSectionConfig } from "./types"
+import type { ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
+import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
+import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
+
 
 function ResumeBuilderUnlock({
   onUnlocked,
@@ -154,7 +157,33 @@ function ResumeBuilderWorkspace() {
     },
   )
 
-  const previewDocument = useResumePreviewDocument(sections)
+  const [editedDocument, setEditedDocument] = useState<ResumeDocument>(() =>
+    buildResumeDocument(DEFAULT_RESUME_SECTIONS)
+  )
+
+  const previewDocument = useMemo(() =>
+    filterDocumentBySections(editedDocument, sections),
+    [editedDocument, sections]
+  )
+
+  const handleDocumentChange = (updated: ResumeDocument) => {
+    setEditedDocument((prev) => {
+      const next = { ...prev }
+      if (updated.name !== undefined) next.name = updated.name
+      if (updated.title !== undefined) next.title = updated.title
+      if (updated.location !== undefined) next.location = updated.location
+      if (updated.summary !== undefined) next.summary = updated.summary
+      if (updated.experience !== undefined) next.experience = updated.experience
+      if (updated.education !== undefined) next.education = updated.education
+      if (updated.skills !== undefined) next.skills = updated.skills
+      if (updated.contact !== undefined) next.contact = updated.contact
+      if (updated.certifications !== undefined) next.certifications = updated.certifications
+      if (updated.languages !== undefined) next.languages = updated.languages
+      if (updated.interests !== undefined) next.interests = updated.interests
+      return next
+    })
+  }
+
   const brandColor = resolveResumeBrandColor(colorSelection, primary)
 
   useEffect(() => {
@@ -166,6 +195,7 @@ function ResumeBuilderWorkspace() {
       sections,
       brandColor: resolveResumeBrandColor(colorSelection, primary),
       layout,
+      document: previewDocument,
     })
   }
 
@@ -204,6 +234,7 @@ function ResumeBuilderWorkspace() {
               !isResumeBrandColorValid(colorSelection)
             }
             error={error}
+            onChange={handleDocumentChange}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

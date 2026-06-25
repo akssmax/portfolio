@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router"
 
 import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
+import { FeaturedProjectLayout } from "@/components/projects/featured-project-layout"
 import { SiteHeader } from "@/components/landing/site-header"
 import { Button } from "@/components/ui/button"
 import { getProjectBySlug } from "@/lib/sanity/projects"
@@ -51,7 +52,11 @@ function ProjectDetailPage() {
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main className="border-t border-border">
-        <CaseStudyLayout project={project} />
+        {project.slug === "100x-chat-shell" ? (
+          <FeaturedProjectLayout project={project} />
+        ) : (
+          <CaseStudyLayout project={project} />
+        )}
       </main>
     </div>
   )
