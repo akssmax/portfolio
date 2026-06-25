@@ -30,15 +30,17 @@ export function slugToDisplayName(slug: string): string {
 }
 
 export function buildLinkedInSearchQueries(slug: string, profileText?: string): string[] {
+  const displayName = slugToDisplayName(slug)
   const queries = [
-    `site:linkedin.com/in/${slug}`,
-    `${slug} LinkedIn experience skills`,
+    `"${displayName}" site:linkedin.com/in/${slug}`,
+    `"${displayName}" portfolio OR resume`,
+    `"${displayName}" github OR linkedin`,
   ]
 
   if (profileText?.trim()) {
     const nameGuess = profileText.trim().split(/\n/)[0]?.slice(0, 80)
     if (nameGuess) {
-      queries.unshift(`${nameGuess} site:linkedin.com/in/${slug}`)
+      queries.unshift(`"${nameGuess}" site:linkedin.com/in/${slug}`)
     }
   }
 
