@@ -62,15 +62,15 @@ export function HeroSection() {
             <Suspense fallback={null}>
               <DotField
                 className="absolute inset-0"
-                dotRadius={1.5}
+                dotRadius={1.8}
                 dotSpacing={14}
                 bulgeStrength={67}
                 glowRadius={160}
                 sparkle={false}
                 waveAmplitude={0}
-                gradientFrom={hexToRgba(brandColors.primary, 0.35)}
-                gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.25)}
-                glowColor={hexToRgba(brandColors.primary, 0.15)}
+                gradientFrom={hexToRgba(brandColors.primary, 0.75)}
+                gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.55)}
+                glowColor={hexToRgba(brandColors.primary, 0.45)}
               />
             </Suspense>
           </ErrorBoundary>
