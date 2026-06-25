@@ -52,7 +52,7 @@ function ProjectDetailPage() {
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main className="border-t border-border">
-        {project.slug === "100x-chat-shell" ? (
+        {project.workSection === "recentProject" ? (
           <FeaturedProjectLayout project={project} />
         ) : (
           <CaseStudyLayout project={project} />

@@ -15,6 +15,9 @@ import {
   CheckCircle2,
   Cpu,
   Bookmark,
+  Globe,
+  Shield,
+  User,
 } from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,120 +32,602 @@ type FeaturedProjectLayoutProps = {
   project: Project
 }
 
+type TechItem = {
+  name: string
+  logo: React.ComponentType<any>
+}
+
+type BenefitItem = {
+  title: string
+  description: string
+  icon: React.ComponentType<any>
+}
+
+type FeatureTab = {
+  id: string
+  label: string
+  icon: React.ComponentType<any>
+  title: string
+  description: string
+  points: string[]
+  badge: string
+  metricValue: string
+  metricLabel: string
+  focus: string
+}
+
+type DesignDecision = {
+  title: string
+  description: string
+}
+
+type OutcomeMetric = {
+  value: string
+  label: string
+}
+
+type ProjectConfig = {
+  liveUrl: string
+  techStackList: TechItem[]
+  benefits: BenefitItem[]
+  features: FeatureTab[]
+  designDecisions: DesignDecision[]
+  outcomeDescription: string
+  outcomeMetrics: OutcomeMetric[]
+}
+
+const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
+  "100x-chat-shell": {
+    liveUrl: "https://llm-daisyui-shell.vercel.app/",
+    techStackList: [
+      { name: "React", logo: Cpu },
+      { name: "TypeScript", logo: Terminal },
+      { name: "Vite", logo: Sparkles },
+      { name: "Tailwind CSS", logo: Palette },
+      { name: "Konva", logo: Layers },
+      { name: "Zustand", logo: Database },
+      { name: "Mistral", logo: Brain },
+      { name: "Vercel", logo: ExternalLink },
+    ],
+    benefits: [
+      {
+        title: "Interactive Generative Studio",
+        description:
+          "Goes beyond text-only chats by generating real-time visual layouts (like slide decks, social cards, documents) directly onto a Konva canvas.",
+        icon: Sparkles,
+      },
+      {
+        title: "Context-Aware Memory System",
+        description:
+          "Keeps track of user facts and design choices across threads, ensuring consistent formatting and less repetition during long design sessions.",
+        icon: Brain,
+      },
+      {
+        title: "Zero-Latency Local RAG",
+        description:
+          "Grounds layout generation in custom docs or CSV assets via client-side search without complex server roundtrips.",
+        icon: Search,
+      },
+      {
+        title: "Layout Scoring & Fitting",
+        description:
+          "Intelligent canvas placement scoring maps the LLM's raw suggestions to 35+ verified responsive viewport designs.",
+        icon: Layers,
+      },
+    ],
+    features: [
+      {
+        id: "chat",
+        label: "New Chat",
+        icon: MessageSquare,
+        title: "Mistral-Powered Conversational Engine",
+        description:
+          "Features streaming answers, virtualized logs for speed, code highlighting, and structured system configurations.",
+        points: [
+          "Mistral-streamed conversational output with reasoning tags",
+          "40+ starter presets to trigger design systems, copywriters, or RAG indexers",
+          "Virtualized thread history capable of rendering thousands of tokens smoothly",
+        ],
+        badge: "Fast & Snappy",
+        metricValue: "40+",
+        metricLabel: "Starter Presets Shipped",
+        focus: "Virtualized Streams",
+      },
+      {
+        id: "memory",
+        label: "Memory Systems",
+        icon: Brain,
+        title: "Persistent Knowledge & Style Preferences",
+        description:
+          "Injects global user criteria (e.g., brand guidelines, fonts, roles) automatically into active AI prompts.",
+        points: [
+          "Memory bank summarizing user's design rules and guidelines",
+          "Fact extractor extracting preferences from chat messages automatically",
+          "Thread-specific context gating to keep chats clean and focused",
+        ],
+        badge: "Context Gated",
+        metricValue: "Facts",
+        metricLabel: "Autosummarization Engine",
+        focus: "Context Windows",
+      },
+      {
+        id: "knowledge",
+        label: "Knowledge & RAG",
+        icon: Database,
+        title: "Client-Side Asset Grounding",
+        description:
+          "Allows direct file uploads to anchor layout content based on local information.",
+        points: [
+          "Client-side RAG parser for text and structured file formats",
+          "Keyword search retrieval system running in the browser",
+          "Grounded prompt rendering providing document context to Mistral",
+        ],
+        badge: "Private & Local",
+        metricValue: "100%",
+        metricLabel: "Local File Gating",
+        focus: "Client-Side RAG",
+      },
+      {
+        id: "studio",
+        label: "Design Studio",
+        icon: Layers,
+        title: "Visual Layout & Canvas Workspace",
+        description:
+          "A resizable split screen matching chat logs with a Konva canvas, complete with export-ready layouts.",
+        points: [
+          "Interactive canvas with 35 pre-designed layouts (cards, grids, carousels)",
+          "25+ aspect ratio viewports (Mobile, Instagram, Banner, Slide, Document)",
+          "HTML code editor side-by-side with PDF and SVG vector downloads",
+        ],
+        badge: "WYSIWYG",
+        metricValue: "35",
+        metricLabel: "Responsive Layouts",
+        focus: "Konva/CSS Interop",
+      },
+      {
+        id: "playground",
+        label: "UI Playground",
+        icon: Settings,
+        title: "System Instruction Benchmarking",
+        description:
+          "A developer testing sandbox to live-configure and test chat parameters.",
+        points: [
+          "Interactive theme selectors (Retro, Forest, Cyberpunk, Emerald, etc.)",
+          "Configurable token limits, reasoning details, and system prompts",
+          "Split viewport simulation representing actual device widths",
+        ],
+        badge: "Dev Sandboxed",
+        metricValue: "8",
+        metricLabel: "Visual Config Themes",
+        focus: "Live Viewport Bench",
+      },
+    ],
+    designDecisions: [
+      {
+        title: "360px Fixed Sidebar Column",
+        description:
+          "Enforces consistent chat logs on the left side while leaving maximum viewport real estate for generative Konva layouts on the right.",
+      },
+      {
+        title: "Visible Chain-of-Thought Rendering",
+        description:
+          "Instead of hiding agent loops, we stream reasoning phases so developers understand what the critic checks at every step.",
+      },
+      {
+        title: "Contrast-Safe Token Presets",
+        description:
+          "Guarantees WCAG AA color accessibility by forcing the generation model to select colors matching predefined brand design parameters.",
+      },
+    ],
+    outcomeDescription:
+      "LLM Chat Shell was planned, designed, and fully shipped in ten days (May 5–15, 2026). It serves as a proof of concept showing how standard React design system patterns can cooperate with live streaming AI models.",
+    outcomeMetrics: [
+      { value: "10", label: "Days to Ship" },
+      { value: "29", label: "Vitest Suites" },
+      { value: "35", label: "UI Layouts" },
+    ],
+  },
+  "v1-100x-proto": {
+    liveUrl: "https://llm-daisyui-shell.vercel.app/",
+    techStackList: [
+      { name: "React", logo: Cpu },
+      { name: "TypeScript", logo: Terminal },
+      { name: "Vite", logo: Sparkles },
+      { name: "Tailwind CSS", logo: Palette },
+      { name: "Framer Motion", logo: Layers },
+      { name: "Zustand", logo: Database },
+      { name: "Neon", logo: Brain },
+      { name: "Vercel", logo: ExternalLink },
+    ],
+    benefits: [
+      {
+        title: "Cohesive Product Shell",
+        description:
+          "Unifies chat, automation, data explorer, app generation, and onboarding into one AI productivity workspace.",
+        icon: Sparkles,
+      },
+      {
+        title: "Semantic Design Tokens",
+        description:
+          "Builds from the 100X-UI Figma system with custom tokens supporting full native light and dark modes.",
+        icon: Palette,
+      },
+      {
+        title: "Advanced Data Tables",
+        description:
+          "Implements TanStack Table with AI grouping, custom filters, and interactive D3/Perspective charts.",
+        icon: Database,
+      },
+      {
+        title: "Real-time Sandboxed Apps",
+        description:
+          "Compiles and executes React/JSX code generated from natural language in a secure, sandboxed container.",
+        icon: Layers,
+      },
+    ],
+    features: [
+      {
+        id: "chat",
+        label: "Multi-mode Chat",
+        icon: MessageSquare,
+        title: "Context-Aware Agent Chat",
+        description:
+          "AI chat capable of multi-mode reasoning with smart attachments and active thread-scoped file tracking.",
+        points: [
+          "Smart mode-switching triggers matching LLM models",
+          "File attachment parsing supporting multiple developer code types",
+          "Thread management and notes catalog integrated with active memory",
+        ],
+        badge: "Context Aware",
+        metricValue: "8",
+        metricLabel: "Core Surfaces Shipped",
+        focus: "Model Routing",
+      },
+      {
+        id: "workflows",
+        label: "Workflows",
+        icon: Settings,
+        title: "Visual Automation Builder",
+        description:
+          "Design, preview, and build automated browser agent scripts via visual flows.",
+        points: [
+          "Drag-and-drop workflow visual creator",
+          "Browser simulation playground representing automation runs",
+          "Script compilation outputting vanilla automation code",
+        ],
+        badge: "Automation",
+        metricValue: "100%",
+        metricLabel: "Visual Automation",
+        focus: "Script Gen",
+      },
+      {
+        id: "data",
+        label: "Data Explorer",
+        icon: Database,
+        title: "TanStack Table Views",
+        description:
+          "Data visualizations and explorers powered by AI-generated custom filters and grouping.",
+        points: [
+          "Advanced grid views supporting massive record sets",
+          "AI-powered sorting, filtering, and columns picker",
+          "Embedded D3 and Perspective graphics engines",
+        ],
+        badge: "Data Engine",
+        metricValue: "167",
+        metricLabel: "React components",
+        focus: "Table Gating",
+      },
+      {
+        id: "apps",
+        label: "App Gen",
+        icon: Layers,
+        title: "Natural Language Sandbox",
+        description:
+          "Instantly compiles natural language specifications into fully functional React JSX code.",
+        points: [
+          "Sandbox environment displaying dynamic components safely",
+          "Real-time React JSX parsing and compiler pipeline",
+          "Fully responsive preview matching target devices",
+        ],
+        badge: "JSX Preview",
+        metricValue: "40+",
+        metricLabel: "Design System UI",
+        focus: "Sandboxing",
+      },
+      {
+        id: "onboarding",
+        label: "Onboarding UI",
+        icon: User,
+        title: "Workspace Personalization Onboarding",
+        description:
+          "OTP verification and interest selection curating custom categories for startup teams.",
+        points: [
+          "Smooth animation onboarding screens",
+          "Secure OTP verification flows",
+          "Tag-based interest selectors customization engine",
+        ],
+        badge: "Onboarding",
+        metricValue: "3",
+        metricLabel: "Personalization flows",
+        focus: "OTP Auth",
+      },
+    ],
+    designDecisions: [
+      {
+        title: "100X-UI Figma Sync",
+        description:
+          "Built directly on top of the 100x Figma design system, maintaining strict token naming conventions.",
+      },
+      {
+        title: "Inline Automation Controls",
+        description:
+          "Workflow script actions are presented inline, so users can verify script execution without navigating away.",
+      },
+      {
+        title: "Contextual Quick Prompts",
+        description:
+          "Category chips change dynamically based on user onboarding tags, providing shortcuts for typical developer tasks.",
+      },
+    ],
+    outcomeDescription:
+      "The v1 agent extension prototype successfully validated multi-mode chat, onboarding pipelines, and react app sandboxing for 100x.bot, creating a design system foundation of 40+ components.",
+    outcomeMetrics: [
+      { value: "167", label: "React Components" },
+      { value: "40+", label: "UI Components" },
+      { value: "8", label: "Core Surfaces" },
+    ],
+  },
+  "100x-landing-page": {
+    liveUrl: "https://100x.bot/",
+    techStackList: [
+      { name: "React", logo: Cpu },
+      { name: "TypeScript", logo: Terminal },
+      { name: "Vite", logo: Sparkles },
+      { name: "Tailwind CSS", logo: Palette },
+      { name: "Framer Motion", logo: Layers },
+      { name: "Three.js", logo: Globe },
+      { name: "shadcn/ui", logo: Settings },
+      { name: "TipTap", logo: Terminal },
+    ],
+    benefits: [
+      {
+        title: "High-Fidelity Product Demos",
+        description:
+          "Replaces static screenshots with interactive, scripted browser walkthroughs demonstrating actual automation.",
+        icon: Sparkles,
+      },
+      {
+        title: "Dedicated Feature Pillars",
+        description: "Communicates browser automations clearly through 5 distinct capability product stories.",
+        icon: Layers,
+      },
+      {
+        title: "Conversion-Focused Funnels",
+        description: "Features comparison matrices, integrations catalogs, and pricing sliders to guide developers.",
+        icon: ArrowLeft,
+      },
+      {
+        title: "Design System Foundation",
+        description: "Guarantees pixel-perfect compliance across 13 core homepage segments and competitor landing routes.",
+        icon: Palette,
+      },
+    ],
+    features: [
+      {
+        id: "home",
+        label: "Homepage",
+        icon: MessageSquare,
+        title: "Interactive Scripted Walkthrough",
+        description:
+          "Hero section featuring animated text lines and a scripted browser demo with interactive pause/play controls.",
+        points: [
+          "Vibrant WebGL gradient particle background simulation",
+          "Scripted visual steps walking through a browser scrape run",
+          "One-click action to try the script yourself",
+        ],
+        badge: "WebGL Driven",
+        metricValue: "13",
+        metricLabel: "Core Page Sections",
+        focus: "Performance",
+      },
+      {
+        id: "product",
+        label: "Product Pillars",
+        icon: Layers,
+        title: "Deep-Dive Feature Sections",
+        description: "Separate routes for each core workflow capability, using unified proof-and-mock layouts.",
+        points: [
+          "Dedicated layout sections for Workflows, Apps, and Smart Tables",
+          "Consistent copy formula: Label → Headline → Proof → Mock → CTA",
+          "Responsive grid adjusting to multiple display viewports",
+        ],
+        badge: "Feature Rich",
+        metricValue: "5",
+        metricLabel: "Capability Pillars",
+        focus: "Copy Formula",
+      },
+      {
+        id: "compare",
+        label: "Competitor Compare",
+        icon: Search,
+        title: "Funnels against Competitors",
+        description: "Custom compare pages positioning 100x.Bot against Manus, Lovable, ChatGPT, Grok, and Merlin.",
+        points: [
+          "Direct feature comparison checklists",
+          "Positioning copywriting highlighting performance and local data wins",
+          "Specific comparative benchmarks and speed tests",
+        ],
+        badge: "SEO Optimized",
+        metricValue: "5",
+        metricLabel: "Competitor Matrices",
+        focus: "Funnel Gating",
+      },
+      {
+        id: "catalog",
+        label: "Integrations",
+        icon: Database,
+        title: "Searchable Integrations Database",
+        description: "A 799-entry searchable directory complete with custom category lookup pages.",
+        points: [
+          "Faceted sidebar search filters indexing 799 tools",
+          "Individual detail layout pages explaining automation use cases",
+          "Fast search parsing running client-side with virtual list support",
+        ],
+        badge: "799 Items",
+        metricValue: "799",
+        metricLabel: "Catalog Integrations",
+        focus: "Client Search",
+      },
+      {
+        id: "platform",
+        label: "Platform UI",
+        icon: Settings,
+        title: "Pricing & Customizer Page",
+        description: "Features pricing tiers, self-hosted deployment guides, and a design customization editor.",
+        points: [
+          "Interactive price slider calculating tier costs based on runs",
+          "Detailed deployment guide explaining docker and cloud options",
+          "Theme preview panel demonstrating design-system presets",
+        ],
+        badge: "Flexible Tiers",
+        metricValue: "8",
+        metricLabel: "Compare matrices",
+        focus: "Customizers",
+      },
+    ],
+    designDecisions: [
+      {
+        title: "1200px Grid Border Rails",
+        description: "Draws subtle vertical rails on both sides of the screen to give the layout an editorial print publication look.",
+      },
+      {
+        title: "Scripted Walkthrough Engine",
+        description: "Avoids generic video embeds by rendering HTML components that animate as if controlled by a user.",
+      },
+      {
+        title: "Alternating Surface Colors",
+        description: "Shifts section background colors between deep dark and border gray to keep the long scrolling homepage engaging.",
+      },
+    ],
+    outcomeDescription:
+      "The production marketing site is live at 100x.bot, serving as a primary acquisition channel and displaying interactive browser capabilities that built trust with YC-backed buyers.",
+    outcomeMetrics: [
+      { value: "13", label: "Page Sections" },
+      { value: "5", label: "Competitor Pages" },
+      { value: "799", label: "Integrations" },
+    ],
+  },
+  "resume-builder": {
+    liveUrl: "https://akshaysaini.xyz/resume",
+    techStackList: [
+      { name: "Mistral", logo: Brain },
+      { name: "Brave Search", logo: Search },
+      { name: "React", logo: Cpu },
+      { name: "TypeScript", logo: Terminal },
+      { name: "TanStack Start", logo: Sparkles },
+      { name: "@react-pdf/renderer", logo: Layers },
+      { name: "Vercel", logo: ExternalLink },
+      { name: "Tailwind CSS", logo: Palette },
+    ],
+    benefits: [
+      {
+        title: "Unified Document Schema",
+        description: "One core JSON schema powers the owner workspace editor and the public import workflow.",
+        icon: Database,
+      },
+      {
+        title: "Live HTML Preview",
+        description: "Displays real-time styling changes as you edit facts or import LinkedIn summaries.",
+        icon: Sparkles,
+      },
+      {
+        title: "High-Fidelity PDF Engine",
+        description: "Compiles document structure directly into vector PDFs via @react-pdf/renderer client-side.",
+        icon: Layers,
+      },
+      {
+        title: "Secure Owner Gating",
+        description: "Protects personal workspaces with secure authentication while exposing rate-limited tools to visitors.",
+        icon: Shield,
+      },
+    ],
+    features: [
+      {
+        id: "workspace",
+        label: "Owner Workspace",
+        icon: Settings,
+        title: "Personal Resume Manager",
+        description: "Password-protected administrative space seeded from static profile records, with live editing fields.",
+        points: [
+          "Interactive forms mapping all standard resume structures",
+          "Styling selectors editing fonts, spacing, and column designs",
+          "Instant PDF compiler generating print-ready assets",
+        ],
+        badge: "Admin Workspace",
+        metricValue: "100%",
+        metricLabel: "Client-side PDF compilation",
+        focus: "HTML Preview",
+      },
+      {
+        id: "import",
+        label: "Visitor Tool",
+        icon: Sparkles,
+        title: "LinkedIn AI Import",
+        description: "A public visitor tool compiling LinkedIn URLs or text summaries into a resume.",
+        points: [
+          "Mistral parsing mapping text descriptions to document schemas",
+          "Brave Search web search validating details about companies",
+          "Fast client-side PDF generation for visitor downloads",
+        ],
+        badge: "AI Assisted",
+        metricValue: "3 / 24h",
+        metricLabel: "Visitor IP Rate Limit",
+        focus: "Mistral Schema",
+      },
+      {
+        id: "search",
+        label: "Web Search",
+        icon: Search,
+        title: "Brave Search Integration",
+        description: "A shared search tool providing LLM models with verified context regarding company profiles.",
+        points: [
+          "Brave API integration feeding real-time context to prompts",
+          "Abuse-prevention caps limiting tool loops per user",
+          "Fallback indexers caching standard tech stacks and company sites",
+        ],
+        badge: "Live Grounded",
+        metricValue: "1",
+        metricLabel: "Unified PDF schema",
+        focus: "Tool Gating",
+      },
+    ],
+    designDecisions: [
+      {
+        title: "Double-Col Profile",
+        description: "Optimizes desktop space by placing data inputs on the left and the active PDF compilation page on the right.",
+      },
+      {
+        title: "Grounded AI Inputs",
+        description: "Inputs parsed by Mistral are displayed with diff markers so users can review AI changes before saving.",
+      },
+      {
+        title: "Clean Typography Scale",
+        description: "Enforces strict margins and system sans-serif fonts inside the PDF to ensure high parser readability by ATS scanners.",
+      },
+    ],
+    outcomeDescription:
+      "Exposes the AI capabilities of the portfolio via a hands-on tool. Visitor rate limits keep API costs stable while maintaining reliable PDF compiling services.",
+    outcomeMetrics: [
+      { value: "1", label: "PDF Schema" },
+      { value: "3 / 24h", label: "Generation Cap" },
+      { value: "29", label: "Vitest Suites" },
+    ],
+  },
+}
+
 export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
-  // Try to find the live site URL from project content embeds or fallback to the hardcoded DaisyUI shell URL
-  const liveUrl = "https://llm-daisyui-shell.vercel.app/"
-
-  const techStackList = [
-    { name: "React", logo: Cpu },
-    { name: "TypeScript", logo: Terminal },
-    { name: "Vite", logo: Sparkles },
-    { name: "Tailwind CSS", logo: Palette },
-    { name: "Konva", logo: Layers },
-    { name: "Zustand", logo: Database },
-    { name: "Mistral", logo: Brain },
-    { name: "Vercel", logo: ExternalLink },
-  ]
-
-  const benefits = [
-    {
-      title: "Interactive Generative Studio",
-      description:
-        "Goes beyond text-only chats by generating real-time visual layouts (like slide decks, social cards, documents) directly onto a Konva canvas.",
-      icon: Sparkles,
-    },
-    {
-      title: "Context-Aware Memory System",
-      description:
-        "Keeps track of user facts and design choices across threads, ensuring consistent formatting and less repetition during long design sessions.",
-      icon: Brain,
-    },
-    {
-      title: "Zero-Latency Local RAG",
-      description:
-        "Grounds layout generation in custom docs or CSV assets via client-side search without complex server roundtrips.",
-      icon: Search,
-    },
-    {
-      title: "Layout Scoring & Fitting",
-      description:
-        "Intelligent canvas placement scoring maps the LLM's raw suggestions to 35+ verified responsive viewport designs.",
-      icon: Layers,
-    },
-  ]
-
-  const features = [
-    {
-      id: "chat",
-      label: "New Chat",
-      icon: MessageSquare,
-      title: "Mistral-Powered Conversational Engine",
-      description:
-        "Features streaming answers, virtualized logs for speed, code highlighting, and structured system configurations.",
-      points: [
-        "Mistral-streamed conversational output with reasoning tags",
-        "40+ starter presets to trigger design systems, copywriters, or RAG indexers",
-        "Virtualized thread history capable of rendering thousands of tokens smoothly",
-      ],
-      badge: "Fast & Snappy",
-    },
-    {
-      id: "memory",
-      label: "Memory Systems",
-      icon: Brain,
-      title: "Persistent Knowledge & Style Preferences",
-      description:
-        "Injects global user criteria (e.g., brand guidelines, fonts, roles) automatically into active AI prompts.",
-      points: [
-        "Memory bank summarizing user's design rules and guidelines",
-        "Fact extractor extracting preferences from chat messages automatically",
-        "Thread-specific context gating to keep chats clean and focused",
-      ],
-      badge: "Context Gated",
-    },
-    {
-      id: "knowledge",
-      label: "Knowledge & RAG",
-      icon: Database,
-      title: "Client-Side Asset Grounding",
-      description:
-        "Allows direct file uploads to anchor layout content based on local information.",
-      points: [
-        "Client-side RAG parser for text and structured file formats",
-        "Keyword search retrieval system running in the browser",
-        "Grounded prompt rendering providing document context to Mistral",
-      ],
-      badge: "Private & Local",
-    },
-    {
-      id: "studio",
-      label: "Design Studio",
-      icon: Layers,
-      title: "Visual Layout & Canvas Workspace",
-      description:
-        "A resizable split screen matching chat logs with a Konva canvas, complete with export-ready layouts.",
-      points: [
-        "Interactive canvas with 35 pre-designed layouts (cards, grids, carousels)",
-        "25+ aspect ratio viewports (Mobile, Instagram, Banner, Slide, Document)",
-        "HTML code editor side-by-side with PDF and SVG vector downloads",
-      ],
-      badge: "WYSIWYG",
-    },
-    {
-      id: "playground",
-      label: "UI Playground",
-      icon: Settings,
-      title: "System Instruction Benchmarking",
-      description:
-        "A developer testing sandbox to live-configure and test chat parameters.",
-      points: [
-        "Interactive theme selectors (Retro, Forest, Cyberpunk, Emerald, etc.)",
-        "Configurable token limits, reasoning details, and system prompts",
-        "Split viewport simulation representing actual device widths",
-      ],
-      badge: "Dev Sandboxed",
-    },
-  ]
+  // Retrieve config dynamically based on slug. Fall back to chat shell config if not found.
+  const config = PROJECT_CONFIGS[project.slug] || PROJECT_CONFIGS["100x-chat-shell"]
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
@@ -181,7 +666,7 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
 
           <div className="flex flex-wrap gap-4 pt-2">
             <Button size="lg" asChild className="shadow-lg hover:shadow-primary/20 transition-all">
-              <a href={liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+              <a href={config.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
                 Try Live Workspace <ExternalLink className="size-4" />
               </a>
             </Button>
@@ -250,11 +735,11 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
         <Card className="md:col-span-2 border border-border bg-card/50">
           <CardHeader>
             <CardTitle className="text-xl">Engineering & Design Stack</CardTitle>
-            <CardDescription>The tools and frameworks used to ship this AI workspace.</CardDescription>
+            <CardDescription>The tools and frameworks used to ship this project.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {techStackList.map((tech) => (
+              {config.techStackList.map((tech) => (
                 <div
                   key={tech.name}
                   className="flex items-center gap-2.5 p-3 rounded-xl border border-border bg-background/50 hover:bg-muted/40 transition-colors"
@@ -275,14 +760,14 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
       {/* Core Benefits */}
       <section className="py-12 space-y-10">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <h2 className="text-3xl font-semibold tracking-tight">Why LLM Chat Shell?</h2>
+          <h2 className="text-3xl font-semibold tracking-tight">Key Value Propositions</h2>
           <p className="text-muted-foreground text-lg">
-            Standard chat platforms output walls of markdown text. LLM Chat Shell redesigns the interface into a canvas-first agent companion.
+            How this featured build solves challenging design and engineering requirements.
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {benefits.map((benefit, i) => (
+          {config.benefits.map((benefit, i) => (
             <Card key={i} className="border border-border/80 bg-card/40 hover:bg-card/75 transition-all">
               <CardHeader className="flex flex-row items-center gap-4 space-y-0">
                 <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
@@ -305,13 +790,13 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
         <div className="max-w-2xl space-y-3">
           <h2 className="text-3xl font-semibold tracking-tight">Interactive Feature Breakdown</h2>
           <p className="text-muted-foreground">
-            Explore the deep architectural modules built into the workspace using our design system.
+            Explore the deep architectural modules built into this project using our design system.
           </p>
         </div>
 
-        <Tabs defaultValue="chat" className="w-full">
+        <Tabs defaultValue={config.features[0]?.id || "chat"} className="w-full">
           <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/60 p-1 rounded-xl">
-            {features.map((feat) => (
+            {config.features.map((feat) => (
               <TabsTrigger
                 key={feat.id}
                 value={feat.id}
@@ -323,7 +808,7 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
             ))}
           </TabsList>
 
-          {features.map((feat) => (
+          {config.features.map((feat) => (
             <TabsContent key={feat.id} value={feat.id} className="pt-6">
               <Card className="border border-border bg-card/60 overflow-hidden shadow-sm">
                 <div className="grid md:grid-cols-12">
@@ -356,16 +841,16 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
                   <div className="p-6 bg-muted/20 md:col-span-4 flex flex-col justify-center border-t md:border-t-0 md:border-l border-border space-y-4">
                     <div className="text-center p-6 rounded-xl bg-background/50 border border-border/50">
                       <p className="text-4xl font-bold tracking-tight text-primary">
-                        {feat.id === "chat" ? "40+" : feat.id === "memory" ? "Facts" : feat.id === "knowledge" ? "100%" : feat.id === "studio" ? "35" : "8"}
+                        {feat.metricValue}
                       </p>
                       <p className="text-xs text-muted-foreground mt-2 font-medium">
-                        {feat.id === "chat" ? "Starter Presets Shipped" : feat.id === "memory" ? "Autosummarization Engine" : feat.id === "knowledge" ? "Local File Gating" : feat.id === "studio" ? "Responsive Layouts" : "Visual Config Themes"}
+                        {feat.metricLabel}
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-xl bg-background/30 border border-border/30">
                       <p className="text-xs font-semibold text-foreground uppercase tracking-wider">Engineering Focus</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {feat.id === "chat" ? "Virtualized Streams" : feat.id === "memory" ? "Context Windows" : feat.id === "knowledge" ? "Client-Side RAG" : feat.id === "studio" ? "Konva/CSS Interop" : "Live Viewport Bench"}
+                        {feat.focus}
                       </p>
                     </div>
                   </div>
@@ -383,36 +868,20 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
         <div className="space-y-6">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Design Decisions</h2>
           <p className="text-muted-foreground leading-relaxed">
-            The workspace was designed with strict layout guardrails to maintain clarity during generative AI actions:
+            Specific layout guardrails and choices implemented to maintain consistency and compliance:
           </p>
           <ul className="space-y-4">
-            <li className="flex gap-3">
-              <span className="font-semibold text-primary mt-1">01/</span>
-              <div>
-                <h4 className="font-semibold text-foreground">360px Fixed Sidebar Column</h4>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Enforces consistent chat logs on the left side while leaving maximum viewport real estate for generative Konva layouts on the right.
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-3">
-              <span className="font-semibold text-primary mt-1">02/</span>
-              <div>
-                <h4 className="font-semibold text-foreground">Visible Chain-of-Thought Rendering</h4>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Instead of hiding agent loops, we stream reasoning phases so developers understand what the critic checks at every step.
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-3">
-              <span className="font-semibold text-primary mt-1">03/</span>
-              <div>
-                <h4 className="font-semibold text-foreground">Contrast-Safe Token Presets</h4>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Guarantees WCAG AA color accessibility by forcing the generation model to select colors matching predefined brand design parameters.
-                </p>
-              </div>
-            </li>
+            {config.designDecisions.map((decision, index) => (
+              <li key={index} className="flex gap-3">
+                <span className="font-semibold text-primary mt-1">0{index + 1}/</span>
+                <div>
+                  <h4 className="font-semibold text-foreground">{decision.title}</h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {decision.description}
+                  </p>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -420,27 +889,21 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold tracking-tight">Project Outcome</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              LLM Chat Shell was planned, designed, and fully shipped in ten days (May 5–15, 2026). It serves as a proof of concept showing how standard React design system patterns can cooperate with live streaming AI models.
+              {config.outcomeDescription}
             </p>
             <div className="grid grid-cols-3 gap-4 pt-4">
-              <div className="text-center p-3 rounded-lg bg-background border border-border">
-                <p className="text-xl font-bold text-foreground">10</p>
-                <p className="text-[10px] text-muted-foreground">Days to Ship</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-background border border-border">
-                <p className="text-xl font-bold text-foreground">29</p>
-                <p className="text-[10px] text-muted-foreground">Vitest Suites</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-background border border-border">
-                <p className="text-xl font-bold text-foreground">35</p>
-                <p className="text-[10px] text-muted-foreground">UI Layouts</p>
-              </div>
+              {config.outcomeMetrics.map((metric, index) => (
+                <div key={index} className="text-center p-3 rounded-lg bg-background border border-border">
+                  <p className="text-xl font-bold text-foreground">{metric.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{metric.label}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="pt-6 border-t border-border/50">
             <Button className="w-full gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
-              <a href={liveUrl} target="_blank" rel="noreferrer">
+              <a href={config.liveUrl} target="_blank" rel="noreferrer">
                 Open Live Workspace <ExternalLink className="size-4" />
               </a>
             </Button>

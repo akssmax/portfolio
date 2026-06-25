@@ -1,12 +1,11 @@
 const DEFAULT_COLOR_FALLBACK = "#FF354B"
-const CANVAS_SENTINEL = "#010101"
 
 function rgbStringToHex(rgb: string, fallback: string): string {
   const rgbaMatch = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
   if (rgbaMatch) {
     return `#${[rgbaMatch[1], rgbaMatch[2], rgbaMatch[3]]
       .map((value) => Number(value).toString(16).padStart(2, "0"))
-      .join("")}`
+      .join("")}`.toUpperCase()
   }
 
   const srgbMatch = rgb.match(/color\(\s*srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/i)
@@ -17,7 +16,7 @@ function rgbStringToHex(rgb: string, fallback: string): string {
           .toString(16)
           .padStart(2, "0"),
       )
-      .join("")}`
+      .join("")}`.toUpperCase()
   }
 
   return fallback
@@ -33,33 +32,46 @@ function canvasColorToHex(color: string, fallback: string): string {
     const context = canvas.getContext("2d")
     if (!context) return fallback
 
-    context.fillStyle = CANVAS_SENTINEL
+    // Set first sentinel
+    context.fillStyle = "rgb(1, 2, 3)"
     context.fillStyle = color
-
-    const normalized = context.fillStyle
-    if (normalized === CANVAS_SENTINEL) return fallback
-
-    if (normalized.startsWith("#")) {
-      return normalized.length === 7 ? normalized.toUpperCase() : fallback
+    // If the color was invalid, fillStyle is ignored and remains rgb(1, 2, 3)
+    if (context.fillStyle === "rgb(1, 2, 3)" || context.fillStyle === "#010203") {
+      // Try second sentinel to be sure color wasn't actually rgb(1, 2, 3)
+      context.fillStyle = "rgb(4, 5, 6)"
+      context.fillStyle = color
+      if (context.fillStyle === "rgb(4, 5, 6)" || context.fillStyle === "#040506") {
+        return fallback
+      }
     }
 
-    return rgbStringToHex(normalized, fallback)
+    context.fillRect(0, 0, 1, 1)
+    const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+    return `#${[r, g, b]
+      .map((value) => value.toString(16).padStart(2, "0"))
+      .join("")
+      .toUpperCase()}`
   } catch {
     return fallback
   }
 }
 
 function normalizeComputedColorToHex(color: string, fallback: string): string {
-  if (!color.trim()) return fallback
+  const trimmed = color.trim()
+  if (!trimmed) return fallback
 
-  if (color.startsWith("#")) {
-    return color.length === 7 ? color.toUpperCase() : fallback
+  if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(trimmed)) {
+    if (trimmed.length === 4) {
+      const [, r, g, b] = trimmed
+      return `#${r}${r}${g}${g}${b}${b}`.toUpperCase()
+    }
+    return trimmed.toUpperCase()
   }
 
-  const fromRgb = rgbStringToHex(color, "")
+  const fromRgb = rgbStringToHex(trimmed, "")
   if (fromRgb) return fromRgb
 
-  return canvasColorToHex(color, fallback)
+  return canvasColorToHex(trimmed, fallback)
 }
 
 function readRootCssVariable(variable: string): string {
@@ -88,17 +100,33 @@ export function resolveCssColorToHex(
   color: string,
   fallback = DEFAULT_COLOR_FALLBACK,
 ): string {
+  const trimmed = color.trim()
+  if (!trimmed) return fallback
+
+  // Fast path for Hex
+  if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(trimmed)) {
+    if (trimmed.length === 4) {
+      const [, r, g, b] = trimmed
+      return `#${r}${r}${g}${g}${b}${b}`.toUpperCase()
+    }
+    return trimmed.toUpperCase()
+  }
+
+  // Fast path for RGB/RGBA
+  const fromRgb = rgbStringToHex(trimmed, "")
+  if (fromRgb) return fromRgb
+
   if (typeof document === "undefined") return fallback
 
-  const fromRaw = canvasColorToHex(color, "")
+  const fromRaw = canvasColorToHex(trimmed, "")
   if (fromRaw) return fromRaw
 
-  const resolved = withColorProbe(color, (computed) =>
+  const resolved = withColorProbe(trimmed, (computed) =>
     normalizeComputedColorToHex(computed, ""),
   )
   if (resolved) return resolved
 
-  return canvasColorToHex(color, fallback)
+  return canvasColorToHex(trimmed, fallback)
 }
 
 export function resolveCssVariableToHex(
@@ -111,8 +139,19 @@ export function resolveCssVariableToHex(
 
   const rawValue = readRootCssVariable(normalizedVariable)
   if (rawValue) {
-    const fromRaw = canvasColorToHex(rawValue, "")
-    if (fromRaw) return fromRaw
+    const trimmedRaw = rawValue.trim()
+    if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(trimmedRaw)) {
+      if (trimmedRaw.length === 4) {
+        const [, r, g, b] = trimmedRaw
+        return `#${r}${r}${g}${g}${b}${b}`.toUpperCase()
+      }
+      return trimmedRaw.toUpperCase()
+    }
+    const fromRawRgb = rgbStringToHex(trimmedRaw, "")
+    if (fromRawRgb) return fromRawRgb
+
+    const fromRawCanvas = canvasColorToHex(trimmedRaw, "")
+    if (fromRawCanvas) return fromRawCanvas
   }
 
   const fromComputed = withColorProbe(`var(${normalizedVariable})`, (computed) =>

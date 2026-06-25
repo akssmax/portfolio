@@ -1,6 +1,7 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
 
 import { ErrorBoundary } from "@/components/error-boundary"
+import { PostHogProvider } from "@/components/posthog-provider"
 import { RouteError } from "@/components/route-error"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
@@ -98,7 +99,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <DirectionProvider dir="ltr">
             <TooltipProvider>
-              <ErrorBoundary>{children}</ErrorBoundary>
+              <PostHogProvider>
+                <ErrorBoundary>{children}</ErrorBoundary>
+              </PostHogProvider>
             </TooltipProvider>
           </DirectionProvider>
         </ThemeProvider>
