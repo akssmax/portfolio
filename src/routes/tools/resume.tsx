@@ -5,11 +5,11 @@ import { PublicResumeWizard } from "@/features/resume/public/public-resume-wizar
 export const Route = createFileRoute("/tools/resume")({
   head: () => ({
     meta: [
-      { title: "AI Resume Builder — LinkedIn to PDF" },
+      { title: "AI Resume Builder — Profile to PDF" },
       {
         name: "description",
         content:
-          "Generate a customizable resume PDF from a LinkedIn profile URL using AI web search and Mistral structuring.",
+          "Generate a customizable resume PDF from a LinkedIn, GitHub, Peerlist, or portfolio URL using AI web search and Mistral structuring.",
       },
     ],
   }),

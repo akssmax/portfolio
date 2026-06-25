@@ -5,9 +5,12 @@ import { animate, useMotionValue, useReducedMotion, type AnimationPlaybackContro
 
 import { M3ShapeMorphImage } from "@/components/m3-shapes/m3-shape-morph-image"
 import { M3ShapeImage } from "@/components/m3-shapes/m3-shape"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Calendar, MapPin } from "lucide-react"
 import { getM3ShapePath } from "@/lib/m3-shape-paths"
 import type { M3ShapeId } from "@/lib/m3-shapes"
 import { cn } from "@/lib/utils"
+import { profile } from "@/lib/profile"
 
 export type M3FeatureImageItem = {
   src: string
@@ -285,36 +288,60 @@ export function M3FeatureImage({
   const prefersReducedMotion = shouldReduceMotion === true
 
   return (
-    <button
-      ref={rootRef}
-      type="button"
-      onClick={handleClick}
-      className={cn(
-        "relative cursor-pointer rounded-lg transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-        className,
-      )}
-      aria-label={`${alt}. Cycles shape and photo automatically. Click to advance.`}
-    >
-      <div className="relative inline-block">
-        {prefersReducedMotion ? (
-          <M3ShapeImage
-            shape={current.shape}
-            src={current.src}
-            alt={alt}
-            className={imageClassName}
-          />
-        ) : (
-          <M3ShapeMorphImage
-            pathD={pathD}
-            src={current.src}
-            nextSrc={nextSrc}
-            imageMix={imageMix}
-            alt={alt}
-            className={imageClassName}
-            priority
-          />
-        )}
-      </div>
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          ref={rootRef}
+          type="button"
+          onClick={handleClick}
+          className={cn(
+            "relative cursor-pointer rounded-lg transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+            className,
+          )}
+          aria-label={`${alt}. Cycles shape and photo automatically. Click to advance.`}
+        >
+          <div className="relative inline-block">
+            {prefersReducedMotion ? (
+              <M3ShapeImage
+                shape={current.shape}
+                src={current.src}
+                alt={alt}
+                className={imageClassName}
+              />
+            ) : (
+              <M3ShapeMorphImage
+                pathD={pathD}
+                src={current.src}
+                nextSrc={nextSrc}
+                imageMix={imageMix}
+                alt={alt}
+                className={imageClassName}
+                priority
+              />
+            )}
+          </div>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent
+        side="top"
+        sideOffset={12}
+        className="flex flex-col gap-2 p-3 text-xs bg-foreground text-background border border-border/10 shadow-xl rounded-xl min-w-[200px]"
+      >
+        <div className="flex items-center justify-between w-full border-b border-background/10 pb-1.5 mb-0.5">
+          <span className="font-semibold text-background">{profile.name}</span>
+          <span className="text-[10px] text-background/60 font-medium px-1.5 py-0.5 bg-background/10 rounded-full">
+            He/Him
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-background/80">
+          <Calendar className="size-3.5 shrink-0 opacity-80" />
+          <span>29 years old</span>
+        </div>
+        <div className="flex items-center gap-2 text-background/80">
+          <MapPin className="size-3.5 shrink-0 opacity-80" />
+          <span>Hometown: Gohana, Haryana</span>
+        </div>
+      </TooltipContent>
+    </Tooltip>
   )
 }

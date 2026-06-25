@@ -91,7 +91,7 @@ export function PublicResumeWizard() {
     setInputError(null)
     const parsed = parseLinkedInProfileUrl(linkedinUrl)
     if (!parsed) {
-      setInputError("Provide a valid LinkedIn profile URL (linkedin.com/in/…).")
+      setInputError("Provide a valid profile or portfolio URL (e.g. LinkedIn, GitHub, Peerlist, or portfolio link).")
       return
     }
 
@@ -132,11 +132,11 @@ export function PublicResumeWizard() {
               <Sparkles className="size-4" aria-hidden />
               <p className="text-sm font-medium">AI Resume Builder</p>
             </div>
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Build a resume from your LinkedIn
+             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              Build a resume from your profile
             </h1>
             <p className="text-muted-foreground">
-              Paste a LinkedIn profile URL to get started. We search the web for public
+              Paste a LinkedIn, GitHub, Peerlist, or portfolio URL to get started. We search the web for public
               snippets, structure a resume with Mistral, and let you customize the PDF export.
             </p>
             <p className="flex items-start gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
@@ -149,10 +149,10 @@ export function PublicResumeWizard() {
           {step === "input" ? (
             <div className="mx-auto max-w-xl space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm">
               <div className="space-y-2">
-                <Label htmlFor="linkedin-url">LinkedIn profile URL</Label>
+                <Label htmlFor="profile-url">Profile or Portfolio URL</Label>
                 <Input
-                  id="linkedin-url"
-                  placeholder="https://www.linkedin.com/in/your-slug"
+                  id="profile-url"
+                  placeholder="https://linkedin.com/in/username or https://github.com/username"
                   value={linkedinUrl}
                   onChange={(event) => setLinkedinUrl(event.target.value)}
                   autoComplete="url"

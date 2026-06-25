@@ -257,7 +257,7 @@ export function buildMinimalResumeDocument(
     title: "Professional",
     location: "—",
     summary:
-      "Draft resume generated from your LinkedIn URL. Review and edit sections before downloading.",
+      "Draft resume generated from your Profile URL. Review and edit sections before downloading.",
     contact: {
       email: "",
       phone: "",
@@ -272,10 +272,10 @@ export function formatResumeValidationError(error: string): {
 } {
   const lower = error.toLowerCase()
 
-  if (lower.includes("linkedin")) {
+  if (lower.includes("linkedin") || lower.includes("profile") || lower.includes("invalid_url")) {
     return {
-      title: "Invalid LinkedIn URL",
-      description: "Use a profile link like https://www.linkedin.com/in/your-name",
+      title: "Invalid Profile URL",
+      description: "Use a profile link like linkedin.com/in/your-name, github.com/username, or your portfolio website",
     }
   }
 

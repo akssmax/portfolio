@@ -95,8 +95,8 @@ export const Route = createFileRoute("/api/resume/generate")({
         if (!parsedLinkedIn) {
           return jsonError(
             400,
-            "invalid_linkedin_url",
-            "Provide a valid LinkedIn profile URL (linkedin.com/in/…).",
+            "invalid_profile_url",
+            "Provide a valid profile or portfolio URL (e.g. LinkedIn, GitHub, Peerlist, or portfolio link).",
           )
         }
 
@@ -111,15 +111,15 @@ export const Route = createFileRoute("/api/resume/generate")({
 
               const seedQueries = buildLinkedInSearchQueries(parsedLinkedIn.slug, profileText)
               const userPrompt = [
-                `LinkedIn profile: ${parsedLinkedIn.normalizedUrl}`,
+                `Profile URL: ${parsedLinkedIn.normalizedUrl}`,
                 `Profile slug: ${parsedLinkedIn.slug}`,
                 `Display name guess: ${slugToDisplayName(parsedLinkedIn.slug)}`,
                 profileText
                   ? `Optional pasted profile text:\n${profileText.slice(0, 4000)}`
-                  : "No profile summary was pasted — use web search and the LinkedIn URL only.",
+                  : "No profile summary was pasted — use web search and the profile URL only.",
                 searchEnabled
-                  ? `Suggested searches: ${seedQueries.join(" | ")}`
-                  : "Web search is unavailable — infer what you safely can from the LinkedIn URL slug.",
+                  ? `Suggested searches: ${seedQueries.join(" | ")}\nCRITICAL: You MUST use the web_search tool to look up these suggested queries. Do not reply with a summary until you have received search results.`
+                  : "Web search is unavailable — infer what you safely can from the URL slug.",
                 "Research this person for resume generation.",
               ].join("\n\n")
 
