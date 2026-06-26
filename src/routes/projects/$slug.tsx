@@ -143,7 +143,7 @@ function ProjectDetailPage() {
       </main>
 
       <ContactSection />
-      <SiteFooter />
+      <SiteFooter hasTopBorder={false} />
     </div>
   )
 }
