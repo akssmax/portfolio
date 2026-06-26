@@ -5,6 +5,7 @@ import { ArrowUpRight, Quote } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { M3ShapeImage } from "@/components/m3-shapes"
+import { MonogramPattern } from "@/components/brand/monogram-patterns"
 import {
   Carousel,
   CarouselContent,
@@ -85,6 +86,7 @@ export function TestimonialsSection() {
   const shouldReduceMotion = useReducedMotion()
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     if (!api) return
@@ -102,7 +104,18 @@ export function TestimonialsSection() {
   }, [api])
 
   return (
-    <section id="testimonials" className="border-t border-border py-24">
+    <section
+      id="testimonials"
+      className="relative overflow-hidden border-t border-border py-24"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <MonogramPattern
+        variant="grid"
+        tone="muted"
+        isParentHovered={isHovered}
+        className="absolute inset-0 -z-10 pointer-events-none opacity-40 dark:opacity-35 [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]"
+      />
       <motion.div
         className="mx-auto max-w-6xl px-4 sm:px-6"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
