@@ -127,6 +127,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
+          <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
+            <Sparkles className="size-3.5" aria-hidden />
+            Ask AI
+          </Button>
           <ThemeCustomizer />
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>

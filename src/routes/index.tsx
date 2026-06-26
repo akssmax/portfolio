@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router"
 
+import { Sparkles } from "lucide-react"
+
 import { ErrorBoundary } from "@/components/error-boundary"
 import { RouteError } from "@/components/route-error"
 import { ContactSection } from "@/components/landing/contact-section"
+import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { ExperienceSection } from "@/components/landing/experience-section"
 import { HeroSection } from "@/components/landing/hero-section"
 import { SiteFooter } from "@/components/landing/site-footer"
@@ -148,6 +151,21 @@ function HomePage() {
         </ErrorBoundary>
       </main>
       <SiteFooter hasTopBorder={false} />
+      <MobileAskAiFab />
     </div>
+  )
+}
+
+function MobileAskAiFab() {
+  const { openChat } = usePortfolioChat()
+
+  return (
+    <button
+      onClick={openChat}
+      className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 md:hidden border border-white/10 cursor-pointer"
+      aria-label="Ask AI"
+    >
+      <Sparkles className="size-6 animate-pulse" />
+    </button>
   )
 }
