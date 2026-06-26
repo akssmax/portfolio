@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
+import { Route as Landing1RouteImport } from './routes/landing-1'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -33,6 +34,11 @@ import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/gener
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
   path: '/resume',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Landing1Route = Landing1RouteImport.update({
+  id: '/landing-1',
+  path: '/landing-1',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/landing-1': typeof Landing1Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/landing-1': typeof Landing1Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/landing-1': typeof Landing1Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/about'
+    | '/landing-1'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/landing-1'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -249,6 +260,7 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/about'
+    | '/landing-1'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -272,6 +284,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  Landing1Route: typeof Landing1Route
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/resume'
       fullPath: '/resume'
       preLoaderRoute: typeof ResumeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landing-1': {
+      id: '/landing-1'
+      path: '/landing-1'
+      fullPath: '/landing-1'
+      preLoaderRoute: typeof Landing1RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -455,6 +475,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  Landing1Route: Landing1Route,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
   BlogSlugRoute: BlogSlugRoute,

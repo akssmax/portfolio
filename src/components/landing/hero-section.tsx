@@ -130,14 +130,6 @@ export function HeroSection() {
           </ErrorBoundary>
         </motion.div>
       </div>
-      {/* Bottom Edge Cutout */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-start pointer-events-none z-10 transform scale-y-[-1]" aria-hidden>
-        <div className="flex-1" />
-        <svg style={{ width: "320px" }} className="h-[36px] shrink-0" viewBox="0 0 320 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 -1 C 40 -1, 40 35, 56 35 H264 C 280 35, 280 -1, 296 -1 Z" className="fill-[var(--section)]" />
-        </svg>
-        <div className="flex-1" />
-      </div>
     </section>
   )
 }
