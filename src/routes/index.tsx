@@ -15,6 +15,67 @@ import { getHomeWorkSections } from "@/lib/sanity/projects"
 export const Route = createFileRoute("/")({
   loader: () => getHomeWorkSections(),
   errorComponent: RouteError,
+  head: () => ({
+    meta: [
+      {
+        title: "Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
+      {
+        name: "description",
+        content: "Portfolio of Akshay Saini, a Product Designer and Design Engineer based in Bangalore (Bengaluru), India. Specialized in fintech, developer tools, and agentic AI.",
+      },
+      {
+        name: "keywords",
+        content: "product designer in bangalore, design engineer in bangalore, designer in bangalore, product designer in india, design engineer in india, ux designer in bangalore, ui designer in bangalore, design engineer, product designer, bangalore, india, freelancer designer bangalore, akshay saini, design portfolio",
+      },
+      {
+        property: "og:title",
+        content: "Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
+      {
+        property: "og:description",
+        content: "Portfolio of Akshay Saini, an expert Product Designer & Design Engineer based in Bangalore (Bengaluru), India. Specializing in fintech, developer tools, and agentic AI.",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: "https://akshaysaini.xyz/",
+      },
+      {
+        property: "og:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
+      {
+        name: "twitter:description",
+        content: "Portfolio of Akshay Saini, an expert Product Designer & Design Engineer based in Bangalore (Bengaluru), India.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+      {
+        name: "twitter:creator",
+        content: "@akssmax",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://akshaysaini.xyz/",
+      },
+    ],
+  }),
   component: HomePage,
 })
 
@@ -23,6 +84,48 @@ function HomePage() {
 
   return (
     <div className="min-h-svh bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Akshay Saini",
+            "jobTitle": ["Product Designer", "Design Engineer", "UI/UX Designer"],
+            "url": "https://akshaysaini.xyz/",
+            "image": "https://akshaysaini.xyz/images/portraits/02.png",
+            "sameAs": [
+              "https://www.linkedin.com/in/akssmax/",
+              "https://github.com/akssmax",
+              "https://dribbble.com/akssmax",
+              "https://medium.com/@akssmax",
+              "https://www.youtube.com/@akshaysainiAK"
+            ],
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bengaluru",
+              "addressRegion": "Karnataka",
+              "addressCountry": "India"
+            },
+            "knowsAbout": [
+              "Product Design",
+              "Design Engineering",
+              "UI/UX Design",
+              "Fintech Design",
+              "DevTools Design",
+              "Agentic AI",
+              "Front-End Development",
+              "React",
+              "TypeScript",
+              "Figma"
+            ],
+            "worksFor": {
+              "@type": "Organization",
+              "name": "100x.bot"
+            }
+          })
+        }}
+      />
       <SiteHeader />
       <main>
         <ErrorBoundary title="Hero section failed" showHeader={false}>

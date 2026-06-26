@@ -115,7 +115,7 @@ const experience = [
 
 function createProfileBio(periods: string[]) {
   const span = getDesignCareerSpanLabel(periods)
-  return `As a self-taught designer with ${span.toLowerCase()} in design, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.`
+  return `As a self-taught Product Designer and Design Engineer with ${span.toLowerCase()} in design based in Bangalore (Bengaluru), India, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.`
 }
 
 export const profile = {
@@ -123,7 +123,7 @@ export const profile = {
   title: "Design Engineer",
   role: "Design Engineer",
   company: "100x.bot",
-  location: "Bengaluru, India",
+  location: "Bengaluru (Bangalore), India",
   portrait: {
     src: "/images/portraits/02.png",
     shape: "arch",

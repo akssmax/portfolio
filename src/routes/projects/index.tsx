@@ -14,10 +14,58 @@ import { getAllWorkSections } from "@/lib/sanity/projects"
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "Projects — Akshay Saini" },
+      {
+        title: "Product Design & Design Engineering Projects — Akshay Saini",
+      },
       {
         name: "description",
-        content: "Selected design engineering projects and case studies.",
+        content: "Explore case studies and featured projects in fintech, developer tools, and agentic AI designed and built by Akshay Saini, a Product Designer and Design Engineer based in Bangalore, India.",
+      },
+      {
+        name: "keywords",
+        content: "design engineering projects, product design projects, case studies, akshay saini, design portfolio, developer tools, fintech design, agentic ai, designer in bangalore",
+      },
+      {
+        property: "og:title",
+        content: "Product Design & Design Engineering Projects — Akshay Saini",
+      },
+      {
+        property: "og:description",
+        content: "Explore case studies and featured projects in fintech, developer tools, and agentic AI designed and built by Akshay Saini.",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: "https://akshaysaini.xyz/projects",
+      },
+      {
+        property: "og:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Product Design & Design Engineering Projects — Akshay Saini",
+      },
+      {
+        name: "twitter:description",
+        content: "Explore case studies and featured projects in fintech, developer tools, and agentic AI designed and built by Akshay Saini.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://akshaysaini.xyz/projects",
       },
     ],
   }),

@@ -1,25 +1,50 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-
+ 
 import { BlogPostLayout } from "@/components/blog/blog-post-layout"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { RouteError } from "@/components/route-error"
 import { Button } from "@/components/ui/button"
+import { getImageUrl } from "@/lib/sanity/image"
 import { getPostBySlug } from "@/lib/sanity/posts"
-
+ 
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => getPostBySlug(params.slug),
   head: ({ loaderData }) => {
     const post = loaderData
     const title =
-      post?.seo?.metaTitle ?? (post ? `${post.title} — Blog` : "Post not found")
+      post?.seo?.metaTitle ?? (post ? `${post.title} — Blog by Akshay Saini` : "Post not found")
     const description =
       post?.seo?.metaDescription ?? post?.excerpt ?? undefined
-
+    const slug = post?.slug ?? ""
+    const canonicalUrl = `https://akshaysaini.xyz/blog/${slug}`
+    
+    const coverUrl = post?.coverImage ? getImageUrl(post.coverImage, 1200) : null
+    const imageUrl = coverUrl ?? "https://akshaysaini.xyz/images/hero-portrait.png"
+ 
     return {
       meta: [
         { title },
         ...(description ? [{ name: "description", content: description }] : []),
+        {
+          name: "keywords",
+          content: `${post?.title ?? ""}, design systems, frontend, react, engineering, blog, akshay saini`,
+        },
+        { property: "og:title", content: title },
+        ...(description ? [{ property: "og:description", content: description }] : []),
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: canonicalUrl },
+        { property: "og:image", content: imageUrl },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        ...(description ? [{ name: "twitter:description", content: description }] : []),
+        { name: "twitter:image", content: imageUrl },
+      ],
+      links: [
+        {
+          rel: "canonical",
+          href: canonicalUrl,
+        },
       ],
     }
   },

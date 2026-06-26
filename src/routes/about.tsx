@@ -14,10 +14,58 @@ import { profile } from "@/lib/profile"
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Akshay Saini" },
+      {
+        title: "About Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
       {
         name: "description",
-        content: `Product designer and design engineer with ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period)).toLowerCase()} in design across fintech, devtools, and agentic AI.`,
+        content: `Learn more about Akshay Saini, a Product Designer and Design Engineer based in Bangalore (Bengaluru), India, with ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period)).toLowerCase()} in design across fintech, devtools, and agentic AI.`,
+      },
+      {
+        name: "keywords",
+        content: "about akshay saini, product designer in bangalore, design engineer in bangalore, designer in bangalore, product designer in india, design engineer in india, ux designer bangalore, design system engineer, design developer",
+      },
+      {
+        property: "og:title",
+        content: "About Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
+      {
+        property: "og:description",
+        content: `Learn more about Akshay Saini, a Product Designer and Design Engineer based in Bangalore (Bengaluru), India, with ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period)).toLowerCase()} in design.`,
+      },
+      {
+        property: "og:type",
+        content: "profile",
+      },
+      {
+        property: "og:url",
+        content: "https://akshaysaini.xyz/about",
+      },
+      {
+        property: "og:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "About Akshay Saini — Product Designer & Design Engineer in Bangalore, India",
+      },
+      {
+        name: "twitter:description",
+        content: `Learn more about Akshay Saini, a Product Designer and Design Engineer based in Bangalore (Bengaluru), India.`,
+      },
+      {
+        name: "twitter:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://akshaysaini.xyz/about",
       },
     ],
   }),

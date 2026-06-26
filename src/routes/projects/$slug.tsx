@@ -22,14 +22,40 @@ export const Route = createFileRoute("/projects/$slug")({
     const project = loaderData?.project
     const title =
       project?.seo?.metaTitle ??
-      (project ? `${project.title} — Case Study` : "Project not found")
+      (project ? `${project.title} — Case Study by Akshay Saini` : "Project not found")
     const description =
       project?.seo?.metaDescription ?? project?.description ?? undefined
+    const slug = project?.slug ?? ""
+    const canonicalUrl = `https://akshaysaini.xyz/projects/${slug}`
+    const imageUrl = project?.coverImageUrl
+      ? project.coverImageUrl.startsWith("http")
+        ? project.coverImageUrl
+        : `https://akshaysaini.xyz${project.coverImageUrl}`
+      : "https://akshaysaini.xyz/images/hero-portrait.png"
 
     return {
       meta: [
         { title },
         ...(description ? [{ name: "description", content: description }] : []),
+        {
+          name: "keywords",
+          content: `${project?.title ?? ""}, case study, design engineering, product design, akshay saini, bangalore, developer tools, fintech`,
+        },
+        { property: "og:title", content: title },
+        ...(description ? [{ property: "og:description", content: description }] : []),
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: canonicalUrl },
+        { property: "og:image", content: imageUrl },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        ...(description ? [{ name: "twitter:description", content: description }] : []),
+        { name: "twitter:image", content: imageUrl },
+      ],
+      links: [
+        {
+          rel: "canonical",
+          href: canonicalUrl,
+        },
       ],
     }
   },

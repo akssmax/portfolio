@@ -9,10 +9,58 @@ import { getAllPosts } from "@/lib/sanity/posts"
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — Akshay Saini" },
+      {
+        title: "Blog — Design Systems & Design Engineering by Akshay Saini",
+      },
       {
         name: "description",
-        content: "Notes on design systems, design engineering, and shipping product work.",
+        content: "Articles and case study notes on token-driven design systems, frontend styling, and developer tools written by Akshay Saini, based in Bangalore, India.",
+      },
+      {
+        name: "keywords",
+        content: "design engineering blog, design systems, token systems, frontend engineering, react design system, akshay saini, designer blog bangalore",
+      },
+      {
+        property: "og:title",
+        content: "Blog — Design Systems & Design Engineering by Akshay Saini",
+      },
+      {
+        property: "og:description",
+        content: "Articles and case study notes on token-driven design systems, frontend styling, and developer tools written by Akshay Saini.",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: "https://akshaysaini.xyz/blog",
+      },
+      {
+        property: "og:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Blog — Design Systems & Design Engineering by Akshay Saini",
+      },
+      {
+        name: "twitter:description",
+        content: "Articles and case study notes on token-driven design systems, frontend styling, and developer tools written by Akshay Saini.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://akshaysaini.xyz/blog",
       },
     ],
   }),

@@ -36,7 +36,7 @@ export function AboutHero() {
                 {profile.name}
               </h1>
               <p className="text-base text-muted-foreground sm:text-lg">
-                Product designer with a computer science foundation.
+                Product Designer and Design Engineer based in Bangalore, India, with a computer science foundation.
               </p>
             </div>
 
