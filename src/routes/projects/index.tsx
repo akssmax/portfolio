@@ -1,15 +1,28 @@
-"use client"
-
-import { useRef } from "react"
+import { useRef, lazy, Suspense } from "react"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 
-import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
+import { ErrorBoundary } from "@/components/error-boundary"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { WorkProjectGroup } from "@/components/projects/work-project-group"
 import { RouteError } from "@/components/route-error"
+import { useBrandColors } from "@/hooks/use-brand-colors"
 import { getAllWorkSections } from "@/lib/sanity/projects"
+
+const DotField = lazy(() => import("@/components/DotField"))
+
+function hexToRgba(hex: string, alpha: number) {
+  const normalized = hex.replace("#", "").trim()
+  if (normalized.length !== 6) return `rgba(168, 85, 247, ${alpha})`
+  const r = Number.parseInt(normalized.slice(0, 2), 16)
+  const g = Number.parseInt(normalized.slice(2, 4), 16)
+  const b = Number.parseInt(normalized.slice(4, 6), 16)
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+    return `rgba(168, 85, 247, ${alpha})`
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -78,6 +91,7 @@ function ProjectsIndexPage() {
   const { recentProjects, caseStudies, other } = Route.useLoaderData()
   const shouldReduceMotion = useReducedMotion()
   const mainRef = useRef<HTMLElement>(null)
+  const brandColors = useBrandColors()
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -87,7 +101,24 @@ function ProjectsIndexPage() {
         className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
       >
         <div className="pointer-events-none absolute inset-0 z-0 opacity-45" aria-hidden>
-          <ContactDotGridBackground />
+          {!shouldReduceMotion ? (
+            <ErrorBoundary title="Background animation failed" showHeader={false}>
+              <Suspense fallback={null}>
+                <DotField
+                  className="absolute inset-0"
+                  dotRadius={1.8}
+                  dotSpacing={14}
+                  bulgeStrength={67}
+                  glowRadius={160}
+                  sparkle={false}
+                  waveAmplitude={0}
+                  gradientFrom={hexToRgba(brandColors.primary, 0.75)}
+                  gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.55)}
+                  glowColor={hexToRgba(brandColors.primary, 0.45)}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          ) : null}
           <div
             className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
             aria-hidden
