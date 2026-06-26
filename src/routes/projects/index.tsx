@@ -100,7 +100,7 @@ function ProjectsIndexPage() {
         ref={mainRef}
         className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden border-t border-border"
       >
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-45" aria-hidden>
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
           {!shouldReduceMotion ? (
             <ErrorBoundary title="Background animation failed" showHeader={false}>
               <Suspense fallback={null}>
