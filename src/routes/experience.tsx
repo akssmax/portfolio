@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 
-import { ExperienceSection } from "@/components/landing/experience-section"
+import { ExperienceTimeline } from "@/components/about/experience-timeline"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 
@@ -28,9 +28,9 @@ function ExperiencePage() {
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main className="border-t border-border">
-        <ExperienceSection />
+        <ExperienceTimeline />
       </main>
-      <SiteFooter hasTopBorder={true} />
+      <SiteFooter hasTopBorder={false} />
     </div>
   )
 }
