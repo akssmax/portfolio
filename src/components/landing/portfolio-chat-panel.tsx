@@ -29,7 +29,9 @@ import {
   SourcesTrigger,
 } from "@/components/ai-elements/sources"
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
+import { M3ShapeIcon } from "@/components/m3-shapes"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import {
   DrawerClose,
   DrawerHeader,
@@ -319,10 +321,14 @@ export function PortfolioChatPanel({
       <ChatPanelHeader layout={layout} />
 
       <Conversation className="min-h-0 flex-1">
-        <ConversationContent>
+        <ConversationContent className={cn(items.length === 0 && "min-h-full justify-center")}>
           {items.length === 0 ? (
             <ConversationEmptyState
-              icon={<BotIcon className="size-8" />}
+              icon={
+                <M3ShapeIcon shape="sunny" className="size-16">
+                  <BotIcon className="size-7" />
+                </M3ShapeIcon>
+              }
               title="Ask me anything"
               description="Try questions about projects, design systems, or why you should hire Akshay."
             />

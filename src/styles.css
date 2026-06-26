@@ -93,3 +93,9 @@
   cursor: text;
 }
 
+/* Ensure right-4 is compiled for streamdown's link safety modal close button */
+.right-4 {
+  right: 1rem;
+}
+
+

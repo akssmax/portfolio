@@ -1,14 +1,15 @@
 "use client"
 
 import {
+  Suspense,
   createContext,
   lazy,
-  Suspense,
   useCallback,
   useContext,
   useMemo,
   useState,
 } from "react"
+import posthog from "posthog-js"
 
 const PortfolioChatSheet = lazy(() =>
   import("@/components/landing/portfolio-chat-sheet").then((module) => ({
@@ -32,11 +33,33 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
     setInitialMessage(null)
     setSessionKey((key) => key + 1)
     setOpen(true)
+
+    // Track AI panel open and ensure session recording starts
+    const key = import.meta.env.VITE_POSTHOG_KEY
+    if (typeof window !== "undefined" && key) {
+      try {
+        posthog.capture("ai_panel_opened")
+        posthog.startSessionRecording()
+      } catch (err) {
+        console.error("Failed to track ai_panel_opened:", err)
+      }
+    }
   }, [])
 
   const openChatWithMessage = useCallback((message: string) => {
     setInitialMessage(message)
     setOpen(true)
+
+    // Track AI panel open with context and ensure session recording starts
+    const key = import.meta.env.VITE_POSTHOG_KEY
+    if (typeof window !== "undefined" && key) {
+      try {
+        posthog.capture("ai_panel_opened", { initial_message: message })
+        posthog.startSessionRecording()
+      } catch (err) {
+        console.error("Failed to track ai_panel_opened with message:", err)
+      }
+    }
   }, [])
 
   const value = useMemo(

@@ -18,7 +18,10 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           capture_pageview: false,
           capture_pageleave: true,
           person_profiles: "identified_only",
+          enable_recording_console_log: true,
         })
+        // Explicitly start session recording to ensure it captures landing and interactions
+        posthog.startSessionRecording()
       } catch (err) {
         console.error("PostHog initialization failed:", err)
       }
