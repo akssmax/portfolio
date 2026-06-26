@@ -6,7 +6,6 @@ import { GraduationCap, Mail, MapPin, Phone } from "lucide-react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
-import { Badge } from "@/components/ui/badge"
 import { Tag } from "@/components/ui/tag"
 import { DownloadResumeButton } from "@/features/resume/download-resume-button"
 import { getExperienceTagLabel } from "@/lib/experience-duration"
@@ -50,52 +49,97 @@ export function AboutHero() {
             </motion.p>
 
             <motion.aside
-              className="relative grid gap-4 rounded-xl border border-border bg-muted/30 p-5 pt-12 sm:grid-cols-2 lg:max-w-2xl lg:grid-cols-1 xl:grid-cols-2"
+              className="relative rounded-2xl border border-border/80 bg-card/45 p-6 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-foreground/15 hover:shadow-md lg:max-w-2xl"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.16 }}
             >
-              <Tag
-                variant="outline"
-                className="absolute end-5 top-5 bg-background shadow-xs"
-              >
-                {experienceLabel}
-              </Tag>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="size-4 shrink-0" aria-hidden />
-                  {profile.location}
+              {/* Card Header */}
+              <div className="flex items-center justify-between border-b border-border/60 pb-4 mb-6">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex size-2.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs font-semibold tracking-wide text-foreground">
+                    {profile.role} @ {profile.company}
+                  </span>
                 </div>
-                <a
-                  href={`mailto:${profile.contact.email}`}
-                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                <Tag
+                  variant="outline"
+                  className="bg-background/80 shadow-xs border-border/80 text-foreground font-medium px-2.5 py-0.5 text-[11px] rounded-full"
                 >
-                  <Mail className="size-4 shrink-0" aria-hidden />
-                  {profile.contact.email}
-                </a>
-                <a
-                  href={`tel:${profile.contact.phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Phone className="size-4 shrink-0" aria-hidden />
-                  {profile.contact.phone}
-                </a>
+                  {experienceLabel}
+                </Tag>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <GraduationCap className="mt-0.5 size-4 shrink-0" aria-hidden />
-                  <div>
-                    <p className="text-foreground">{profile.education.degree}</p>
-                    <p>{profile.education.school}</p>
-                    <p>{profile.education.years}</p>
+
+              {/* Grid Content */}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {/* Contact Section */}
+                <div className="space-y-3.5">
+                  <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                    Contact & Location
+                  </h3>
+                  <div className="space-y-2.5">
+                    <div className="group/item flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground border border-border/40 shadow-2xs transition-colors group-hover/item:bg-primary/10 group-hover/item:text-primary group-hover/item:border-primary/20">
+                        <MapPin className="size-3.5" aria-hidden />
+                      </div>
+                      <span className="font-medium">{profile.location}</span>
+                    </div>
+
+                    <a
+                      href={`mailto:${profile.contact.email}`}
+                      className="group/item flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground border border-border/40 shadow-2xs transition-colors group-hover/item:bg-primary/10 group-hover/item:text-primary group-hover/item:border-primary/20">
+                        <Mail className="size-3.5" aria-hidden />
+                      </div>
+                      <span className="font-medium truncate">{profile.contact.email}</span>
+                    </a>
+
+                    <a
+                      href={`tel:${profile.contact.phone.replace(/\s/g, "")}`}
+                      className="group/item flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground border border-border/40 shadow-2xs transition-colors group-hover/item:bg-primary/10 group-hover/item:text-primary group-hover/item:border-primary/20">
+                        <Phone className="size-3.5" aria-hidden />
+                      </div>
+                      <span className="font-medium">{profile.contact.phone}</span>
+                    </a>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary" className="w-fit">
-                    {profile.role} @ {profile.company}
-                  </Badge>
-                  <DownloadResumeButton />
+
+                {/* Education Section */}
+                <div className="space-y-3.5">
+                  <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                    Education
+                  </h3>
+                  <div className="group/edu flex gap-3">
+                    <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground border border-border/40 shadow-2xs transition-colors group-hover/edu:bg-primary/10 group-hover/edu:text-primary group-hover/edu:border-primary/20">
+                      <GraduationCap className="size-3.5" aria-hidden />
+                    </div>
+                    <div className="space-y-0.5">
+                      <h4 className="text-sm font-semibold text-foreground leading-snug">
+                        {profile.education.degree}
+                      </h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {profile.education.school}
+                      </p>
+                      <p className="text-[11px] font-medium text-muted-foreground/70 mt-1">
+                        {profile.education.years}
+                      </p>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              {/* Card Footer Actions */}
+              <div className="mt-6 pt-4 border-t border-border/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <p className="text-xs text-muted-foreground">
+                  Need a copy for offline reference?
+                </p>
+                <DownloadResumeButton className="shadow-xs font-medium hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:hover:text-primary-foreground transition-all duration-200" />
               </div>
             </motion.aside>
           </div>
