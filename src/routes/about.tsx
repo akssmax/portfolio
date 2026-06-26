@@ -84,7 +84,7 @@ function AboutPage() {
         <InterestsSection />
         <AboutConnectSection />
       </main>
-      <SiteFooter />
+      <SiteFooter hasTopBorder={false} />
     </div>
   )
 }

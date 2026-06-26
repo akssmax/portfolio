@@ -11,6 +11,7 @@ import {
   YoutubeIcon,
 } from "@/components/icons/social-icons"
 import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
+import { m3ShapePaths } from "@/lib/m3-shape-paths"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -32,11 +33,62 @@ const socialLinks = [
 export function AboutConnectSection() {
   const shouldReduceMotion = useReducedMotion()
 
+  const m3Size = 180
+  const topCutoutPosition = "left"
+  const bottomCutoutPosition = "right"
+
+  const getPositionClass = (pos: "left" | "center" | "right") => {
+    switch (pos) {
+      case "left":
+        return "left-8 sm:left-16"
+      case "right":
+        return "right-8 sm:right-16"
+      default:
+        return "left-1/2 -translate-x-1/2"
+    }
+  }
+
+  const renderM3Cutout = (isBottom = false) => {
+    const path = m3ShapePaths["flower"]
+    if (!path) return null
+
+    const pos = isBottom ? bottomCutoutPosition : topCutoutPosition
+    const posClass = getPositionClass(pos)
+
+    return (
+      <div
+        className={`absolute shrink-0 overflow-visible flex items-center justify-center z-20 ${
+          isBottom ? "transform scale-y-[-1]" : ""
+        } ${posClass}`}
+        style={{
+          width: `${m3Size}px`,
+          height: `${m3Size}px`,
+          top: isBottom ? undefined : `${-m3Size / 2}px`,
+          bottom: isBottom ? `${-m3Size / 2}px` : undefined,
+        }}
+        aria-hidden
+      >
+        <svg style={{ width: `${m3Size}px`, height: `${m3Size}px` }} className="overflow-visible" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Solid fill blocks the straight border line running underneath it */}
+          <path d={path} className="fill-[var(--cta-cutout-bg,var(--background))]" />
+          <path d={path} className="stroke-primary opacity-30" strokeWidth="15" fill="none" />
+        </svg>
+      </div>
+    )
+  }
+
   return (
     <section
       id="connect"
-      className="relative overflow-hidden border-t border-primary/30 bg-primary text-primary-foreground"
+      className="relative overflow-hidden bg-primary text-primary-foreground"
     >
+      {/* --- TOP EDGE DECORATIONS --- */}
+      <>
+        {/* Straight line spanning the entire width */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
+        {/* Overlapping M3 shape acting as the cutout */}
+        {renderM3Cutout(false)}
+      </>
       <div className="absolute inset-0 opacity-55" aria-hidden>
         <ContactDotGridBackground />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />
@@ -140,6 +192,14 @@ export function AboutConnectSection() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* --- BOTTOM EDGE DECORATIONS --- */}
+      <>
+        {/* Straight line spanning the entire width */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
+        {/* Overlapping M3 shape acting as the cutout */}
+        {renderM3Cutout(true)}
+      </>
     </section>
   )
 }
