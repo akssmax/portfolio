@@ -19,13 +19,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-const navItems = [
-  { label: "Projects", to: "/projects" as const, isAnchor: false },
-  { label: "Experience", href: "/#experience", isAnchor: true },
-  { label: "About", to: "/about" as const, isAnchor: false },
-] as const
+export type NavItem =
+  | { readonly label: string; readonly to: string; readonly isAnchor: false; readonly href?: never }
+  | { readonly label: string; readonly href: string; readonly isAnchor: true; readonly to?: never }
 
-type NavItem = (typeof navItems)[number]
+const navItems: readonly NavItem[] = [
+  { label: "Projects", to: "/projects", isAnchor: false },
+  { label: "Experience", to: "/experience", isAnchor: false },
+  { label: "About", to: "/about", isAnchor: false },
+]
 
 function HeaderNavLink({
   item,
