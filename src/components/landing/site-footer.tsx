@@ -19,9 +19,13 @@ const socialLinks = [
   { label: "GitHub", href: profile.links.github },
 ] as const
 
-export function SiteFooter() {
+export interface SiteFooterProps {
+  hasTopBorder?: boolean
+}
+
+export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className={`${hasTopBorder ? "border-t border-border" : ""} bg-background`}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-10 py-12 md:grid-cols-[minmax(0,1.4fr)_auto_auto] md:gap-12 lg:gap-16">
           <div className="space-y-4">
