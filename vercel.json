@@ -26,7 +26,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.sanity.io; font-src 'self' data:; connect-src 'self' https://cdn.sanity.io; frame-src https://www.figma.com https://figma.com https://www.youtube.com https://youtube.com https://youtu.be https://player.vimeo.com https://vimeo.com https://www.loom.com https://loom.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://*.posthog.com https://*.i.posthog.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.sanity.io https://*.posthog.com https://*.i.posthog.com; font-src 'self' data:; connect-src 'self' https://cdn.sanity.io https://*.posthog.com https://*.i.posthog.com https://t.akshaysaini.xyz; frame-src https://www.figma.com https://figma.com https://www.youtube.com https://youtube.com https://youtu.be https://player.vimeo.com https://vimeo.com https://www.loom.com https://loom.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         }
       ]
     },
