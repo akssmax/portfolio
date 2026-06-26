@@ -17,7 +17,7 @@ export function WorkSection({ recentProjects, caseStudies }: WorkSectionProps) {
   return (
     <section
       id="work"
-      className="border-t border-border bg-section py-24 text-section-foreground"
+      className="bg-section py-24 text-section-foreground"
     >
       <motion.div
         className="mx-auto max-w-6xl space-y-20 px-4 sm:px-6"
