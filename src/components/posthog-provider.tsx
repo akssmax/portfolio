@@ -13,6 +13,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       try {
         posthog.init(key, {
           api_host: host,
+          ui_host: "https://eu.posthog.com",
+          defaults: "2026-05-30",
           capture_pageview: false,
           capture_pageleave: true,
           person_profiles: "identified_only",

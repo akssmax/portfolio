@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router"
-import { ArrowLeft, ExternalLink } from "lucide-react"
+import { ArrowLeft, ExternalLink, Sparkles } from "lucide-react"
 
 import { BlockRenderer, ProjectCoverImage } from "@/components/projects/blocks/block-renderer"
 import { CaseStudyNav } from "@/components/projects/case-study-nav"
+import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -45,6 +46,13 @@ function getSectionHeadings(content: ContentBlock[]): SectionHeadingBlock[] {
 export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
   const liveSite = getLiveSiteLink(project.content ?? [])
   const sectionHeadings = getSectionHeadings(project.content ?? [])
+  const { openChatWithMessage } = usePortfolioChat()
+
+  const handleSummarize = () => {
+    openChatWithMessage(
+      `Summarize the project "${project.title}". Give me a breakdown of what it is, the key design decisions, and the technical implementation/tech stack.`
+    )
+  }
 
   const metaItems = [
     project.year
@@ -82,24 +90,29 @@ export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
           <p className="max-w-prose text-base text-muted-foreground sm:text-lg">
             {project.description}
           </p>
-          {liveSite ? (
-            <Button asChild>
-              <a href={liveSite.url} target="_blank" rel="noreferrer">
-                {liveSite.label}
-                <ExternalLink className="size-4" />
-              </a>
-            </Button>
-          ) : null}
-          {project.slug === "resume-builder" ? (
-            <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
+            {liveSite ? (
               <Button asChild>
-                <Link to="/tools/resume">Try it</Link>
+                <a href={liveSite.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+                  {liveSite.label}
+                  <ExternalLink className="size-4" />
+                </a>
               </Button>
-              <Button asChild variant="outline">
-                <Link to="/resume">Owner workspace</Link>
-              </Button>
-            </div>
-          ) : null}
+            ) : null}
+            {project.slug === "resume-builder" ? (
+              <>
+                <Button asChild>
+                  <Link to="/tools/resume">Try App</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to="/resume">Owner workspace</Link>
+                </Button>
+              </>
+            ) : null}
+            <Button variant="outline" onClick={handleSummarize} className="inline-flex items-center gap-2">
+              Summarize with AI <Sparkles className="size-4" />
+            </Button>
+          </div>
         </div>
 
         {metaItems.length > 0 ? (

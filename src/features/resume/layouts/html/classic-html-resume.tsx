@@ -55,13 +55,27 @@ export function ClassicHtmlResume({ document, brandColor, onChange }: ClassicHtm
             placeholder="Professional Title"
           />
         </div>
-        <EditableText
-          value={document.location}
-          onChange={onChange ? (val) => onChange({ ...document, location: val }) : undefined}
-          tagName="p"
-          className="text-[9px] text-neutral-600"
-          placeholder="Location"
-        />
+        <div className="flex flex-wrap items-center gap-1 text-[9px] text-neutral-600">
+          <EditableText
+            value={document.location}
+            onChange={onChange ? (val) => onChange({ ...document, location: val }) : undefined}
+            placeholder="Location"
+          />
+          {document.contact?.website ? (
+            <>
+              <span className="text-neutral-400 select-none">·</span>
+              <a
+                href={document.contact.website}
+                className="hover:underline"
+                style={{ color: brandColor }}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {document.contact.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+              </a>
+            </>
+          ) : null}
+        </div>
       </header>
 
       {document.summary ? (

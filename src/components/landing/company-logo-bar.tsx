@@ -3,15 +3,17 @@
 import { useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
 
+import type {EmployerLogo} from "@/lib/profile";
 import { HundredXLogo } from "@/components/logos/hundred-x-logo"
 import { KodoLogo } from "@/components/logos/kodo-logo"
+import { UnloggedLogo } from "@/components/logos/unlogged-logo"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { getExperienceDuration } from "@/lib/experience-duration"
-import { getEmployerLogos, type EmployerLogo } from "@/lib/profile"
+import {  getEmployerLogos } from "@/lib/profile"
 import { cn } from "@/lib/utils"
 
 type CompanyLogoBarProps = {
@@ -45,6 +47,8 @@ function LogoBarItem({ name, logoSrc, websiteUrl, period, role }: EmployerLogo) 
       <KodoLogo title={name} className={svgLogoClassName} />
     ) : logoSrc === "/companies/100x-bot.svg" ? (
       <HundredXLogo title={name} className={svgLogoClassName} />
+    ) : logoSrc === "/companies/unlogged.svg" ? (
+      <UnloggedLogo title={name} className={svgLogoClassName} />
     ) : failed ? (
       <span className="text-sm font-medium leading-none text-muted-foreground">
         {name}

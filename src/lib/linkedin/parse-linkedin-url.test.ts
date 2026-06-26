@@ -11,7 +11,15 @@ describe("parseLinkedInProfileUrl", () => {
     })
   })
 
-  it("rejects invalid hosts", () => {
-    expect(parseLinkedInProfileUrl("https://example.com/in/jane")).toBeNull()
+  it("parses generic profile or portfolio URLs", () => {
+    const parsed = parseLinkedInProfileUrl("https://example.com/in/jane")
+    expect(parsed).toEqual({
+      slug: "jane",
+      normalizedUrl: "https://example.com/in/jane",
+    })
+  })
+
+  it("rejects empty inputs", () => {
+    expect(parseLinkedInProfileUrl("")).toBeNull()
   })
 })

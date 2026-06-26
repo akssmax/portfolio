@@ -1,20 +1,22 @@
-import {
-  BRAND_COLOR_PRESETS,
-  DEFAULT_THEME_PRESET,
-} from "@/lib/themes/registry"
-import type { BrandPresetId } from "@/lib/themes/types"
 
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
 import { DEFAULT_RESUME_LAYOUT } from "./layout-options"
 import {
-  isResumeBrandColorValid,
-  type ResumeBrandColorSelection,
+  
+  isResumeBrandColorValid
 } from "./resume-brand-color-utils"
-import type { ResumeLayoutId, ResumeSectionConfig, ResumeSectionId } from "./types"
+import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
+import type { BrandPresetId } from "@/lib/themes/types"
+import type { CoverLetterDocument, ResumeLayoutId, ResumeSectionConfig, ResumeSectionId  } from "./types"
+
+import {
+  BRAND_COLOR_PRESETS,
+  DEFAULT_THEME_PRESET,
+} from "@/lib/themes/registry"
 
 const STORAGE_KEY = "resume-builder-settings"
 
-const RESUME_SECTION_IDS: ResumeSectionId[] = [
+const RESUME_SECTION_IDS: Array<ResumeSectionId> = [
   "summary",
   "experience",
   "education",
@@ -25,7 +27,7 @@ const RESUME_SECTION_IDS: ResumeSectionId[] = [
   "interests",
 ]
 
-const VALID_LAYOUTS: ResumeLayoutId[] = ["classic", "designer"]
+const VALID_LAYOUTS: Array<ResumeLayoutId> = ["classic", "designer", "modern"]
 
 const VALID_PRESET_IDS = new Set<BrandPresetId>([
   DEFAULT_THEME_PRESET.id as BrandPresetId,
@@ -125,5 +127,30 @@ export function createDefaultResumeBuilderSettings(appearance: {
     colorSelection: appearance.customBrandColor
       ? { type: "custom", hex: appearance.customBrandColor }
       : { type: "preset", presetId: appearance.palette },
+  }
+}
+
+const COVER_LETTER_STORAGE_KEY = "resume-builder-cover-letter"
+
+export function loadCoverLetterDocument(): CoverLetterDocument | null {
+  if (typeof window === "undefined") return null
+
+  try {
+    const raw = window.localStorage.getItem(COVER_LETTER_STORAGE_KEY)
+    if (!raw) return null
+
+    return JSON.parse(raw) as CoverLetterDocument
+  } catch {
+    return null
+  }
+}
+
+export function saveCoverLetterDocument(document: CoverLetterDocument): void {
+  if (typeof window === "undefined") return
+
+  try {
+    window.localStorage.setItem(COVER_LETTER_STORAGE_KEY, JSON.stringify(document))
+  } catch {
+    // Ignore storage issues.
   }
 }

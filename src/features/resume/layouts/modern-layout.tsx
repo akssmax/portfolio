@@ -274,7 +274,12 @@ export function ModernResumeLayout({
           <Text style={{ ...styles.title, color: brandColor }}>
             {document.title}
           </Text>
-          <Text style={styles.meta}>{document.location}</Text>
+          <Text style={styles.meta}>
+            {document.location}
+            {document.contact?.website
+              ? `  ·  ${document.contact.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}`
+              : ""}
+          </Text>
         </View>
         {document.portrait ? (
           <Image src={document.portrait.src} style={{ ...styles.portrait, borderColor: brandColor }} />

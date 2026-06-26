@@ -123,7 +123,12 @@ export function ClassicResumeLayout({
           <Text style={styles.title}>{document.title}</Text>
         </View>
         <View>
-          <Text style={styles.meta}>{document.location}</Text>
+          <Text style={styles.meta}>
+            {document.location}
+            {document.contact?.website
+              ? `  ·  ${document.contact.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}`
+              : ""}
+          </Text>
         </View>
       </View>
 

@@ -18,7 +18,7 @@ export type ResumeExperienceItem = {
   period: string
   location: string
   description: string
-  highlights?: string[]
+  highlights?: Array<string>
   logoSrc?: string
 }
 
@@ -53,22 +53,43 @@ export type ResumeDocument = {
   location: string
   portrait?: ResumePortrait
   summary?: string
-  experience?: ResumeExperienceItem[]
+  experience?: Array<ResumeExperienceItem>
   education?: {
     degree: string
     school: string
     years: string
     location: string
   }
-  skills?: string[]
+  skills?: Array<string>
   contact?: ResumeContact
-  certifications?: ResumeCertificationItem[]
-  languages?: ResumeLanguageItem[]
-  interests?: string[]
+  certifications?: Array<ResumeCertificationItem>
+  languages?: Array<ResumeLanguageItem>
+  interests?: Array<string>
+}
+
+export type CoverLetterDocument = {
+  senderName: string
+  senderTitle: string
+  senderLocation: string
+  senderContact?: ResumeContact
+  recipientName: string
+  recipientCompany: string
+  recipientAddress?: string
+  date: string
+  subject?: string
+  body: string
+  signOff?: string
 }
 
 export type GenerateResumePdfOptions = {
   document: ResumeDocument
+  brandColor: string
+  layout?: ResumeLayoutId
+  filename?: string
+}
+
+export type GenerateCoverLetterPdfOptions = {
+  document: CoverLetterDocument
   brandColor: string
   layout?: ResumeLayoutId
   filename?: string

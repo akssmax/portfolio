@@ -27,6 +27,7 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
 import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
+import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
 import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
 
 const ResumeRoute = ResumeRouteImport.update({
@@ -121,6 +122,12 @@ const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
   path: '/api/resume/session',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiResumeGenerateCoverLetterRoute =
+  ApiResumeGenerateCoverLetterRouteImport.update({
+    id: '/api/resume/generate-cover-letter',
+    path: '/api/resume/generate-cover-letter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
   id: '/api/resume/generate',
   path: '/api/resume/generate',
@@ -144,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
+  '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -164,6 +172,7 @@ export interface FileRoutesByTo {
   '/design-system': typeof DesignSystemIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
+  '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -186,6 +195,7 @@ export interface FileRoutesById {
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
+  '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/design-system/'
     | '/projects/'
     | '/api/resume/generate'
+    | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/design-system'
     | '/projects'
     | '/api/resume/generate'
+    | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -250,6 +262,7 @@ export interface FileRouteTypes {
     | '/design-system/'
     | '/projects/'
     | '/api/resume/generate'
+    | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -267,6 +280,7 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ApiResumeGenerateRoute: typeof ApiResumeGenerateRoute
+  ApiResumeGenerateCoverLetterRoute: typeof ApiResumeGenerateCoverLetterRoute
   ApiResumeSessionRoute: typeof ApiResumeSessionRoute
   ApiResumeUnlockRoute: typeof ApiResumeUnlockRoute
 }
@@ -399,6 +413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeSessionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/resume/generate-cover-letter': {
+      id: '/api/resume/generate-cover-letter'
+      path: '/api/resume/generate-cover-letter'
+      fullPath: '/api/resume/generate-cover-letter'
+      preLoaderRoute: typeof ApiResumeGenerateCoverLetterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/resume/generate': {
       id: '/api/resume/generate'
       path: '/api/resume/generate'
@@ -442,6 +463,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ApiResumeGenerateRoute: ApiResumeGenerateRoute,
+  ApiResumeGenerateCoverLetterRoute: ApiResumeGenerateCoverLetterRoute,
   ApiResumeSessionRoute: ApiResumeSessionRoute,
   ApiResumeUnlockRoute: ApiResumeUnlockRoute,
 }

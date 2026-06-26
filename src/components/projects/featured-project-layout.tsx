@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import {
   ArrowLeft,
+  ArrowRight,
   ExternalLink,
   Sparkles,
   Calendar,
@@ -20,7 +21,9 @@ import {
   User,
 } from "lucide-react"
 
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -68,6 +71,7 @@ type OutcomeMetric = {
 
 type ProjectConfig = {
   liveUrl: string
+  ctaLabel?: string
   techStackList: TechItem[]
   benefits: BenefitItem[]
   features: FeatureTab[]
@@ -228,7 +232,8 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
     ],
   },
   "v1-100x-proto": {
-    liveUrl: "https://llm-daisyui-shell.vercel.app/",
+    liveUrl: "https://agent.akshaysaini.xyz/",
+    ctaLabel: "Try App",
     techStackList: [
       { name: "React", logo: Cpu },
       { name: "TypeScript", logo: Terminal },
@@ -518,7 +523,7 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
     ],
   },
   "resume-builder": {
-    liveUrl: "https://akshaysaini.xyz/resume",
+    liveUrl: "/tools/resume",
     techStackList: [
       { name: "Mistral", logo: Brain },
       { name: "Brave Search", logo: Search },
@@ -628,6 +633,14 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
 export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
   // Retrieve config dynamically based on slug. Fall back to chat shell config if not found.
   const config = PROJECT_CONFIGS[project.slug] || PROJECT_CONFIGS["100x-chat-shell"]
+  const ctaLabel = config.ctaLabel ?? (config.liveUrl.startsWith("/") ? "Try App" : "Try Live Workspace")
+
+  const { openChatWithMessage } = usePortfolioChat()
+  const handleSummarize = () => {
+    openChatWithMessage(
+      `Summarize the project "${project.title}". Give me a breakdown of what it is, the key design decisions, and the technical implementation/tech stack.`
+    )
+  }
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
@@ -665,16 +678,27 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
           </p>
 
           <div className="flex flex-wrap gap-4 pt-2">
-            <Button size="lg" asChild className="shadow-lg hover:shadow-primary/20 transition-all">
-              <a href={config.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
-                Try Live Workspace <ExternalLink className="size-4" />
-              </a>
-            </Button>
-            {project.slug === "100x-chat-shell" ? (
-              <Button size="lg" variant="outline" asChild>
-                <Link to="/tools/resume">Explore Resume Tool</Link>
+            {config.liveUrl.startsWith("/") ? (
+              <Button size="lg" asChild className="shadow-lg hover:shadow-primary/20 transition-all">
+                <Link to={config.liveUrl} className="inline-flex items-center gap-2">
+                  {ctaLabel} <ArrowRight className="size-4" />
+                </Link>
               </Button>
-            ) : null}
+            ) : (
+              <Button size="lg" asChild className="shadow-lg hover:shadow-primary/20 transition-all">
+                <a href={config.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+                  {ctaLabel}{" "}
+                  {config.liveUrl.includes("akshaysaini.xyz") || ctaLabel === "Try App" ? (
+                    <ArrowRight className="size-4" />
+                  ) : (
+                    <ExternalLink className="size-4" />
+                  )}
+                </a>
+              </Button>
+            )}
+            <Button size="lg" variant="outline" onClick={handleSummarize} className="inline-flex items-center gap-2">
+              Summarize with AI <Sparkles className="size-4" />
+            </Button>
           </div>
         </div>
 
@@ -696,12 +720,12 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
 
       {/* Project Specs & Tech Stack */}
       <section className="grid gap-8 md:grid-cols-3 py-12">
-        <Card className="md:col-span-1 border-none shadow-none bg-transparent">
-          <CardHeader className="px-0 pt-0">
+        <Card className="md:col-span-1 border border-border bg-card/50">
+          <CardHeader>
             <CardTitle className="text-xl">Project Specs</CardTitle>
             <CardDescription>Key metadata and client details.</CardDescription>
           </CardHeader>
-          <CardContent className="px-0 space-y-4">
+          <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-muted text-muted-foreground">
                 <Bookmark className="size-4" />
@@ -901,11 +925,27 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-border/50">
-            <Button className="w-full gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
-              <a href={config.liveUrl} target="_blank" rel="noreferrer">
-                Open Live Workspace <ExternalLink className="size-4" />
-              </a>
+          <div className="pt-6 border-t border-border/50 flex flex-col sm:flex-row gap-3">
+            {config.liveUrl.startsWith("/") ? (
+              <Button className="flex-1 gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
+                <Link to={config.liveUrl}>
+                  {ctaLabel} <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            ) : (
+              <Button className="flex-1 gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
+                <a href={config.liveUrl} target="_blank" rel="noreferrer">
+                  {ctaLabel === "Try App" ? "Open App" : "Open Live Workspace"}{" "}
+                  {config.liveUrl.includes("akshaysaini.xyz") || ctaLabel === "Try App" ? (
+                    <ArrowRight className="size-4" />
+                  ) : (
+                    <ExternalLink className="size-4" />
+                  )}
+                </a>
+              </Button>
+            )}
+            <Button className="flex-1 gap-2" variant="outline" size="lg" onClick={handleSummarize}>
+              Summarize with AI <Sparkles className="size-4" />
             </Button>
           </div>
         </div>

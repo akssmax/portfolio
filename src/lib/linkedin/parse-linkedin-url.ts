@@ -48,7 +48,13 @@ export function parseLinkedInProfileUrl(input: string): ParsedLinkedInProfile | 
     const hostParts = url.hostname.replace("www.", "").split(".")
     const domain = hostParts[0]
     const pathParts = url.pathname.split("/").filter(Boolean)
-    const slug = pathParts[0] || domain
+    
+    let slug = pathParts[0] || domain
+    const commonPrefixes = new Set(["in", "user", "u", "profile", "member", "p", "users", "id"])
+    if (commonPrefixes.has(slug.toLowerCase()) && pathParts[1]) {
+      slug = pathParts[1]
+    }
+
     return {
       slug: slug.toLowerCase(),
       normalizedUrl: url.toString(),

@@ -1,16 +1,25 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
+import { ArrowRight } from "lucide-react"
 
 import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
 import { FeaturedProjectLayout } from "@/components/projects/featured-project-layout"
 import { SiteHeader } from "@/components/landing/site-header"
+import { ContactSection } from "@/components/landing/contact-section"
+import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
-import { getProjectBySlug } from "@/lib/sanity/projects"
+import { getProjectBySlug, getAllWorkSections } from "@/lib/sanity/projects"
 
 export const Route = createFileRoute("/projects/$slug")({
-  loader: ({ params }) => getProjectBySlug(params.slug),
+  loader: async ({ params }) => {
+    const [project, sections] = await Promise.all([
+      getProjectBySlug(params.slug),
+      getAllWorkSections(),
+    ])
+    return { project, sections }
+  },
   head: ({ loaderData }) => {
-    const project = loaderData
+    const project = loaderData?.project
     const title =
       project?.seo?.metaTitle ??
       (project ? `${project.title} — Case Study` : "Project not found")
@@ -29,7 +38,7 @@ export const Route = createFileRoute("/projects/$slug")({
 })
 
 function ProjectDetailPage() {
-  const project = Route.useLoaderData()
+  const { project, sections } = Route.useLoaderData()
 
   if (!project) {
     return (
@@ -44,9 +53,26 @@ function ProjectDetailPage() {
             <Link to="/projects">Back to projects</Link>
           </Button>
         </main>
+        <SiteFooter />
       </div>
     )
   }
+
+  // Flatten the projects list in display order:
+  // 1. recentProjects (featured recent projects)
+  // 2. caseStudies
+  // 3. other
+  const orderedProjects = [
+    ...(sections?.recentProjects ?? []),
+    ...(sections?.caseStudies ?? []),
+    ...(sections?.other ?? []),
+  ]
+
+  const currentIndex = orderedProjects.findIndex((p) => p.slug === project.slug)
+  const nextProject =
+    currentIndex !== -1 && orderedProjects.length > 1
+      ? orderedProjects[(currentIndex + 1) % orderedProjects.length]
+      : null
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -57,7 +83,41 @@ function ProjectDetailPage() {
         ) : (
           <CaseStudyLayout project={project} />
         )}
+
+        {/* Project Pagination */}
+        {nextProject ? (
+          <div className="border-t border-border bg-muted/10 py-16">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6">
+              <Link
+                to="/projects/$slug"
+                params={{ slug: nextProject.slug }}
+                className="group block rounded-2xl border border-border bg-card p-6 sm:p-8 transition-all hover:border-primary/30 hover:shadow-lg"
+              >
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+                      Next Project
+                    </span>
+                    <h3 className="text-2xl font-bold tracking-tight text-foreground">
+                      {nextProject.title}
+                    </h3>
+                    <p className="max-w-xl text-sm text-muted-foreground line-clamp-2">
+                      {nextProject.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-medium text-primary shrink-0 self-start sm:self-center">
+                    <span>View project</span>
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        ) : null}
       </main>
+
+      <ContactSection />
+      <SiteFooter />
     </div>
   )
 }

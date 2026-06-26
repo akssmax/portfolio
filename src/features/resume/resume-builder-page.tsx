@@ -3,39 +3,41 @@
 import { useEffect, useMemo, useState } from "react"
 import { Loader2, Lock } from "lucide-react"
 
-import { useAppearance } from "@/components/appearance-provider"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
+import {
+  ResumeBuilderControls,
+  createInitialResumeBuilderState,
+  hasEnabledSection,
+} from "./resume-builder-controls"
+import {
+  isResumeBrandColorValid,
+  
+  resolveResumeBrandColor
+
+} from "./resume-brand-color-utils"
+import {
+  loadCoverLetterDocument,
+  loadResumeBuilderSettings,
+  saveCoverLetterDocument,
+  saveResumeBuilderSettings,
+} from "./resume-builder-storage"
+import { ResumePreview } from "./resume-preview"
+import { useDownloadResume } from "./use-download-resume"
+import { downloadCoverLetterPdf } from "./generate-resume-pdf"
+import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
+import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
+import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
+import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
+import { useBrandColors } from "@/hooks/use-brand-colors"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
-import { useBrandColors } from "@/hooks/use-brand-colors"
-
-import {
-  createInitialResumeBuilderState,
-  hasEnabledSection,
-  ResumeBuilderControls,
-} from "./resume-builder-controls"
-import {
-  isResumeBrandColorValid,
-} from "./resume-brand-color-utils"
-import {
-  loadResumeBuilderSettings,
-  saveResumeBuilderSettings,
-} from "./resume-builder-storage"
-import { ResumePreview } from "./resume-preview"
-import {
-  resolveResumeBrandColor,
-  type ResumeBrandColorSelection,
-} from "./resume-brand-color-utils"
-import { useDownloadResume } from "./use-download-resume"
-import type { ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
-import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
-import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
-
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useAppearance } from "@/components/appearance-provider"
 
 function ResumeBuilderUnlock({
   onUnlocked,
@@ -137,7 +139,36 @@ function ResumeBuilderUnlock({
 function ResumeBuilderWorkspace() {
   const { appearance } = useAppearance()
   const { primary } = useBrandColors()
-  const { downloadResume, isGenerating, error } = useDownloadResume()
+  const { downloadResume, isGenerating: isGeneratingResume, error: resumeError } = useDownloadResume()
+
+  // Workspace Navigation & Controls State
+  const [activeTab, setActiveTab] = useState<"resume" | "cover-letter">("resume")
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
+  const [pdfError, setPdfError] = useState<string | null>(null)
+
+  // Cover Letter AI Settings State
+  const [companyName, setCompanyName] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem("cl-meta-company") || ""
+    }
+    return ""
+  })
+  const [jobTitle, setJobTitle] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem("cl-meta-role") || ""
+    }
+    return ""
+  })
+  const [instructions, setInstructions] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem("cl-meta-instructions") || ""
+    }
+    return ""
+  })
+  const [coverLetterDocument, setCoverLetterDocument] = useState<CoverLetterDocument | null>(() => {
+    return loadCoverLetterDocument()
+  })
+  const [isGeneratingCoverLetter, setIsGeneratingCoverLetter] = useState(false)
 
   const [layout, setLayout] = useState<ResumeLayoutId>(() => {
     const stored = loadResumeBuilderSettings()
@@ -169,9 +200,9 @@ function ResumeBuilderWorkspace() {
   const handleDocumentChange = (updated: ResumeDocument) => {
     setEditedDocument((prev) => {
       const next = { ...prev }
-      if (updated.name !== undefined) next.name = updated.name
-      if (updated.title !== undefined) next.title = updated.title
-      if (updated.location !== undefined) next.location = updated.location
+      next.name = updated.name
+      next.title = updated.title
+      next.location = updated.location
       if (updated.summary !== undefined) next.summary = updated.summary
       if (updated.experience !== undefined) next.experience = updated.experience
       if (updated.education !== undefined) next.education = updated.education
@@ -184,20 +215,89 @@ function ResumeBuilderWorkspace() {
     })
   }
 
+  const handleCoverLetterChange = (updated: CoverLetterDocument) => {
+    setCoverLetterDocument(updated)
+    saveCoverLetterDocument(updated)
+  }
+
   const brandColor = resolveResumeBrandColor(colorSelection, primary)
 
+  // Auto-saves layout settings
   useEffect(() => {
     saveResumeBuilderSettings({ layout, sections, colorSelection })
   }, [layout, sections, colorSelection])
 
-  const handleDownload = () => {
-    void downloadResume({
-      sections,
-      brandColor: resolveResumeBrandColor(colorSelection, primary),
-      layout,
-      document: previewDocument,
-    })
+  // Auto-saves AI letter settings
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("cl-meta-company", companyName)
+      window.localStorage.setItem("cl-meta-role", jobTitle)
+      window.localStorage.setItem("cl-meta-instructions", instructions)
+    }
+  }, [companyName, jobTitle, instructions])
+
+  const handleDownload = async () => {
+    setPdfError(null)
+    if (activeTab === "resume") {
+      void downloadResume({
+        sections,
+        brandColor,
+        layout,
+        document: previewDocument,
+      })
+    } else if (coverLetterDocument) {
+      setIsGeneratingPdf(true)
+      try {
+        await downloadCoverLetterPdf({
+          document: coverLetterDocument,
+          brandColor,
+          layout,
+        })
+      } catch (cause) {
+        setPdfError(
+          cause instanceof Error ? cause.message : "Unable to generate cover letter PDF.",
+        )
+      } finally {
+        setIsGeneratingPdf(false)
+      }
+    }
   }
+
+  const handleGenerateCoverLetter = async () => {
+    if (!companyName || !jobTitle) return
+    setIsGeneratingCoverLetter(true)
+    setPdfError(null)
+
+    try {
+      const response = await fetch("/api/resume/generate-cover-letter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          resumeDocument: editedDocument,
+          companyName,
+          jobTitle,
+          additionalInstructions: instructions,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = (await response.json()) as { error?: { message?: string } }
+        setPdfError(errorData.error?.message || "Failed to generate cover letter.")
+        return
+      }
+
+      const data = (await response.json()) as CoverLetterDocument
+      setCoverLetterDocument(data)
+      saveCoverLetterDocument(data)
+    } catch {
+      setPdfError("Error communicating with AI cover letter generator. Check details.")
+    } finally {
+      setIsGeneratingCoverLetter(false)
+    }
+  }
+
+  const isGenerating = isGeneratingResume || isGeneratingPdf
+  const error = resumeError || pdfError
 
   return (
     <div className="h-svh bg-background">
@@ -217,6 +317,16 @@ function ResumeBuilderWorkspace() {
               colorSelection={colorSelection}
               onColorSelectionChange={setColorSelection}
               brandColor={brandColor}
+              
+              activeTab={activeTab}
+              companyName={companyName}
+              onCompanyNameChange={setCompanyName}
+              jobTitle={jobTitle}
+              onJobTitleChange={setJobTitle}
+              instructions={instructions}
+              onInstructionsChange={setInstructions}
+              onGenerateCoverLetter={handleGenerateCoverLetter}
+              isGeneratingCoverLetter={isGeneratingCoverLetter}
             />
           </div>
         </ResizablePanel>
@@ -230,11 +340,17 @@ function ResumeBuilderWorkspace() {
             onDownload={handleDownload}
             isGenerating={isGenerating}
             downloadDisabled={
-              !hasEnabledSection(sections) ||
-              !isResumeBrandColorValid(colorSelection)
+              activeTab === "resume"
+                ? !hasEnabledSection(sections) || !isResumeBrandColorValid(colorSelection)
+                : !coverLetterDocument || !isResumeBrandColorValid(colorSelection)
             }
             error={error}
             onChange={handleDocumentChange}
+            
+            activeTab={activeTab}
+            onActiveTabChange={setActiveTab}
+            coverLetterDocument={coverLetterDocument}
+            onCoverLetterDocumentChange={handleCoverLetterChange}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

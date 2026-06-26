@@ -95,20 +95,23 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   headerLine: {
-    paddingBottom: 3,
+    paddingBottom: 5,
   },
   name: {
     fontSize: 24,
     fontWeight: 700,
     color: "#0F1923",
+    lineHeight: 1.15,
   },
   title: {
     fontSize: 11,
     fontWeight: 700,
+    lineHeight: 1.15,
   },
   meta: {
     fontSize: 9,
     color: "#737373",
+    lineHeight: 1.25,
   },
   contactRow: {
     flexDirection: "row",
@@ -425,17 +428,18 @@ export function DesignerResumeLayout({
         <Section title="Skills" brandColor={brandColor}>
           <View style={styles.skillWrap}>
             {document.skills.map((skill) => (
-              <Text
-                key={skill}
-                style={{
-                  ...styles.skillPill,
-                  backgroundColor: pillBackground,
-                  borderColor: pillBorder,
-                  color: "#262626",
-                }}
-              >
-                {skill}
-              </Text>
+              <View key={skill} wrap={false}>
+                <Text
+                  style={{
+                    ...styles.skillPill,
+                    backgroundColor: pillBackground,
+                    borderColor: pillBorder,
+                    color: "#262626",
+                  }}
+                >
+                  {skill}
+                </Text>
+              </View>
             ))}
           </View>
         </Section>
@@ -477,17 +481,18 @@ export function DesignerResumeLayout({
         <Section title="Interests" brandColor={brandColor}>
           <View style={styles.skillWrap}>
             {document.interests.map((interest) => (
-              <Text
-                key={interest}
-                style={{
-                  ...styles.skillPill,
-                  backgroundColor: pillBackground,
-                  borderColor: pillBorder,
-                  color: "#262626",
-                }}
-              >
-                {interest}
-              </Text>
+              <View key={interest} wrap={false}>
+                <Text
+                  style={{
+                    ...styles.skillPill,
+                    backgroundColor: pillBackground,
+                    borderColor: pillBorder,
+                    color: "#262626",
+                  }}
+                >
+                  {interest}
+                </Text>
+              </View>
             ))}
           </View>
         </Section>
