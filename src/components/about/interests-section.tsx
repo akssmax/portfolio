@@ -135,6 +135,7 @@ export function InterestsSection() {
   const [activeTab, setActiveTab] = useState<
     "photography" | "music" | "gaming"
   >("photography")
+  const [showCreativeOutlets] = useState<boolean>(false)
 
   // Music Player States
   const [playingTrackId, setPlayingTrackId] = useState<string>("track-1")
@@ -289,7 +290,8 @@ export function InterestsSection() {
         </div>
 
         {/* Row 2: Interactive Creative Outlets Showcase */}
-        <div className="mt-24 border-t border-border pt-16">
+        {showCreativeOutlets && (
+          <div className="mt-24 border-t border-border pt-16">
           <div className="max-w-2xl mb-10">
             <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Creative Outlets
@@ -659,6 +661,7 @@ export function InterestsSection() {
             </AnimatePresence>
           </div>
         </div>
+      )}
       </motion.div>
     </section>
   )
