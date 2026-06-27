@@ -3,6 +3,7 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { PostHogProvider } from "@/components/posthog-provider"
 import { RouteError } from "@/components/route-error"
+import { NotFoundPage } from "@/components/shared/not-found-page"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -70,12 +71,7 @@ export const Route = createRootRoute({
     ],
   }),
   errorComponent: RouteError,
-  notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
-      <p>The requested page could not be found.</p>
-    </main>
-  ),
+  notFoundComponent: NotFoundPage,
   shellComponent: RootDocument,
 })
 

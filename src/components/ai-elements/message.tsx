@@ -102,13 +102,43 @@ export type MessageResponseProps = ComponentProps<typeof Streamdown>
 const streamdownPlugins = { code }
 
 export const MessageResponse = memo(
-  ({ className, ...props }: MessageResponseProps) => (
+  ({ className, linkSafety, ...props }: MessageResponseProps) => (
     <Streamdown
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         className,
       )}
       plugins={streamdownPlugins}
+      linkSafety={{
+        enabled: true,
+        onLinkCheck: (url) => {
+          if (!url) return false
+
+          // Match relative paths and internal protocols
+          if (
+            url.startsWith("/") ||
+            url.startsWith("./") ||
+            url.startsWith("../") ||
+            url.startsWith("mailto:") ||
+            url.startsWith("tel:")
+          ) {
+            return true
+          }
+
+          try {
+            const parsed = new URL(url)
+            const host = parsed.hostname.toLowerCase()
+            return (
+              host === "localhost" ||
+              host === "akshaysaini.xyz" ||
+              host === "www.akshaysaini.xyz" ||
+              (typeof window !== "undefined" && host === window.location.hostname)
+            )
+          } catch {
+            return false
+          }
+        },
+      }}
       {...props}
     />
   ),
