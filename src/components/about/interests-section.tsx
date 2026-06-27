@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import {
   ArrowUpRight,
@@ -72,6 +72,7 @@ const TRACKS = [
     duration: "4:12",
     totalSeconds: 252,
     url: "https://soundcloud.com/akshay-saini-10/alone-alan-walker-remix",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   },
   {
     id: "track-2",
@@ -80,6 +81,7 @@ const TRACKS = [
     duration: "5:23",
     totalSeconds: 323,
     url: "https://soundcloud.com/akshay-saini-10/faded-alan-walker-vs-melody-dimitri-vegas-like-mike-steve-aoki-vs-ummet-ozcan-mashup",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
   },
   {
     id: "track-3",
@@ -88,6 +90,7 @@ const TRACKS = [
     duration: "6:05",
     totalSeconds: 365,
     url: "https://soundcloud.com/akshay-saini-10/domino-vs-wave-your-hands-vs-delirium",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
   },
   {
     id: "track-4",
@@ -96,6 +99,7 @@ const TRACKS = [
     duration: "32:15",
     totalSeconds: 1935,
     url: "https://soundcloud.com/akshay-saini-10/edm-non-stop-01-may-2015",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
   },
   {
     id: "track-5",
@@ -104,6 +108,7 @@ const TRACKS = [
     duration: "45:30",
     totalSeconds: 2730,
     url: "https://soundcloud.com/akshay-saini-10/non-stop-bollywood-mix-june-2014",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
   },
 ]
 
@@ -134,41 +139,82 @@ export function InterestsSection() {
   // Music Player States
   const [playingTrackId, setPlayingTrackId] = useState<string>("track-1")
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [progress, setProgress] = useState<number>(15)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [progress, setProgress] = useState<number>(0)
+  const [currentSeconds, setCurrentSeconds] = useState<number>(0)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const activeTrack = TRACKS.find((t) => t.id === playingTrackId) || TRACKS[0]
 
-  useEffect(() => {
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            setIsPlaying(false)
-            return 0
-          }
-          return prev + 1
-        })
-      }, 1000)
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      const current = audioRef.current.currentTime
+      const dur = audioRef.current.duration || activeTrack.totalSeconds
+      setCurrentSeconds(current)
+      setProgress((current / dur) * 100)
     }
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [isPlaying])
+  }
+
+  const handleEnded = () => {
+    setIsPlaying(false)
+    setProgress(0)
+    setCurrentSeconds(0)
+  }
 
   const handleTrackSelect = (trackId: string) => {
+    const track = TRACKS.find((t) => t.id === trackId)
+    if (!track) return
+
     if (playingTrackId === trackId) {
-      setIsPlaying(!isPlaying)
+      if (isPlaying) {
+        audioRef.current?.pause()
+        setIsPlaying(false)
+      } else {
+        if (audioRef.current) {
+          if (!audioRef.current.src) {
+            audioRef.current.src = track.audioUrl
+            audioRef.current.load()
+          }
+          audioRef.current.play().catch((err) => console.log("Play error:", err))
+        }
+        setIsPlaying(true)
+      }
     } else {
       setPlayingTrackId(trackId)
       setIsPlaying(true)
       setProgress(0)
+      setCurrentSeconds(0)
+      if (audioRef.current) {
+        audioRef.current.src = track.audioUrl
+        audioRef.current.load()
+        audioRef.current.play().catch((err) => console.log("Play error:", err))
+      }
+    }
+  }
+
+  const handlePlayPauseToggle = () => {
+    if (isPlaying) {
+      audioRef.current?.pause()
+      setIsPlaying(false)
+    } else {
+      if (audioRef.current) {
+        if (!audioRef.current.src) {
+          audioRef.current.src = activeTrack.audioUrl
+          audioRef.current.load()
+        }
+        audioRef.current.play().catch((err) => console.log("Play error:", err))
+      }
+      setIsPlaying(true)
+    }
+  }
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (audioRef.current) {
+      const rect = e.currentTarget.getBoundingClientRect()
+      const clickX = e.clientX - rect.left
+      const width = rect.width
+      const percentage = clickX / width
+      const dur = audioRef.current.duration || activeTrack.totalSeconds
+      audioRef.current.currentTime = percentage * dur
     }
   }
 
@@ -177,8 +223,6 @@ export function InterestsSection() {
     const sec = Math.floor(seconds % 60)
     return `${min}:${sec < 10 ? "0" : ""}${sec}`
   }
-
-  const currentSeconds = Math.floor((progress / 100) * activeTrack.totalSeconds)
 
   return (
     <section className="py-24 border-b border-border bg-background">
@@ -397,11 +441,21 @@ export function InterestsSection() {
                     </div>
 
                     <div className="mt-8 space-y-4">
+                      {/* Real Audio Player Tag */}
+                      <audio
+                        ref={audioRef}
+                        onTimeUpdate={handleTimeUpdate}
+                        onEnded={handleEnded}
+                      />
+
                       {/* Play progress slider bar */}
                       <div className="space-y-1">
-                        <div className="relative h-1 w-full rounded-full bg-muted overflow-hidden">
+                        <div
+                          onClick={handleProgressClick}
+                          className="relative h-1.5 w-full rounded-full bg-muted overflow-hidden cursor-pointer hover:h-2 transition-all"
+                        >
                           <div
-                            className="absolute top-0 left-0 h-full bg-primary transition-all duration-300"
+                            className="absolute top-0 left-0 h-full bg-primary"
                             style={{ width: `${progress}%` }}
                           />
                         </div>
@@ -438,7 +492,7 @@ export function InterestsSection() {
                       {/* Playback Controls */}
                       <div className="flex justify-center gap-3">
                         <button
-                          onClick={() => setIsPlaying(!isPlaying)}
+                          onClick={handlePlayPauseToggle}
                           className="flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground hover:scale-105 transition-transform active:scale-95 cursor-pointer"
                           aria-label={isPlaying ? "Pause music" : "Play music"}
                         >
