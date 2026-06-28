@@ -61,6 +61,7 @@ const demoLoaders: Record<string, (() => Promise<DemoModule>) | undefined> = {
   tooltip: () => import("./tier-1-demos").then((m) => ({ default: m.TooltipDemo })),
   "m3-shapes": () => import("./m3-shapes-demo").then((m) => ({ default: m.M3ShapesDemo })),
   "footer-monogram": () => import("./footer-monogram-demo").then((m) => ({ default: m.FooterMonogramDemo })),
+  "footer-gradients": () => import("./footer-gradients-demo").then((m) => ({ default: m.FooterGradientsDemo })),
   "monogram-patterns": () => import("./monogram-patterns-demo").then((m) => ({ default: m.MonogramPatternsDemo })),
   scrollbars: () => import("./scrollbar-demo").then((m) => ({ default: m.ScrollbarDemo })),
   "mode-toggle": () => import("./custom-demos").then((m) => ({ default: m.ModeToggleDemo })),

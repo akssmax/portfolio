@@ -134,6 +134,11 @@ export const customEntries: Array<DocEntry> = [
     "custom"
   ),
   entry(
+    "footer-gradients",
+    "Dia Browser-inspired soft glowing gradient effects with 3D Fold, peaked, and color dodge variants.",
+    "custom"
+  ),
+  entry(
     "monogram-patterns",
     "Subtle background patterns created using the brand's triangular monogram logo, animated with Framer Motion.",
     "custom"

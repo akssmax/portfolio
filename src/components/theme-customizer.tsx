@@ -2,21 +2,6 @@
 
 import { Palette } from "lucide-react"
 
-import { useAppearance } from "@/components/appearance-provider"
-import { Button } from "@/components/ui/button"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { CustomScrollbar } from "@/components/ui/custom-scrollbar"
-import { Separator } from "@/components/ui/separator"
 
 import { ColorPresetGrid } from "./theme-customizer/color-preset-grid"
 import { ColorVisionPicker } from "./theme-customizer/color-vision-picker"
@@ -24,6 +9,22 @@ import { FontPicker } from "./theme-customizer/font-picker"
 import { FontScalePicker } from "./theme-customizer/font-scale-picker"
 import { ModePicker } from "./theme-customizer/mode-picker"
 import { RadiusPicker } from "./theme-customizer/radius-picker"
+import { FooterGradientPicker } from "./theme-customizer/footer-gradient-picker"
+import { Separator } from "@/components/ui/separator"
+import { CustomScrollbar } from "@/components/ui/custom-scrollbar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button"
+import { useAppearance } from "@/components/appearance-provider"
 
 export function ThemeCustomizer() {
   const {
@@ -34,6 +35,8 @@ export function ThemeCustomizer() {
     setRadius,
     setColorVision,
     setFontScale,
+    footerGradient,
+    setFooterGradient,
     mounted,
   } = useAppearance()
 
@@ -93,6 +96,15 @@ export function ThemeCustomizer() {
             </AccordionTrigger>
             <AccordionContent className="pb-2">
               <RadiusPicker activeRadius={appearance.radius} onSelect={setRadius} />
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="footer-gradient" className="border-none">
+            <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
+              Footer Glow
+            </AccordionTrigger>
+            <AccordionContent className="pb-2">
+              <FooterGradientPicker activeGradient={footerGradient} onSelect={setFooterGradient} />
             </AccordionContent>
           </AccordionItem>
 

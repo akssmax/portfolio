@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { ArrowUpRight } from "lucide-react"
 
+import { useAppearance } from "@/components/appearance-provider"
+import { FooterGradients } from "@/components/landing/footer-gradients"
 import { Logo } from "@/components/brand/logo"
 import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
@@ -24,9 +26,21 @@ export interface SiteFooterProps {
 }
 
 export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
+  const { footerGradient } = useAppearance()
+
   return (
-    <footer className={`${hasTopBorder ? "border-t border-border" : ""} bg-background`}>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <footer className={`relative overflow-hidden ${hasTopBorder ? "border-t border-border" : ""}`}>
+      {/* Background color layer */}
+      <div className="absolute inset-0 bg-background -z-20" />
+
+      {/* Glowing Gradient Background */}
+      {footerGradient !== "none" && (
+        <div className="absolute inset-x-0 bottom-0 h-[400px] pointer-events-none -z-10 overflow-hidden opacity-50 dark:opacity-75">
+          <FooterGradients activeVariant={footerGradient} reveal="scroll" />
+        </div>
+      )}
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-10 py-12 md:grid-cols-[minmax(0,1.4fr)_auto_auto] md:gap-12 lg:gap-16">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
