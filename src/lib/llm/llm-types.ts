@@ -32,6 +32,7 @@ export interface LlmChatRequest {
   attachments?: FileUIPart[]
   temperature?: number
   maxTokens?: number
+  mode?: "gen-ui" | "chat"
 }
 
 export function getDefaultChatModel(): MistralModel {

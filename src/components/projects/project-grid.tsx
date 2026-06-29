@@ -6,6 +6,7 @@ import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import {
   Card,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -63,7 +64,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {...hoverProps}
       >
         <ProjectCardCover project={project} />
-        <CardHeader>
+        <CardHeader className="flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {project.tag}
@@ -75,6 +76,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {project.description}
           </CardDescription>
         </CardHeader>
+        {project.metrics ? (
+          <CardFooter className="border-t border-border/40 pt-3 pb-5 text-xs font-medium text-primary/85">
+            {project.metrics}
+          </CardFooter>
+        ) : null}
       </MotionCard>
     </Link>
   )

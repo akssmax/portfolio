@@ -23,7 +23,7 @@ export interface StreamChatOptions extends LlmChatRequest {
   onSources?: (sources: ChatSource[]) => void
   onCitations?: (citations: Citation[]) => void
   onToolStart?: (payload: { name: string; query?: string }) => void
-  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void
+  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void
   onComplete?: (result: StreamChatResult) => void
   signal?: AbortSignal
   chatApiPath?: string
@@ -70,7 +70,7 @@ async function streamSseResponse(
   onSources?: (sources: ChatSource[]) => void,
   onCitations?: (citations: Citation[]) => void,
   onToolStart?: (payload: { name: string; query?: string }) => void,
-  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void,
+  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void,
 ): Promise<StreamDonePayload | null> {
   if (!response.body) {
     throw new Error("Missing response body from /api/chat")
@@ -165,6 +165,7 @@ async function streamSseResponse(
           query?: string
           resultCount?: number
           error?: string
+          result?: string
         }
         if (typeof payload.name === "string") {
           onToolEnd?.({
@@ -172,6 +173,7 @@ async function streamSseResponse(
             query: payload.query,
             resultCount: payload.resultCount,
             error: payload.error,
+            result: payload.result,
           })
         }
       } catch {
@@ -223,7 +225,7 @@ async function requestChat(
   onSources: ((sources: ChatSource[]) => void) | undefined,
   onCitations: ((citations: Citation[]) => void) | undefined,
   onToolStart: ((payload: { name: string; query?: string }) => void) | undefined,
-  onToolEnd: ((payload: { name: string; query?: string; resultCount?: number; error?: string }) => void) | undefined,
+  onToolEnd: ((payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void) | undefined,
   chatApiPath: string,
 ): Promise<StreamChatResult> {
   const response = await fetch(chatApiPath, {

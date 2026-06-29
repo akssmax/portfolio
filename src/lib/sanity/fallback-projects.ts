@@ -103,6 +103,7 @@ export const fallbackProjects: Project[] = [
     client: "100x.Bot",
     tools: ["Cursor"],
     publishedAt: "2026-06-10T00:00:00.000Z",
+    metrics: "Live in < 1 week · Designed + built with Cursor alongside founder",
     seo: {
       metaTitle: "100x.Bot Marketing Site — Case Study",
       metaDescription:
@@ -410,6 +411,7 @@ export const fallbackProjects: Project[] = [
     client: "100x",
     tools: ["Cursor", "Mistral"],
     publishedAt: "2026-06-15T00:00:00.000Z",
+    metrics: "Shipped in 3 weeks · Used in production at 100x.bot",
     seo: {
       metaTitle: "LLM Chat Shell — Case Study",
       metaDescription:
@@ -675,6 +677,7 @@ export const fallbackProjects: Project[] = [
     client: "Portfolio",
     tools: ["Mistral", "Brave Search", "@react-pdf/renderer", "TanStack Start"],
     publishedAt: "2026-06-01T00:00:00.000Z",
+    metrics: "Public tool · AI-assisted PDF export with brand theming",
     seo: {
       metaTitle: "Resume Builder — Case Study",
       metaDescription:
@@ -759,6 +762,7 @@ export const fallbackProjects: Project[] = [
     client: "100x.bot",
     tools: ["Cursor", "Figma"],
     publishedAt: "2026-06-12T00:00:00.000Z",
+    metrics: "Full prototype in 2 weeks · 5 core modules",
     seo: {
       metaTitle: "100x Agent Extension — Case Study",
       metaDescription:
@@ -961,6 +965,7 @@ export const fallbackProjects: Project[] = [
     client: "Kodo",
     tools: ["Figma", "Framer"],
     publishedAt: "2025-11-01T00:00:00.000Z",
+    metrics: "Led design solo · 4 enterprise modules shipped · 1 yr 9 months",
     seo: {
       metaTitle: "Kodo — Intake-to-Pay Platform — Case Study",
       metaDescription:
@@ -1279,6 +1284,7 @@ export const fallbackProjects: Project[] = [
     client: "Unlogged",
     tools: ["Figma", "Webflow"],
     publishedAt: "2024-01-15T00:00:00.000Z",
+    metrics: "YC S22 · Open source · 0→1 plugin UX + marketing site",
     seo: {
       metaTitle: "Unlogged — Java DevTools Plugin — Case Study",
       metaDescription:
@@ -1489,6 +1495,7 @@ export const fallbackProjects: Project[] = [
     client: "Tulr",
     tools: ["Figma"],
     publishedAt: "2021-12-01T00:00:00.000Z",
+    metrics: "0→1 product design · Replaced 4 tools in one platform",
     seo: {
       metaTitle: "Tulr — No-Code Platform — Case Study",
       metaDescription:

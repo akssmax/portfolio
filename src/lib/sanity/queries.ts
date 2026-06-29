@@ -13,7 +13,8 @@ export const projectCardFields = `
   role,
   client,
   tools,
-  publishedAt
+  publishedAt,
+  metrics
 `
 
 export const projectDetailFields = `

@@ -18,12 +18,18 @@ import {
   runMistralToolLoop,
   streamMistralCompletion,
 } from "@/lib/llm/mistral-tool-loop"
+import { WEB_SEARCH_TOOL_DEFINITION } from "@/lib/llm/tools/web-search-tool"
+import {
+  SHOW_PROJECTS_TOOL_DEFINITION,
+  SHOW_EXPERIENCE_TOOL_DEFINITION,
+} from "@/lib/llm/tools/gen-ui-tools"
 
 type ChatRequestBody = {
   model?: string
   messages?: LlmChatMessage[]
   temperature?: number
   maxTokens?: number
+  mode?: "gen-ui" | "chat"
 }
 
 const MAX_MAX_TOKENS = 2000
@@ -35,7 +41,7 @@ type GroundedCitation = { href: string; label: string }
 
 const DEFAULT_MAX_TOKENS = 1500
 const MAX_MESSAGES = 40
-const SUGGESTIONS_BUDGET_MS = 350
+const SUGGESTIONS_BUDGET_MS = 3500
 
 function jsonError(status: number, code: string, message: string): Response {
   return Response.json({ error: { code, message } }, { status })
@@ -236,11 +242,13 @@ export const Route = createFileRoute("/api/chat")({
         let body: ChatRequestBody
         try {
           body = (await request.json()) as ChatRequestBody
+          console.log("[api/chat] Received body:", JSON.stringify(body))
         } catch {
           return jsonError(400, "invalid_json", "Request body must be JSON.")
         }
 
         const validation = validateRequest(body)
+        console.log("[api/chat] Validation result:", JSON.stringify(validation))
         if (!validation.ok) {
           return jsonError(validation.status, validation.code, validation.message)
         }
@@ -269,6 +277,15 @@ export const Route = createFileRoute("/api/chat")({
           ...(retrievedContext
             ? [{ role: "system" as const, content: `Retrieved context:\n${retrievedContext}` }]
             : []),
+          ...(body.mode === "gen-ui"
+            ? [
+                {
+                  role: "system" as const,
+                  content:
+                    "You are in Generative UI mode. When the user asks to see your projects, case studies, or portfolio work, you MUST trigger the 'show_projects' tool. When they ask about your work experience history, resume, or timeline of jobs, you MUST trigger the 'show_experience' tool. Always prefer calling these tools instead of generating text.",
+                },
+              ]
+            : []),
           ...messages,
         ]
 
@@ -288,6 +305,14 @@ export const Route = createFileRoute("/api/chat")({
                 appendFinalAssistant: false,
                 temperature: validation.temperature,
                 maxTokens: validation.maxTokens,
+                tools:
+                  body.mode === "gen-ui"
+                    ? [
+                        WEB_SEARCH_TOOL_DEFINITION,
+                        SHOW_PROJECTS_TOOL_DEFINITION,
+                        SHOW_EXPERIENCE_TOOL_DEFINITION,
+                      ]
+                    : [WEB_SEARCH_TOOL_DEFINITION],
                 toolContext: {
                   beforeSearch: () => {
                     const searchRate = checkRateLimit(
@@ -416,6 +441,7 @@ export const Route = createFileRoute("/api/chat")({
               })
               streamController.close()
             } catch (error) {
+              console.error("[api/chat] Stream processing error:", error)
               const message = error instanceof Error ? error.message : "Chat request failed"
               writeSse(streamController, "error", { message })
               streamController.close()

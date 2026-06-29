@@ -188,6 +188,11 @@ export const customEntries: Array<DocEntry> = [
     "Vercel AI Elements — conversation, message, prompt input, suggestions, sources, and shimmer for portfolio chat.",
     "custom"
   ),
+  entry(
+    "chat-prompt-input",
+    "A premium prompting container with segmented platform tabs, microphone toggle, actions bar, and auto-growing textarea.",
+    "custom"
+  ),
 ]
 
 export const allDocEntries: Array<DocEntry> = [...componentEntries, ...customEntries]

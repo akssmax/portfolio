@@ -49,6 +49,7 @@ async function seed() {
       client: project.client,
       tools: project.tools,
       publishedAt: project.publishedAt,
+      metrics: project.metrics,
       seo: project.seo,
       content: project.content,
     }

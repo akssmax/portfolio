@@ -72,6 +72,7 @@ const demoLoaders: Record<string, (() => Promise<DemoModule>) | undefined> = {
   "skills-section": () => import("./custom-demos").then((m) => ({ default: m.SkillsSectionDemo })),
   "contact-section": () => import("./custom-demos").then((m) => ({ default: m.ContactSectionDemo })),
   "ai-elements": () => import("./ai-elements-demo").then((m) => ({ default: m.AiElementsDemo })),
+  "chat-prompt-input": () => import("./chat-prompt-input-demo").then((m) => ({ default: m.ChatInputDemo })),
 }
 
 export function loadDemo(slug: string): Promise<ComponentType> {
