@@ -214,12 +214,13 @@ export function ChatPromptInput({
     setAttachedProjects([])
   }
 
-  // Auto-resize textarea heights
+  // Auto-resize textarea heights up to a max height of 192px (12rem)
   React.useEffect(() => {
     const textarea = textareaRef.current
     if (!textarea) return
     textarea.style.height = "auto"
-    textarea.style.height = `${textarea.scrollHeight}px`
+    const nextHeight = Math.min(textarea.scrollHeight, 192)
+    textarea.style.height = `${nextHeight}px`
   }, [value])
 
   return (
@@ -472,7 +473,7 @@ export function ChatPromptInput({
             placeholder={placeholder}
             disabled={disabled || loading}
             rows={2}
-            className="w-full resize-none bg-transparent text-sm text-foreground outline-hidden placeholder:text-muted-foreground/75 min-h-[3rem] max-h-[12rem] py-1 line-clamp-6 leading-relaxed"
+            className="w-full resize-none bg-transparent text-sm text-foreground outline-hidden placeholder:text-muted-foreground/75 min-h-[3rem] max-h-[12rem] py-1 leading-relaxed overflow-y-auto"
           />
 
           {/* Action bar inside the prompt box */}
