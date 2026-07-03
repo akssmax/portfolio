@@ -171,11 +171,7 @@ export function HorizontalProjectCard({ project }: HorizontalProjectCardProps) {
           <div className="space-y-2">
             {/* Meta header (ID, Tag, Badges) */}
             <div className="flex flex-wrap items-center gap-2 text-[10px]">
-              {project.shortId && (
-                <span className="font-mono text-muted-foreground bg-muted/65 px-1.5 py-0.5 rounded border border-border/40 shrink-0">
-                  {project.shortId}
-                </span>
-              )}
+
               <span className="font-semibold text-muted-foreground uppercase tracking-wider shrink-0">
                 {project.tag}
               </span>
