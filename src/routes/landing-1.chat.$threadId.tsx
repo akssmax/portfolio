@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import * as React from "react"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, X } from "lucide-react"
 import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
@@ -9,7 +9,7 @@ import { Conversation, ConversationContent, ConversationScrollButton } from "@/c
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message"
 import { Suggestions, Suggestion } from "@/components/ai-elements/suggestion"
 import { MessageFeedbackBar } from "@/components/ai-elements/message-feedback-bar"
-import { Sources, Source, SourcesContent } from "@/components/ai-elements/sources"
+import { Source } from "@/components/ai-elements/sources"
 import { GenUiRenderer } from "@/components/ui/gen-ui-renderer"
 import { streamChat } from "@/lib/llm/llm-service"
 import { toast } from "sonner"
@@ -250,7 +250,7 @@ function ChatThreadPage() {
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 bg-transparent">
       {/* Thread Header Bar */}
-      <div className="sticky top-16 z-20 flex items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-6 w-full shrink-0">
+      <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-6 w-full shrink-0">
         <Link 
           to="/landing-1" 
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-all"
@@ -301,18 +301,7 @@ function ChatThreadPage() {
                             </div>
                           )}
 
-                          {/* Render citations/sources if available */}
-                          {message.sources && message.sources.length > 0 && (
-                            <div className="pt-1">
-                              <Sources open={openSources[message.id] || false} onOpenChange={(open) => setOpenSources(prev => ({ ...prev, [message.id]: open }))}>
-                                <SourcesContent className="bg-card/90 border border-border p-3 rounded-lg shadow-md mt-2 space-y-1.5">
-                                  {message.sources.map((src, i) => (
-                                    <Source key={i} href={src.href} title={src.title} className="block text-xs hover:text-primary transition-colors text-muted-foreground leading-normal" />
-                                  ))}
-                                </SourcesContent>
-                              </Sources>
-                            </div>
-                          )}
+                          {/* Sources are now rendered as a floating popover overlay relative to the feedback bar below */}
 
                           {/* Render custom Gen UI components if tools completed */}
                           {message.toolCalls && message.toolCalls.length > 0 && (
@@ -328,9 +317,9 @@ function ChatThreadPage() {
                             </div>
                           )}
 
-                          {/* Feedback Bar & Copy action */}
+                          {/* Feedback Bar & Copy action with absolute-positioned sources popup overlay */}
                           {message.content && (
-                            <div className="pt-2">
+                            <div className="pt-2 relative">
                               <MessageFeedbackBar
                                 text={message.content}
                                 feedback={message.feedback || null}
@@ -338,6 +327,33 @@ function ChatThreadPage() {
                                 showSources={message.sources && message.sources.length > 0}
                                 onSources={() => setOpenSources(prev => ({ ...prev, [message.id]: !prev[message.id] }))}
                               />
+
+                              {openSources[message.id] && message.sources && message.sources.length > 0 && (
+                                <div className="absolute bottom-full left-0 mb-2.5 z-30 w-72 rounded-xl border border-border bg-card/95 p-3.5 shadow-xl backdrop-blur-md flex flex-col gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-150">
+                                  <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                      Used {message.sources.length} sources
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => setOpenSources(prev => ({ ...prev, [message.id]: false }))}
+                                      className="rounded-md p-0.5 text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors cursor-pointer"
+                                    >
+                                      <X className="size-3.5" />
+                                    </button>
+                                  </div>
+                                  <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
+                                    {message.sources.map((src, i) => (
+                                      <Source
+                                        key={i}
+                                        href={src.href}
+                                        title={src.title}
+                                        className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-all duration-150"
+                                      />
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           )}
 

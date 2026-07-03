@@ -90,9 +90,9 @@ export function MessageFeedbackBar({
         <MessageAction
           tooltip="View sources"
           label="View sources"
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="ml-1 rounded-lg text-muted-foreground hover:bg-muted/70 hover:text-foreground px-2.5"
+          className="ml-1 rounded-lg border-border/80 bg-background/55 text-muted-foreground hover:bg-muted/70 hover:text-foreground px-2.5 transition-colors"
           onClick={onSources}
         >
           <span className="px-1 text-xs font-medium">Sources</span>
