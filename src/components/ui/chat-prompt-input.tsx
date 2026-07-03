@@ -350,7 +350,7 @@ export function ChatPromptInput({
       <div
         className={cn(
           "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-all duration-300",
-          isFocused && "border-accent ring-2 ring-accent/20 bg-card/85",
+          isFocused && "border-primary ring-2 ring-primary/20 bg-card/85",
           className
         )}
         {...props}
