@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
-import { Cpu, FileUser, History, Layout, Sparkles, Star, Terminal, ExternalLink, ArrowRight } from "lucide-react"
+import { Cpu, FileUser, History, Layout, Sparkles, Star, Terminal, ExternalLink } from "lucide-react"
 
 import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import { getImageUrl } from "@/lib/sanity/image"
@@ -209,31 +209,7 @@ export function HorizontalProjectCard({ project }: HorizontalProjectCardProps) {
             )}
           </div>
 
-          {/* Footer Metadata & Action Info */}
-          <div className="mt-4 flex items-center justify-between border-t border-border/40 pt-3 text-[11px] text-muted-foreground">
-            <div>
-              {project.liveUrl ? (
-                <span className="inline-flex items-center gap-1 font-medium text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">
-                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Active Deployment
-                </span>
-              ) : (
-                project.relativeDate && (
-                  <span>
-                    Last modified: <strong className="text-foreground/95">{project.relativeDate}</strong>
-                  </span>
-                )
-              )}
-            </div>
 
-            {/* Action Indicators */}
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1 text-primary group-hover/card:underline font-medium">
-                View case study
-                <ArrowRight className="size-3.5 transition-transform group-hover/card:translate-x-0.5" />
-              </span>
-            </div>
-          </div>
         </div>
       </Link>
 

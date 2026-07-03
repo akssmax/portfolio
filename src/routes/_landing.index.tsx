@@ -204,7 +204,7 @@ function Landing1IndexPage() {
       </section>
 
       {/* Dashboard Section */}
-      <section className="py-20 bg-card/10">
+      <section className="py-20 bg-background border-y border-border/80 relative z-10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <Tabs defaultValue="recent" className="w-full">
             <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
