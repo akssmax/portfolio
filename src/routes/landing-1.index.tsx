@@ -1,12 +1,13 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
-import { ClipboardList, Globe, RefreshCw, Sparkles, Star } from "lucide-react"
+import { ClipboardList, Globe, RefreshCw, Sparkles, Star, Quote } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
 import { toast } from "sonner"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
-import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
+import { M3FeatureImage, M3ShapeImage } from "@/components/m3-shapes"
+import { ContactSection } from "@/components/landing/contact-section"
 import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
@@ -294,25 +295,43 @@ function Landing1IndexPage() {
               </div>
 
               {/* Featured Testimonial Quote */}
-              {testimonials.find((t) => t.id === "shardul-lavekar") && (
-                <div className="relative p-6 rounded-xl border border-border bg-primary/5 space-y-4">
-                  <div className="absolute -top-3 -left-3 bg-primary text-primary-foreground size-7 rounded-full flex items-center justify-center shadow-md font-serif text-lg font-bold">
-                    “
-                  </div>
-                  <p className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed pt-2">
-                    &quot;{testimonials.find((t) => t.id === "shardul-lavekar")?.quote.map(q => q.text).join("")}&quot;
-                  </p>
-                  <div className="flex items-center gap-3 pt-2">
-                    <div className="size-8.5 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-mono font-bold text-xs text-primary shrink-0">
-                      SL
+              {(() => {
+                const t = testimonials.find((item) => item.id === "shardul-lavekar")
+                if (!t) return null
+                return (
+                  <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/45 backdrop-blur-md shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5">
+                    {/* Quotation icon decoration */}
+                    <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none">
+                      <Quote className="size-3.5 fill-current" />
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-foreground">{testimonials.find((t) => t.id === "shardul-lavekar")?.name}</p>
-                      <p className="text-[10px] text-muted-foreground">{testimonials.find((t) => t.id === "shardul-lavekar")?.headline}</p>
+                    <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
+                      &quot;
+                      {t.quote.map((part, index) =>
+                        part.bold ? (
+                          <strong key={index} className="font-semibold text-foreground not-italic">
+                            {part.text}
+                          </strong>
+                        ) : (
+                          part.text
+                        )
+                      )}
+                      &quot;
+                    </blockquote>
+                    <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
+                      <M3ShapeImage
+                        shape="arch"
+                        src={t.avatarSrc}
+                        alt={t.name}
+                        className="size-9.5 shrink-0 bg-primary/10"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-foreground truncate">{t.name}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{t.headline}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )
+              })()}
             </div>
 
             {/* Right Column: Morphing Portrait */}
@@ -327,6 +346,9 @@ function Landing1IndexPage() {
           </div>
         </div>
       </section>
+
+      {/* Contact CTA Section */}
+      <ContactSection bottomCutout={false} />
     </div>
   )
 }
