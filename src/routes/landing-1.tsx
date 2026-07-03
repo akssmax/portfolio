@@ -1,6 +1,7 @@
 import { Outlet, createFileRoute, useLocation } from "@tanstack/react-router"
 import * as React from "react"
 import { useReducedMotion } from "motion/react"
+import { cn } from "@/lib/utils"
 
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
@@ -52,7 +53,10 @@ function Landing1Layout() {
   const isChatRoute = location.pathname.includes("/landing-1/chat")
 
   return (
-    <div className="min-h-svh bg-background text-foreground flex flex-col relative overflow-hidden">
+    <div className={cn(
+      "bg-background text-foreground flex flex-col relative overflow-hidden",
+      isChatRoute ? "h-svh" : "min-h-svh"
+    )}>
       {/* Animated dot field canvas background */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         {!shouldReduceMotion ? (
@@ -80,7 +84,10 @@ function Landing1Layout() {
 
       <SiteHeader />
       
-      <main className="flex-1 relative z-10 flex flex-col w-full">
+      <main className={cn(
+        "flex-1 relative z-10 flex flex-col w-full",
+        isChatRoute && "min-h-0 overflow-hidden"
+      )}>
         <Outlet />
       </main>
 

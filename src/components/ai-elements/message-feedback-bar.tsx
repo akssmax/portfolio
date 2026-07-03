@@ -91,8 +91,8 @@ export function MessageFeedbackBar({
           tooltip="View sources"
           label="View sources"
           variant="ghost"
-          size="icon-sm"
-          className="ml-1 rounded-lg text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+          size="sm"
+          className="ml-1 rounded-lg text-muted-foreground hover:bg-muted/70 hover:text-foreground px-2.5"
           onClick={onSources}
         >
           <span className="px-1 text-xs font-medium">Sources</span>
