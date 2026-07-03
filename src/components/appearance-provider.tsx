@@ -11,14 +11,6 @@ import {
 } from "react"
 import { useTheme } from "next-themes"
 
-import {
-  applyAppearanceToDocument,
-  readAppearanceFromStorage,
-  writeAppearanceToStorage,
-} from "@/lib/themes/apply-appearance"
-import { loadFontPreset } from "@/lib/themes/font-loader"
-import { DEFAULT_APPEARANCE } from "@/lib/themes/registry"
-import { syncDocumentThemeClass } from "@/lib/themes/resolve-theme-mode"
 import type {
   AppearanceState,
   BrandPresetId,
@@ -28,6 +20,16 @@ import type {
   NeutralPresetId,
   RadiusPresetId,
 } from "@/lib/themes/types"
+import {
+  applyAppearanceToDocument,
+  readAppearanceFromStorage,
+  writeAppearanceToStorage,
+} from "@/lib/themes/apply-appearance"
+import { loadFontPreset } from "@/lib/themes/font-loader"
+import { DEFAULT_APPEARANCE } from "@/lib/themes/registry"
+import { syncDocumentThemeClass } from "@/lib/themes/resolve-theme-mode"
+
+export type FooterGradientType = "none" | "dia" | "peaked" | "dodge" | "fold3d"
 
 type AppearanceContextValue = {
   appearance: AppearanceState
@@ -40,12 +42,15 @@ type AppearanceContextValue = {
   setCustomBrandColor: (color: string) => void
   clearCustomBrandColor: () => void
   mounted: boolean
+  footerGradient: FooterGradientType
+  setFooterGradient: (type: FooterGradientType) => void
 }
 
 const AppearanceContext = createContext<AppearanceContextValue | null>(null)
 
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
   const [appearance, setAppearance] = useState<AppearanceState>(DEFAULT_APPEARANCE)
+  const [footerGradient, setFooterGradientState] = useState<FooterGradientType>("fold3d")
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme, theme } = useTheme()
   const resolvedThemeRef = useRef(resolvedTheme)
@@ -157,6 +162,19 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     updateAppearance((prev) => ({ ...prev, customBrandColor: null }))
   }, [updateAppearance])
 
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const stored = localStorage.getItem("appearance-footer-gradient") as FooterGradientType | null
+    if (stored && ["none", "dia", "peaked", "dodge", "fold3d"].includes(stored)) {
+      setFooterGradientState(stored)
+    }
+  }, [])
+
+  const setFooterGradient = useCallback((type: FooterGradientType) => {
+    setFooterGradientState(type)
+    localStorage.setItem("appearance-footer-gradient", type)
+  }, [])
+
   const value = useMemo(
     () => ({
       appearance,
@@ -169,6 +187,8 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
       setCustomBrandColor,
       clearCustomBrandColor,
       mounted,
+      footerGradient,
+      setFooterGradient,
     }),
     [
       appearance,
@@ -181,6 +201,8 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
       setCustomBrandColor,
       clearCustomBrandColor,
       mounted,
+      footerGradient,
+      setFooterGradient,
     ],
   )
 

@@ -7,6 +7,11 @@ import {
   parseWebSearchToolArgs,
   WEB_SEARCH_TOOL_NAME,
 } from "@/lib/llm/tools/web-search-tool"
+import {
+  SHOW_PROJECTS_TOOL_NAME,
+  SHOW_EXPERIENCE_TOOL_NAME,
+  parseShowProjectsArgs,
+} from "@/lib/llm/tools/gen-ui-tools"
 
 export type ToolExecutionContext = {
   clientIp?: string
@@ -27,6 +32,26 @@ export async function executeToolCall(
   argumentsJson: string,
   context: ToolExecutionContext = {},
 ): Promise<ToolExecutionResult> {
+  if (name === SHOW_PROJECTS_TOOL_NAME) {
+    const args = parseShowProjectsArgs(argumentsJson)
+    return {
+      content: JSON.stringify({
+        status: "success",
+        component: "projects_grid",
+        filter: args.filter,
+      }),
+    }
+  }
+
+  if (name === SHOW_EXPERIENCE_TOOL_NAME) {
+    return {
+      content: JSON.stringify({
+        status: "success",
+        component: "experience_timeline",
+      }),
+    }
+  }
+
   if (name !== WEB_SEARCH_TOOL_NAME) {
     return { content: "", error: `Unknown tool: ${name}` }
   }

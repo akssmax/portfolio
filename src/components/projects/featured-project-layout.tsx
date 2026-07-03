@@ -71,6 +71,8 @@ type OutcomeMetric = {
 
 type ProjectConfig = {
   liveUrl: string
+  secondaryUrl?: string
+  secondaryLabel?: string
   ctaLabel?: string
   techStackList: TechItem[]
   benefits: BenefitItem[]
@@ -383,7 +385,9 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
     ],
   },
   "100x-landing-page": {
-    liveUrl: "https://100x.bot/",
+    liveUrl: "https://100x-landing-page.vercel.app/",
+    secondaryUrl: "https://100x.bot/",
+    secondaryLabel: "Open Shipped Production Site",
     techStackList: [
       { name: "React", logo: Cpu },
       { name: "TypeScript", logo: Terminal },
@@ -696,6 +700,13 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
                 </a>
               </Button>
             )}
+            {config.secondaryUrl && (
+              <Button size="lg" variant="outline" asChild className="shadow-xs transition-all">
+                <a href={config.secondaryUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+                  {config.secondaryLabel || "Open Secondary Link"} <ExternalLink className="size-4" />
+                </a>
+              </Button>
+            )}
             <Button size="lg" variant="outline" onClick={handleSummarize} className="inline-flex items-center gap-2">
               Summarize with AI <Sparkles className="size-4" />
             </Button>
@@ -941,6 +952,13 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
                   ) : (
                     <ExternalLink className="size-4" />
                   )}
+                </a>
+              </Button>
+            )}
+            {config.secondaryUrl && (
+              <Button className="flex-1 gap-2" variant="outline" size="lg" asChild>
+                <a href={config.secondaryUrl} target="_blank" rel="noreferrer">
+                  {config.secondaryLabel || "Open Secondary Link"} <ExternalLink className="size-4" />
                 </a>
               </Button>
             )}

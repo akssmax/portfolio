@@ -95,7 +95,7 @@ export function PromptInput({
             placeholder={placeholder}
             disabled={disabled || isStreaming}
             rows={minRows}
-            className={cn("min-h-[2.5rem] resize-none", `max-h-[${maxRows * 1.5}rem]`)}
+            className="min-h-[2.5rem] max-h-[12rem] resize-none overflow-y-auto"
             aria-label="Chat message"
           />
         )}

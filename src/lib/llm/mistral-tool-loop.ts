@@ -12,11 +12,12 @@ export type MistralToolLoopOptions = {
   maxTokens?: number
   responseFormat?: { type: "json_object" }
   enableTools?: boolean
+  tools?: any[]
   /** When false, the final assistant reply is returned in `content` but not appended to `messages` (for streaming). */
   appendFinalAssistant?: boolean
   toolContext?: ToolExecutionContext
   onToolStart?: (payload: { name: string; query?: string }) => void
-  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string }) => void
+  onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void
 }
 
 type MistralToolCall = {
@@ -99,7 +100,7 @@ export async function runMistralToolLoop(
         messages: toMistralApiMessages(messages),
         ...(enableTools
           ? {
-              tools: [WEB_SEARCH_TOOL_DEFINITION],
+              tools: options.tools ?? [WEB_SEARCH_TOOL_DEFINITION],
               tool_choice: "auto",
             }
           : {}),
@@ -153,6 +154,7 @@ export async function runMistralToolLoop(
           query,
           resultCount: result.error ? 0 : undefined,
           error: result.error,
+          result: result.content,
         })
 
         messages.push({

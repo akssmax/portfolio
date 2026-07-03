@@ -28,6 +28,7 @@ export type ProjectCard = {
   client?: string | null
   tools?: string[] | null
   publishedAt?: string | null
+  metrics?: string | null
 }
 
 export type SectionHeadingBlock = {
