@@ -275,6 +275,29 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
+        // Ensure every assistant tool call in history has a corresponding tool result message to keep the API valid
+        const processedHistory: LlmChatMessage[] = []
+        if (messages) {
+          for (const msg of messages) {
+            processedHistory.push(msg)
+            if (msg.role === "assistant" && "tool_calls" in msg && msg.tool_calls) {
+              for (const call of msg.tool_calls) {
+                const hasResponse = messages.some(
+                  (m) => m.role === "tool" && m.tool_call_id === call.id
+                )
+                if (!hasResponse) {
+                  processedHistory.push({
+                    role: "tool",
+                    name: call.name,
+                    tool_call_id: call.id,
+                    content: '{"status": "success"}',
+                  })
+                }
+              }
+            }
+          }
+        }
+
         const finalMessages: LlmChatMessage[] = [
           { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
           ...(retrievedContext
@@ -289,7 +312,7 @@ export const Route = createFileRoute("/api/chat")({
                 },
               ]
             : []),
-          ...messages,
+          ...processedHistory,
         ]
 
         const controller = new AbortController()

@@ -147,6 +147,18 @@ function ChatThreadPage() {
     const apiMessages = nextMessages.slice(0, -1).map((m) => ({
       role: m.role,
       content: m.content,
+      ...(m.toolCalls && m.toolCalls.length > 0
+        ? {
+            tool_calls: m.toolCalls.map((tc, idx) => ({
+              id: `call_${m.id}_${idx}`,
+              type: "function" as const,
+              function: {
+                name: tc.name,
+                arguments: tc.arguments,
+              },
+            })),
+          }
+        : {}),
     }))
 
     try {

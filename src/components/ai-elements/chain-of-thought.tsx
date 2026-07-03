@@ -28,6 +28,7 @@ export function ChainOfThought({
   className,
 }: ChainOfThoughtProps) {
   const [isOpen, setIsOpen] = React.useState(state === "thinking")
+  const [showArgs, setShowArgs] = React.useState<Record<number, boolean>>({})
 
   // Auto-open on thinking, auto-close or toggle otherwise
   React.useEffect(() => {
@@ -129,7 +130,7 @@ export function ChainOfThought({
                       <div
                         key={idx}
                         className={cn(
-                          "flex items-start gap-2 p-2 rounded-lg bg-background/30 border border-border/40 font-mono text-[10px]",
+                          "flex items-start gap-2.5 p-2 rounded-lg bg-background/30 border border-border/40 font-mono text-[10px]",
                           tc.error && "border-destructive/30 bg-destructive/5"
                         )}
                       >
@@ -145,9 +146,20 @@ export function ChainOfThought({
                             call: {tc.name}()
                           </p>
                           {tc.arguments && (
-                            <pre className="text-[9px] text-muted-foreground/75 mt-1 overflow-x-auto p-1 bg-muted/40 rounded max-w-full">
-                              {tc.arguments}
-                            </pre>
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => setShowArgs((prev) => ({ ...prev, [idx]: !prev[idx] }))}
+                                className="text-[9px] text-primary/75 hover:underline mt-0.5 cursor-pointer block"
+                              >
+                                {showArgs[idx] ? "Hide arguments" : "View arguments"}
+                              </button>
+                              {showArgs[idx] && (
+                                <pre className="text-[9px] text-muted-foreground/75 mt-1 overflow-x-auto p-1.5 bg-muted/50 border border-border/40 rounded max-w-full whitespace-pre-wrap break-all">
+                                  {tc.arguments}
+                                </pre>
+                              )}
+                            </>
                           )}
                           {tc.error && (
                             <p className="text-destructive mt-1 font-semibold">{tc.error}</p>
@@ -186,3 +198,5 @@ export function ChainOfThought({
     </div>
   )
 }
+
+
