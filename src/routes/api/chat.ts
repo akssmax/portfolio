@@ -394,6 +394,7 @@ export const Route = createFileRoute("/api/chat")({
               const decoder = new TextDecoder()
               let upstreamBuffer = ""
               let assistantText = ""
+              let accumulatedToolCallsText = ""
               let finishReason: string | null = null
 
               const processRawEvent = (rawEvent: string) => {
@@ -420,6 +421,11 @@ export const Route = createFileRoute("/api/chat")({
                     const toolCalls = choice?.delta?.tool_calls || choice?.message?.tool_calls
                     if (toolCalls && toolCalls.length > 0) {
                       writeSse(streamController, "tool_delta", { toolCalls })
+                      for (const tc of toolCalls) {
+                        if (tc.function?.arguments) {
+                          accumulatedToolCallsText += tc.function.arguments
+                        }
+                      }
                     }
                   } catch {
                     // ignore malformed chunks
@@ -444,12 +450,18 @@ export const Route = createFileRoute("/api/chat")({
               }
 
               try {
+                const responseForSuggestions =
+                  assistantText.trim() ||
+                  (accumulatedToolCallsText.trim()
+                    ? `[Rendered UI with arguments: ${accumulatedToolCallsText.trim()}]`
+                    : "")
+
                 const suggestions = await Promise.race([
                   generateSuggestions(
                     apiKey,
                     validation.model,
                     lastUserMessage,
-                    assistantText,
+                    responseForSuggestions,
                     controller.signal,
                   ),
                   new Promise<string[]>((resolve) =>
