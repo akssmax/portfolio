@@ -51,18 +51,22 @@ export function toMistralApiMessages(messages: LlmChatMessage[]) {
       }
     }
 
-    if (message.role === "assistant" && "tool_calls" in message) {
+    if (message.role === "assistant" && "tool_calls" in message && message.tool_calls) {
       return {
         role: "assistant",
         content: message.content,
-        tool_calls: message.tool_calls.map((call) => ({
-          id: call.id,
-          type: "function",
-          function: {
-            name: call.name,
-            arguments: call.arguments,
-          },
-        })),
+        tool_calls: message.tool_calls.map((call: any) => {
+          const name = call.name || call.function?.name
+          const args = call.arguments || call.function?.arguments
+          return {
+            id: call.id,
+            type: "function",
+            function: {
+              name: name || "",
+              arguments: typeof args === "object" ? JSON.stringify(args) : (args || ""),
+            },
+          }
+        }),
       }
     }
 

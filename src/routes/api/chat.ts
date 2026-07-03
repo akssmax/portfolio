@@ -281,15 +281,17 @@ export const Route = createFileRoute("/api/chat")({
           for (const msg of messages) {
             processedHistory.push(msg)
             if (msg.role === "assistant" && "tool_calls" in msg && msg.tool_calls) {
-              for (const call of msg.tool_calls) {
+              for (const call of msg.tool_calls as any[]) {
+                const callId = call.id
+                const callName = call.name || call.function?.name || "render_custom_ui"
                 const hasResponse = messages.some(
-                  (m) => m.role === "tool" && m.tool_call_id === call.id
+                  (m: any) => m.role === "tool" && m.tool_call_id === callId
                 )
                 if (!hasResponse) {
                   processedHistory.push({
                     role: "tool",
-                    name: call.name,
-                    tool_call_id: call.id,
+                    name: callName,
+                    tool_call_id: callId,
                     content: '{"status": "success"}',
                   })
                 }
