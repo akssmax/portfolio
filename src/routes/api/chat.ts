@@ -112,8 +112,12 @@ function toGroundedCitations(sources: GroundedSource[]): GroundedCitation[] {
 }
 
 function parseSuggestions(raw: string): string[] {
+  let cleaned = raw.trim()
+  if (cleaned.startsWith("```")) {
+    cleaned = cleaned.replace(/^```[a-zA-Z]*\n/, "").replace(/\n```$/, "").trim()
+  }
   try {
-    const parsed = JSON.parse(raw) as unknown
+    const parsed = JSON.parse(cleaned) as unknown
     if (!Array.isArray(parsed)) return []
     return Array.from(
       new Set(
