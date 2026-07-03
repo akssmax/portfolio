@@ -20,7 +20,7 @@ export const Route = createFileRoute("/blog/$slug")({
     const canonicalUrl = `https://akshaysaini.xyz/blog/${slug}`
     
     const coverUrl = post?.coverImage ? getImageUrl(post.coverImage, 1200) : null
-    const imageUrl = coverUrl ?? "https://akshaysaini.xyz/images/hero-portrait.png"
+    const imageUrl = coverUrl ?? "https://akshaysaini.xyz/images/og-banner.jpg"
  
     return {
       meta: [

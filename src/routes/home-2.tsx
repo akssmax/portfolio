@@ -49,7 +49,7 @@ export const Route = createFileRoute("/home-2")({
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: "https://akshaysaini.xyz/images/og-banner.jpg",
       },
       {
         name: "twitter:card",
@@ -65,7 +65,7 @@ export const Route = createFileRoute("/home-2")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: "https://akshaysaini.xyz/images/og-banner.jpg",
       },
       {
         name: "twitter:creator",

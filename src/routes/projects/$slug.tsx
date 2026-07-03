@@ -31,7 +31,7 @@ export const Route = createFileRoute("/projects/$slug")({
       ? project.coverImageUrl.startsWith("http")
         ? project.coverImageUrl
         : `https://akshaysaini.xyz${project.coverImageUrl}`
-      : "https://akshaysaini.xyz/images/hero-portrait.png"
+      : "https://akshaysaini.xyz/images/og-banner.jpg"
 
     return {
       meta: [
