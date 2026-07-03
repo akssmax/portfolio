@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import * as React from "react"
-import { ArrowLeft, Loader2, X } from "lucide-react"
+import { ArrowLeft, X } from "lucide-react"
 import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
@@ -13,8 +13,8 @@ import { Source } from "@/components/ai-elements/sources"
 import { GenUiRenderer } from "@/components/ui/gen-ui-renderer"
 import { streamChat } from "@/lib/llm/llm-service"
 import { toast } from "sonner"
-import { Shimmer } from "@/components/ai-elements/shimmer"
 import { M3AnimatingAvatar } from "@/components/m3-shapes/m3-animating-avatar"
+import { ChainOfThought } from "@/components/ai-elements/chain-of-thought"
 
 type ThreadMessage = {
   id: string
@@ -40,7 +40,7 @@ type ThreadStore = {
   messages: ThreadMessage[]
 }
 
-export const Route = createFileRoute("/landing-1/chat/$threadId")({
+export const Route = createFileRoute("/_landing/chat/$threadId")({
   component: ChatThreadPage,
 })
 
@@ -147,6 +147,18 @@ function ChatThreadPage() {
     const apiMessages = nextMessages.slice(0, -1).map((m) => ({
       role: m.role,
       content: m.content,
+      ...(m.toolCalls && m.toolCalls.length > 0
+        ? {
+            tool_calls: m.toolCalls.map((tc, idx) => ({
+              id: `call_${m.id}_${idx}`,
+              type: "function" as const,
+              function: {
+                name: tc.name,
+                arguments: tc.arguments,
+              },
+            })),
+          }
+        : {}),
     }))
 
     try {
@@ -161,6 +173,30 @@ function ChatThreadPage() {
           buffer += token
           setMessages((prev) =>
             prev.map((m) => (m.id === assistantId ? { ...m, content: buffer } : m))
+          )
+        },
+        onToolDelta: (deltas) => {
+          setMessages((prev) =>
+            prev.map((m) => {
+              if (m.id !== assistantId) return m
+              const existingCalls = m.toolCalls ? [...m.toolCalls] : []
+              for (const delta of deltas) {
+                const idx = delta.index ?? 0
+                if (!existingCalls[idx]) {
+                  existingCalls[idx] = {
+                    name: delta.function?.name || "",
+                    arguments: "",
+                  }
+                }
+                if (delta.function?.name) {
+                  existingCalls[idx].name = delta.function.name
+                }
+                if (delta.function?.arguments) {
+                  existingCalls[idx].arguments += delta.function.arguments
+                }
+              }
+              return { ...m, toolCalls: existingCalls }
+            })
           )
         },
         onSuggestions: (next) => {
@@ -252,7 +288,7 @@ function ChatThreadPage() {
       {/* Thread Header Bar */}
       <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-6 w-full shrink-0">
         <Link 
-          to="/landing-1" 
+          to="/" 
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-all"
         >
           <ArrowLeft className="size-4" />
@@ -282,23 +318,23 @@ function ChatThreadPage() {
                       <div className="flex gap-3 items-start select-text w-full">
                         <M3AnimatingAvatar className="size-8.5 shrink-0" />
                         <div className="flex-1 space-y-3 min-w-0">
-                          {message.content ? (
+                          {/* Chain of Thought accordion */}
+                          {(message.searching || (message.toolCalls && message.toolCalls.length > 0) || !message.content) && (
+                            <ChainOfThought
+                              state={
+                                status === "streaming" && msgIdx === messages.length - 1
+                                  ? "thinking"
+                                  : "completed"
+                              }
+                              searchQuery={message.searching ? message.searchQuery : undefined}
+                              toolCalls={message.toolCalls}
+                            />
+                          )}
+
+                          {message.content && (
                             <MessageContent className="prose dark:prose-invert max-w-none">
                               <MessageResponse>{message.content}</MessageResponse>
                             </MessageContent>
-                          ) : !message.searching ? (
-                            <div className="flex items-center gap-2 pt-1">
-                              <Loader2 className="size-3.5 animate-spin text-muted-foreground" />
-                              <Shimmer className="text-xs">Thinking…</Shimmer>
-                            </div>
-                          ) : null}
-
-                          {/* Searching status block */}
-                          {message.searching && (
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
-                              <Loader2 className="size-3.5 animate-spin" />
-                              <span>Searching RAG database: &quot;{message.searchQuery}&quot;...</span>
-                            </div>
                           )}
 
                           {/* Sources are now rendered as a floating popover overlay relative to the feedback bar below */}

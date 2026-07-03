@@ -15,7 +15,7 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section"
 import { WorkSection } from "@/components/landing/work-section"
 import { getHomeWorkSections } from "@/lib/sanity/projects"
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/home-2")({
   loader: () => getHomeWorkSections(),
   errorComponent: RouteError,
   head: () => ({

@@ -212,6 +212,8 @@ export async function streamMistralCompletion(options: {
   temperature?: number
   maxTokens?: number
   signal?: AbortSignal
+  tools?: any[]
+  toolChoice?: any
 }): Promise<Response> {
   return fetch("https://api.mistral.ai/v1/chat/completions", {
     method: "POST",
@@ -226,6 +228,8 @@ export async function streamMistralCompletion(options: {
       stream: true,
       temperature: options.temperature ?? 0.3,
       max_tokens: options.maxTokens ?? 2048,
+      ...(options.tools ? { tools: options.tools } : {}),
+      ...(options.toolChoice ? { tool_choice: options.toolChoice } : {}),
     }),
   })
 }

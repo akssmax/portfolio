@@ -102,10 +102,10 @@ export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
             {project.slug === "resume-builder" ? (
               <>
                 <Button asChild>
-                  <Link to="/tools/resume">Try App</Link>
+                  <Link to="/tools/resume">View Project</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link to="/resume">Owner workspace</Link>
+                  <Link to="/resume">Open Project</Link>
                 </Button>
               </>
             ) : null}

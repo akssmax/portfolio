@@ -24,6 +24,7 @@ export interface StreamChatOptions extends LlmChatRequest {
   onCitations?: (citations: Citation[]) => void
   onToolStart?: (payload: { name: string; query?: string }) => void
   onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void
+  onToolDelta?: (toolCalls: any[]) => void
   onComplete?: (result: StreamChatResult) => void
   signal?: AbortSignal
   chatApiPath?: string
@@ -71,6 +72,7 @@ async function streamSseResponse(
   onCitations?: (citations: Citation[]) => void,
   onToolStart?: (payload: { name: string; query?: string }) => void,
   onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void,
+  onToolDelta?: (toolCalls: any[]) => void,
 ): Promise<StreamDonePayload | null> {
   if (!response.body) {
     throw new Error("Missing response body from /api/chat")
@@ -187,6 +189,13 @@ async function streamSseResponse(
         if (error instanceof Error) throw error
         throw new Error("Streaming failed")
       }
+    } else if (parsed.event === "tool_delta") {
+      try {
+        const payload = JSON.parse(parsed.data) as { toolCalls?: any[] }
+        if (payload.toolCalls) onToolDelta?.(payload.toolCalls)
+      } catch {
+        // ignore
+      }
     } else if (parsed.event === "done") {
       try {
         donePayload = JSON.parse(parsed.data) as StreamDonePayload
@@ -226,6 +235,7 @@ async function requestChat(
   onCitations: ((citations: Citation[]) => void) | undefined,
   onToolStart: ((payload: { name: string; query?: string }) => void) | undefined,
   onToolEnd: ((payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void) | undefined,
+  onToolDelta: ((toolCalls: any[]) => void) | undefined,
   chatApiPath: string,
 ): Promise<StreamChatResult> {
   const response = await fetch(chatApiPath, {
@@ -255,6 +265,7 @@ async function requestChat(
     onCitations,
     onToolStart,
     onToolEnd,
+    onToolDelta,
   )
 
   return {
@@ -274,6 +285,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
     onCitations,
     onToolStart,
     onToolEnd,
+    onToolDelta,
     onComplete,
     signal,
     chatApiPath = "/api/chat",
@@ -291,6 +303,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onCitations,
       onToolStart,
       onToolEnd,
+      onToolDelta,
       chatApiPath,
     )
     onComplete?.(result)
@@ -316,6 +329,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onCitations,
       onToolStart,
       onToolEnd,
+      onToolDelta,
       chatApiPath,
     )
     onComplete?.(result)

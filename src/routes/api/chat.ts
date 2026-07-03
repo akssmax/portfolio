@@ -20,8 +20,7 @@ import {
 } from "@/lib/llm/mistral-tool-loop"
 import { WEB_SEARCH_TOOL_DEFINITION } from "@/lib/llm/tools/web-search-tool"
 import {
-  SHOW_PROJECTS_TOOL_DEFINITION,
-  SHOW_EXPERIENCE_TOOL_DEFINITION,
+  RENDER_CUSTOM_UI_TOOL_DEFINITION,
 } from "@/lib/llm/tools/gen-ui-tools"
 
 type ChatRequestBody = {
@@ -112,8 +111,12 @@ function toGroundedCitations(sources: GroundedSource[]): GroundedCitation[] {
 }
 
 function parseSuggestions(raw: string): string[] {
+  let cleaned = raw.trim()
+  if (cleaned.startsWith("```")) {
+    cleaned = cleaned.replace(/^```[a-zA-Z]*\n/, "").replace(/\n```$/, "").trim()
+  }
   try {
-    const parsed = JSON.parse(raw) as unknown
+    const parsed = JSON.parse(cleaned) as unknown
     if (!Array.isArray(parsed)) return []
     return Array.from(
       new Set(
@@ -272,6 +275,29 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
+        // Ensure every assistant tool call in history has a corresponding tool result message to keep the API valid
+        const processedHistory: LlmChatMessage[] = []
+        if (messages) {
+          for (const msg of messages) {
+            processedHistory.push(msg)
+            if (msg.role === "assistant" && "tool_calls" in msg && msg.tool_calls) {
+              for (const call of msg.tool_calls) {
+                const hasResponse = messages.some(
+                  (m) => m.role === "tool" && m.tool_call_id === call.id
+                )
+                if (!hasResponse) {
+                  processedHistory.push({
+                    role: "tool",
+                    name: call.name,
+                    tool_call_id: call.id,
+                    content: '{"status": "success"}',
+                  })
+                }
+              }
+            }
+          }
+        }
+
         const finalMessages: LlmChatMessage[] = [
           { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
           ...(retrievedContext
@@ -282,11 +308,11 @@ export const Route = createFileRoute("/api/chat")({
                 {
                   role: "system" as const,
                   content:
-                    "You are in Generative UI mode. When the user asks to see your projects, case studies, or portfolio work, you MUST trigger the 'show_projects' tool. When they ask about your work experience history, resume, or timeline of jobs, you MUST trigger the 'show_experience' tool. Always prefer calling these tools instead of generating text.",
+                    "You are in Generative UI mode. You MUST call the 'render_custom_ui' tool to display structured cards, list layout widgets, timelines, stats, or projects on the page dynamically. Generate the custom layout (grid, list, or metrics) and custom items dynamically on the fly based on the user's specific request. Never write general text replies; always call the tool to render UI.",
                 },
               ]
             : []),
-          ...messages,
+          ...processedHistory,
         ]
 
         const controller = new AbortController()
@@ -296,53 +322,63 @@ export const Route = createFileRoute("/api/chat")({
         const stream = new ReadableStream({
           async start(streamController) {
             try {
-              const { messages: toolAwareMessages } = await runMistralToolLoop({
-                apiKey,
-                model: validation.model,
-                messages: finalMessages,
-                maxRounds: 2,
-                maxSearches: 3,
-                appendFinalAssistant: false,
-                temperature: validation.temperature,
-                maxTokens: validation.maxTokens,
-                tools:
-                  body.mode === "gen-ui"
-                    ? [
-                        WEB_SEARCH_TOOL_DEFINITION,
-                        SHOW_PROJECTS_TOOL_DEFINITION,
-                        SHOW_EXPERIENCE_TOOL_DEFINITION,
-                      ]
-                    : [WEB_SEARCH_TOOL_DEFINITION],
-                toolContext: {
-                  beforeSearch: () => {
-                    const searchRate = checkRateLimit(
-                      `web_search:${clientIp}`,
-                      WEB_SEARCH_RATE_LIMIT,
-                    )
-                    return searchRate.allowed
-                      ? { allowed: true }
-                      : {
-                          allowed: false,
-                          error: "Web search rate limit exceeded. Try again later.",
-                        }
-                  },
-                },
-                onToolStart: (payload) => {
-                  writeSse(streamController, "tool_start", payload)
-                },
-                onToolEnd: (payload) => {
-                  writeSse(streamController, "tool_end", payload)
-                },
-              })
+              const useGenUi = body.mode === "gen-ui"
+              let response: Response
 
-              const response = await streamMistralCompletion({
-                apiKey,
-                model: validation.model,
-                messages: toolAwareMessages,
-                temperature: validation.temperature,
-                maxTokens: validation.maxTokens,
-                signal: controller.signal,
-              })
+              if (useGenUi) {
+                // Stream custom UI tool directly from the start
+                response = await streamMistralCompletion({
+                  apiKey,
+                  model: validation.model,
+                  messages: finalMessages,
+                  temperature: validation.temperature,
+                  maxTokens: validation.maxTokens,
+                  signal: controller.signal,
+                  tools: [RENDER_CUSTOM_UI_TOOL_DEFINITION],
+                  toolChoice: { type: "function", function: { name: "render_custom_ui" } },
+                })
+              } else {
+                const { messages: toolAwareMessages } = await runMistralToolLoop({
+                  apiKey,
+                  model: validation.model,
+                  messages: finalMessages,
+                  maxRounds: 2,
+                  maxSearches: 3,
+                  appendFinalAssistant: false,
+                  temperature: validation.temperature,
+                  maxTokens: validation.maxTokens,
+                  tools: [WEB_SEARCH_TOOL_DEFINITION],
+                  toolContext: {
+                    beforeSearch: () => {
+                      const searchRate = checkRateLimit(
+                        `web_search:${clientIp}`,
+                        WEB_SEARCH_RATE_LIMIT,
+                      )
+                      return searchRate.allowed
+                        ? { allowed: true }
+                        : {
+                            allowed: false,
+                            error: "Web search rate limit exceeded. Try again later.",
+                          }
+                    },
+                  },
+                  onToolStart: (payload) => {
+                    writeSse(streamController, "tool_start", payload)
+                  },
+                  onToolEnd: (payload) => {
+                    writeSse(streamController, "tool_end", payload)
+                  },
+                })
+
+                response = await streamMistralCompletion({
+                  apiKey,
+                  model: validation.model,
+                  messages: toolAwareMessages,
+                  temperature: validation.temperature,
+                  maxTokens: validation.maxTokens,
+                  signal: controller.signal,
+                })
+              }
 
               if (!response.ok || !response.body) {
                 const text = await response.text().catch(() => "")
@@ -358,6 +394,7 @@ export const Route = createFileRoute("/api/chat")({
               const decoder = new TextDecoder()
               let upstreamBuffer = ""
               let assistantText = ""
+              let accumulatedToolCallsText = ""
               let finishReason: string | null = null
 
               const processRawEvent = (rawEvent: string) => {
@@ -371,12 +408,24 @@ export const Route = createFileRoute("/api/chat")({
                     if (typeof choice?.finish_reason === "string" && choice.finish_reason.trim()) {
                       finishReason = choice.finish_reason
                     }
+                    
                     const token =
                       mistralDeltaToText(choice?.delta?.content) ||
                       mistralDeltaToText(choice?.message?.content)
                     if (token.length > 0) {
                       assistantText += token
                       writeSse(streamController, "token", { text: token })
+                    }
+
+                    // Forward tool call delta streaming to client
+                    const toolCalls = choice?.delta?.tool_calls || choice?.message?.tool_calls
+                    if (toolCalls && toolCalls.length > 0) {
+                      writeSse(streamController, "tool_delta", { toolCalls })
+                      for (const tc of toolCalls) {
+                        if (tc.function?.arguments) {
+                          accumulatedToolCallsText += tc.function.arguments
+                        }
+                      }
                     }
                   } catch {
                     // ignore malformed chunks
@@ -401,12 +450,18 @@ export const Route = createFileRoute("/api/chat")({
               }
 
               try {
+                const responseForSuggestions =
+                  assistantText.trim() ||
+                  (accumulatedToolCallsText.trim()
+                    ? `[Rendered UI with arguments: ${accumulatedToolCallsText.trim()}]`
+                    : "")
+
                 const suggestions = await Promise.race([
                   generateSuggestions(
                     apiKey,
                     validation.model,
                     lastUserMessage,
-                    assistantText,
+                    responseForSuggestions,
                     controller.signal,
                   ),
                   new Promise<string[]>((resolve) =>

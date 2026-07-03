@@ -50,3 +50,39 @@ export function parseShowProjectsArgs(raw: string): ShowProjectsToolArgs {
     return { filter: "all" }
   }
 }
+
+export const RENDER_CUSTOM_UI_TOOL_NAME = "render_custom_ui"
+
+export const RENDER_CUSTOM_UI_TOOL_DEFINITION = {
+  type: "function" as const,
+  function: {
+    name: RENDER_CUSTOM_UI_TOOL_NAME,
+    description:
+      "Render a custom interactive UI component on the page dynamically. Trigger this tool to show projects, skills, work history, timeline, comparisons, stats, or client feedback. Generate custom items on the fly.",
+    parameters: {
+      type: "object",
+      properties: {
+        title: { type: "string", description: "Title of the custom UI card." },
+        badge: { type: "string", description: "Visual badge pill text." },
+        layout: { type: "string", enum: ["grid", "list", "metrics"], description: "Layout container style." },
+        items: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string" },
+              description: { type: "string" },
+              subtitle: { type: "string" },
+              metric: { type: "string" },
+              tag: { type: "string" },
+              url: { type: "string" },
+              buttonLabel: { type: "string" },
+            },
+            required: ["title"],
+          },
+        },
+      },
+      required: ["title", "layout", "items"],
+    },
+  },
+}

@@ -10,15 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
-import { Route as Landing1RouteImport } from './routes/landing-1'
+import { Route as Home2RouteImport } from './routes/home-2'
 import { Route as ExperienceRouteImport } from './routes/experience'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as Landing1IndexRouteImport } from './routes/landing-1.index'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as LandingIndexRouteImport } from './routes/_landing.index'
 import { Route as ToolsResumeRouteImport } from './routes/tools/resume'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
@@ -27,21 +27,21 @@ import { Route as DesignSystemColorsRouteImport } from './routes/design-system/c
 import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as Landing1ChatThreadIdRouteImport } from './routes/landing-1.chat.$threadId'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
 import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
 import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
 import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
+import { Route as LandingChatThreadIdRouteImport } from './routes/_landing.chat.$threadId'
 
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
   path: '/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Landing1Route = Landing1RouteImport.update({
-  id: '/landing-1',
-  path: '/landing-1',
+const Home2Route = Home2RouteImport.update({
+  id: '/home-2',
+  path: '/home-2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperienceRoute = ExperienceRouteImport.update({
@@ -54,25 +54,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingRoute = LandingRouteImport.update({
+  id: '/_landing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemRouteRoute = DesignSystemRouteRouteImport.update({
   id: '/design-system',
   path: '/design-system',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const Landing1IndexRoute = Landing1IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => Landing1Route,
 } as any)
 const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
   id: '/',
@@ -83,6 +77,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LandingIndexRoute = LandingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LandingRoute,
 } as any)
 const ToolsResumeRoute = ToolsResumeRouteImport.update({
   id: '/tools/resume',
@@ -125,11 +124,6 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Landing1ChatThreadIdRoute = Landing1ChatThreadIdRouteImport.update({
-  id: '/chat/$threadId',
-  path: '/chat/$threadId',
-  getParentRoute: () => Landing1Route,
-} as any)
 const DesignSystemComponentsSlugRoute =
   DesignSystemComponentsSlugRouteImport.update({
     id: '/components/$slug',
@@ -157,13 +151,18 @@ const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
   path: '/api/resume/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingChatThreadIdRoute = LandingChatThreadIdRouteImport.update({
+  id: '/chat/$threadId',
+  path: '/chat/$threadId',
+  getParentRoute: () => LandingRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/': typeof LandingIndexRoute
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
-  '/landing-1': typeof Landing1RouteWithChildren
+  '/home-2': typeof Home2Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -175,19 +174,18 @@ export interface FileRoutesByFullPath {
   '/tools/resume': typeof ToolsResumeRoute
   '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
-  '/landing-1/': typeof Landing1IndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/chat/$threadId': typeof LandingChatThreadIdRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
-  '/landing-1/chat/$threadId': typeof Landing1ChatThreadIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
+  '/home-2': typeof Home2Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -197,24 +195,24 @@ export interface FileRoutesByTo {
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/tools/resume': typeof ToolsResumeRoute
+  '/': typeof LandingIndexRoute
   '/blog': typeof BlogIndexRoute
   '/design-system': typeof DesignSystemIndexRoute
-  '/landing-1': typeof Landing1IndexRoute
   '/projects': typeof ProjectsIndexRoute
+  '/chat/$threadId': typeof LandingChatThreadIdRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
-  '/landing-1/chat/$threadId': typeof Landing1ChatThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteRouteWithChildren
+  '/_landing': typeof LandingRouteWithChildren
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
-  '/landing-1': typeof Landing1RouteWithChildren
+  '/home-2': typeof Home2Route
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -224,25 +222,25 @@ export interface FileRoutesById {
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/tools/resume': typeof ToolsResumeRoute
+  '/_landing/': typeof LandingIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/design-system/': typeof DesignSystemIndexRoute
-  '/landing-1/': typeof Landing1IndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/_landing/chat/$threadId': typeof LandingChatThreadIdRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
-  '/landing-1/chat/$threadId': typeof Landing1ChatThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/design-system'
+    | '/'
     | '/about'
     | '/experience'
-    | '/landing-1'
+    | '/home-2'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -254,19 +252,18 @@ export interface FileRouteTypes {
     | '/tools/resume'
     | '/blog/'
     | '/design-system/'
-    | '/landing-1/'
     | '/projects/'
+    | '/chat/$threadId'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
-    | '/landing-1/chat/$threadId'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/about'
     | '/experience'
+    | '/home-2'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -276,23 +273,23 @@ export interface FileRouteTypes {
     | '/design-system/typography'
     | '/projects/$slug'
     | '/tools/resume'
+    | '/'
     | '/blog'
     | '/design-system'
-    | '/landing-1'
     | '/projects'
+    | '/chat/$threadId'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
-    | '/landing-1/chat/$threadId'
   id:
     | '__root__'
-    | '/'
     | '/design-system'
+    | '/_landing'
     | '/about'
     | '/experience'
-    | '/landing-1'
+    | '/home-2'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -302,24 +299,24 @@ export interface FileRouteTypes {
     | '/design-system/typography'
     | '/projects/$slug'
     | '/tools/resume'
+    | '/_landing/'
     | '/blog/'
     | '/design-system/'
-    | '/landing-1/'
     | '/projects/'
+    | '/_landing/chat/$threadId'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
-    | '/landing-1/chat/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   DesignSystemRouteRoute: typeof DesignSystemRouteRouteWithChildren
+  LandingRoute: typeof LandingRouteWithChildren
   AboutRoute: typeof AboutRoute
   ExperienceRoute: typeof ExperienceRoute
-  Landing1Route: typeof Landing1RouteWithChildren
+  Home2Route: typeof Home2Route
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -342,11 +339,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/landing-1': {
-      id: '/landing-1'
-      path: '/landing-1'
-      fullPath: '/landing-1'
-      preLoaderRoute: typeof Landing1RouteImport
+    '/home-2': {
+      id: '/home-2'
+      path: '/home-2'
+      fullPath: '/home-2'
+      preLoaderRoute: typeof Home2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experience': {
@@ -363,18 +360,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_landing': {
+      id: '/_landing'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LandingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system': {
       id: '/design-system'
       path: '/design-system'
       fullPath: '/design-system'
       preLoaderRoute: typeof DesignSystemRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/': {
@@ -383,13 +380,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/'
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/landing-1/': {
-      id: '/landing-1/'
-      path: '/'
-      fullPath: '/landing-1/'
-      preLoaderRoute: typeof Landing1IndexRouteImport
-      parentRoute: typeof Landing1Route
     }
     '/design-system/': {
       id: '/design-system/'
@@ -404,6 +394,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_landing/': {
+      id: '/_landing/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LandingIndexRouteImport
+      parentRoute: typeof LandingRoute
     }
     '/tools/resume': {
       id: '/tools/resume'
@@ -461,13 +458,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/landing-1/chat/$threadId': {
-      id: '/landing-1/chat/$threadId'
-      path: '/chat/$threadId'
-      fullPath: '/landing-1/chat/$threadId'
-      preLoaderRoute: typeof Landing1ChatThreadIdRouteImport
-      parentRoute: typeof Landing1Route
-    }
     '/design-system/components/$slug': {
       id: '/design-system/components/$slug'
       path: '/components/$slug'
@@ -503,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_landing/chat/$threadId': {
+      id: '/_landing/chat/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/chat/$threadId'
+      preLoaderRoute: typeof LandingChatThreadIdRouteImport
+      parentRoute: typeof LandingRoute
+    }
   }
 }
 
@@ -527,26 +524,25 @@ const DesignSystemRouteRouteChildren: DesignSystemRouteRouteChildren = {
 const DesignSystemRouteRouteWithChildren =
   DesignSystemRouteRoute._addFileChildren(DesignSystemRouteRouteChildren)
 
-interface Landing1RouteChildren {
-  Landing1IndexRoute: typeof Landing1IndexRoute
-  Landing1ChatThreadIdRoute: typeof Landing1ChatThreadIdRoute
+interface LandingRouteChildren {
+  LandingIndexRoute: typeof LandingIndexRoute
+  LandingChatThreadIdRoute: typeof LandingChatThreadIdRoute
 }
 
-const Landing1RouteChildren: Landing1RouteChildren = {
-  Landing1IndexRoute: Landing1IndexRoute,
-  Landing1ChatThreadIdRoute: Landing1ChatThreadIdRoute,
+const LandingRouteChildren: LandingRouteChildren = {
+  LandingIndexRoute: LandingIndexRoute,
+  LandingChatThreadIdRoute: LandingChatThreadIdRoute,
 }
 
-const Landing1RouteWithChildren = Landing1Route._addFileChildren(
-  Landing1RouteChildren,
-)
+const LandingRouteWithChildren =
+  LandingRoute._addFileChildren(LandingRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   DesignSystemRouteRoute: DesignSystemRouteRouteWithChildren,
+  LandingRoute: LandingRouteWithChildren,
   AboutRoute: AboutRoute,
   ExperienceRoute: ExperienceRoute,
-  Landing1Route: Landing1RouteWithChildren,
+  Home2Route: Home2Route,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
   BlogSlugRoute: BlogSlugRoute,

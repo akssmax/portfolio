@@ -1,12 +1,13 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
-import { ClipboardList, Globe, RefreshCw, Sparkles, Star } from "lucide-react"
+import { ClipboardList, Globe, RefreshCw, Sparkles, Star, Quote } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
 import { toast } from "sonner"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
-import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
+import { M3FeatureImage, M3ShapeImage } from "@/components/m3-shapes"
+import { ContactSection } from "@/components/landing/contact-section"
 import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
@@ -53,14 +54,14 @@ const ROTATING_COPY = [
   },
 ] as const
 
-export const Route = createFileRoute("/landing-1/")({
+export const Route = createFileRoute("/_landing/")({
   component: Landing1IndexPage,
 })
 
 function Landing1IndexPage() {
-  // Retrieve loader data from the parent route '/landing-1'
+  // Retrieve loader data from the parent route '/_landing'
   const { recentProjects, caseStudies } = useLoaderData({
-    from: "/landing-1",
+    from: "/_landing",
   })
 
   const navigate = useNavigate()
@@ -68,12 +69,21 @@ function Landing1IndexPage() {
   const [copyIndex, setCopyIndex] = React.useState(0)
   const [portraitItems] = React.useState(() => getRandomizedHeroPortraitItems())
   const [starterSuggestions] = React.useState(() => getRandomHeroPromptSuggestions())
+  const [testimonialIndex, setTestimonialIndex] = React.useState(2) // Start with Shardul Lavekar
 
   // Rotate copy title
   React.useEffect(() => {
     const timer = setInterval(() => {
       setCopyIndex((prev) => (prev + 1) % ROTATING_COPY.length)
     }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Rotate testimonials
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setTestimonialIndex((prev) => (prev + 1) % testimonials.length)
+    }, 7000)
     return () => clearInterval(timer)
   }, [])
 
@@ -97,7 +107,7 @@ function Landing1IndexPage() {
     localStorage.setItem(`portfolio_thread_${threadId}`, JSON.stringify(initialThread))
     
     navigate({
-      to: "/landing-1/chat/$threadId",
+      to: "/chat/$threadId",
       params: { threadId },
     })
   }
@@ -194,7 +204,7 @@ function Landing1IndexPage() {
       </section>
 
       {/* Dashboard Section */}
-      <section className="py-20 bg-card/10">
+      <section className="py-20 bg-background border-y border-border/80 relative z-10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <Tabs defaultValue="recent" className="w-full">
             <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
@@ -294,25 +304,54 @@ function Landing1IndexPage() {
               </div>
 
               {/* Featured Testimonial Quote */}
-              {testimonials.find((t) => t.id === "shardul-lavekar") && (
-                <div className="relative p-6 rounded-xl border border-border bg-primary/5 space-y-4">
-                  <div className="absolute -top-3 -left-3 bg-primary text-primary-foreground size-7 rounded-full flex items-center justify-center shadow-md font-serif text-lg font-bold">
-                    “
-                  </div>
-                  <p className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed pt-2">
-                    &quot;{testimonials.find((t) => t.id === "shardul-lavekar")?.quote.map(q => q.text).join("")}&quot;
-                  </p>
-                  <div className="flex items-center gap-3 pt-2">
-                    <div className="size-8.5 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-mono font-bold text-xs text-primary shrink-0">
-                      SL
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-foreground">{testimonials.find((t) => t.id === "shardul-lavekar")?.name}</p>
-                      <p className="text-[10px] text-muted-foreground">{testimonials.find((t) => t.id === "shardul-lavekar")?.headline}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <div className="relative min-h-[220px]">
+                <AnimatePresence mode="wait">
+                  {(() => {
+                    const t = testimonials[testimonialIndex]
+                    if (!t) return null
+                    return (
+                      <motion.div
+                        key={t.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                        className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/45 backdrop-blur-md shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5"
+                      >
+                        {/* Quotation icon decoration */}
+                        <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
+                          <Quote className="size-3.5 fill-current" />
+                        </div>
+                        <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
+                          &quot;
+                          {t.quote.map((part, index) =>
+                            part.bold ? (
+                              <strong key={index} className="font-semibold text-foreground not-italic">
+                                {part.text}
+                              </strong>
+                            ) : (
+                              part.text
+                            )
+                          )}
+                          &quot;
+                        </blockquote>
+                        <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
+                          <M3ShapeImage
+                            shape="arch"
+                            src={t.avatarSrc}
+                            alt={t.name}
+                            className="size-9.5 shrink-0 bg-primary/10"
+                          />
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-foreground truncate">{t.name}</p>
+                            <p className="text-[10px] text-muted-foreground truncate">{t.headline}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })()}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Right Column: Morphing Portrait */}
@@ -327,6 +366,9 @@ function Landing1IndexPage() {
           </div>
         </div>
       </section>
+
+      {/* Contact CTA Section */}
+      <ContactSection bottomCutout={true} />
     </div>
   )
 }
