@@ -266,7 +266,7 @@ function ChatThreadPage() {
       {/* Messages Scroll Area using Conversation and StickToBottom */}
       <div className="flex-1 min-h-0 relative flex flex-col w-full overflow-y-hidden">
         <Conversation className="flex-1 min-h-0 bg-transparent px-4 py-8 sm:px-6">
-          <ConversationContent className="mx-auto w-full max-w-3xl space-y-8 min-w-0 pb-60">
+          <ConversationContent className="mx-auto w-full max-w-3xl space-y-8 min-w-0 pb-8">
             {messages.map((message, msgIdx) => {
               const isUser = message.role === "user"
               return (
@@ -383,8 +383,8 @@ function ChatThreadPage() {
         </Conversation>
       </div>
 
-      {/* Floating Bottom Sticky Prompt Box */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-background via-background/90 to-transparent p-4 pb-6 w-full flex justify-center shrink-0">
+      {/* Static flex-flow Bottom Prompt Box */}
+      <div className="bg-gradient-to-t from-background via-background/90 to-transparent p-4 pb-6 w-full flex justify-center shrink-0 border-t border-border/20 z-10">
         <motion.div 
           className="w-full max-w-2xl"
           layoutId="chat-prompt-input-container"
