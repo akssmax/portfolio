@@ -32,7 +32,7 @@ export const Route = createFileRoute("/landing-1")({
       },
       {
         name: "description",
-        content: "A prompt-first iteration of Akshay Saini's product design & design engineering portfolio.",
+        content: "A prompt-first iteration of Akshay Saini's portfolio as a product designer who ships.",
       },
     ],
     links: [

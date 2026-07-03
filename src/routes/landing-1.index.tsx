@@ -1,20 +1,42 @@
-import { Link, createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
-import { ClipboardList, Globe, MoreHorizontal, RefreshCw, Sparkles, Star } from "lucide-react"
+import { ClipboardList, Globe, RefreshCw, Sparkles, Star } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
 import { toast } from "sonner"
 
-import type { ProjectCard } from "@/lib/sanity/types"
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
 import { M3FeatureImage } from "@/components/m3-shapes/m3-feature-image"
 import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
+import { HorizontalProjectCard } from "@/components/projects/horizontal-project-card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+
+function getProjectLiveUrl(slug: string): string | null {
+  switch (slug) {
+    case "100x-landing-page":
+      return "https://100x-landing-page.vercel.app/"
+    case "100x-chat-shell":
+      return "https://llm-daisyui-shell.vercel.app/"
+    case "v1-100x-proto":
+      return "https://agent.akshaysaini.xyz/"
+    case "resume-builder":
+      return "/tools/resume"
+    case "kodo":
+      return "https://www.kodo.com/"
+    case "unlogged":
+      return "https://www.unlogged.io/"
+    case "tulr":
+      return "https://www.producthunt.com/products/tulr-io"
+    default:
+      return null
+  }
+}
 
 const ROTATING_COPY = [
   {
-    title: "Looking for a Design Engineer?",
+    title: "Product designer who ships",
     subtitle: "I design in Figma and ship production-ready React code.",
   },
   {
@@ -44,7 +66,6 @@ function Landing1IndexPage() {
   const navigate = useNavigate()
   const [prompt, setPrompt] = React.useState("")
   const [copyIndex, setCopyIndex] = React.useState(0)
-  const [activeTab, setActiveTab] = React.useState<"tasks" | "deployed">("tasks")
   const [portraitItems] = React.useState(() => getRandomizedHeroPortraitItems())
   const [starterSuggestions] = React.useState(() => getRandomHeroPromptSuggestions())
 
@@ -85,42 +106,31 @@ function Landing1IndexPage() {
     toast.info("Refreshed build deployments")
   }
 
-  // Create combined projects list
-  const allProjects = React.useMemo(() => {
-    const list: Array<ProjectCard & { shortId: string; relativeDate: string }> = []
-    recentProjects.forEach((p, idx) => {
-      list.push({
+  // Map recent projects with IDs, dates, and live URLs
+  const recentProjectsList = React.useMemo(() => {
+    return recentProjects.map((p, idx) => {
+      const liveUrl = getProjectLiveUrl(p.slug)
+      return {
         ...p,
         shortId: `EMT - ${p.slug.slice(0, 6).toUpperCase()}`,
         relativeDate: idx === 0 ? "2 days ago" : idx === 1 ? "12 days ago" : "24 days ago",
-      })
+        liveUrl: liveUrl ?? undefined,
+      }
     })
-    caseStudies.forEach((p, idx) => {
-      list.push({
+  }, [recentProjects])
+
+  // Map case studies with IDs, dates, and live URLs
+  const caseStudiesList = React.useMemo(() => {
+    return caseStudies.map((p, idx) => {
+      const liveUrl = getProjectLiveUrl(p.slug)
+      return {
         ...p,
         shortId: `EMT - ${p.slug.slice(0, 6).toUpperCase()}`,
         relativeDate: idx === 0 ? "42 days ago" : idx === 1 ? "55 days ago" : "68 days ago",
-      })
+        liveUrl: liveUrl ?? undefined,
+      }
     })
-    return list
-  }, [recentProjects, caseStudies])
-
-  // Filter deployed apps
-  const deployedApps = React.useMemo(() => {
-    const liveUrls: Record<string, string> = {
-      "100x-landing-page": "https://100x.bot",
-      "100x-chat-shell": "https://100x.bot/chat",
-      kodo: "https://kodo.com",
-      unlogged: "https://unlogged.io",
-      tulr: "https://tulr.io",
-    }
-    return allProjects
-      .filter((p) => liveUrls[p.slug])
-      .map((p) => ({
-        ...p,
-        liveUrl: liveUrls[p.slug],
-      }))
-  }, [allProjects])
+  }, [caseStudies])
 
   return (
     <div className="flex-1 flex flex-col w-full">
@@ -158,7 +168,7 @@ function Landing1IndexPage() {
               value={prompt}
               onValueChange={setPrompt}
               onSubmit={handleSubmitPrompt}
-              placeholder="Ask about Akshay's projects, design engineering experience, or RAG info..."
+              placeholder="Ask about Akshay's projects, product design experience, or RAG info..."
             />
 
             {/* Quick Suggestion Pills */}
@@ -186,148 +196,58 @@ function Landing1IndexPage() {
       {/* Dashboard Section */}
       <section className="py-20 bg-card/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
-            <div className="flex items-center gap-1">
+          <Tabs defaultValue="recent" className="w-full">
+            <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
+              <TabsList className="bg-muted/60 border border-border/40 p-1 rounded-xl">
+                <TabsTrigger value="recent" className="flex items-center gap-2 px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all">
+                  <ClipboardList className="size-3.5" />
+                  Recent Projects
+                </TabsTrigger>
+                <TabsTrigger value="case-studies" className="flex items-center gap-2 px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all">
+                  <Globe className="size-3.5" />
+                  Case Studies
+                </TabsTrigger>
+              </TabsList>
+
               <button
-                onClick={() => setActiveTab("tasks")}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-all cursor-pointer ${
-                  activeTab === "tasks"
-                    ? "border-primary text-foreground"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
+                onClick={handleReload}
+                className="p-2 text-muted-foreground hover:text-foreground rounded-lg border border-border hover:bg-muted/50 transition-all cursor-pointer"
+                title="Reload Projects"
               >
-                <ClipboardList className="size-4" />
-                Recent Tasks
-              </button>
-              <button
-                onClick={() => setActiveTab("deployed")}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-all cursor-pointer ${
-                  activeTab === "deployed"
-                    ? "border-primary text-foreground"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Globe className="size-4" />
-                Deployed Apps
+                <RefreshCw className="size-4" />
               </button>
             </div>
 
-            <button
-              onClick={handleReload}
-              className="p-2 text-muted-foreground hover:text-foreground rounded-lg border border-border hover:bg-muted/50 transition-all cursor-pointer"
-              title="Reload Tasks"
-            >
-              <RefreshCw className="size-4" />
-            </button>
-          </div>
+            <TabsContent value="recent" className="space-y-4 outline-none">
+              {recentProjectsList.length > 0 ? (
+                recentProjectsList.map((project) => (
+                  <HorizontalProjectCard
+                    key={project._id}
+                    project={project}
+                  />
+                ))
+              ) : (
+                <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/30">
+                  <p className="text-sm text-muted-foreground">No recent projects found</p>
+                </div>
+              )}
+            </TabsContent>
 
-          <div className="rounded-xl border border-border bg-card/50 overflow-hidden shadow-xs">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-muted/30 text-muted-foreground font-medium text-xs uppercase tracking-wider">
-                    <th className="px-6 py-4 font-semibold">ID</th>
-                    <th className="px-6 py-4 font-semibold">Task / Project</th>
-                    <th className="px-6 py-4 font-semibold">Last Modified</th>
-                    <th className="px-6 py-4 font-semibold text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/60">
-                  {activeTab === "tasks" ? (
-                    allProjects.map((project) => (
-                      <tr 
-                        key={project._id}
-                        className="hover:bg-muted/20 transition-all group cursor-pointer"
-                      >
-                        <td className="px-6 py-5 font-mono text-xs text-muted-foreground whitespace-nowrap">
-                          <Link to="/projects/$slug" params={{ slug: project.slug }}>
-                            {project.shortId}
-                          </Link>
-                        </td>
-                        <td className="px-6 py-5">
-                          <Link to="/projects/$slug" params={{ slug: project.slug }} className="block">
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                                {project.title}
-                              </span>
-                              {project.featured && (
-                                <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-500">
-                                  <Star className="size-2.5 fill-amber-500" />
-                                  Featured
-                                </span>
-                              )}
-                            </div>
-                            <p className="mt-1 text-xs text-muted-foreground line-clamp-1 max-w-xl">
-                              {project.description}
-                            </p>
-                            {project.metrics && (
-                              <div className="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-primary/80">
-                                <Sparkles className="size-3" />
-                                <span>{project.metrics}</span>
-                              </div>
-                            )}
-                          </Link>
-                        </td>
-                        <td className="px-6 py-5 text-muted-foreground whitespace-nowrap">
-                          <Link to="/projects/$slug" params={{ slug: project.slug }} className="block">
-                            {project.relativeDate}
-                          </Link>
-                        </td>
-                        <td className="px-6 py-5 text-right whitespace-nowrap">
-                          <Link to="/projects/$slug" params={{ slug: project.slug }} className="inline-flex p-1.5 rounded-md hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-all">
-                            <MoreHorizontal className="size-4" />
-                          </Link>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    deployedApps.map((project) => (
-                      <tr 
-                        key={project._id}
-                        className="hover:bg-muted/20 transition-all group cursor-pointer"
-                      >
-                        <td className="px-6 py-5 font-mono text-xs text-muted-foreground whitespace-nowrap">
-                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                            {project.shortId}
-                          </a>
-                        </td>
-                        <td className="px-6 py-5">
-                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="block">
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                                {project.title}
-                              </span>
-                              <span className="text-[10px] text-muted-foreground font-mono">
-                                ({project.liveUrl.replace("https://", "")})
-                              </span>
-                            </div>
-                            <p className="mt-1 text-xs text-muted-foreground line-clamp-1 max-w-xl">
-                              {project.description}
-                            </p>
-                          </a>
-                        </td>
-                        <td className="px-6 py-5 text-muted-foreground whitespace-nowrap">
-                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="block">
-                            Active
-                          </a>
-                        </td>
-                        <td className="px-6 py-5 text-right whitespace-nowrap">
-                          <a 
-                            href={project.liveUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground transition-all"
-                          >
-                            Open Live ➜
-                          </a>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+            <TabsContent value="case-studies" className="space-y-4 outline-none">
+              {caseStudiesList.length > 0 ? (
+                caseStudiesList.map((project) => (
+                  <HorizontalProjectCard
+                    key={project._id}
+                    project={project}
+                  />
+                ))
+              ) : (
+                <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/30">
+                  <p className="text-sm text-muted-foreground">No case studies found</p>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 
