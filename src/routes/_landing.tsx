@@ -91,7 +91,7 @@ function Landing1Layout() {
         <Outlet />
       </main>
 
-      {!isChatRoute && <SiteFooter />}
+      {!isChatRoute && <SiteFooter hasTopBorder={false} />}
     </div>
   )
 }
