@@ -368,7 +368,7 @@ function Landing1IndexPage() {
       </section>
 
       {/* Contact CTA Section */}
-      <ContactSection bottomCutout={false} />
+      <ContactSection bottomCutout={true} />
     </div>
   )
 }

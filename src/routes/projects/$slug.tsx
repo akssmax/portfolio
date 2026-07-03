@@ -142,7 +142,7 @@ function ProjectDetailPage() {
         ) : null}
       </main>
 
-      <ContactSection />
+      <ContactSection bottomCutout={true} />
       <SiteFooter hasTopBorder={false} />
     </div>
   )
