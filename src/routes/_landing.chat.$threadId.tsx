@@ -163,6 +163,30 @@ function ChatThreadPage() {
             prev.map((m) => (m.id === assistantId ? { ...m, content: buffer } : m))
           )
         },
+        onToolDelta: (deltas) => {
+          setMessages((prev) =>
+            prev.map((m) => {
+              if (m.id !== assistantId) return m
+              const existingCalls = m.toolCalls ? [...m.toolCalls] : []
+              for (const delta of deltas) {
+                const idx = delta.index ?? 0
+                if (!existingCalls[idx]) {
+                  existingCalls[idx] = {
+                    name: delta.function?.name || "",
+                    arguments: "",
+                  }
+                }
+                if (delta.function?.name) {
+                  existingCalls[idx].name = delta.function.name
+                }
+                if (delta.function?.arguments) {
+                  existingCalls[idx].arguments += delta.function.arguments
+                }
+              }
+              return { ...m, toolCalls: existingCalls }
+            })
+          )
+        },
         onSuggestions: (next) => {
           finalSuggestions = next
           setMessages((prev) =>

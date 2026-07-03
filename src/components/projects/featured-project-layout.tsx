@@ -235,7 +235,6 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
   },
   "v1-100x-proto": {
     liveUrl: "https://agent.akshaysaini.xyz/",
-    ctaLabel: "Try App",
     techStackList: [
       { name: "React", logo: Cpu },
       { name: "TypeScript", logo: Terminal },
@@ -637,7 +636,7 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
 export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
   // Retrieve config dynamically based on slug. Fall back to chat shell config if not found.
   const config = PROJECT_CONFIGS[project.slug] || PROJECT_CONFIGS["100x-chat-shell"]
-  const ctaLabel = config.ctaLabel ?? (config.liveUrl.startsWith("/") ? "Try App" : "Try Live Workspace")
+  const ctaLabel = config.ctaLabel ?? (config.liveUrl.startsWith("/") ? "View Project" : "Open Project")
 
   const { openChatWithMessage } = usePortfolioChat()
   const handleSummarize = () => {
@@ -936,33 +935,29 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-border/50 flex flex-col sm:flex-row gap-3">
+          <div className="pt-6 border-t border-border/50 flex flex-wrap gap-3">
             {config.liveUrl.startsWith("/") ? (
-              <Button className="flex-1 gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
+              <Button className="flex-1 min-w-[140px] gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
                 <Link to={config.liveUrl}>
                   {ctaLabel} <ArrowRight className="size-4" />
                 </Link>
               </Button>
             ) : (
-              <Button className="flex-1 gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
+              <Button className="flex-1 min-w-[140px] gap-2 shadow-md hover:shadow-primary/10" size="lg" asChild>
                 <a href={config.liveUrl} target="_blank" rel="noreferrer">
-                  {ctaLabel === "Try App" ? "Open App" : "Open Live Workspace"}{" "}
-                  {config.liveUrl.includes("akshaysaini.xyz") || ctaLabel === "Try App" ? (
-                    <ArrowRight className="size-4" />
-                  ) : (
-                    <ExternalLink className="size-4" />
-                  )}
+                  {ctaLabel}{" "}
+                  <ExternalLink className="size-4" />
                 </a>
               </Button>
             )}
             {config.secondaryUrl && (
-              <Button className="flex-1 gap-2" variant="outline" size="lg" asChild>
+              <Button className="flex-1 min-w-[140px] gap-2" variant="outline" size="lg" asChild>
                 <a href={config.secondaryUrl} target="_blank" rel="noreferrer">
                   {config.secondaryLabel || "Open Secondary Link"} <ExternalLink className="size-4" />
                 </a>
               </Button>
             )}
-            <Button className="flex-1 gap-2" variant="outline" size="lg" onClick={handleSummarize}>
+            <Button className="flex-1 min-w-[140px] gap-2" variant="outline" size="lg" onClick={handleSummarize}>
               Summarize with AI <Sparkles className="size-4" />
             </Button>
           </div>
