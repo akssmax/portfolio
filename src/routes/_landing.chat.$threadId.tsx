@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import * as React from "react"
-import { ArrowLeft, Loader2, X } from "lucide-react"
+import { ArrowLeft, X } from "lucide-react"
 import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
@@ -13,8 +13,8 @@ import { Source } from "@/components/ai-elements/sources"
 import { GenUiRenderer } from "@/components/ui/gen-ui-renderer"
 import { streamChat } from "@/lib/llm/llm-service"
 import { toast } from "sonner"
-import { Shimmer } from "@/components/ai-elements/shimmer"
 import { M3AnimatingAvatar } from "@/components/m3-shapes/m3-animating-avatar"
+import { ChainOfThought } from "@/components/ai-elements/chain-of-thought"
 
 type ThreadMessage = {
   id: string
@@ -306,23 +306,23 @@ function ChatThreadPage() {
                       <div className="flex gap-3 items-start select-text w-full">
                         <M3AnimatingAvatar className="size-8.5 shrink-0" />
                         <div className="flex-1 space-y-3 min-w-0">
-                          {message.content ? (
+                          {/* Chain of Thought accordion */}
+                          {(message.searching || (message.toolCalls && message.toolCalls.length > 0) || !message.content) && (
+                            <ChainOfThought
+                              state={
+                                status === "streaming" && msgIdx === messages.length - 1
+                                  ? "thinking"
+                                  : "completed"
+                              }
+                              searchQuery={message.searching ? message.searchQuery : undefined}
+                              toolCalls={message.toolCalls}
+                            />
+                          )}
+
+                          {message.content && (
                             <MessageContent className="prose dark:prose-invert max-w-none">
                               <MessageResponse>{message.content}</MessageResponse>
                             </MessageContent>
-                          ) : !message.searching ? (
-                            <div className="flex items-center gap-2 pt-1">
-                              <Loader2 className="size-3.5 animate-spin text-muted-foreground" />
-                              <Shimmer className="text-xs">Thinking…</Shimmer>
-                            </div>
-                          ) : null}
-
-                          {/* Searching status block */}
-                          {message.searching && (
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
-                              <Loader2 className="size-3.5 animate-spin" />
-                              <span>Searching RAG database: &quot;{message.searchQuery}&quot;...</span>
-                            </div>
                           )}
 
                           {/* Sources are now rendered as a floating popover overlay relative to the feedback bar below */}
