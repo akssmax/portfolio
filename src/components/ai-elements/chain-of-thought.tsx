@@ -134,7 +134,7 @@ export function ChainOfThought({
                           tc.error && "border-destructive/30 bg-destructive/5"
                         )}
                       >
-                        {tc.result ? (
+                        {tc.result || state === "completed" ? (
                           <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0 mt-0.5" />
                         ) : tc.error ? (
                           <AlertCircle className="size-3.5 text-destructive shrink-0 mt-0.5" />
