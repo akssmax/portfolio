@@ -256,7 +256,7 @@ function ChatThreadPage() {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-all"
         >
           <ArrowLeft className="size-4" />
-          Back to landing
+          Back to portfolio
         </Link>
         <span className="text-[10px] font-mono text-muted-foreground bg-muted/65 border border-border/40 px-2 py-0.5 rounded-md">
           Thread ID: {threadId}
@@ -379,7 +379,7 @@ function ChatThreadPage() {
               )
             })}
           </ConversationContent>
-          <ConversationScrollButton className="fixed bottom-32 right-8 z-20" />
+          <ConversationScrollButton className="fixed bottom-[130px] right-8 md:right-auto md:left-1/2 md:translate-x-[300px] z-20" />
         </Conversation>
       </div>
 
