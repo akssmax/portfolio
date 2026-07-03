@@ -690,12 +690,7 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
             ) : (
               <Button size="lg" asChild className="shadow-lg hover:shadow-primary/20 transition-all">
                 <a href={config.liveUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
-                  {ctaLabel}{" "}
-                  {config.liveUrl.includes("akshaysaini.xyz") || ctaLabel === "Try App" ? (
-                    <ArrowRight className="size-4" />
-                  ) : (
-                    <ExternalLink className="size-4" />
-                  )}
+                  {ctaLabel} <ExternalLink className="size-4" />
                 </a>
               </Button>
             )}
