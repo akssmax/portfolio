@@ -23,7 +23,7 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export const Route = createFileRoute("/landing-1")({
+export const Route = createFileRoute("/_landing")({
   loader: () => getHomeWorkSections(),
   errorComponent: RouteError,
   head: () => ({
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/landing-1")({
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/landing-1",
+        href: "https://akshaysaini.xyz/",
       },
     ],
   }),
@@ -50,7 +50,7 @@ function Landing1Layout() {
   const shouldReduceMotion = useReducedMotion()
   const brandColors = useBrandColors()
   const location = useLocation()
-  const isChatRoute = location.pathname.includes("/landing-1/chat")
+  const isChatRoute = location.pathname.startsWith("/chat")
 
   return (
     <div className={cn(

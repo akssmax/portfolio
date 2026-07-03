@@ -40,7 +40,7 @@ type ThreadStore = {
   messages: ThreadMessage[]
 }
 
-export const Route = createFileRoute("/landing-1/chat/$threadId")({
+export const Route = createFileRoute("/_landing/chat/$threadId")({
   component: ChatThreadPage,
 })
 
@@ -252,7 +252,7 @@ function ChatThreadPage() {
       {/* Thread Header Bar */}
       <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-6 w-full shrink-0">
         <Link 
-          to="/landing-1" 
+          to="/" 
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-all"
         >
           <ArrowLeft className="size-4" />

@@ -54,14 +54,14 @@ const ROTATING_COPY = [
   },
 ] as const
 
-export const Route = createFileRoute("/landing-1/")({
+export const Route = createFileRoute("/_landing/")({
   component: Landing1IndexPage,
 })
 
 function Landing1IndexPage() {
-  // Retrieve loader data from the parent route '/landing-1'
+  // Retrieve loader data from the parent route '/_landing'
   const { recentProjects, caseStudies } = useLoaderData({
-    from: "/landing-1",
+    from: "/_landing",
   })
 
   const navigate = useNavigate()
@@ -69,12 +69,21 @@ function Landing1IndexPage() {
   const [copyIndex, setCopyIndex] = React.useState(0)
   const [portraitItems] = React.useState(() => getRandomizedHeroPortraitItems())
   const [starterSuggestions] = React.useState(() => getRandomHeroPromptSuggestions())
+  const [testimonialIndex, setTestimonialIndex] = React.useState(2) // Start with Shardul Lavekar
 
   // Rotate copy title
   React.useEffect(() => {
     const timer = setInterval(() => {
       setCopyIndex((prev) => (prev + 1) % ROTATING_COPY.length)
     }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Rotate testimonials
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setTestimonialIndex((prev) => (prev + 1) % testimonials.length)
+    }, 7000)
     return () => clearInterval(timer)
   }, [])
 
@@ -98,7 +107,7 @@ function Landing1IndexPage() {
     localStorage.setItem(`portfolio_thread_${threadId}`, JSON.stringify(initialThread))
     
     navigate({
-      to: "/landing-1/chat/$threadId",
+      to: "/chat/$threadId",
       params: { threadId },
     })
   }
@@ -295,43 +304,54 @@ function Landing1IndexPage() {
               </div>
 
               {/* Featured Testimonial Quote */}
-              {(() => {
-                const t = testimonials.find((item) => item.id === "shardul-lavekar")
-                if (!t) return null
-                return (
-                  <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/45 backdrop-blur-md shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5">
-                    {/* Quotation icon decoration */}
-                    <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none">
-                      <Quote className="size-3.5 fill-current" />
-                    </div>
-                    <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
-                      &quot;
-                      {t.quote.map((part, index) =>
-                        part.bold ? (
-                          <strong key={index} className="font-semibold text-foreground not-italic">
-                            {part.text}
-                          </strong>
-                        ) : (
-                          part.text
-                        )
-                      )}
-                      &quot;
-                    </blockquote>
-                    <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
-                      <M3ShapeImage
-                        shape="arch"
-                        src={t.avatarSrc}
-                        alt={t.name}
-                        className="size-9.5 shrink-0 bg-primary/10"
-                      />
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-foreground truncate">{t.name}</p>
-                        <p className="text-[10px] text-muted-foreground truncate">{t.headline}</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })()}
+              <div className="relative min-h-[220px]">
+                <AnimatePresence mode="wait">
+                  {(() => {
+                    const t = testimonials[testimonialIndex]
+                    if (!t) return null
+                    return (
+                      <motion.div
+                        key={t.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                        className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/45 backdrop-blur-md shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5"
+                      >
+                        {/* Quotation icon decoration */}
+                        <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
+                          <Quote className="size-3.5 fill-current" />
+                        </div>
+                        <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
+                          &quot;
+                          {t.quote.map((part, index) =>
+                            part.bold ? (
+                              <strong key={index} className="font-semibold text-foreground not-italic">
+                                {part.text}
+                              </strong>
+                            ) : (
+                              part.text
+                            )
+                          )}
+                          &quot;
+                        </blockquote>
+                        <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
+                          <M3ShapeImage
+                            shape="arch"
+                            src={t.avatarSrc}
+                            alt={t.name}
+                            className="size-9.5 shrink-0 bg-primary/10"
+                          />
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-foreground truncate">{t.name}</p>
+                            <p className="text-[10px] text-muted-foreground truncate">{t.headline}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })()}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Right Column: Morphing Portrait */}
