@@ -379,7 +379,7 @@ function ChatThreadPage() {
               )
             })}
           </ConversationContent>
-          <ConversationScrollButton className="fixed bottom-[130px] right-8 md:right-auto md:left-1/2 md:translate-x-[300px] z-20" />
+          <ConversationScrollButton className="absolute bottom-4 right-4 md:right-auto md:left-1/2 md:translate-x-[300px] z-20" />
         </Conversation>
       </div>
 
