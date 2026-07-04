@@ -33,7 +33,47 @@ export const Route = createFileRoute("/_landing")({
       },
       {
         name: "description",
-        content: "A prompt-first iteration of Akshay Saini's portfolio as a product designer who ships.",
+        content: "A prompt-first iteration of Akshay Saini's design engineer portfolio. Ask anything about his design work, experience, or system principles.",
+      },
+      {
+        name: "keywords",
+        content: "design engineer, product designer, portfolio, akshay saini, bangalore, developer tools, fintech, agentic AI, YC startups, UI/UX",
+      },
+      {
+        property: "og:title",
+        content: "Ask My Portfolio Anything — Akshay Saini (Design Portfolio)",
+      },
+      {
+        property: "og:description",
+        content: "A prompt-first iteration of Akshay Saini's design engineer portfolio. Ask anything about his design work, experience, or system principles.",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: "https://akshaysaini.xyz/",
+      },
+      {
+        property: "og:image",
+        content: "https://akshaysaini.xyz/images/og-banner.jpg",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Ask My Portfolio Anything — Akshay Saini (Design Portfolio)",
+      },
+      {
+        name: "twitter:description",
+        content: "A prompt-first iteration of Akshay Saini's design engineer portfolio. Ask anything about his design work, experience, or system principles.",
+      },
+      {
+        name: "twitter:image",
+        content: "https://akshaysaini.xyz/images/og-banner.jpg",
       },
     ],
     links: [
