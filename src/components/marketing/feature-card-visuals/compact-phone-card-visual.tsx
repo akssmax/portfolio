@@ -1,5 +1,6 @@
 import type { CompactPhoneFeatureVisual } from "@/lib/projects/project-feature-visuals"
 import { useFullMotion } from "@/hooks/use-can-animate"
+import { cardVisualFastTransition } from "@/lib/motion-easing"
 import { cn } from "@/lib/utils"
 
 import { DiagonalPattern, PhoneShell } from "./ui-shells"
@@ -22,8 +23,9 @@ export function CompactPhoneCardVisual({
       <div className="absolute inset-3">
         <PhoneShell
           className={cn(
-            "size-full transition-transform duration-500 ease-out",
-            fullMotion && "group-hover/visual:-translate-y-0.5",
+            "size-full will-change-transform",
+            cardVisualFastTransition,
+            fullMotion && "group-hover/visual:-translate-y-1.5 group-hover/visual:scale-[1.01]",
           )}
         >
           <img

@@ -7,6 +7,8 @@ import { getFeatureVisualConfig } from "@/lib/projects/project-feature-visuals"
 import { getProjectVisualTheme } from "@/lib/projects/project-visual-themes"
 import type { BentoSize } from "@/lib/projects/bento-placements"
 import type { ProjectCard } from "@/lib/sanity/types"
+import { cardVisualSlowTransition } from "@/lib/motion-easing"
+import { useFullMotion } from "@/hooks/use-can-animate"
 import { cn } from "@/lib/utils"
 
 const visualAspect: Record<BentoSize, string> = {
@@ -26,6 +28,7 @@ export function FeatureCardVisual({
   size = "default",
   className,
 }: FeatureCardVisualProps) {
+  const fullMotion = useFullMotion()
   const theme = getProjectVisualTheme(project.slug)
   const { Icon } = theme
 
@@ -71,7 +74,14 @@ export function FeatureCardVisual({
         <ProjectFeatureVisual slug={project.slug} size={size} />
       ) : coverUrl ? (
         <div className="absolute inset-x-3 bottom-0 top-4 sm:inset-x-4 sm:top-5">
-          <div className="feature-card-screenshot h-full w-full overflow-hidden rounded-t-xl border border-b-0 border-white/25 bg-card shadow-[0_-10px_40px_rgba(15,23,42,0.12)] dark:border-white/10">
+          <div
+            className={cn(
+              "feature-card-screenshot h-full w-full overflow-hidden rounded-t-xl border border-b-0 border-white/25 bg-card shadow-[0_-10px_40px_rgba(15,23,42,0.12)] dark:border-white/10",
+              cardVisualSlowTransition,
+              fullMotion &&
+                "will-change-transform group-hover/visual:-translate-y-1 group-hover/visual:scale-[1.008]",
+            )}
+          >
             <img
               src={coverUrl}
               alt={alt}
