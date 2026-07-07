@@ -49,10 +49,8 @@ const fullTitleVariants = {
     rotateX: 0,
     scale: 1,
     transition: {
-      type: "spring" as const,
-      stiffness: 260,
-      damping: 28,
-      mass: 0.85,
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
   exit: {
@@ -76,10 +74,9 @@ const fullSubtitleVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring" as const,
-      stiffness: 300,
-      damping: 32,
-      mass: 0.75,
+      duration: 0.48,
+      ease: [0.22, 1, 0.36, 1] as const,
+      delay: 0.08,
     },
   },
   exit: {

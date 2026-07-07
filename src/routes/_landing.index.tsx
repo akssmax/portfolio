@@ -18,6 +18,11 @@ import {
   type HeroPromptSuggestion,
 } from "@/lib/hero-prompt-suggestions"
 import { LANDING_HERO_COPY } from "@/lib/hero-headlines"
+import {
+  chipHoverTransition,
+  EASE_OUT_SMOOTH,
+  surfaceHoverTransition,
+} from "@/lib/motion-easing"
 import type { Testimonial } from "@/lib/testimonials"
 import { cn } from "@/lib/utils"
 
@@ -73,11 +78,12 @@ function HeroPromptSuggestions({
             type="button"
             onClick={() => onSelect(item.query, targetMode)}
             className={cn(
-              "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer transition-all duration-200 text-xs",
+              "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer text-xs",
               "border-border/80 bg-card text-foreground/85 shadow-sm ring-1 ring-black/[0.05]",
-              "hover:border-primary/30 hover:bg-card hover:text-foreground hover:shadow-md",
+              "hover:-translate-y-px hover:border-primary/30 hover:bg-card hover:text-foreground hover:shadow-md",
               "dark:border-border dark:bg-card/45 dark:text-muted-foreground dark:ring-0",
               "dark:hover:bg-card/85 dark:hover:text-foreground dark:shadow-sm",
+              chipHoverTransition,
             )}
           >
             <IconComponent className="size-3.5" />
@@ -91,7 +97,12 @@ function HeroPromptSuggestions({
 
 function FeaturedTestimonial({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/60 shadow-xs hover:border-primary/20 transition-[border-color,box-shadow] duration-300 space-y-5">
+    <div
+      className={cn(
+        "relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/60 shadow-xs hover:border-primary/20 space-y-5",
+        surfaceHoverTransition,
+      )}
+    >
       <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
         <Quote className="size-3.5 fill-current" />
       </div>
@@ -289,10 +300,10 @@ function Landing1IndexPage() {
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeTestimonial.id}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.45, ease: "easeInOut" }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.4, ease: EASE_OUT_SMOOTH }}
                     >
                       <FeaturedTestimonial testimonial={activeTestimonial} />
                     </motion.div>
@@ -310,7 +321,8 @@ function Landing1IndexPage() {
                 alt="Akshay Saini Portrait"
                 imageClassName={cn(
                   "size-72 sm:size-80 lg:size-[24rem] xl:size-[26rem]",
-                  fullMotion && "hover:scale-[1.01] transition-transform duration-300",
+                  fullMotion &&
+                    "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] motion-reduce:transition-none",
                 )}
                 active={fullMotion && aboutInView}
                 onMorphStart={handlePortraitMorphStart}

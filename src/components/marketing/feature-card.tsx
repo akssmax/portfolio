@@ -7,6 +7,11 @@ import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 import { getBuildBadgeLabel } from "@/lib/projects/build-badge"
 import type { BentoSize } from "@/lib/projects/bento-placements"
 import type { BuildBadge } from "@/lib/sanity/types"
+import {
+  cardActionTransition,
+  cardHoverTransition,
+  cardTitleTransition,
+} from "@/lib/motion-easing"
 import { cn } from "@/lib/utils"
 
 const titleSize: Record<BentoSize, string> = {
@@ -65,8 +70,10 @@ export function FeatureCard({
   return (
     <article
       className={cn(
-        "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs transition-[border-color,box-shadow] duration-300 hover:border-border hover:shadow-lg",
-        className
+        "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs",
+        "hover:-translate-y-0.5 hover:border-border hover:shadow-lg",
+        cardHoverTransition,
+        className,
       )}
     >
       <div className={cn("flex flex-1 flex-col", isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6")}>
@@ -79,8 +86,9 @@ export function FeatureCard({
           >
             <h3
               className={cn(
-                "font-semibold tracking-tight text-foreground transition-colors group-hover/card:text-primary",
-                titleSize[size]
+                "font-semibold tracking-tight text-foreground group-hover/card:text-primary",
+                cardTitleTransition,
+                titleSize[size],
               )}
             >
               {title}
@@ -94,7 +102,12 @@ export function FeatureCard({
                   href={externalHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-primary lg:opacity-0 lg:group-hover/card:opacity-100"
+                  className={cn(
+                    "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
+                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                    "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
+                    cardActionTransition,
+                  )}
                   aria-label={`Open ${title} live`}
                 >
                   <ArrowUpRight className="size-4" />
@@ -102,7 +115,12 @@ export function FeatureCard({
               ) : (
                 <Link
                   to={externalHref}
-                  className="inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-primary lg:opacity-0 lg:group-hover/card:opacity-100"
+                  className={cn(
+                    "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
+                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                    "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
+                    cardActionTransition,
+                  )}
                   aria-label={`Open ${title}`}
                 >
                   <ArrowUpRight className="size-4" />
@@ -113,7 +131,12 @@ export function FeatureCard({
                 to="/projects/$slug"
                 params={{ slug }}
                 search={projectSearch}
-                className="inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-primary lg:opacity-0 lg:group-hover/card:opacity-100"
+                className={cn(
+                  "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
+                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                  "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
+                  cardActionTransition,
+                )}
                 aria-label={`View ${title} case study`}
               >
                 <ArrowUpRight className="size-4" />
