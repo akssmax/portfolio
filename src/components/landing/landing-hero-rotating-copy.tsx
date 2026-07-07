@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { useHydrated } from "@/hooks/use-hydrated"
 import { cn } from "@/lib/utils"
 
 export type HeroCopySlide = {
@@ -124,9 +125,9 @@ export function LandingHeroRotatingCopy({
   intervalMs = DEFAULT_INTERVAL_MS,
   className,
 }: LandingHeroRotatingCopyProps) {
+  const hydrated = useHydrated()
   const { canAnimate, fullMotion } = useAnimationProfile()
-  const prefersReducedMotion = useReducedMotion()
-  const shouldAnimate = canAnimate && !prefersReducedMotion && slides.length > 1
+  const shouldAnimate = hydrated && canAnimate && slides.length > 1
 
   const titleVariants = fullMotion ? fullTitleVariants : lightTitleVariants
   const subtitleVariants = fullMotion ? fullSubtitleVariants : lightSubtitleVariants

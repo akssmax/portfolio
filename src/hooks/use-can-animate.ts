@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from "react"
 
 import type { FontScalePresetId } from "@/lib/themes/types"
+import { useHydrated } from "@/hooks/use-hydrated"
 
 export type AnimationTier = "none" | "light" | "full"
 
@@ -66,12 +67,24 @@ function prefersLightMotionEffects() {
   return false
 }
 
+function subscribeNoop(_onStoreChange: () => void) {
+  return () => {}
+}
+
 /** Animation tier from reduced-motion preference and device capability. */
 export function useAnimationProfile(): AnimationProfile {
+  const hydrated = useHydrated()
+
   const prefersReducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
-    () => true,
+    () => false,
+  )
+
+  const prefersLightMotion = useSyncExternalStore(
+    subscribeNoop,
+    prefersLightMotionEffects,
+    () => false,
   )
 
   const fontScale = useSyncExternalStore(
@@ -80,11 +93,11 @@ export function useAnimationProfile(): AnimationProfile {
     () => "100" as FontScalePresetId,
   )
 
-  if (prefersReducedMotion) {
+  if (!hydrated || prefersReducedMotion) {
     return { tier: "none", canAnimate: false, fullMotion: false, fontScale }
   }
 
-  if (prefersLightMotionEffects()) {
+  if (prefersLightMotion) {
     return { tier: "light", canAnimate: true, fullMotion: false, fontScale }
   }
 
