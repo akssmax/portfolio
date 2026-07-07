@@ -1,6 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { FeatureCard } from "@/components/marketing/feature-card"
+import { FeatureCardGrid } from "@/components/marketing/feature-card-grid"
+import { FeatureCardVisual } from "@/components/marketing/feature-card-visual"
+import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
 import { CtaSection, type CtaSectionVariant, type CtaSectionPosition } from "@/components/landing/contact-section"
 import { HeroSection } from "@/components/landing/hero-section"
 import { SiteHeader } from "@/components/landing/site-header"
@@ -40,6 +44,48 @@ export function WorkSectionDemo() {
   return (
     <div className="w-full overflow-hidden rounded-lg border border-border">
       <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} />
+    </div>
+  )
+}
+
+export function FeatureCardDemo() {
+  const { recentProjects } = getFallbackHomeWorkSections()
+  const project = recentProjects[0]
+
+  if (!project) return null
+
+  return (
+    <div className="w-full max-w-xl rounded-lg border border-border bg-background p-4">
+      <FeatureCard
+        title={project.title}
+        description={project.description}
+        slug={project.slug}
+        tag={project.tag}
+        buildBadge={project.buildBadge}
+        metrics={project.metrics}
+        featured={project.featured}
+        visual={<FeatureCardVisual project={project} />}
+      />
+    </div>
+  )
+}
+
+export function FeatureCardGridDemo() {
+  const { recentProjects } = getFallbackHomeWorkSections()
+
+  return (
+    <div className="w-full rounded-lg border border-border bg-background p-4">
+      <FeatureCardGrid projects={recentProjects.slice(0, 3)} />
+    </div>
+  )
+}
+
+export function ProjectsShowcaseDemo() {
+  const { recentProjects, caseStudies } = getFallbackHomeWorkSections()
+
+  return (
+    <div className="w-full overflow-hidden rounded-lg border border-border">
+      <ProjectsShowcase recentProjects={recentProjects} caseStudies={caseStudies} />
     </div>
   )
 }

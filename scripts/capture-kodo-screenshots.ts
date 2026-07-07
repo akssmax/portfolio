@@ -54,6 +54,18 @@ async function saveWebp(pngPath: string, webpPath: string) {
   await unlink(pngPath)
 }
 
+async function captureMobile(page: Page) {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto(BASE_URL, NAV_OPTIONS)
+  await page.waitForTimeout(SETTLE_MS)
+
+  const mobileWebp = path.join(OUTPUT_DIR, "mobile.webp")
+  const mobilePng = mobileWebp.replace(/\.webp$/, ".png")
+  await page.screenshot({ path: mobilePng, type: "png", fullPage: false })
+  await saveWebp(mobilePng, mobileWebp)
+  console.log("  ✓ mobile.webp")
+}
+
 async function scrollToSection(page: Page, text: string | RegExp) {
   const heading = page.getByRole("heading", { name: text }).first()
   if ((await heading.count()) > 0) {
@@ -115,6 +127,12 @@ async function capture() {
     } catch (error) {
       console.warn(`Skipped ${target.file}:`, error instanceof Error ? error.message : error)
     }
+  }
+
+  try {
+    await captureMobile(page)
+  } catch (error) {
+    console.warn("Skipped mobile.webp:", error instanceof Error ? error.message : error)
   }
 
   await browser.close()

@@ -3,12 +3,12 @@
 import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { Menu, Sparkles } from "lucide-react"
-import { motion, useReducedMotion } from "motion/react"
 
 import { Logo } from "@/components/brand/logo"
 import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
 import {
   Sheet,
   SheetClose,
@@ -87,7 +87,7 @@ function MobileNavLink({
 }
 
 export function SiteHeader() {
-  const shouldReduceMotion = useReducedMotion()
+  const { fullMotion } = useAnimationProfile()
   const [mobileOpen, setMobileOpen] = useState(false)
   const { openChat } = usePortfolioChat()
 
@@ -99,78 +99,80 @@ export function SiteHeader() {
   }
 
   return (
-    <motion.header
-      className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-sm"
-      initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-        <Link
-          to="/"
-          aria-label="Akshay Saini — home"
-          className="inline-flex min-w-0 shrink text-foreground"
-        >
-          <Logo className="h-5 sm:h-6" />
-        </Link>
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-sm${
+          fullMotion ? " animate-in fade-in slide-in-from-top-2 duration-300" : ""
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+          <Link
+            to="/"
+            aria-label="Akshay Saini — home"
+            className="inline-flex min-w-0 shrink text-foreground"
+          >
+            <Logo className="h-5 sm:h-6" />
+          </Link>
 
-        <nav
-          className="hidden items-center gap-1 md:flex"
-          aria-label="Main navigation"
-        >
-          {navItems.map((item) => (
-            <HeaderNavLink key={item.isAnchor ? item.href : item.to} item={item} />
-          ))}
-          <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
-            <Sparkles className="size-3.5" aria-hidden />
-            Ask AI
-          </Button>
-          <ThemeCustomizer />
-        </nav>
+          <nav
+            className="hidden items-center gap-1 md:flex"
+            aria-label="Main navigation"
+          >
+            {navItems.map((item) => (
+              <HeaderNavLink key={item.isAnchor ? item.href : item.to} item={item} />
+            ))}
+            <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
+              <Sparkles className="size-3.5" aria-hidden />
+              Ask AI
+            </Button>
+            <ThemeCustomizer />
+          </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
-            <Sparkles className="size-3.5" aria-hidden />
-            Ask AI
-          </Button>
-          <ThemeCustomizer />
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="Open menu">
-                <Menu className="size-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs gap-0 p-0">
-              <SheetHeader className="border-b border-border px-4 py-4 text-left">
-                <SheetTitle>Menu</SheetTitle>
-                <SheetDescription className="sr-only">
-                  Site navigation links
-                </SheetDescription>
-              </SheetHeader>
-
-              <nav
-                className="flex flex-col gap-1 px-2 py-3"
-                aria-label="Mobile navigation"
-              >
-                {navItems.map((item) => (
-                  <MobileNavLink
-                    key={item.isAnchor ? item.href : item.to}
-                    item={item}
-                    onNavigate={closeMobileMenu}
-                  />
-                ))}
-              </nav>
-
-              <div className="mt-auto border-t border-border p-4">
-                <Button className="w-full gap-1.5" onClick={handleAskAi}>
-                  <Sparkles className="size-3.5" aria-hidden />
-                  Ask AI
+          <div className="flex items-center gap-2 md:hidden">
+            <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
+              <Sparkles className="size-3.5" aria-hidden />
+              Ask AI
+            </Button>
+            <ThemeCustomizer />
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" aria-label="Open menu">
+                  <Menu className="size-5" />
                 </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full max-w-xs gap-0 p-0">
+                <SheetHeader className="border-b border-border px-4 py-4 text-left">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Site navigation links
+                  </SheetDescription>
+                </SheetHeader>
+
+                <nav
+                  className="flex flex-col gap-1 px-2 py-3"
+                  aria-label="Mobile navigation"
+                >
+                  {navItems.map((item) => (
+                    <MobileNavLink
+                      key={item.isAnchor ? item.href : item.to}
+                      item={item}
+                      onNavigate={closeMobileMenu}
+                    />
+                  ))}
+                </nav>
+
+                <div className="mt-auto border-t border-border p-4">
+                  <Button className="w-full gap-1.5" onClick={handleAskAi}>
+                    <Sparkles className="size-3.5" aria-hidden />
+                    Ask AI
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </div>
-    </motion.header>
+      </header>
+      <div className="h-16 shrink-0" aria-hidden="true" />
+    </>
   )
 }

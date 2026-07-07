@@ -1,3 +1,5 @@
+"use client"
+
 import { Link } from "@tanstack/react-router"
 import {
   ArrowLeft,
@@ -23,13 +25,18 @@ import {
 
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CaseStudyBackLink } from "@/components/projects/case-study-back-link"
 import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ProjectCoverImage } from "@/components/projects/blocks/block-renderer"
-import type { Project } from "@/lib/sanity/types"
+import { BlockRenderer, ProjectCoverImage } from "@/components/projects/blocks/block-renderer"
+import {
+  getVisualCaseStudyConfig,
+  VisualCaseStudyLayout,
+} from "@/components/projects/visual-case-study-layout"
+import type { ContentBlock, Project } from "@/lib/sanity/types"
 
 type FeaturedProjectLayoutProps = {
   project: Project
@@ -226,7 +233,7 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
       },
     ],
     outcomeDescription:
-      "LLM Chat Shell was planned, designed, and fully shipped in ten days (May 5–15, 2026). It serves as a proof of concept showing how standard React design system patterns can cooperate with live streaming AI models.",
+      "Design with AI was planned, designed, and fully shipped in ten days (May 5–15, 2026) as a personal experiment — a reference for how streaming LLMs, client-side RAG, and a multi-phase design agent can live inside one React shell.",
     outcomeMetrics: [
       { value: "10", label: "Days to Ship" },
       { value: "29", label: "Vitest Suites" },
@@ -633,9 +640,30 @@ const PROJECT_CONFIGS: Record<string, ProjectConfig> = {
   },
 }
 
+const FEATURED_DETAIL_BLOCK_TYPES = new Set<ContentBlock["_type"]>([
+  "sectionHeading",
+  "richTextBlock",
+  "staticImage",
+  "staticImageGallery",
+  "siteMap",
+  "metrics",
+  "collaborators",
+  "embed",
+])
+
+function getFeaturedDetailBlocks(content: ContentBlock[] | undefined) {
+  return (content ?? []).filter((block) => FEATURED_DETAIL_BLOCK_TYPES.has(block._type))
+}
+
 export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
+  const visualConfig = getVisualCaseStudyConfig(project.slug)
+  if (visualConfig) {
+    return <VisualCaseStudyLayout project={project} {...visualConfig} />
+  }
+
   // Retrieve config dynamically based on slug. Fall back to chat shell config if not found.
   const config = PROJECT_CONFIGS[project.slug] || PROJECT_CONFIGS["100x-chat-shell"]
+  const detailBlocks = getFeaturedDetailBlocks(project.content)
   const ctaLabel = config.ctaLabel ?? (config.liveUrl.startsWith("/") ? "View Project" : "Open Project")
 
   const { openChatWithMessage } = usePortfolioChat()
@@ -649,12 +677,7 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
     <article className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
       {/* Back button */}
       <div className="mb-10">
-        <Button asChild variant="ghost" size="sm" className="-ml-2 text-muted-foreground hover:text-foreground">
-          <Link to="/projects">
-            <ArrowLeft className="mr-2 size-4" />
-            Back to projects
-          </Link>
-        </Button>
+        <CaseStudyBackLink className="hover:text-foreground" />
       </div>
 
       {/* Hero Section */}
@@ -958,6 +981,21 @@ export function FeaturedProjectLayout({ project }: FeaturedProjectLayoutProps) {
           </div>
         </div>
       </section>
+
+      {detailBlocks.length > 0 ? (
+        <>
+          <Separator className="my-0" />
+          <section className="py-12 space-y-8">
+            <div className="max-w-2xl space-y-3">
+              <h2 className="text-3xl font-semibold tracking-tight">Product walkthrough</h2>
+              <p className="text-muted-foreground">
+                Screenshots, architecture notes, and implementation details from the build.
+              </p>
+            </div>
+            <BlockRenderer blocks={detailBlocks} />
+          </section>
+        </>
+      ) : null}
     </article>
   )
 }

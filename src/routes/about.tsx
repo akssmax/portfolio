@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { getDesignCareerSpanLabel } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
+import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -39,11 +40,11 @@ export const Route = createFileRoute("/about")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/about",
+        content: siteUrl("/about"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
       {
         name: "twitter:card",
@@ -59,13 +60,13 @@ export const Route = createFileRoute("/about")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/about",
+        href: siteUrl("/about"),
       },
     ],
   }),

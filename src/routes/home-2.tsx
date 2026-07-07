@@ -14,6 +14,7 @@ import { SkillsSection } from "@/components/landing/skills-section"
 import { TestimonialsSection } from "@/components/landing/testimonials-section"
 import { WorkSection } from "@/components/landing/work-section"
 import { getHomeWorkSections } from "@/lib/sanity/projects"
+import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/home-2")({
   loader: () => getHomeWorkSections(),
@@ -45,11 +46,11 @@ export const Route = createFileRoute("/home-2")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/",
+        content: siteUrl("/"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/og-banner.jpg",
+        content: siteUrl("/images/og-banner.jpg"),
       },
       {
         name: "twitter:card",
@@ -65,7 +66,7 @@ export const Route = createFileRoute("/home-2")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/og-banner.jpg",
+        content: siteUrl("/images/og-banner.jpg"),
       },
       {
         name: "twitter:creator",
@@ -75,7 +76,7 @@ export const Route = createFileRoute("/home-2")({
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/",
+        href: siteUrl("/"),
       },
     ],
   }),
@@ -95,8 +96,8 @@ function HomePage() {
             "@type": "Person",
             "name": "Akshay Saini",
             "jobTitle": ["Product Designer", "Design Engineer", "UI/UX Designer"],
-            "url": "https://akshaysaini.xyz/",
-            "image": "https://akshaysaini.xyz/images/portraits/02.png",
+            "url": siteUrl("/"),
+            "image": siteUrl("/images/portraits/02.png"),
             "sameAs": [
               "https://www.linkedin.com/in/akssmax/",
               "https://github.com/akssmax",

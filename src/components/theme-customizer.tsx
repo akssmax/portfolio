@@ -55,7 +55,7 @@ export function ThemeCustomizer() {
           <Palette className="size-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80 p-0">
+      <PopoverContent align="end" className="w-80 p-0 [--text-scale:1]">
         <CustomScrollbar className="flex max-h-[min(85vh,640px)] flex-col gap-4 p-4">
         <div className="space-y-1">
           <p className="text-sm font-semibold">Theme</p>

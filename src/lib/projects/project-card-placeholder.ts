@@ -9,7 +9,7 @@ const RECENT_PROJECT_PLACEHOLDERS: Record<string, RecentProjectPlaceholder> = {
     fallbackClassName: "bg-primary/15 text-primary",
   },
   "100x-chat-shell": {
-    initials: "Chat",
+    initials: "Ai",
     fallbackClassName: "bg-chart-2/15 text-chart-2",
   },
   "resume-builder": {

@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { RouteError } from "@/components/route-error"
 import { getAllPosts } from "@/lib/sanity/posts"
+import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -34,11 +35,11 @@ export const Route = createFileRoute("/blog/")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/blog",
+        content: siteUrl("/blog"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
       {
         name: "twitter:card",
@@ -54,13 +55,13 @@ export const Route = createFileRoute("/blog/")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/blog",
+        href: siteUrl("/blog"),
       },
     ],
   }),

@@ -85,9 +85,17 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
   )
 }
 
+const noopChatActions: PortfolioChatContextValue = {
+  openChat: () => {},
+  openChatWithMessage: () => {},
+}
+
 export function usePortfolioChat() {
   const context = useContext(PortfolioChatContext)
   if (!context) {
+    if (typeof window === "undefined") {
+      return noopChatActions
+    }
     throw new Error("usePortfolioChat must be used within PortfolioChatProvider")
   }
   return context

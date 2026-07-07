@@ -73,6 +73,9 @@ const demoLoaders: Record<string, (() => Promise<DemoModule>) | undefined> = {
   "contact-section": () => import("./custom-demos").then((m) => ({ default: m.ContactSectionDemo })),
   "ai-elements": () => import("./ai-elements-demo").then((m) => ({ default: m.AiElementsDemo })),
   "chat-prompt-input": () => import("./chat-prompt-input-demo").then((m) => ({ default: m.ChatInputDemo })),
+  "feature-card": () => import("./custom-demos").then((m) => ({ default: m.FeatureCardDemo })),
+  "feature-card-grid": () => import("./custom-demos").then((m) => ({ default: m.FeatureCardGridDemo })),
+  "projects-showcase": () => import("./custom-demos").then((m) => ({ default: m.ProjectsShowcaseDemo })),
 }
 
 export function loadDemo(slug: string): Promise<ComponentType> {

@@ -6,7 +6,7 @@ export const SHOW_PROJECTS_TOOL_DEFINITION = {
   function: {
     name: SHOW_PROJECTS_TOOL_NAME,
     description:
-      "Display an interactive grid or carousel of Akshay's product design and design engineering projects (including 100x chat shell, Kodo, Unlogged, Tulr, Resume Builder). Trigger this tool when the user asks about projects, case studies, apps built, or work highlights.",
+      "Display an interactive grid or carousel of Akshay's product design and design engineering projects (including Design with AI, Kodo, Unlogged, Tulr, Resume Builder). Trigger this tool when the user asks about projects, case studies, apps built, or work highlights.",
     parameters: {
       type: "object",
       properties: {

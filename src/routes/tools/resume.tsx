@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 
 import { PublicResumeWizard } from "@/features/resume/public/public-resume-wizard"
+import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/tools/resume")({
   head: () => ({
@@ -30,11 +31,11 @@ export const Route = createFileRoute("/tools/resume")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/tools/resume",
+        content: siteUrl("/tools/resume"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
       {
         name: "twitter:card",
@@ -50,13 +51,13 @@ export const Route = createFileRoute("/tools/resume")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/tools/resume",
+        href: siteUrl("/tools/resume"),
       },
     ],
   }),

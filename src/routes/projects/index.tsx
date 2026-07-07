@@ -1,28 +1,18 @@
 import { useRef, lazy, Suspense } from "react"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
+import { useTheme } from "next-themes"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { WorkProjectGroup } from "@/components/projects/work-project-group"
 import { RouteError } from "@/components/route-error"
-import { useBrandColors } from "@/hooks/use-brand-colors"
+import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
 import { getAllWorkSections } from "@/lib/sanity/projects"
+import { siteUrl } from "@/lib/site-url"
 
 const DotField = lazy(() => import("@/components/DotField"))
-
-function hexToRgba(hex: string, alpha: number) {
-  const normalized = hex.replace("#", "").trim()
-  if (normalized.length !== 6) return `rgba(168, 85, 247, ${alpha})`
-  const r = Number.parseInt(normalized.slice(0, 2), 16)
-  const g = Number.parseInt(normalized.slice(2, 4), 16)
-  const b = Number.parseInt(normalized.slice(4, 6), 16)
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
-    return `rgba(168, 85, 247, ${alpha})`
-  }
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -52,11 +42,11 @@ export const Route = createFileRoute("/projects/")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/projects",
+        content: siteUrl("/projects"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
       {
         name: "twitter:card",
@@ -72,13 +62,13 @@ export const Route = createFileRoute("/projects/")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/hero-portrait.png",
+        content: siteUrl("/images/hero-portrait.png"),
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/projects",
+        href: siteUrl("/projects"),
       },
     ],
   }),
@@ -92,6 +82,11 @@ function ProjectsIndexPage() {
   const shouldReduceMotion = useReducedMotion()
   const mainRef = useRef<HTMLElement>(null)
   const brandColors = useBrandColors()
+  const { resolvedTheme } = useTheme()
+  const dotFieldAppearance = getDotFieldAppearance(
+    brandColors,
+    resolvedTheme === "light" ? "light" : "dark",
+  )
 
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -112,9 +107,9 @@ function ProjectsIndexPage() {
                   glowRadius={160}
                   sparkle={false}
                   waveAmplitude={0}
-                  gradientFrom={hexToRgba(brandColors.primary, 0.75)}
-                  gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.55)}
-                  glowColor={hexToRgba(brandColors.primary, 0.45)}
+                  gradientFrom={dotFieldAppearance.gradientFrom}
+                  gradientTo={dotFieldAppearance.gradientTo}
+                  glowColor={dotFieldAppearance.glowColor}
                 />
               </Suspense>
             </ErrorBoundary>

@@ -1,6 +1,9 @@
-import { Link } from "@tanstack/react-router"
-import { ArrowLeft, ExternalLink, Sparkles } from "lucide-react"
+"use client"
 
+import { Link } from "@tanstack/react-router"
+import { ExternalLink, Sparkles } from "lucide-react"
+
+import { CaseStudyBackLink } from "@/components/projects/case-study-back-link"
 import { BlockRenderer, ProjectCoverImage } from "@/components/projects/blocks/block-renderer"
 import { CaseStudyNav } from "@/components/projects/case-study-nav"
 import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
@@ -65,12 +68,7 @@ export function CaseStudyLayout({ project }: CaseStudyLayoutProps) {
   return (
     <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
       <div className="mb-8">
-        <Button asChild variant="ghost" size="sm" className="-ml-2">
-          <Link to="/projects">
-            <ArrowLeft className="size-4" />
-            All projects
-          </Link>
-        </Button>
+        <CaseStudyBackLink />
       </div>
 
       <header className="space-y-6 border-b border-border pb-10">

@@ -147,9 +147,25 @@ const DotField = memo(({
     const speedInterval = setInterval(updateMouseSpeed, 20);
 
     let frameCount = 0;
+    let isPageVisible = document.visibilityState !== 'hidden';
+
+    function scheduleTick() {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    function onVisibilityChange() {
+      isPageVisible = document.visibilityState !== 'hidden';
+      if (isPageVisible) scheduleTick();
+      else if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    }
 
     function tick() {
       if (!ctx) return;
+      if (!isPageVisible) return;
       frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
@@ -250,7 +266,8 @@ const DotField = memo(({
     doResize();
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMouseMove, { passive: true });
-    rafRef.current = requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    scheduleTick();
 
     rebuildRef.current = () => {
       const { w, h } = sizeRef.current;
@@ -263,6 +280,7 @@ const DotField = memo(({
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
