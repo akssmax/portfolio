@@ -5,6 +5,9 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 
 gsap.registerPlugin(InertiaPlugin);
 
+const SCROLL_PAUSE_MS = 180;
+const REST_EPSILON = 0.25;
+
 const throttle = (func: (...args: any[]) => void, limit: number) => {
   let lastCall = 0;
   return function (this: any, ...args: any[]) {
@@ -68,9 +71,10 @@ const DotGrid: React.FC<DotGridProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dotsRef = useRef<Dot[]>([]);
+  const scheduleDrawRef = useRef<(() => void) | null>(null);
   const pointerRef = useRef({
-    x: 0,
-    y: 0,
+    x: -9999,
+    y: -9999,
     vx: 0,
     vy: 0,
     speed: 0,
@@ -96,14 +100,14 @@ const DotGrid: React.FC<DotGridProps> = ({
     if (!wrap || !canvas) return;
 
     const { width, height } = wrap.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     const ctx = canvas.getContext('2d');
-    if (ctx) ctx.scale(dpr, dpr);
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const cols = Math.floor((width + gap) / (dotSize + gap));
     const rows = Math.floor((height + gap) / (dotSize + gap));
@@ -127,24 +131,71 @@ const DotGrid: React.FC<DotGridProps> = ({
       }
     }
     dotsRef.current = dots;
+    scheduleDrawRef.current?.();
   }, [dotSize, gap]);
 
   useEffect(() => {
     if (!circlePath) return;
 
-    let rafId: number;
     const proxSq = proximity * proximity;
+    let rafId: number | null = null;
+    let scrollPaused = false;
+    let scrollResumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let isPageVisible = document.visibilityState !== 'hidden';
 
-    const draw = () => {
+    const dotsAreAnimating = () => {
+      for (const dot of dotsRef.current) {
+        if (
+          dot._inertiaApplied ||
+          Math.abs(dot.xOffset) > REST_EPSILON ||
+          Math.abs(dot.yOffset) > REST_EPSILON
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const pointerIsNear = () => {
+      const { x: px, y: py } = pointerRef.current;
+      if (px < -1000) return false;
+
+      for (const dot of dotsRef.current) {
+        const dx = dot.cx - px;
+        const dy = dot.cy - py;
+        if (dx * dx + dy * dy <= proxSq * 1.5) return true;
+      }
+      return false;
+    };
+
+    const needsAnimation = () => {
+      if (!isPageVisible || scrollPaused) return false;
+      return pointerIsNear() || dotsAreAnimating();
+    };
+
+    const scheduleDraw = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(draw);
+    };
+
+    scheduleDrawRef.current = scheduleDraw;
+
+    const stopDraw = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    };
+
+    const paintFrame = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      ctx.save();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
       const { x: px, y: py } = pointerRef.current;
 
@@ -171,13 +222,49 @@ const DotGrid: React.FC<DotGridProps> = ({
         ctx.fill(circlePath);
         ctx.restore();
       }
-
-      rafId = requestAnimationFrame(draw);
     };
 
-    draw();
-    return () => cancelAnimationFrame(rafId);
-  }, [proximity, baseColor, activeRgb, baseRgb, circlePath]);
+    const draw = () => {
+      rafId = null;
+      if (scrollPaused || !isPageVisible) return;
+      paintFrame();
+      if (needsAnimation()) scheduleDraw();
+    };
+
+    const pauseForScroll = () => {
+      scrollPaused = true;
+      stopDraw();
+      if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = setTimeout(() => {
+        scrollPaused = false;
+        scrollResumeTimer = null;
+        if (needsAnimation()) scheduleDraw();
+      }, SCROLL_PAUSE_MS);
+    };
+
+    const onVisibilityChange = () => {
+      isPageVisible = document.visibilityState !== 'hidden';
+      if (isPageVisible && needsAnimation()) scheduleDraw();
+      else stopDraw();
+    };
+
+    buildGrid();
+    paintFrame();
+    if (needsAnimation()) scheduleDraw();
+
+    window.addEventListener('wheel', pauseForScroll, { passive: true });
+    window.addEventListener('scroll', pauseForScroll, { passive: true });
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      scheduleDrawRef.current = null;
+      stopDraw();
+      if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+      window.removeEventListener('wheel', pauseForScroll);
+      window.removeEventListener('scroll', pauseForScroll);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, [proximity, baseColor, activeRgb, baseRgb, circlePath, buildGrid]);
 
   useEffect(() => {
     buildGrid();
@@ -195,6 +282,8 @@ const DotGrid: React.FC<DotGridProps> = ({
   }, [buildGrid]);
 
   useEffect(() => {
+    const requestDraw = () => scheduleDrawRef.current?.();
+
     const onMove = (e: MouseEvent) => {
       const now = performance.now();
       const pr = pointerRef.current;
@@ -221,6 +310,8 @@ const DotGrid: React.FC<DotGridProps> = ({
       pr.x = e.clientX - rect.left;
       pr.y = e.clientY - rect.top;
 
+      requestDraw();
+
       for (const dot of dotsRef.current) {
         const dist = Math.hypot(dot.cx - pr.x, dot.cy - pr.y);
         if (speed > speedTrigger && dist < proximity && !dot._inertiaApplied) {
@@ -230,14 +321,19 @@ const DotGrid: React.FC<DotGridProps> = ({
           const pushY = dot.cy - pr.y + vy * 0.005;
           gsap.to(dot, {
             inertia: { xOffset: pushX, yOffset: pushY, resistance },
+            onUpdate: requestDraw,
             onComplete: () => {
               gsap.to(dot, {
                 xOffset: 0,
                 yOffset: 0,
                 duration: returnDuration,
-                ease: 'elastic.out(1,0.75)'
+                ease: 'power2.out',
+                onUpdate: requestDraw,
+                onComplete: () => {
+                  dot._inertiaApplied = false;
+                  requestDraw();
+                }
               });
-              dot._inertiaApplied = false;
             }
           });
         }
@@ -258,14 +354,19 @@ const DotGrid: React.FC<DotGridProps> = ({
           const pushY = (dot.cy - cy) * shockStrength * falloff;
           gsap.to(dot, {
             inertia: { xOffset: pushX, yOffset: pushY, resistance },
+            onUpdate: requestDraw,
             onComplete: () => {
               gsap.to(dot, {
                 xOffset: 0,
                 yOffset: 0,
                 duration: returnDuration,
-                ease: 'elastic.out(1,0.75)'
+                ease: 'power2.out',
+                onUpdate: requestDraw,
+                onComplete: () => {
+                  dot._inertiaApplied = false;
+                  requestDraw();
+                }
               });
-              dot._inertiaApplied = false;
             }
           });
         }
@@ -284,7 +385,7 @@ const DotGrid: React.FC<DotGridProps> = ({
 
   return (
     <div className={`relative h-full w-full ${className}`} style={style}>
-      <div ref={wrapperRef} className="relative h-full w-full">
+      <div ref={wrapperRef} className="relative h-full w-full contain-strict">
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       </div>
     </div>

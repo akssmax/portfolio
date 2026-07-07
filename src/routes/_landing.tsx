@@ -96,8 +96,8 @@ function Landing1Layout() {
       "bg-background text-foreground flex flex-col relative",
       isChatRoute ? "h-svh" : "min-h-svh"
     )}>
-      {/* Animated dot field canvas background */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+      {/* Viewport-fixed canvas — avoids sizing to full page scroll height */}
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
         {showDotField ? (
           <React.Suspense fallback={null}>
             <DotField

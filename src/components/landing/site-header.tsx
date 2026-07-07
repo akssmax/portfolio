@@ -101,7 +101,9 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-sm${
+        className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 ${
+          fullMotion ? "bg-background/80 backdrop-blur-sm" : "bg-background/95"
+        }${
           fullMotion ? " animate-in fade-in slide-in-from-top-2 duration-300" : ""
         }`}
       >

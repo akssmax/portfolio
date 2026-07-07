@@ -87,7 +87,7 @@ function HeroPromptSuggestions({
 
 function FeaturedTestimonial({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/60 shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5">
+    <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/60 shadow-xs hover:border-primary/20 transition-[border-color,box-shadow] duration-300 space-y-5">
       <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
         <Quote className="size-3.5 fill-current" />
       </div>
@@ -229,7 +229,7 @@ function Landing1IndexPage() {
       {/* Meet the Designer & Engineer Section */}
       <section
         ref={aboutRef}
-        className="py-24 border-t border-border/80 bg-background/40 relative z-10"
+        className="py-24 border-t border-border/80 bg-background/40 relative z-10 [content-visibility:auto] [contain-intrinsic-size:auto_720px]"
       >
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
@@ -273,7 +273,7 @@ function Landing1IndexPage() {
 
               {/* Featured Testimonial Quote */}
               <div className="relative min-h-[220px]">
-                {canAnimate && activeTestimonial ? (
+                {canAnimate && fullMotion && activeTestimonial ? (
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeTestimonial.id}
@@ -296,7 +296,10 @@ function Landing1IndexPage() {
               <M3FeatureImage
                 items={portraitItems}
                 alt="Akshay Saini Portrait"
-                imageClassName="size-72 sm:size-80 lg:size-[24rem] xl:size-[26rem] hover:scale-[1.01] transition-transform duration-300"
+                imageClassName={cn(
+                  "size-72 sm:size-80 lg:size-[24rem] xl:size-[26rem]",
+                  fullMotion && "hover:scale-[1.01] transition-transform duration-300",
+                )}
                 active={fullMotion && aboutInView}
                 onMorphStart={handlePortraitMorphStart}
               />

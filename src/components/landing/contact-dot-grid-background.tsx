@@ -4,6 +4,7 @@ import { lazy, Suspense, useRef } from "react"
 import { useReducedMotion } from "motion/react"
 
 import { useAppearance } from "@/components/appearance-provider"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { useInView } from "@/hooks/use-in-view"
 import {
   getPrimarySurfaceDotColors,
@@ -29,6 +30,7 @@ function StaticDotGrid() {
 
 export function ContactDotGridBackground() {
   const shouldReduceMotion = useReducedMotion()
+  const { fullMotion } = useAnimationProfile()
   const containerRef = useRef<HTMLDivElement>(null)
   const { appearance, mounted } = useAppearance()
   const { primary, primaryForeground } = useBrandColors()
@@ -39,7 +41,7 @@ export function ContactDotGridBackground() {
     enabled: mounted,
   })
 
-  const showInteractive = mounted && !shouldReduceMotion && inView
+  const showInteractive = mounted && !shouldReduceMotion && fullMotion && inView
 
   const { baseColor, activeColor } = getPrimarySurfaceDotColors(
     primary,

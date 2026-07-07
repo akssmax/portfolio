@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
+import { useFullMotion } from "@/hooks/use-can-animate"
 import { cn } from "@/lib/utils"
 
 type HeroRotatingTextProps = {
@@ -48,6 +49,7 @@ function HeroRotatingText({
   className,
 }: HeroRotatingTextProps) {
   const shouldReduceMotion = useReducedMotion()
+  const fullMotion = useFullMotion()
   const safeIndex = lines.length > 0 ? ((index % lines.length) + lines.length) % lines.length : 0
   const line = lines[safeIndex] ?? ""
   const isHeadline = variant === "headline"
@@ -76,14 +78,17 @@ function HeroRotatingText({
             <motion.span
               key={safeIndex}
               className={cn(
-                "block will-change-[transform,opacity,filter]",
+                "block",
+                fullMotion && "will-change-[transform,opacity]",
                 isHeadline && "origin-left",
               )}
               initial={
                 shouldReduceMotion
                   ? false
                   : isHeadline
-                    ? { opacity: 0, x: 32, filter: "blur(8px)" }
+                    ? fullMotion
+                      ? { opacity: 0, x: 32 }
+                      : { opacity: 0, y: 16 }
                     : { opacity: 0, y: 14 }
               }
               animate={
@@ -91,24 +96,35 @@ function HeroRotatingText({
                   ? {
                       opacity: 1,
                       x: 0,
-                      filter: "blur(0px)",
-                      transition: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 32,
-                        mass: 0.8,
-                      },
+                      y: 0,
+                      transition: fullMotion
+                        ? {
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 32,
+                            mass: 0.8,
+                          }
+                        : {
+                            duration: 0.35,
+                            ease: [0.22, 1, 0.36, 1],
+                          },
                     }
                   : {
                       opacity: 1,
                       y: 0,
-                      transition: {
-                        type: "spring",
-                        stiffness: 320,
-                        damping: 36,
-                        mass: 0.9,
-                        delay: 0.08,
-                      },
+                      transition: fullMotion
+                        ? {
+                            type: "spring",
+                            stiffness: 320,
+                            damping: 36,
+                            mass: 0.9,
+                            delay: 0.08,
+                          }
+                        : {
+                            duration: 0.3,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: 0.06,
+                          },
                     }
               }
               exit={
@@ -117,8 +133,8 @@ function HeroRotatingText({
                   : isHeadline
                     ? {
                         opacity: 0,
-                        x: -32,
-                        filter: "blur(8px)",
+                        x: fullMotion ? -32 : 0,
+                        y: fullMotion ? 0 : -12,
                         transition: {
                           duration: 0.22,
                           ease: [0.55, 0, 1, 0.45],
