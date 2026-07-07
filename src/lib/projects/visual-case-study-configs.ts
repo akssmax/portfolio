@@ -391,3 +391,13 @@ const VISUAL_CASE_STUDY_CONFIGS: Record<string, VisualCaseStudyConfig> = {
 export function getVisualCaseStudyConfig(slug: string): VisualCaseStudyConfig | null {
   return VISUAL_CASE_STUDY_CONFIGS[slug] ?? null
 }
+
+export function listVisualCaseStudyConfigs(): Array<{
+  slug: string
+  config: VisualCaseStudyConfig
+}> {
+  return Object.entries(VISUAL_CASE_STUDY_CONFIGS).map(([slug, config]) => ({
+    slug,
+    config,
+  }))
+}
