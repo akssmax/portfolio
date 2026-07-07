@@ -46,3 +46,24 @@ export const HERO_HEADLINES = HERO_COPY.map((item) => item.headline)
 export const HERO_TAGLINES = HERO_COPY.map((item) => item.tagline)
 
 export type HeroHeadline = (typeof HERO_COPY)[number]["headline"]
+
+/** Homepage hero rotating lines (prompt-first landing). */
+export const LANDING_HERO_COPY = [
+  {
+    title: "Product designer who ships",
+    subtitle: "I design in Figma and ship production-ready React code.",
+  },
+  {
+    title: "Ask my portfolio anything.",
+    subtitle:
+      "Use the prompt below to search my projects, case studies, and engineering background.",
+  },
+  {
+    title: "Hire a Product Designer in Bangalore.",
+    subtitle: "8+ years experience across fintech, devtools, and agentic AI.",
+  },
+  {
+    title: "Zero handoff friction.",
+    subtitle: "I bridge the gap between design systems and frontend code.",
+  },
+] as const

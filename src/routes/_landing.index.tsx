@@ -13,6 +13,7 @@ import { useInView } from "@/hooks/use-in-view"
 import { getRandomizedHeroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
+import { LANDING_HERO_COPY } from "@/lib/hero-headlines"
 import type { Testimonial } from "@/lib/testimonials"
 import { cn } from "@/lib/utils"
 
@@ -42,25 +43,6 @@ function getProjectLiveUrl(slug: string): string | null {
       return null
   }
 }
-
-const ROTATING_COPY = [
-  {
-    title: "Product designer who ships",
-    subtitle: "I design in Figma and ship production-ready React code.",
-  },
-  {
-    title: "Ask my portfolio anything.",
-    subtitle: "Use the prompt below to search my projects, case studies, and engineering background.",
-  },
-  {
-    title: "Hire a Product Designer in Bangalore.",
-    subtitle: "8+ years experience across fintech, devtools, and agentic AI.",
-  },
-  {
-    title: "Zero handoff friction.",
-    subtitle: "I bridge the gap between design systems and frontend code.",
-  },
-] as const
 
 function HeroPromptSuggestions({
   suggestions,
@@ -224,7 +206,7 @@ function Landing1IndexPage() {
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center py-20 min-h-[500px] border-b border-border">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 flex flex-col items-center text-center space-y-8">
-          <LandingHeroRotatingCopy slides={ROTATING_COPY} intervalMs={7500} />
+          <LandingHeroRotatingCopy slides={LANDING_HERO_COPY} intervalMs={7500} />
 
           {/* Chat Input wrapper with shared layout id */}
           <PromptShell className="w-full pt-4 space-y-4" {...promptShellProps}>

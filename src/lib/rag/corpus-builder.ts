@@ -1,9 +1,10 @@
 import { toPlainText } from "@portabletext/toolkit"
 import type { PortableTextBlock } from "@portabletext/react"
 
-import { HERO_COPY } from "@/lib/hero-headlines"
+import { HERO_COPY, LANDING_HERO_COPY } from "@/lib/hero-headlines"
 import { profile } from "@/lib/profile"
 import { fallbackProjects } from "@/lib/sanity/fallback-projects"
+import { listVisualCaseStudyConfigs } from "@/lib/projects/visual-case-study-configs"
 import type { ContentBlock } from "@/lib/sanity/types"
 
 import type { CorpusChunk, CorpusDocument } from "./types"
@@ -173,19 +174,122 @@ function buildProjectDocuments(): CorpusDocument[] {
 }
 
 function buildHeadlineDocuments(): CorpusDocument[] {
-  return HERO_COPY.map((item, index) => ({
+  const legacy = HERO_COPY.map((item, index) => ({
     id: `hero-copy-${index}`,
     source: "hero",
     sourceLabel: "Portfolio positioning",
     text: `${item.headline}\n${item.tagline}`,
     href: "/",
   }))
+
+  const landing = LANDING_HERO_COPY.map((item, index) => ({
+    id: `landing-hero-copy-${index}`,
+    source: "hero",
+    sourceLabel: "Homepage hero",
+    text: `${item.title}\n${item.subtitle}`,
+    href: "/",
+  }))
+
+  return [...legacy, ...landing]
+}
+
+function buildVisualCaseStudyDocuments(): CorpusDocument[] {
+  const docs: CorpusDocument[] = []
+
+  for (const { slug, config } of listVisualCaseStudyConfigs()) {
+    const project = fallbackProjects.find((entry) => entry.slug === slug)
+    const galleryLines = config.galleries.flatMap((gallery) => [
+      gallery.title,
+      gallery.description ?? "",
+      ...gallery.images.map(
+        (image) => `${image.label}${image.href ? ` — ${image.href}` : ""}`,
+      ),
+    ])
+
+    docs.push({
+      id: `project-${slug}-visual-case-study`,
+      source: `project/${slug}`,
+      sourceLabel: `${project?.title ?? slug} — Case Study (updated)`,
+      text: joinLines([
+        project?.title ?? "",
+        project?.description ?? "",
+        project?.metrics ?? "",
+        config.builtSummary,
+        config.footerNote,
+        `Live app: ${config.liveUrl}`,
+        config.secondaryUrl
+          ? `${config.secondaryLabel ?? "Secondary"}: ${config.secondaryUrl}`
+          : "",
+        `Stats: ${config.stats.map((stat) => `${stat.value} ${stat.label}`).join("; ")}`,
+        `Stack: ${config.stack.join(", ")}`,
+        "Highlights:",
+        ...config.highlights.map((item) => `- ${item}`),
+        "Design approach:",
+        ...config.designNotes.map((item) => `- ${item}`),
+        ...galleryLines,
+      ]),
+      href: `/projects/${slug}`,
+    })
+  }
+
+  return docs
+}
+
+function buildPortfolioSiteDocuments(): CorpusDocument[] {
+  const recentProjects = fallbackProjects.filter(
+    (project) => project.workSection === "recentProject",
+  )
+  const caseStudies = fallbackProjects.filter(
+    (project) => project.workSection === "caseStudy",
+  )
+
+  return [
+    {
+      id: "portfolio-homepage-overview",
+      source: "portfolio",
+      sourceLabel: "Portfolio homepage",
+      text: joinLines([
+        "Akshay Saini's portfolio is a prompt-first design engineer site at akshaysaini.xyz.",
+        "Homepage hero: rotating copy plus an AI chat prompt — visitors can ask about projects, experience, and hiring.",
+        "Recent work section: AI-assisted products designed and shipped fast.",
+        ...recentProjects.map(
+          (project) =>
+            `- ${project.title} (/projects/${project.slug}) — ${project.description}${project.metrics ? ` (${project.metrics})` : ""}`,
+        ),
+        "Case studies section: deep pre-LLM product design work.",
+        ...caseStudies.map(
+          (project) =>
+            `- ${project.title} (/projects/${project.slug}) — ${project.description}`,
+        ),
+      ]),
+      href: "/",
+    },
+    {
+      id: "portfolio-tools",
+      source: "portfolio",
+      sourceLabel: "Portfolio tools",
+      text: joinLines([
+        "Interactive tools built into the portfolio:",
+        "- /tools/resume — public AI Resume Builder. Paste a LinkedIn, GitHub, Peerlist, or portfolio URL; Brave Search + Mistral structure a resume; customize layout and download PDF. Free, 3 generations per IP per day.",
+        "- /resume — password-protected owner workspace for tailoring Akshay's resume PDF from seeded profile data.",
+        "- Portfolio chat — RAG-grounded answers about Akshay's work, plus Brave web search for external facts.",
+        "Featured recent projects with live demos:",
+        "- Design with AI (100x-chat-shell) — https://llm-daisyui-shell.vercel.app/",
+        "- 100x.Bot marketing site — https://100x.bot/",
+        "- 100x Agent Extension — https://agent.akshaysaini.xyz/",
+        "- Resume Builder case study — /projects/resume-builder with Try the tool CTA",
+      ]),
+      href: "/tools/resume",
+    },
+  ]
 }
 
 export function buildCorpusDocuments(): CorpusDocument[] {
   return [
     ...buildProfileDocuments(),
     ...buildProjectDocuments(),
+    ...buildVisualCaseStudyDocuments(),
+    ...buildPortfolioSiteDocuments(),
     ...buildHeadlineDocuments(),
   ]
 }
