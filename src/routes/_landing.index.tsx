@@ -10,9 +10,13 @@ import { M3FeatureImage, M3ShapeImage, readStoredHeroPortraitIndex } from "@/com
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { useInView } from "@/hooks/use-in-view"
-import { getRandomizedHeroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
+import { getRandomizedHeroPortraitItems, heroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
-import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
+import {
+  DEFAULT_HERO_PROMPT_SUGGESTIONS,
+  getRandomHeroPromptSuggestions,
+  type HeroPromptSuggestion,
+} from "@/lib/hero-prompt-suggestions"
 import { LANDING_HERO_COPY } from "@/lib/hero-headlines"
 import type { Testimonial } from "@/lib/testimonials"
 import { cn } from "@/lib/utils"
@@ -48,7 +52,7 @@ function HeroPromptSuggestions({
   suggestions,
   onSelect,
 }: {
-  suggestions: ReturnType<typeof getRandomHeroPromptSuggestions>
+  suggestions: readonly HeroPromptSuggestion[]
   onSelect: (query: string, mode: "gen-ui" | "chat") => void
 }) {
   return (
@@ -135,11 +139,19 @@ function Landing1IndexPage() {
 
   const navigate = useNavigate()
   const [prompt, setPrompt] = React.useState("")
-  const [portraitItems] = React.useState(() => getRandomizedHeroPortraitItems())
-  const [starterSuggestions] = React.useState(() => getRandomHeroPromptSuggestions())
-  const [testimonialIndex, setTestimonialIndex] = React.useState(
-    () => readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % testimonials.length,
+  const [portraitItems, setPortraitItems] = React.useState(heroPortraitItems)
+  const [starterSuggestions, setStarterSuggestions] = React.useState(
+    DEFAULT_HERO_PROMPT_SUGGESTIONS,
   )
+  const [testimonialIndex, setTestimonialIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    setPortraitItems(getRandomizedHeroPortraitItems())
+    setStarterSuggestions(getRandomHeroPromptSuggestions())
+    setTestimonialIndex(
+      readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % testimonials.length,
+    )
+  }, [])
 
   const handlePortraitMorphStart = React.useCallback((nextIndex: number) => {
     setTestimonialIndex(nextIndex % testimonials.length)

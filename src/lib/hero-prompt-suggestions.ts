@@ -57,6 +57,12 @@ export const HERO_PROMPT_SUGGESTION_POOL: HeroPromptSuggestion[] = [
 
 export const HERO_SUGGESTION_COUNT = 3
 
+/** Stable SSR default — same chips on server and first client paint. */
+export const DEFAULT_HERO_PROMPT_SUGGESTIONS = HERO_PROMPT_SUGGESTION_POOL.slice(
+  0,
+  HERO_SUGGESTION_COUNT,
+)
+
 function shuffleInPlace<T>(items: T[]) {
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
