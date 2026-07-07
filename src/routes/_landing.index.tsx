@@ -1,18 +1,26 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
-import { ClipboardList, Globe, RefreshCw, Sparkles, Star, Quote } from "lucide-react"
+import { ClipboardList, Sparkles, Star, Quote } from "lucide-react"
+import { LandingHeroRotatingCopy } from "@/components/landing/landing-hero-rotating-copy"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
-import { toast } from "sonner"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
-import { M3FeatureImage, M3ShapeImage } from "@/components/m3-shapes"
-import { ContactSection } from "@/components/landing/contact-section"
-import { getRandomizedHeroPortraitItems } from "@/lib/hero-portraits"
+import { M3FeatureImage, M3ShapeImage, readStoredHeroPortraitIndex } from "@/components/m3-shapes"
+import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { useInView } from "@/hooks/use-in-view"
+import { getRandomizedHeroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import { getRandomHeroPromptSuggestions } from "@/lib/hero-prompt-suggestions"
-import { HorizontalProjectCard } from "@/components/projects/horizontal-project-card"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import type { Testimonial } from "@/lib/testimonials"
+import { cn } from "@/lib/utils"
+
+const LazyContactSection = React.lazy(() =>
+  import("@/components/landing/contact-section").then((module) => ({
+    default: module.ContactSection,
+  })),
+)
 
 function getProjectLiveUrl(slug: string): string | null {
   switch (slug) {
@@ -54,11 +62,90 @@ const ROTATING_COPY = [
   },
 ] as const
 
+function HeroPromptSuggestions({
+  suggestions,
+  onSelect,
+}: {
+  suggestions: ReturnType<typeof getRandomHeroPromptSuggestions>
+  onSelect: (query: string, mode: "gen-ui" | "chat") => void
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1.5">
+      {suggestions.map((item, idx) => {
+        const IconComponent = idx % 3 === 0 ? Sparkles : idx % 3 === 1 ? Star : ClipboardList
+        const targetMode =
+          item.query.toLowerCase().includes("project") ||
+          item.query.toLowerCase().includes("experience") ||
+          item.query.toLowerCase().includes("timeline") ||
+          item.query.toLowerCase().includes("history")
+            ? "gen-ui"
+            : "chat"
+
+        return (
+          <button
+            key={item.label}
+            type="button"
+            onClick={() => onSelect(item.query, targetMode)}
+            className={cn(
+              "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer transition-all duration-200 text-xs",
+              "border-border/80 bg-card text-foreground/85 shadow-sm ring-1 ring-black/[0.05]",
+              "hover:border-primary/30 hover:bg-card hover:text-foreground hover:shadow-md",
+              "dark:border-border dark:bg-card/45 dark:text-muted-foreground dark:ring-0",
+              "dark:hover:bg-card/85 dark:hover:text-foreground dark:shadow-sm",
+            )}
+          >
+            <IconComponent className="size-3.5" />
+            {item.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function FeaturedTestimonial({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <div className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/60 shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5">
+      <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
+        <Quote className="size-3.5 fill-current" />
+      </div>
+      <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
+        &quot;
+        {testimonial.quote.map((part, index) =>
+          part.bold ? (
+            <strong key={index} className="font-semibold text-foreground not-italic">
+              {part.text}
+            </strong>
+          ) : (
+            part.text
+          ),
+        )}
+        &quot;
+      </blockquote>
+      <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
+        <M3ShapeImage
+          shape="arch"
+          src={testimonial.avatarSrc}
+          alt={testimonial.name}
+          className="size-9.5 shrink-0 bg-primary/10"
+        />
+        <div className="min-w-0">
+          <p className="text-xs font-bold text-foreground truncate">{testimonial.name}</p>
+          <p className="text-[10px] text-muted-foreground truncate">{testimonial.headline}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const Route = createFileRoute("/_landing/")({
   component: Landing1IndexPage,
 })
 
 function Landing1IndexPage() {
+  const { canAnimate, fullMotion } = useAnimationProfile()
+  const { ref: aboutRef, inView: aboutInView } = useInView({ rootMargin: "120px" })
+  const { ref: contactRef, inView: contactInView } = useInView({ rootMargin: "240px", once: true })
   // Retrieve loader data from the parent route '/_landing'
   const { recentProjects, caseStudies } = useLoaderData({
     from: "/_landing",
@@ -66,25 +153,14 @@ function Landing1IndexPage() {
 
   const navigate = useNavigate()
   const [prompt, setPrompt] = React.useState("")
-  const [copyIndex, setCopyIndex] = React.useState(0)
   const [portraitItems] = React.useState(() => getRandomizedHeroPortraitItems())
   const [starterSuggestions] = React.useState(() => getRandomHeroPromptSuggestions())
-  const [testimonialIndex, setTestimonialIndex] = React.useState(2) // Start with Shardul Lavekar
+  const [testimonialIndex, setTestimonialIndex] = React.useState(
+    () => readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % testimonials.length,
+  )
 
-  // Rotate copy title
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCopyIndex((prev) => (prev + 1) % ROTATING_COPY.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
-
-  // Rotate testimonials
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTestimonialIndex((prev) => (prev + 1) % testimonials.length)
-    }, 7000)
-    return () => clearInterval(timer)
+  const handlePortraitMorphStart = React.useCallback((nextIndex: number) => {
+    setTestimonialIndex(nextIndex % testimonials.length)
   }, [])
 
   const handleSubmitPrompt = (text: string, mode: "gen-ui" | "chat") => {
@@ -112,157 +188,67 @@ function Landing1IndexPage() {
     })
   }
 
-  const handleReload = () => {
-    toast.info("Refreshed build deployments")
-  }
-
-  // Map recent projects with IDs, dates, and live URLs
+  // Map recent projects with live URLs
   const recentProjectsList = React.useMemo(() => {
-    return recentProjects.map((p, idx) => {
+    return recentProjects.map((p) => {
       const liveUrl = getProjectLiveUrl(p.slug)
       return {
         ...p,
-        shortId: `EMT - ${p.slug.slice(0, 6).toUpperCase()}`,
-        relativeDate: idx === 0 ? "2 days ago" : idx === 1 ? "12 days ago" : "24 days ago",
         liveUrl: liveUrl ?? undefined,
       }
     })
   }, [recentProjects])
 
-  // Map case studies with IDs, dates, and live URLs
+  // Map case studies with live URLs
   const caseStudiesList = React.useMemo(() => {
-    return caseStudies.map((p, idx) => {
+    return caseStudies.map((p) => {
       const liveUrl = getProjectLiveUrl(p.slug)
       return {
         ...p,
-        shortId: `EMT - ${p.slug.slice(0, 6).toUpperCase()}`,
-        relativeDate: idx === 0 ? "42 days ago" : idx === 1 ? "55 days ago" : "68 days ago",
         liveUrl: liveUrl ?? undefined,
       }
     })
   }, [caseStudies])
+
+  const activeTestimonial = testimonials[testimonialIndex]
+  const PromptShell = fullMotion ? motion.div : "div"
+  const promptShellProps = fullMotion
+    ? {
+        layoutId: "chat-prompt-input-container",
+        transition: { type: "spring" as const, stiffness: 220, damping: 28 },
+      }
+    : {}
 
   return (
     <div className="flex-1 flex flex-col w-full">
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center py-20 min-h-[500px] border-b border-border">
         <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 flex flex-col items-center text-center space-y-8">
-          {/* Animated Titles */}
-          <div className="min-h-[7rem] sm:min-h-[9rem] flex flex-col items-center justify-center w-full">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={copyIndex}
-                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="space-y-3"
-              >
-                <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl text-foreground font-heading leading-tight">
-                  {ROTATING_COPY[copyIndex].title}
-                </h1>
-                <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground leading-relaxed text-balance">
-                  {ROTATING_COPY[copyIndex].subtitle}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <LandingHeroRotatingCopy slides={ROTATING_COPY} intervalMs={7500} />
 
           {/* Chat Input wrapper with shared layout id */}
-          <motion.div 
-            className="w-full pt-4 space-y-4"
-            layoutId="chat-prompt-input-container"
-            transition={{ type: "spring", stiffness: 220, damping: 28 }}
-          >
+          <PromptShell className="w-full pt-4 space-y-4" {...promptShellProps}>
             <ChatPromptInput
               value={prompt}
               onValueChange={setPrompt}
               onSubmit={handleSubmitPrompt}
               placeholder="Ask about Akshay's projects, product design experience, or RAG info..."
             />
-
-            {/* Quick Suggestion Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1.5">
-              {starterSuggestions.map((item, idx) => {
-                const IconComponent = idx % 3 === 0 ? Sparkles : idx % 3 === 1 ? Star : ClipboardList
-                const targetMode = (item.query.toLowerCase().includes("project") || item.query.toLowerCase().includes("experience") || item.query.toLowerCase().includes("timeline") || item.query.toLowerCase().includes("history")) ? "gen-ui" : "chat"
-                return (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => handleSubmitPrompt(item.query, targetMode)}
-                    className="rounded-full border border-border bg-card/45 hover:bg-card/85 text-xs text-muted-foreground hover:text-foreground px-4 py-2 flex items-center gap-2 cursor-pointer transition-all duration-200 shadow-sm"
-                  >
-                    <IconComponent className="size-3.5" />
-                    {item.label}
-                  </button>
-                )
-              })}
-            </div>
-          </motion.div>
+            <HeroPromptSuggestions suggestions={starterSuggestions} onSelect={handleSubmitPrompt} />
+          </PromptShell>
         </div>
       </section>
 
-      {/* Dashboard Section */}
-      <section className="py-20 bg-background border-y border-border/80 relative z-10">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <Tabs defaultValue="recent" className="w-full">
-            <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
-              <TabsList className="bg-muted/60 border border-border/40 p-1 rounded-xl">
-                <TabsTrigger value="recent" className="flex items-center gap-2 px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all">
-                  <ClipboardList className="size-3.5" />
-                  Recent Projects
-                </TabsTrigger>
-                <TabsTrigger value="case-studies" className="flex items-center gap-2 px-4 py-1.5 text-xs font-semibold cursor-pointer transition-all">
-                  <Globe className="size-3.5" />
-                  Case Studies
-                </TabsTrigger>
-              </TabsList>
-
-              <button
-                onClick={handleReload}
-                className="p-2 text-muted-foreground hover:text-foreground rounded-lg border border-border hover:bg-muted/50 transition-all cursor-pointer"
-                title="Reload Projects"
-              >
-                <RefreshCw className="size-4" />
-              </button>
-            </div>
-
-            <TabsContent value="recent" className="space-y-4 outline-none">
-              {recentProjectsList.length > 0 ? (
-                recentProjectsList.map((project) => (
-                  <HorizontalProjectCard
-                    key={project._id}
-                    project={project}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/30">
-                  <p className="text-sm text-muted-foreground">No recent projects found</p>
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="case-studies" className="space-y-4 outline-none">
-              {caseStudiesList.length > 0 ? (
-                caseStudiesList.map((project) => (
-                  <HorizontalProjectCard
-                    key={project._id}
-                    project={project}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-12 border border-dashed border-border rounded-xl bg-card/30">
-                  <p className="text-sm text-muted-foreground">No case studies found</p>
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
+      <ProjectsShowcase
+        recentProjects={recentProjectsList}
+        caseStudies={caseStudiesList}
+      />
 
       {/* Meet the Designer & Engineer Section */}
-      <section className="py-24 border-t border-border/80 bg-background/40 relative z-10">
+      <section
+        ref={aboutRef}
+        className="py-24 border-t border-border/80 bg-background/40 relative z-10"
+      >
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
             {/* Left Column: Details & Testimonial */}
@@ -281,7 +267,7 @@ function Landing1IndexPage() {
               </div>
 
               {/* Personal Card Details */}
-              <div className="p-5 rounded-xl border border-border bg-card/50 backdrop-blur-md space-y-4 shadow-sm">
+              <div className="p-5 rounded-xl border border-border bg-card/60 space-y-4 shadow-sm">
                 <p className="text-xs font-semibold text-foreground uppercase tracking-wider">Personal Profile</p>
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div className="space-y-1">
@@ -305,52 +291,21 @@ function Landing1IndexPage() {
 
               {/* Featured Testimonial Quote */}
               <div className="relative min-h-[220px]">
-                <AnimatePresence mode="wait">
-                  {(() => {
-                    const t = testimonials[testimonialIndex]
-                    if (!t) return null
-                    return (
-                      <motion.div
-                        key={t.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.35, ease: "easeInOut" }}
-                        className="relative p-6 sm:p-7 rounded-2xl border border-border/80 bg-card/45 backdrop-blur-md shadow-xs hover:border-primary/20 transition-all duration-300 space-y-5"
-                      >
-                        {/* Quotation icon decoration */}
-                        <div className="absolute -top-3.5 -left-3.5 bg-primary text-primary-foreground size-8 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 select-none z-10">
-                          <Quote className="size-3.5 fill-current" />
-                        </div>
-                        <blockquote className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed pt-1.5 italic">
-                          &quot;
-                          {t.quote.map((part, index) =>
-                            part.bold ? (
-                              <strong key={index} className="font-semibold text-foreground not-italic">
-                                {part.text}
-                              </strong>
-                            ) : (
-                              part.text
-                            )
-                          )}
-                          &quot;
-                        </blockquote>
-                        <div className="flex items-center gap-3.5 pt-1.5 border-t border-border/40">
-                          <M3ShapeImage
-                            shape="arch"
-                            src={t.avatarSrc}
-                            alt={t.name}
-                            className="size-9.5 shrink-0 bg-primary/10"
-                          />
-                          <div className="min-w-0">
-                            <p className="text-xs font-bold text-foreground truncate">{t.name}</p>
-                            <p className="text-[10px] text-muted-foreground truncate">{t.headline}</p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )
-                  })()}
-                </AnimatePresence>
+                {canAnimate && activeTestimonial ? (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTestimonial.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.45, ease: "easeInOut" }}
+                    >
+                      <FeaturedTestimonial testimonial={activeTestimonial} />
+                    </motion.div>
+                  </AnimatePresence>
+                ) : activeTestimonial ? (
+                  <FeaturedTestimonial testimonial={activeTestimonial} />
+                ) : null}
               </div>
             </div>
 
@@ -360,15 +315,22 @@ function Landing1IndexPage() {
                 items={portraitItems}
                 alt="Akshay Saini Portrait"
                 imageClassName="size-72 sm:size-80 lg:size-[24rem] xl:size-[26rem] hover:scale-[1.01] transition-transform duration-300"
-                active={true}
+                active={fullMotion && aboutInView}
+                onMorphStart={handlePortraitMorphStart}
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact CTA Section */}
-      <ContactSection bottomCutout={true} />
+      {/* Contact CTA Section — lazy-loaded when near viewport */}
+      <div ref={contactRef}>
+        {contactInView ? (
+          <React.Suspense fallback={null}>
+            <LazyContactSection bottomCutout={true} />
+          </React.Suspense>
+        ) : null}
+      </div>
     </div>
   )
 }

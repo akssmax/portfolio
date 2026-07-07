@@ -1,4 +1,5 @@
 import { getDesignCareerSpanLabel } from "./experience-duration"
+import { siteUrl } from "./site-url"
 
 const experience = [
   {
@@ -136,7 +137,7 @@ export const profile = {
     phone: "+91 8168238248",
   },
   links: {
-    website: "https://akshaysaini.xyz/",
+    website: siteUrl("/"),
     linkedin: "https://www.linkedin.com/in/akssmax/",
     github: "https://github.com/akssmax",
     dribbble: "https://dribbble.com/akssmax",

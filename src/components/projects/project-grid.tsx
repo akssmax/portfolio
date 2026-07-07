@@ -57,6 +57,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Link
       to="/projects/$slug"
       params={{ slug: project.slug }}
+      search={{ from: "projects" }}
       className="block h-full"
     >
       <MotionCard

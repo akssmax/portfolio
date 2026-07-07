@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://akshaysaini.xyz/sitemap.xml
+Sitemap: https://www.akshaysaini.xyz/sitemap.xml

@@ -1,27 +1,19 @@
 import { Outlet, createFileRoute, useLocation } from "@tanstack/react-router"
 import * as React from "react"
-import { useReducedMotion } from "motion/react"
+import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 
 import { SiteHeader } from "@/components/landing/site-header"
 import { SiteFooter } from "@/components/landing/site-footer"
-import { useBrandColors } from "@/hooks/use-brand-colors"
+import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { useDeferredMount } from "@/hooks/use-deferred-mount"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeWorkSections } from "@/lib/sanity/projects"
+import { siteUrl } from "@/lib/site-url"
 import { RouteError } from "@/components/route-error"
 
 const DotField = React.lazy(() => import("@/components/DotField"))
-
-function hexToRgba(hex: string, alpha: number) {
-  const normalized = hex.replace("#", "").trim()
-  if (normalized.length !== 6) return `rgba(168, 85, 247, ${alpha})`
-  const r = Number.parseInt(normalized.slice(0, 2), 16)
-  const g = Number.parseInt(normalized.slice(2, 4), 16)
-  const b = Number.parseInt(normalized.slice(4, 6), 16)
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
-    return `rgba(168, 85, 247, ${alpha})`
-  }
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
 
 export const Route = createFileRoute("/_landing")({
   loader: () => getHomeWorkSections(),
@@ -53,11 +45,11 @@ export const Route = createFileRoute("/_landing")({
       },
       {
         property: "og:url",
-        content: "https://akshaysaini.xyz/",
+        content: siteUrl("/"),
       },
       {
         property: "og:image",
-        content: "https://akshaysaini.xyz/images/og-banner.jpg",
+        content: siteUrl("/images/og-banner.jpg"),
       },
       {
         name: "twitter:card",
@@ -73,13 +65,13 @@ export const Route = createFileRoute("/_landing")({
       },
       {
         name: "twitter:image",
-        content: "https://akshaysaini.xyz/images/og-banner.jpg",
+        content: siteUrl("/images/og-banner.jpg"),
       },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://akshaysaini.xyz/",
+        href: siteUrl("/"),
       },
     ],
   }),
@@ -87,31 +79,38 @@ export const Route = createFileRoute("/_landing")({
 })
 
 function Landing1Layout() {
-  const shouldReduceMotion = useReducedMotion()
+  const { canAnimate, fullMotion } = useAnimationProfile()
+  const showDotField = useDeferredMount(canAnimate)
+  const isMobile = useIsMobile()
   const brandColors = useBrandColors()
+  const { resolvedTheme } = useTheme()
   const location = useLocation()
   const isChatRoute = location.pathname.startsWith("/chat")
+  const dotFieldAppearance = getDotFieldAppearance(
+    brandColors,
+    resolvedTheme === "light" ? "light" : "dark",
+  )
 
   return (
     <div className={cn(
-      "bg-background text-foreground flex flex-col relative overflow-hidden",
+      "bg-background text-foreground flex flex-col relative",
       isChatRoute ? "h-svh" : "min-h-svh"
     )}>
       {/* Animated dot field canvas background */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        {!shouldReduceMotion ? (
+        {showDotField ? (
           <React.Suspense fallback={null}>
             <DotField
               className="absolute inset-0"
-              dotRadius={1.8}
-              dotSpacing={14}
-              bulgeStrength={67}
-              glowRadius={160}
+              dotRadius={fullMotion ? 1.8 : 1.5}
+              dotSpacing={isMobile ? 18 : fullMotion ? 14 : 20}
+              bulgeStrength={isMobile ? 48 : fullMotion ? 67 : 40}
+              glowRadius={isMobile ? 120 : fullMotion ? 160 : 100}
               sparkle={false}
               waveAmplitude={0}
-              gradientFrom={hexToRgba(brandColors.primary, 0.75)}
-              gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.55)}
-              glowColor={hexToRgba(brandColors.primary, 0.45)}
+              gradientFrom={dotFieldAppearance.gradientFrom}
+              gradientTo={dotFieldAppearance.gradientTo}
+              glowColor={dotFieldAppearance.glowColor}
             />
           </React.Suspense>
         ) : null}

@@ -7,6 +7,7 @@ import { RouteError } from "@/components/route-error"
 import { Button } from "@/components/ui/button"
 import { getImageUrl } from "@/lib/sanity/image"
 import { getPostBySlug } from "@/lib/sanity/posts"
+import { siteUrl } from "@/lib/site-url"
  
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => getPostBySlug(params.slug),
@@ -17,10 +18,10 @@ export const Route = createFileRoute("/blog/$slug")({
     const description =
       post?.seo?.metaDescription ?? post?.excerpt ?? undefined
     const slug = post?.slug ?? ""
-    const canonicalUrl = `https://akshaysaini.xyz/blog/${slug}`
+    const canonicalUrl = siteUrl(`/blog/${slug}`)
     
     const coverUrl = post?.coverImage ? getImageUrl(post.coverImage, 1200) : null
-    const imageUrl = coverUrl ?? "https://akshaysaini.xyz/images/og-banner.jpg"
+    const imageUrl = coverUrl ?? siteUrl("/images/og-banner.jpg")
  
     return {
       meta: [

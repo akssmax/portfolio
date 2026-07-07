@@ -9,8 +9,14 @@ import { ContactSection } from "@/components/landing/contact-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
 import { getProjectBySlug, getAllWorkSections } from "@/lib/sanity/projects"
+import { siteUrl } from "@/lib/site-url"
+
+import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 
 export const Route = createFileRoute("/projects/$slug")({
+  validateSearch: (search: Record<string, unknown>): { from?: CaseStudyFrom } => ({
+    from: search.from === "home" || search.from === "projects" ? search.from : undefined,
+  }),
   loader: async ({ params }) => {
     const [project, sections] = await Promise.all([
       getProjectBySlug(params.slug),
@@ -26,12 +32,12 @@ export const Route = createFileRoute("/projects/$slug")({
     const description =
       project?.seo?.metaDescription ?? project?.description ?? undefined
     const slug = project?.slug ?? ""
-    const canonicalUrl = `https://akshaysaini.xyz/projects/${slug}`
+    const canonicalUrl = siteUrl(`/projects/${slug}`)
     const imageUrl = project?.coverImageUrl
       ? project.coverImageUrl.startsWith("http")
         ? project.coverImageUrl
-        : `https://akshaysaini.xyz${project.coverImageUrl}`
-      : "https://akshaysaini.xyz/images/og-banner.jpg"
+        : siteUrl(project.coverImageUrl)
+      : siteUrl("/images/og-banner.jpg")
 
     return {
       meta: [
@@ -65,6 +71,7 @@ export const Route = createFileRoute("/projects/$slug")({
 
 function ProjectDetailPage() {
   const { project, sections } = Route.useLoaderData()
+  const { from } = Route.useSearch()
 
   if (!project) {
     return (
@@ -117,6 +124,7 @@ function ProjectDetailPage() {
               <Link
                 to="/projects/$slug"
                 params={{ slug: nextProject.slug }}
+                search={from ? { from } : undefined}
                 className="group block rounded-2xl border border-border bg-card p-6 sm:p-8 transition-all hover:border-primary/30 hover:shadow-lg"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

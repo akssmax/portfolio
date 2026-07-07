@@ -92,7 +92,7 @@ export const fallbackProjects: Project[] = [
     title: "100x.Bot Marketing Site",
     slug: "100x-landing-page",
     description:
-      "YC-backed marketing site for a browser automation platform — designed and built with Cursor alongside the founder.",
+      "YC-backed marketing site for browser automation — designed and built with Cursor.",
     tag: "Product UI",
     featured: true,
     workSection: "recentProject",
@@ -397,10 +397,10 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-100x-chat-shell",
-    title: "LLM Chat Shell",
+    title: "Design with AI",
     slug: "100x-chat-shell",
     description:
-      "AI-native workspace combining Mistral streaming chat, persistent memory, knowledge retrieval, and a conversational design studio.",
+      "A personal AI workspace — streaming chat, memory, RAG, and a conversational design studio in one shell.",
     tag: "Product UI",
     featured: true,
     workSection: "recentProject",
@@ -408,21 +408,21 @@ export const fallbackProjects: Project[] = [
     coverImageUrl: "/projects/chat-shell/hero.webp",
     year: "May 5–15, 2026",
     role: "Design Engineer",
-    client: "100x",
+    client: "Personal",
     tools: ["Cursor", "Mistral"],
     publishedAt: "2026-06-15T00:00:00.000Z",
-    metrics: "Shipped in 3 weeks · Used in production at 100x.bot",
+    metrics: "Personal project · Shipped in 10 days",
     seo: {
-      metaTitle: "LLM Chat Shell — Case Study",
+      metaTitle: "Design with AI — Case Study",
       metaDescription:
-        "How a full AI workspace shell — chat, memory, RAG, and generative design studio — was designed and built in ten days as a reference for AI product UX.",
+        "How a personal AI workspace — chat, memory, RAG, and generative design studio — was designed and built in ten days as a reference for AI product UX.",
     },
     content: [
       {
         _type: "sectionHeading",
         _key: "cs-h-context",
         title: "Context",
-        subtitle: "Solo design-engineering build for the 100x product ecosystem.",
+        subtitle: "Solo personal build exploring AI-native product UX.",
       },
       {
         _type: "richTextBlock",
@@ -430,7 +430,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "cs-rt-context-1",
-            "LLM Chat Shell is a production-minded reference app for a modern AI assistant workspace — not just a chat box, but memory, document grounding, and visual output in one cohesive shell.",
+            "Design with AI is a personal reference app for a modern AI assistant workspace — not just a chat box, but memory, document grounding, and visual output in one cohesive shell.",
           ),
           {
             _type: "block" as const,
@@ -466,7 +466,7 @@ export const fallbackProjects: Project[] = [
                 _type: "span" as const,
                 _key: "cs-rt-context-2-e",
                 marks: [],
-                text: " — companion to the 100x.Bot marketing site, focused on the application experience.",
+                text: " as a self-initiated experiment in design-engineering — focused on what a credible AI workspace feels like end to end.",
               },
             ],
           },
@@ -542,7 +542,7 @@ export const fallbackProjects: Project[] = [
         _type: "staticImage",
         _key: "cs-img-hero",
         src: "/projects/chat-shell/hero.webp",
-        alt: "LLM Chat Shell Design Studio with split chat panel and Konva canvas",
+        alt: "Design with AI — Design Studio with split chat panel and Konva canvas",
         caption: "Design Studio — conversational layout generation with resizable split panels",
         fullBleed: true,
       },
@@ -563,6 +563,49 @@ export const fallbackProjects: Project[] = [
             src: "/projects/chat-shell/knowledge.webp",
             alt: "Knowledge page with file upload for retrieval sources",
           },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-agent",
+        title: "Design agent pipeline",
+        subtitle: "Multi-phase orchestration from intent to export-ready canvas.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cs-rt-agent",
+        body: [
+          textBlock(
+            "cs-rt-agent-1",
+            "The Design Studio runs a visible multi-phase agent — not a black-box generate button. Each phase streams chain-of-thought so you can see intent parsing, layout selection, typography passes, color passes, and critic validation before anything lands on the Konva canvas.",
+          ),
+          ...bulletList("cs-rt-agent-b", [
+            "20+ orchestrated phases — composition planning, region binding, typography engine, spacing pass, and design critic loop",
+            "Layout Intelligence catalog with 35 responsive patterns and fit scoring to map LLM output to real viewports",
+            "Design principles baked into prompts — 8px grid, WCAG AA contrast, ≤3 dominant colors, and platform-specific recipes (LinkedIn carousel, slide decks, social posts)",
+            "Continue flow when output hits token or time limits — partial JSON recovery and user-triggered resume",
+          ]),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cs-h-canvas",
+        title: "Canvas & export tooling",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cs-rt-canvas",
+        body: [
+          textBlock(
+            "cs-rt-canvas-1",
+            "The right panel is a full design surface — not a static preview. Manual tools, remix layout, floating properties, layers control, and multi-page navigation sit alongside AI generation.",
+          ),
+          ...bulletList("cs-rt-canvas-b", [
+            "25+ canvas formats — mobile, Instagram, banner, slide, document, and carousel aspect ratios",
+            "Konva stage with Lucide icon rendering, pattern fills, and agent silhouette placeholders",
+            "HTML, PDF, and SVG export from generated layouts; resizable 360px chat column pinned across Design and Playground",
+            "Playground sandbox for live chat UI theming — avatars, code themes, reasoning traces, and viewport sizing",
+          ]),
         ],
       },
       {
@@ -649,7 +692,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "cs-rt-outcome-1",
-            "Shipped in ten days (May 5–15, 2026) as a reference implementation for AI workspace UX — from Mistral streaming and client-side RAG through a multi-agent design pipeline with export-ready canvas output. 29 Vitest suites cover the layout intelligence pipeline.",
+            "Shipped in ten days (May 5–15, 2026) as a personal reference implementation for AI workspace UX — from Mistral streaming and client-side RAG through a multi-agent design pipeline with export-ready canvas output. 29 Vitest suites cover the layout intelligence pipeline.",
           ),
         ],
       },
@@ -667,17 +710,18 @@ export const fallbackProjects: Project[] = [
     title: "Resume Builder",
     slug: "resume-builder",
     description:
-      "AI-assisted resume builder — PDF export, brand theming, and a public LinkedIn-to-resume flow for visitors.",
+      "AI resume builder — public profile import and a private owner workspace sharing one PDF pipeline.",
     tag: "Product UI / Tool",
     featured: true,
     workSection: "recentProject",
     buildBadge: "built-with-ai",
+    coverImageUrl: "/projects/resume-builder/hero.webp",
     year: "2026",
     role: "Design Engineer",
     client: "Portfolio",
     tools: ["Mistral", "Brave Search", "@react-pdf/renderer", "TanStack Start"],
     publishedAt: "2026-06-01T00:00:00.000Z",
-    metrics: "Public tool · AI-assisted PDF export with brand theming",
+    metrics: "Public tool · 3 generations/day · Shared PDF schema",
     seo: {
       metaTitle: "Resume Builder — Case Study",
       metaDescription:
@@ -751,18 +795,18 @@ export const fallbackProjects: Project[] = [
     title: "100x Agent Extension",
     slug: "v1-100x-proto",
     description:
-      "AI-powered agent workspace prototype — multi-mode chat, workflow automation, data explorer, app generation, and interest-based personalization for 100x.bot.",
+      "V1 agent extension prototype — chat, workflows, data explorer, and app generation in one shell.",
     tag: "Product UI",
     featured: true,
     workSection: "recentProject",
     buildBadge: "built-with-ai",
     coverImageUrl: "/projects/v1-100x-proto/hero.webp",
-    year: "2026",
+    year: "Jun 2026",
     role: "Design Engineer",
     client: "100x.bot",
     tools: ["Cursor", "Figma"],
     publishedAt: "2026-06-12T00:00:00.000Z",
-    metrics: "Full prototype in 2 weeks · 5 core modules",
+    metrics: "2-week prototype · 8 core surfaces · Built with Cursor",
     seo: {
       metaTitle: "100x Agent Extension — Case Study",
       metaDescription:
@@ -936,7 +980,7 @@ export const fallbackProjects: Project[] = [
       {
         _type: "embed",
         _key: "proto-embed-live",
-        url: "https://v1-100x-proto.vercel.app/",
+        url: "https://agent.akshaysaini.xyz/",
         label: "View live prototype",
         embedType: "link",
       },

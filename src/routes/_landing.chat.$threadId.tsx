@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
+import { useFullMotion } from "@/hooks/use-can-animate"
 import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation"
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message"
 import { Suggestions, Suggestion } from "@/components/ai-elements/suggestion"
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/_landing/chat/$threadId")({
 
 function ChatThreadPage() {
   const { threadId } = Route.useParams()
+  const fullMotion = useFullMotion()
   const [messages, setMessages] = React.useState<ThreadMessage[]>([])
   const [input, setInput] = React.useState("")
   const [mode, setMode] = React.useState<"gen-ui" | "chat">("chat")
@@ -421,23 +423,39 @@ function ChatThreadPage() {
 
       {/* Static flex-flow Bottom Prompt Box */}
       <div className="bg-gradient-to-t from-background via-background/90 to-transparent p-4 pb-6 w-full flex justify-center shrink-0 border-t border-border/20 z-10">
-        <motion.div 
-          className="w-full max-w-2xl"
-          layoutId="chat-prompt-input-container"
-          transition={{ type: "spring", stiffness: 220, damping: 28 }}
-        >
-          <ChatPromptInput
-            value={input}
-            onValueChange={setInput}
-            onSubmit={(text) => handleSendMessage(text, mode)}
-            mode={mode}
-            onModeChange={setMode}
-            isModeDisabled={status === "streaming"}
-            disabled={status === "streaming"}
-            loading={status === "streaming"}
-            placeholder="Send a message or ask another prompt..."
-          />
-        </motion.div>
+        {fullMotion ? (
+          <motion.div
+            className="w-full max-w-2xl"
+            layoutId="chat-prompt-input-container"
+            transition={{ type: "spring", stiffness: 220, damping: 28 }}
+          >
+            <ChatPromptInput
+              value={input}
+              onValueChange={setInput}
+              onSubmit={(text) => handleSendMessage(text, mode)}
+              mode={mode}
+              onModeChange={setMode}
+              isModeDisabled={status === "streaming"}
+              disabled={status === "streaming"}
+              loading={status === "streaming"}
+              placeholder="Send a message or ask another prompt..."
+            />
+          </motion.div>
+        ) : (
+          <div className="w-full max-w-2xl">
+            <ChatPromptInput
+              value={input}
+              onValueChange={setInput}
+              onSubmit={(text) => handleSendMessage(text, mode)}
+              mode={mode}
+              onModeChange={setMode}
+              isModeDisabled={status === "streaming"}
+              disabled={status === "streaming"}
+              loading={status === "streaming"}
+              placeholder="Send a message or ask another prompt..."
+            />
+          </div>
+        )}
       </div>
     </div>
   )

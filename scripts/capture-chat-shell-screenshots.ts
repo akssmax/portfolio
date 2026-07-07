@@ -1,5 +1,5 @@
 /**
- * Captures section screenshots from the 100x Chat Shell app.
+ * Captures section screenshots from the Design with AI app.
  * Run: npm run capture:chat-shell
  *
  * Defaults to https://llm-daisyui-shell.vercel.app/
@@ -73,6 +73,19 @@ async function capture() {
     } catch (error) {
       console.warn(`Skipped ${target.file}:`, error instanceof Error ? error.message : error)
     }
+  }
+
+  try {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto(BASE_URL, NAV_OPTIONS)
+    await page.waitForTimeout(SETTLE_MS)
+    const mobileWebp = path.join(OUTPUT_DIR, "mobile-chat.webp")
+    const mobilePng = mobileWebp.replace(/\.webp$/, ".png")
+    await page.screenshot({ path: mobilePng, type: "png", fullPage: false })
+    await saveWebp(mobilePng, mobileWebp)
+    console.log("  ✓ mobile-chat.webp")
+  } catch (error) {
+    console.warn("Skipped mobile-chat.webp:", error instanceof Error ? error.message : error)
   }
 
   await browser.close()

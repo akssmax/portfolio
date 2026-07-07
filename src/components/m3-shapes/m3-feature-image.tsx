@@ -6,6 +6,7 @@ import { animate, useMotionValue, useReducedMotion, type AnimationPlaybackContro
 import { M3ShapeMorphImage } from "@/components/m3-shapes/m3-shape-morph-image"
 import { M3ShapeImage } from "@/components/m3-shapes/m3-shape"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { useFullMotion } from "@/hooks/use-can-animate"
 import { Calendar, MapPin } from "lucide-react"
 import { getM3ShapePath } from "@/lib/m3-shape-paths"
 import type { M3ShapeId } from "@/lib/m3-shapes"
@@ -59,6 +60,8 @@ export function M3FeatureImage({
   active,
 }: M3FeatureImageProps) {
   const shouldReduceMotion = useReducedMotion()
+  const fullMotion = useFullMotion()
+  const disableMorph = shouldReduceMotion || !fullMotion
   const isMorphing = useRef(false)
   const cycleRef = useRef<() => Promise<void>>(async () => {})
   const autoCycleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -150,7 +153,7 @@ export function M3FeatureImage({
     const nextPath = getM3ShapePath(nextItem.shape)
     if (!nextPath) return
 
-    if (shouldReduceMotion) {
+    if (disableMorph) {
       onMorphStart?.(nextIndex)
       applyItem(nextIndex)
       return
@@ -203,7 +206,7 @@ export function M3FeatureImage({
       shapeAnimationRef.current = null
       imageAnimationRef.current = null
     }
-  }, [applyItem, imageProgress, items, onMorphStart, shapeProgress, shouldReduceMotion])
+  }, [applyItem, disableMorph, imageProgress, items, onMorphStart, shapeProgress])
 
   cycleRef.current = cycle
 
@@ -216,7 +219,7 @@ export function M3FeatureImage({
 
   const scheduleAutoCycle = useCallback(() => {
     clearAutoCycle()
-    if (items.length < 2 || !isVisibleRef.current || shouldReduceMotion) return
+    if (items.length < 2 || !isVisibleRef.current || disableMorph) return
 
     autoCycleTimeoutRef.current = setTimeout(() => {
       void cycleRef.current().finally(() => {
@@ -225,15 +228,15 @@ export function M3FeatureImage({
         }
       })
     }, AUTO_CYCLE_INTERVAL_MS)
-  }, [clearAutoCycle, items.length, shouldReduceMotion])
+  }, [clearAutoCycle, disableMorph, items.length])
 
   useEffect(() => {
-    if (shouldReduceMotion === null) return
+    if (disableMorph) return
     if (active === false) return
 
     scheduleAutoCycle()
     return clearAutoCycle
-  }, [active, scheduleAutoCycle, clearAutoCycle, shouldReduceMotion])
+  }, [active, clearAutoCycle, disableMorph, scheduleAutoCycle])
 
   useEffect(() => {
     if (active === undefined) return
@@ -285,7 +288,7 @@ export function M3FeatureImage({
   const current = items[index]
   if (!current) return null
 
-  const prefersReducedMotion = shouldReduceMotion === true
+  const prefersReducedMotion = disableMorph
 
   return (
     <Tooltip>
@@ -295,7 +298,8 @@ export function M3FeatureImage({
           type="button"
           onClick={handleClick}
           className={cn(
-            "relative cursor-pointer rounded-lg transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+            "relative cursor-pointer rounded-lg transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+            fullMotion && "hover:scale-[1.02] active:scale-[0.98]",
             className,
           )}
           aria-label={`${alt}. Cycles shape and photo automatically. Click to advance.`}

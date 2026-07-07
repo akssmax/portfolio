@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core Pages -->
   <url>
-    <loc>https://akshaysaini.xyz/</loc>
+    <loc>https://www.akshaysaini.xyz/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/about</loc>
+    <loc>https://www.akshaysaini.xyz/about</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects</loc>
+    <loc>https://www.akshaysaini.xyz/projects</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/blog</loc>
+    <loc>https://www.akshaysaini.xyz/blog</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/tools/resume</loc>
+    <loc>https://www.akshaysaini.xyz/tools/resume</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -34,43 +34,43 @@
 
   <!-- Project Details -->
   <url>
-    <loc>https://akshaysaini.xyz/projects/100x-landing-page</loc>
+    <loc>https://www.akshaysaini.xyz/projects/100x-landing-page</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/100x-chat-shell</loc>
+    <loc>https://www.akshaysaini.xyz/projects/100x-chat-shell</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/resume-builder</loc>
+    <loc>https://www.akshaysaini.xyz/projects/resume-builder</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/v1-100x-proto</loc>
+    <loc>https://www.akshaysaini.xyz/projects/v1-100x-proto</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/kodo</loc>
+    <loc>https://www.akshaysaini.xyz/projects/kodo</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/unlogged</loc>
+    <loc>https://www.akshaysaini.xyz/projects/unlogged</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/projects/tulr</loc>
+    <loc>https://www.akshaysaini.xyz/projects/tulr</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -78,13 +78,13 @@
 
   <!-- Blog Details -->
   <url>
-    <loc>https://akshaysaini.xyz/blog/design-systems-in-production</loc>
+    <loc>https://www.akshaysaini.xyz/blog/design-systems-in-production</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://akshaysaini.xyz/blog/shipping-ai-features-responsibly</loc>
+    <loc>https://www.akshaysaini.xyz/blog/shipping-ai-features-responsibly</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

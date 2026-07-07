@@ -50,6 +50,19 @@
     --color-section-foreground: var(--section-foreground);
     --color-section: var(--section);
     --color-background: var(--background);
+    --text-xs: calc(0.75rem * var(--text-scale, 1));
+    --text-sm: calc(0.875rem * var(--text-scale, 1));
+    --text-base: calc(1rem * var(--text-scale, 1));
+    --text-lg: calc(1.125rem * var(--text-scale, 1));
+    --text-xl: calc(1.25rem * var(--text-scale, 1));
+    --text-2xl: calc(1.5rem * var(--text-scale, 1));
+    --text-3xl: calc(1.875rem * var(--text-scale, 1));
+    --text-4xl: calc(2.25rem * var(--text-scale, 1));
+    --text-5xl: calc(3rem * var(--text-scale, 1));
+    --text-6xl: calc(3.75rem * var(--text-scale, 1));
+    --text-7xl: calc(4.5rem * var(--text-scale, 1));
+    --text-8xl: calc(6rem * var(--text-scale, 1));
+    --text-9xl: calc(8rem * var(--text-scale, 1));
     --radius-sm: calc(var(--radius-base) * 0.6);
     --radius-md: calc(var(--radius-base) * 0.8);
     --radius-lg: var(--radius-base);
@@ -98,4 +111,30 @@
   right: 1rem;
 }
 
+/* Feature card hover — CSS-only, disabled when reduced motion is preferred */
+.feature-card {
+  transform: translateY(0);
+}
+
+.feature-card-screenshot {
+  transform: translateY(0) scale(1);
+  transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .feature-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .feature-card:hover .feature-card-screenshot {
+    transform: translateY(-4px) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card,
+  .feature-card-screenshot {
+    transition: none;
+  }
+}
 

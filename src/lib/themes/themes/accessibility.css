@@ -5,26 +5,31 @@
  */
 
 :root {
+  --text-scale: 1;
   --font-scale: 1;
 }
 
 html {
-  font-size: calc(100% * var(--font-scale));
+  font-size: 100%;
 }
 
 [data-font-scale="100"] {
+  --text-scale: 1;
   --font-scale: 1;
 }
 
 [data-font-scale="112"] {
+  --text-scale: 1.12;
   --font-scale: 1.12;
 }
 
 [data-font-scale="125"] {
+  --text-scale: 1.25;
   --font-scale: 1.25;
 }
 
 [data-font-scale="150"] {
+  --text-scale: 1.5;
   --font-scale: 1.5;
 }
 

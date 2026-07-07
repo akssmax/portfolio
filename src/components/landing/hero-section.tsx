@@ -2,6 +2,7 @@
 
 import { lazy, Suspense, useCallback, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
+import { useTheme } from "next-themes"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { CompanyLogoBar } from "@/components/landing/company-logo-bar"
@@ -14,7 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useInView } from "@/hooks/use-in-view"
-import { useBrandColors } from "@/hooks/use-brand-colors"
+import { useBrandColors, getDotFieldAppearance } from "@/hooks/use-brand-colors"
 import { HERO_HEADLINES, HERO_TAGLINES } from "@/lib/hero-headlines"
 import {
   getRandomizedHeroPortraitItems,
@@ -23,18 +24,6 @@ import {
 import { profile } from "@/lib/profile"
 
 const DotField = lazy(() => import("@/components/DotField"))
-
-function hexToRgba(hex: string, alpha: number) {
-  const normalized = hex.replace("#", "").trim()
-  if (normalized.length !== 6) return `rgba(168, 85, 247, ${alpha})`
-  const r = Number.parseInt(normalized.slice(0, 2), 16)
-  const g = Number.parseInt(normalized.slice(2, 4), 16)
-  const b = Number.parseInt(normalized.slice(4, 6), 16)
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
-    return `rgba(168, 85, 247, ${alpha})`
-  }
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -45,6 +34,11 @@ export function HeroSection() {
     readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % HERO_HEADLINES.length,
   )
   const brandColors = useBrandColors()
+  const { resolvedTheme } = useTheme()
+  const dotFieldAppearance = getDotFieldAppearance(
+    brandColors,
+    resolvedTheme === "light" ? "light" : "dark",
+  )
 
   const handleMorphStart = useCallback((nextIndex: number) => {
     if (!isHeroInView) return
@@ -68,9 +62,9 @@ export function HeroSection() {
                 glowRadius={160}
                 sparkle={false}
                 waveAmplitude={0}
-                gradientFrom={hexToRgba(brandColors.primary, 0.75)}
-                gradientTo={hexToRgba(brandColors.secondary || brandColors.accent, 0.55)}
-                glowColor={hexToRgba(brandColors.primary, 0.45)}
+                gradientFrom={dotFieldAppearance.gradientFrom}
+                gradientTo={dotFieldAppearance.gradientTo}
+                glowColor={dotFieldAppearance.glowColor}
               />
             </Suspense>
           </ErrorBoundary>

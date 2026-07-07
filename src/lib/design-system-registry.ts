@@ -193,6 +193,21 @@ export const customEntries: Array<DocEntry> = [
     "A premium prompting container with segmented platform tabs, microphone toggle, actions bar, and auto-growing textarea.",
     "custom"
   ),
+  entry(
+    "feature-card",
+    "Stripe-inspired showcase card with gradient visual, expand link, and hover animations.",
+    "custom"
+  ),
+  entry(
+    "feature-card-grid",
+    "Bento grid layout for feature cards with staggered scroll reveal.",
+    "custom"
+  ),
+  entry(
+    "projects-showcase",
+    "Landing page work showcase with stacked Recent Projects and Case Studies sections.",
+    "custom"
+  ),
 ]
 
 export const allDocEntries: Array<DocEntry> = [...componentEntries, ...customEntries]

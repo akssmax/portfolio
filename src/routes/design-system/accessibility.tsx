@@ -76,10 +76,11 @@ function AccessibilityPage() {
       <DocSection title="Font scaling">
         <div className="space-y-4 text-sm text-muted-foreground">
           <p>
-            Font scale adjusts the root <code className="text-foreground">html</code>{" "}
-            font size via <code className="text-foreground">--font-scale</code>, so
-            all Tailwind <code className="text-foreground">rem</code>-based text
-            utilities grow proportionally.
+            Font scale adjusts typography via <code className="text-foreground">--text-scale</code>{" "}
+            on Tailwind <code className="text-foreground">text-*</code> tokens. Layout spacing,
+            radii, and component sizes stay on a fixed root{" "}
+            <code className="text-foreground">rem</code> grid so animations stay smooth at 112%,
+            125%, and 150%.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {FONT_SCALE_PRESETS.map((preset) => (
@@ -100,8 +101,9 @@ function AccessibilityPage() {
       <DocSection title="Limitations">
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
-            Fixed pixel values (for example some resume preview headings) do not
-            respond to font scaling.
+            Fixed pixel values and arbitrary sizes (for example{" "}
+            <code className="text-foreground">text-[10px]</code> or resume preview headings)
+            do not respond to font scaling.
           </p>
           <p>
             Resume brand colors are resolved as inline hex and are not remapped by

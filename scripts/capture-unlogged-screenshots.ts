@@ -44,6 +44,18 @@ async function saveWebp(pngPath: string, webpPath: string) {
   await unlink(pngPath)
 }
 
+async function captureMobile(page: import("playwright").Page) {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto(BASE_URL, NAV_OPTIONS)
+  await page.waitForTimeout(SETTLE_MS)
+
+  const mobileWebp = path.join(OUTPUT_DIR, "mobile.webp")
+  const mobilePng = mobileWebp.replace(/\.webp$/, ".png")
+  await page.screenshot({ path: mobilePng, type: "png", fullPage: false })
+  await saveWebp(mobilePng, mobileWebp)
+  console.log("  ✓ mobile.webp")
+}
+
 async function capture() {
   await mkdir(OUTPUT_DIR, { recursive: true })
 
@@ -90,6 +102,12 @@ async function capture() {
     } catch (error) {
       console.warn(`Skipped ${target.file}:`, error instanceof Error ? error.message : error)
     }
+  }
+
+  try {
+    await captureMobile(page)
+  } catch (error) {
+    console.warn("Skipped mobile.webp:", error instanceof Error ? error.message : error)
   }
 
   await browser.close()

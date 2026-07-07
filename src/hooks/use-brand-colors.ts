@@ -173,6 +173,38 @@ export function mixBrandColors(
   )
 }
 
+function hexToRgba(hex: string, alpha: number) {
+  const rgb = parseHexColor(hex)
+  if (!rgb) return `rgba(168, 85, 247, ${alpha})`
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`
+}
+
+export type DotFieldAppearance = {
+  gradientFrom: string
+  gradientTo: string
+  glowColor: string
+}
+
+/** Theme-aware dot field colors — softer slate dots, no cursor glow in light mode. */
+export function getDotFieldAppearance(
+  brandColors: BrandColors,
+  mode: "light" | "dark",
+): DotFieldAppearance {
+  if (mode === "light") {
+    return {
+      gradientFrom: hexToRgba("#64748b", 0.34),
+      gradientTo: hexToRgba("#94a3b8", 0.22),
+      glowColor: "transparent",
+    }
+  }
+
+  return {
+    gradientFrom: hexToRgba(brandColors.primary, 0.75),
+    gradientTo: hexToRgba(brandColors.secondary || brandColors.accent, 0.55),
+    glowColor: hexToRgba(brandColors.primary, 0.45),
+  }
+}
+
 /** Dot colors for interactive grids sitting on `bg-primary` surfaces */
 export function getPrimarySurfaceDotColors(
   primary: string,
