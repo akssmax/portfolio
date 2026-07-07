@@ -6,6 +6,7 @@ import { FooterGradients } from "@/components/landing/footer-gradients"
 import { Logo } from "@/components/brand/logo"
 import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { profile } from "@/lib/profile"
 
 const siteLinks = [
@@ -27,6 +28,7 @@ export interface SiteFooterProps {
 
 export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
   const { footerGradient } = useAppearance()
+  const { fullMotion } = useAnimationProfile()
 
   return (
     <footer className={`relative overflow-hidden ${hasTopBorder ? "border-t border-border" : ""}`}>
@@ -36,7 +38,12 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
       {/* Glowing Gradient Background */}
       {footerGradient !== "none" && (
         <div className="absolute inset-x-0 bottom-0 h-[400px] pointer-events-none -z-10 overflow-hidden opacity-50 dark:opacity-75">
-          <FooterGradients activeVariant={footerGradient} reveal="scroll" />
+          <FooterGradients
+            activeVariant={footerGradient}
+            reveal={fullMotion ? "scroll" : "mount"}
+            blur={fullMotion ? 15 : 8}
+            bars={fullMotion ? 9 : 7}
+          />
         </div>
       )}
 
@@ -54,8 +61,7 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
               <PrideFlag
                 className="h-6 w-auto shrink-0 sm:h-7"
                 numOfColumns={8}
-                billow={0.5}
-                staggeredDelay={40}
+                animated={fullMotion}
               />
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

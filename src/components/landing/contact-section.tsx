@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
 import { GithubIcon, LinkedinIcon } from "@/components/icons/social-icons"
 import { Button } from "@/components/ui/button"
+import { useFullMotion } from "@/hooks/use-can-animate"
 import { profile } from "@/lib/profile"
 import { MONOGRAM_MAIN, MONOGRAM_ACCENT, MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 import { m3ShapePaths } from "@/lib/m3-shape-paths"
@@ -59,6 +60,10 @@ export function CtaSection({
   dubWidth = 320,
 }: CtaSectionProps) {
   const shouldReduceMotion = useReducedMotion()
+  const fullMotion = useFullMotion()
+  const enableScrollMotion = fullMotion && !shouldReduceMotion
+  const ContentShell = enableScrollMotion ? motion.div : "div"
+  const CardShell = enableScrollMotion ? motion.div : "div"
 
   const getPositionClass = (pos: CtaSectionPosition) => {
     switch (pos) {
@@ -199,12 +204,16 @@ export function CtaSection({
       )}
 
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
-        <motion.div
+        <ContentShell
           className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:items-stretch lg:gap-12"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
+          {...(enableScrollMotion
+            ? {
+                initial: { opacity: 0, y: 20 },
+                whileInView: { opacity: 1, y: 0 },
+                viewport: { once: true, margin: "-80px" },
+                transition: { duration: 0.5 },
+              }
+            : {})}
         >
           <div className="flex flex-col justify-center gap-5">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary-foreground/70">
@@ -219,12 +228,16 @@ export function CtaSection({
             </p>
           </div>
 
-          <motion.div
+          <CardShell
             className="flex flex-col justify-between gap-6 rounded-2xl border border-white/15 bg-background p-6 text-foreground shadow-2xl sm:p-8"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.08 }}
+            {...(enableScrollMotion
+              ? {
+                  initial: { opacity: 0, y: 16 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true },
+                  transition: { duration: 0.45, delay: 0.08 },
+                }
+              : {})}
           >
             <div className="space-y-2">
               <p className="text-sm font-medium text-muted-foreground">
@@ -280,8 +293,8 @@ export function CtaSection({
                 </a>
               </Button>
             </div>
-          </motion.div>
-        </motion.div>
+          </CardShell>
+        </ContentShell>
       </div>
     </section>
   )

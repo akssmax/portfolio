@@ -151,15 +151,18 @@ function useGradientReveal({
     }
 
     let ticking = false
+    let lastScale = -1
     const measure = () => {
       ticking = false
       const el = ref.current
       if (!el) return
       const r = el.getBoundingClientRect()
       const vh = window.innerHeight || 1
-      // Scale from 0 to 1 based on how close the element is to entering the bottom 65% of screen
       const fraction = Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.65)))
-      setScaleY(fraction)
+      const quantized = Math.round(fraction * 40) / 40
+      if (quantized === lastScale) return
+      lastScale = quantized
+      setScaleY(quantized)
     }
 
     const onScroll = () => {
@@ -228,7 +231,7 @@ export function DiaGradient({
           reveal === "mount"
             ? `transform ${riseMs}ms cubic-bezier(0.16, 1, 0.3, 1)`
             : undefined,
-        willChange: "transform",
+        willChange: scaleY < 1 ? "transform" : undefined,
         ...style,
       }}
     >
@@ -316,7 +319,7 @@ export function PeakedGradient({
           reveal === "mount"
             ? `transform ${riseMs}ms cubic-bezier(0.16, 1, 0.3, 1)`
             : undefined,
-        willChange: "transform",
+        willChange: scaleY < 1 ? "transform" : undefined,
         ...style,
       }}
     >
@@ -383,7 +386,7 @@ export function DodgeGradient({
           reveal === "mount"
             ? `transform ${riseMs}ms cubic-bezier(0.16, 1, 0.3, 1)`
             : undefined,
-        willChange: "transform",
+        willChange: scaleY < 1 ? "transform" : undefined,
         ...style,
       }}
     >

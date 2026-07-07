@@ -3,6 +3,8 @@ import { useEffect, useRef, memo } from 'react';
 import './DotField.css';
 
 const TWO_PI = Math.PI * 2;
+const REST_EPSILON = 0.05;
+const SCROLL_PAUSE_MS = 180;
 
 export interface DotFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   dotRadius?: number
@@ -51,7 +53,7 @@ const DotField = memo(({
   const dotsRef = useRef<Dot[]>([]);
   const mouseRef = useRef({ x: -9999, y: -9999, prevX: -9999, prevY: -9999, speed: 0 });
   const rafRef = useRef<number | null>(null);
-  const sizeRef = useRef({ w: 0, h: 0, offsetX: 0, offsetY: 0 });
+  const sizeRef = useRef({ w: 0, h: 0 });
   const glowOpacity = useRef(0);
   const engagement = useRef(0);
   const propsRef = useRef({
@@ -77,7 +79,28 @@ const DotField = memo(({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let resizeTimer: NodeJS.Timeout;
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    let scrollResumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let cachedGradient: CanvasGradient | null = null;
+    let gradientKey = '';
+    let scrollPaused = false;
+    let frameCount = 0;
+    let isPageVisible = document.visibilityState !== 'hidden';
+
+    function gradientCacheKey(w: number, h: number) {
+      const p = propsRef.current;
+      return `${w}x${h}:${p.gradientFrom}:${p.gradientTo}`;
+    }
+
+    function rebuildGradient(w: number, h: number) {
+      const p = propsRef.current;
+      const key = gradientCacheKey(w, h);
+      if (key === gradientKey && cachedGradient) return;
+      cachedGradient = ctx!.createLinearGradient(0, 0, w, h);
+      cachedGradient.addColorStop(0, p.gradientFrom);
+      cachedGradient.addColorStop(1, p.gradientTo);
+      gradientKey = key;
+    }
 
     function resize() {
       clearTimeout(resizeTimer);
@@ -97,14 +120,10 @@ const DotField = memo(({
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      sizeRef.current = {
-        w,
-        h,
-        offsetX: rect.left + window.scrollX,
-        offsetY: rect.top + window.scrollY,
-      };
-
+      sizeRef.current = { w, h };
       buildDots(w, h);
+      rebuildGradient(w, h);
+      scheduleTick();
     }
 
     function buildDots(w: number, h: number) {
@@ -128,9 +147,11 @@ const DotField = memo(({
     }
 
     function onMouseMove(e: MouseEvent) {
-      const s = sizeRef.current;
-      mouseRef.current.x = e.pageX - s.offsetX;
-      mouseRef.current.y = e.pageY - s.offsetY;
+      const rect = canvas!.parentElement?.getBoundingClientRect();
+      if (!rect) return;
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
+      if (!rafRef.current && !scrollPaused && isPageVisible) scheduleTick();
     }
 
     function updateMouseSpeed() {
@@ -146,26 +167,58 @@ const DotField = memo(({
 
     const speedInterval = setInterval(updateMouseSpeed, 20);
 
-    let frameCount = 0;
-    let isPageVisible = document.visibilityState !== 'hidden';
+    function pauseForScroll() {
+      scrollPaused = true;
+      if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = setTimeout(() => {
+        scrollPaused = false;
+        scrollResumeTimer = null;
+        if (needsAnimation()) scheduleTick();
+      }, SCROLL_PAUSE_MS);
+    }
+
+    function dotsNeedSettling() {
+      const dots = dotsRef.current;
+      for (let i = 0; i < dots.length; i++) {
+        const d = dots[i];
+        if (!d) continue;
+        if (Math.abs(d.sx - d.ax) > REST_EPSILON || Math.abs(d.sy - d.ay) > REST_EPSILON) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function needsAnimation() {
+      if (!isPageVisible || scrollPaused) return false;
+      if (engagement.current > 0.005 || glowOpacity.current > 0.01) return true;
+      if (propsRef.current.waveAmplitude > 0) return true;
+      return dotsNeedSettling();
+    }
 
     function scheduleTick() {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) return;
       rafRef.current = requestAnimationFrame(tick);
     }
 
-    function onVisibilityChange() {
-      isPageVisible = document.visibilityState !== 'hidden';
-      if (isPageVisible) scheduleTick();
-      else if (rafRef.current) {
+    function stopTick() {
+      if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
     }
 
+    function onVisibilityChange() {
+      isPageVisible = document.visibilityState !== 'hidden';
+      if (isPageVisible && needsAnimation()) scheduleTick();
+      else stopTick();
+    }
+
     function tick() {
+      rafRef.current = null;
       if (!ctx) return;
-      if (!isPageVisible) return;
+      if (!isPageVisible || scrollPaused) return;
+
       frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
@@ -187,47 +240,51 @@ const DotField = memo(({
         glowEl.style.opacity = glowOpacity.current.toString();
       }
 
+      rebuildGradient(w, h);
       ctx.clearRect(0, 0, w, h);
-
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, p.gradientFrom);
-      grad.addColorStop(1, p.gradientTo);
-      ctx.fillStyle = grad;
+      ctx.fillStyle = cachedGradient ?? p.gradientFrom;
 
       const cr = p.cursorRadius;
       const crSq = cr * cr;
       const rad = p.dotRadius / 2;
       const isBulge = p.bulgeOnly;
+      const mouseActive = eng > 0.01;
 
       ctx.beginPath();
 
       for (let i = 0; i < len; i++) {
         const d = dots[i];
         if (!d) continue;
-        const dx = m.x - d.ax;
-        const dy = m.y - d.ay;
-        const distSq = dx * dx + dy * dy;
 
-        if (distSq < crSq && eng > 0.01) {
-          const dist = Math.sqrt(distSq);
-          if (isBulge) {
-            const tVal = 1 - dist / cr;
-            const push = tVal * tVal * p.bulgeStrength * eng;
-            const angle = Math.atan2(dy, dx);
-            d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
-            d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
-          } else {
-            const angle = Math.atan2(dy, dx);
-            const move = (500 / dist) * (m.speed * p.cursorForce);
-            d.vx += Math.cos(angle) * -move;
-            d.vy += Math.sin(angle) * -move;
+        if (mouseActive) {
+          const dx = m.x - d.ax;
+          const dy = m.y - d.ay;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < crSq) {
+            const dist = Math.sqrt(distSq);
+            if (isBulge) {
+              const tVal = 1 - dist / cr;
+              const push = tVal * tVal * p.bulgeStrength * eng;
+              const angle = Math.atan2(dy, dx);
+              d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
+              d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
+            } else {
+              const angle = Math.atan2(dy, dx);
+              const move = (500 / dist) * (m.speed * p.cursorForce);
+              d.vx += Math.cos(angle) * -move;
+              d.vy += Math.sin(angle) * -move;
+            }
+          } else if (isBulge) {
+            if (Math.abs(d.sx - d.ax) > REST_EPSILON) d.sx += (d.ax - d.sx) * 0.1;
+            if (Math.abs(d.sy - d.ay) > REST_EPSILON) d.sy += (d.ay - d.sy) * 0.1;
           }
         } else if (isBulge) {
-          d.sx += (d.ax - d.sx) * 0.1;
-          d.sy += (d.ay - d.sy) * 0.1;
+          if (Math.abs(d.sx - d.ax) > REST_EPSILON) d.sx += (d.ax - d.sx) * 0.1;
+          if (Math.abs(d.sy - d.ay) > REST_EPSILON) d.sy += (d.ay - d.sy) * 0.1;
         }
 
-        if (!isBulge) {
+        if (!isBulge && mouseActive) {
           d.vx *= 0.9;
           d.vy *= 0.9;
           d.x = d.ax + d.vx;
@@ -260,26 +317,36 @@ const DotField = memo(({
 
       ctx.fill();
 
-      rafRef.current = requestAnimationFrame(tick);
+      if (needsAnimation()) scheduleTick();
     }
 
     doResize();
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('wheel', pauseForScroll, { passive: true });
+    window.addEventListener('scroll', pauseForScroll, { passive: true });
     document.addEventListener('visibilitychange', onVisibilityChange);
     scheduleTick();
 
     rebuildRef.current = () => {
       const { w, h } = sizeRef.current;
-      if (w > 0 && h > 0) buildDots(w, h);
+      if (w > 0 && h > 0) {
+        buildDots(w, h);
+        gradientKey = '';
+        rebuildGradient(w, h);
+        scheduleTick();
+      }
     };
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      stopTick();
       clearInterval(speedInterval);
       clearTimeout(resizeTimer);
+      if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('wheel', pauseForScroll);
+      window.removeEventListener('scroll', pauseForScroll);
       document.removeEventListener('visibilitychange', onVisibilityChange);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -287,7 +354,7 @@ const DotField = memo(({
 
   useEffect(() => {
     rebuildRef.current?.();
-  }, [dotRadius, dotSpacing]);
+  }, [dotRadius, dotSpacing, gradientFrom, gradientTo]);
 
   return (
     <div className="dot-field-container" {...rest}>

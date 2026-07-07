@@ -39,14 +39,12 @@ const fullTitleVariants = {
   hidden: {
     opacity: 0,
     y: 28,
-    filter: "blur(10px)",
     rotateX: -14,
     scale: 0.96,
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     rotateX: 0,
     scale: 1,
     transition: {
@@ -59,7 +57,6 @@ const fullTitleVariants = {
   exit: {
     opacity: 0,
     y: -22,
-    filter: "blur(8px)",
     rotateX: 10,
     scale: 0.98,
     transition: {
@@ -73,12 +70,10 @@ const fullSubtitleVariants = {
   hidden: {
     opacity: 0,
     y: 18,
-    filter: "blur(4px)",
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
       type: "spring" as const,
       stiffness: 300,
@@ -89,7 +84,6 @@ const fullSubtitleVariants = {
   exit: {
     opacity: 0,
     y: -12,
-    filter: "blur(4px)",
     transition: {
       duration: 0.32,
       ease: [0.55, 0.06, 0.22, 1] as const,

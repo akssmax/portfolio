@@ -65,7 +65,7 @@ export function FeatureCard({
   return (
     <article
       className={cn(
-        "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs transition-[transform,box-shadow,border-color] duration-300 hover:border-border hover:shadow-lg",
+        "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs transition-[border-color,box-shadow] duration-300 hover:border-border hover:shadow-lg",
         className
       )}
     >

@@ -15,6 +15,7 @@ type PrideFlagProps = {
   numOfColumns?: number
   staggeredDelay?: number
   billow?: number
+  animated?: boolean
   className?: string
   "aria-label"?: string
 }
@@ -24,6 +25,7 @@ export function PrideFlag({
   numOfColumns,
   staggeredDelay = 50,
   billow = 1.5,
+  animated = true,
   className,
   "aria-label": ariaLabel = "Rainbow pride flag",
 }: PrideFlagProps) {
@@ -32,12 +34,13 @@ export function PrideFlag({
   const columnCount = numOfColumns ?? (isMobile ? 12 : 16)
   const gradient = generatePrideGradient(colors)
   const firstColumnDelay = columnCount * staggeredDelay * -1
+  const isStatic = shouldReduceMotion || !animated
 
   return (
     <div
       className={cn(
         styles.flag,
-        shouldReduceMotion && styles.static,
+        isStatic && styles.static,
         "aspect-[3/2]",
         className,
       )}
