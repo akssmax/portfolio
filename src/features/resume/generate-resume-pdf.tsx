@@ -60,6 +60,19 @@ export function getResumeFilename(name: string, layout: ResumeLayoutId = "classi
   return layout === "classic" ? `${slug}-resume.pdf` : `${slug}-resume-${layout}.pdf`
 }
 
+function triggerBlobDownload(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob)
+  const anchor = window.document.createElement("a")
+  anchor.href = url
+  anchor.download = filename
+  anchor.rel = "noopener"
+  anchor.style.display = "none"
+  window.document.body.appendChild(anchor)
+  anchor.click()
+  window.document.body.removeChild(anchor)
+  URL.revokeObjectURL(url)
+}
+
 export async function downloadResumePdf({
   document,
   brandColor,
@@ -76,12 +89,7 @@ export async function downloadResumePdf({
   display?: ResumeDisplayPreferences
 }) {
   const blob = await generateResumePdf(document, brandColor, layout, fontPresetId, display)
-  const url = URL.createObjectURL(blob)
-  const anchor = window.document.createElement("a")
-  anchor.href = url
-  anchor.download = filename ?? getResumeFilename(document.name, layout)
-  anchor.click()
-  URL.revokeObjectURL(url)
+  triggerBlobDownload(blob, filename ?? getResumeFilename(document.name, layout))
 }
 
 // Cover Letter PDF Compile & Download Utilities
@@ -130,10 +138,8 @@ export async function downloadCoverLetterPdf({
   filename?: string
 }) {
   const blob = await generateCoverLetterPdf(document, brandColor, layout)
-  const url = URL.createObjectURL(blob)
-  const anchor = window.document.createElement("a")
-  anchor.href = url
-  anchor.download = filename ?? getCoverLetterFilename(document.senderName, document.recipientCompany, layout)
-  anchor.click()
-  URL.revokeObjectURL(url)
+  triggerBlobDownload(
+    blob,
+    filename ?? getCoverLetterFilename(document.senderName, document.recipientCompany, layout),
+  )
 }

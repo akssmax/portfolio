@@ -1,6 +1,8 @@
 "use client"
 
+import { useEffect } from "react"
 import { Download, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { useBrandColors } from "@/hooks/use-brand-colors"
@@ -26,6 +28,10 @@ export function DownloadResumeButton({
   const { primary } = useBrandColors()
   const { downloadResume, isGenerating } = useDownloadResume()
 
+  useEffect(() => {
+    void import("./generate-resume-pdf")
+  }, [])
+
   return (
     <Button
       type="button"
@@ -34,13 +40,19 @@ export function DownloadResumeButton({
       className={cn("w-fit", className)}
       disabled={isGenerating}
       aria-busy={isGenerating}
-      onClick={() =>
+      onClick={() => {
         void downloadResume({
           sections: DEFAULT_RESUME_SECTIONS,
           brandColor: primary,
           layout: DEFAULT_RESUME_LAYOUT,
+        }).catch((cause) => {
+          toast.error(
+            cause instanceof Error
+              ? cause.message
+              : "Unable to generate resume PDF. Please try again.",
+          )
         })
-      }
+      }}
     >
       {showIcon ? (
         isGenerating ? (
