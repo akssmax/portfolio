@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { Sparkles, MessageSquare, Plus, Mic, MicOff, ArrowUp, X, Search, Layout, Terminal, FileUser, Cpu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { ProjectCard } from "@/lib/sanity/types"
 import { getFallbackProjectCards } from "@/lib/sanity/fallback-projects"
 import { getImageUrl } from "@/lib/sanity/image"
 import { usesAvatarCardCover } from "@/lib/projects/project-card-placeholder"
+
+const PLACEHOLDER_CYCLE_MS = 3000
 
 const PROJECT_ICON_CONFIG: Record<
   string,
@@ -44,12 +47,16 @@ export type ChatPromptInputProps = Omit<React.ComponentProps<"div">, "onSubmit">
   onValueChange: (value: string) => void
   onSubmit: (value: string, mode: "gen-ui" | "chat") => void
   placeholder?: string
+  /** When provided (2+ items), cycles an animated placeholder every few seconds while empty. */
+  placeholders?: readonly string[]
   disabled?: boolean
   loading?: boolean
   mode?: "gen-ui" | "chat"
   onModeChange?: (mode: "gen-ui" | "chat") => void
   isModeDisabled?: boolean
   projects?: ProjectCard[]
+  /** Light-mode glass treatment for busy photo backgrounds. Dark mode stays default. */
+  tone?: "default" | "on-media"
 }
 
 export function ChatPromptInput({
@@ -57,17 +64,41 @@ export function ChatPromptInput({
   onValueChange,
   onSubmit,
   placeholder = "Ask a question, type @ to attach projects...",
+  placeholders,
   disabled = false,
   loading = false,
   mode: controlledMode,
   onModeChange,
   isModeDisabled = false,
   projects,
+  tone = "default",
   className,
   ...props
 }: ChatPromptInputProps) {
+  const onMedia = tone === "on-media"
+  const shouldReduceMotion = useReducedMotion()
   const [internalMode, setInternalMode] = React.useState<"gen-ui" | "chat">("chat")
   const mode = controlledMode ?? internalMode
+
+  const cyclingPlaceholders = React.useMemo(() => {
+    if (placeholders && placeholders.length > 1) return placeholders
+    return null
+  }, [placeholders])
+
+  const [placeholderIndex, setPlaceholderIndex] = React.useState(0)
+  const showAnimatedPlaceholder =
+    Boolean(cyclingPlaceholders) && !value.trim() && !disabled && !loading
+
+  React.useEffect(() => {
+    if (!cyclingPlaceholders || !showAnimatedPlaceholder) return
+    const timer = window.setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % cyclingPlaceholders.length)
+    }, PLACEHOLDER_CYCLE_MS)
+    return () => window.clearInterval(timer)
+  }, [cyclingPlaceholders, showAnimatedPlaceholder])
+
+  const activePlaceholder =
+    cyclingPlaceholders?.[placeholderIndex % cyclingPlaceholders.length] ?? placeholder
 
   const setMode = (newMode: "gen-ui" | "chat") => {
     if (isModeDisabled) return
@@ -350,7 +381,10 @@ export function ChatPromptInput({
       <div
         className={cn(
           "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-all duration-300",
+          onMedia &&
+            "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
           isFocused && "border-primary ring-2 ring-primary/20 bg-card/85",
+          isFocused && onMedia && "bg-background dark:bg-card/85",
           className
         )}
         {...props}
@@ -413,7 +447,7 @@ export function ChatPromptInput({
                 "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
                 mode === "chat"
                   ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               <MessageSquare className="size-3.5" />
@@ -427,7 +461,7 @@ export function ChatPromptInput({
                 "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
                 mode === "gen-ui"
                   ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               <Sparkles className="size-3.5" />
@@ -438,6 +472,29 @@ export function ChatPromptInput({
 
         {/* Main Input Textarea */}
         <div className="relative flex flex-col px-2 pb-1.5">
+          {showAnimatedPlaceholder ? (
+            <div
+              className="pointer-events-none absolute inset-x-2 top-1 z-[1] overflow-hidden text-left text-sm leading-relaxed text-muted-foreground/75"
+              aria-hidden
+            >
+              {shouldReduceMotion ? (
+                <span className="block truncate">{activePlaceholder}</span>
+              ) : (
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={activePlaceholder}
+                    className="block truncate"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {activePlaceholder}
+                  </motion.span>
+                </AnimatePresence>
+              )}
+            </div>
+          ) : null}
           <textarea
             ref={textareaRef}
             value={value}
@@ -470,10 +527,11 @@ export function ChatPromptInput({
                 }
               }, 150)
             }}
-            placeholder={placeholder}
+            placeholder={showAnimatedPlaceholder ? undefined : placeholder}
+            aria-label={activePlaceholder}
             disabled={disabled || loading}
             rows={2}
-            className="w-full resize-none bg-transparent text-sm text-foreground outline-hidden placeholder:text-muted-foreground/75 min-h-[3rem] max-h-[12rem] py-1 leading-relaxed overflow-y-auto"
+            className="relative z-[2] w-full resize-none bg-transparent text-sm text-foreground outline-hidden placeholder:text-muted-foreground/75 min-h-[3rem] max-h-[12rem] py-1 leading-relaxed overflow-y-auto"
           />
 
           {/* Action bar inside the prompt box */}

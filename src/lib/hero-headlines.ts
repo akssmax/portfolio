@@ -60,7 +60,7 @@ export const LANDING_HERO_COPY = [
   },
   {
     title: "Hire a Product Designer in Bangalore.",
-    subtitle: "8+ years experience across fintech, devtools, and agentic AI.",
+    subtitle: "6+ years experience across fintech, devtools, and agentic AI.",
   },
   {
     title: "Zero handoff friction.",

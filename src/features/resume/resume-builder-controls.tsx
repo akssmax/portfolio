@@ -85,6 +85,40 @@ function LayoutPreview({
     )
   }
 
+  if (layout === "minimal") {
+    return (
+      <div className="h-16 rounded-md border border-border bg-background px-4 py-2.5">
+        <div className="h-1.5 w-14 rounded-full bg-foreground/70" />
+        <div
+          className="mt-1.5 h-1 w-10 rounded-full"
+          style={{ backgroundColor: brandColor }}
+        />
+        <div className="mt-2.5 h-px w-full bg-border" />
+        <div className="mt-2 h-1 w-12 rounded-full bg-foreground/25" />
+        <div className="mt-1 h-1 w-16 rounded-full bg-foreground/15" />
+      </div>
+    )
+  }
+
+  if (layout === "executive") {
+    return (
+      <div className="h-16 overflow-hidden rounded-md border border-border bg-background">
+        <div
+          className="h-7 px-3 pt-2"
+          style={{ backgroundColor: brandColor }}
+        >
+          <div className="h-1.5 w-12 rounded-full bg-white/90" />
+          <div className="mt-1 h-1 w-8 rounded-full bg-white/60" />
+        </div>
+        <div className="space-y-1.5 px-3 pt-2">
+          <div className="h-px w-full bg-border" />
+          <div className="h-1 w-14 rounded-full bg-foreground/25" />
+          <div className="h-1 w-10 rounded-full bg-foreground/15" />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="h-16 rounded-md border border-border bg-background px-3 py-2">
       <div
@@ -302,14 +336,14 @@ export function ResumeBuilderControls({
           <RadioGroup
             value={layout}
             onValueChange={(value) => onLayoutChange(value as ResumeLayoutId)}
-            className="grid gap-3"
+            className="grid gap-3 sm:grid-cols-1"
           >
             {RESUME_LAYOUT_OPTIONS.map((option) => (
               <label
                 key={option.id}
                 htmlFor={`resume-builder-layout-${option.id}`}
                 className={cn(
-                  "cursor-pointer rounded-lg border bg-background p-3 transition-colors",
+                  "cursor-pointer rounded-lg border bg-background p-3 transition-colors touch-manipulation",
                   layout === option.id
                     ? "border-primary ring-1 ring-primary/30"
                     : "border-border hover:border-primary/40",
@@ -319,7 +353,7 @@ export function ResumeBuilderControls({
                   <RadioGroupItem
                     id={`resume-builder-layout-${option.id}`}
                     value={option.id}
-                    className="mt-0.5"
+                    className="mt-0.5 size-4"
                   />
                   <span className="min-w-0 flex-1 space-y-2">
                     <span className="block space-y-1">

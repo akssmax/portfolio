@@ -4,26 +4,28 @@ import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
+import { RESUME_SPACING } from "./spacing-tokens"
 
+const S = RESUME_SPACING.modern
 const PAGE_MARGIN = {
-  paddingTop: 34,
-  paddingBottom: 44,
-  paddingRight: 40,
-  paddingLeft: 40,
+  paddingTop: S.page.paddingTop,
+  paddingBottom: S.page.paddingBottom,
+  paddingRight: S.page.paddingRight,
+  paddingLeft: S.page.paddingLeft,
 } as const
 
 const styles = StyleSheet.create({
   page: {
     position: "relative",
     fontFamily: "Helvetica",
-    fontSize: 10,
-    lineHeight: 1.45,
+    fontSize: S.fontSize,
+    lineHeight: S.lineHeight,
     color: "#171717",
     ...PAGE_MARGIN,
   },
   pageFooter: {
     position: "absolute",
-    bottom: 22,
+    bottom: S.footerBottom,
     left: PAGE_MARGIN.paddingLeft,
     right: PAGE_MARGIN.paddingRight,
     flexDirection: "row",
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     color: "#737373",
   },
   header: {
-    marginBottom: 20,
+    marginBottom: S.headerGap,
     paddingBottom: 12,
     borderBottomWidth: 1,
     flexDirection: "row",
@@ -79,10 +81,10 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     flexDirection: "row",
-    gap: 20,
+    gap: S.columnGap ?? 20,
   },
   leftColumn: {
-    width: 150,
+    width: S.leftColumnWidth ?? 150,
     paddingRight: 10,
     borderRightWidth: 1,
     borderRightColor: "#E5E5E5",
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section: {
-    marginBottom: 14,
+    marginBottom: S.sectionGap,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 9.5,
   },
   job: {
-    marginBottom: 10,
+    marginBottom: S.jobGap,
   },
   jobHeader: {
     flexDirection: "row",
@@ -220,7 +222,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View wrap={false} minPresenceAhead={40} style={styles.sectionHeader}>
+      <View wrap={false} minPresenceAhead={32} style={styles.sectionHeader}>
         <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
         <Text style={styles.sectionTitle}>{title}</Text>
       </View>
@@ -384,8 +386,10 @@ export function ModernResumeLayout({
                 <View
                   key={`${job.company}-${job.period}`}
                   style={styles.job}
+                  wrap={false}
+                  minPresenceAhead={64}
                 >
-                  <View wrap={false} minPresenceAhead={48} style={styles.jobHeader}>
+                  <View style={styles.jobHeader}>
                     <View style={styles.jobTitleRow}>
                       {job.logoSrc ? (
                         <View style={styles.jobLogoContainer}>

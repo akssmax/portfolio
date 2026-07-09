@@ -68,6 +68,16 @@ function nd(partial: Partial<ThemeTokens>): ThemeTokens {
   return partial as ThemeTokens
 }
 
+/**
+ * Brand harmony (OKLCH relative color):
+ * - secondary: monochromatic tint of primary (same hue, high L, low C)
+ * - secondary-foreground: monochromatic shade of primary
+ * - accent: analogous (+18° hue) soft surface
+ * - accent-foreground: analogous shade for readable text on accent
+ *
+ * Avoid mixing primary into hue-0 neutrals — that pulls warm/pink casts
+ * into cool greens (and muddy secondaries for every brand).
+ */
 export function brandLight(
   primary: string,
   partial: Partial<ThemeTokens> = {},
@@ -78,16 +88,16 @@ export function brandLight(
       partial["primary-foreground"] ?? "oklch(0.985 0 0)",
     secondary:
       partial.secondary ??
-      "color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0))",
+      "oklch(from var(--primary) 0.955 calc(c * 0.22) h)",
     "secondary-foreground":
       partial["secondary-foreground"] ??
-      "color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0))",
+      "oklch(from var(--primary) 0.34 calc(c * 0.78) h)",
     accent:
       partial.accent ??
-      "color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145))",
+      "oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18))",
     "accent-foreground":
       partial["accent-foreground"] ??
-      "color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145))",
+      "oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18))",
     destructive: partial.destructive ?? "var(--primary)",
     ring: partial.ring ?? "var(--primary)",
     "chart-1": partial["chart-1"] ?? "var(--primary)",
@@ -111,12 +121,13 @@ export function brandDark(
       partial["primary-foreground"] ?? "oklch(0.985 0 0)",
     secondary:
       partial.secondary ??
-      "color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0))",
+      "oklch(from var(--primary) 0.28 calc(c * 0.32) h)",
     "secondary-foreground":
-      partial["secondary-foreground"] ?? "oklch(0.985 0 0)",
+      partial["secondary-foreground"] ??
+      "oklch(from var(--primary) 0.92 calc(c * 0.18) h)",
     accent:
       partial.accent ??
-      "color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145))",
+      "oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18))",
     "accent-foreground":
       partial["accent-foreground"] ?? "oklch(0.985 0 0)",
     destructive: partial.destructive ?? "var(--primary)",

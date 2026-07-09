@@ -32,6 +32,7 @@ import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
 import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
 import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
 import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
+import { Route as ApiGithubContributionsRouteImport } from './routes/api/github/contributions'
 import { Route as LandingChatThreadIdRouteImport } from './routes/_landing.chat.$threadId'
 
 const ResumeRoute = ResumeRouteImport.update({
@@ -151,6 +152,11 @@ const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
   path: '/api/resume/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGithubContributionsRoute = ApiGithubContributionsRouteImport.update({
+  id: '/api/github/contributions',
+  path: '/api/github/contributions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LandingChatThreadIdRoute = LandingChatThreadIdRouteImport.update({
   id: '/chat/$threadId',
   path: '/chat/$threadId',
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/chat/$threadId': typeof LandingChatThreadIdRoute
+  '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/design-system': typeof DesignSystemIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/chat/$threadId': typeof LandingChatThreadIdRoute
+  '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/design-system/': typeof DesignSystemIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/_landing/chat/$threadId': typeof LandingChatThreadIdRoute
+  '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/design-system/'
     | '/projects/'
     | '/chat/$threadId'
+    | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/design-system'
     | '/projects'
     | '/chat/$threadId'
+    | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/design-system/'
     | '/projects/'
     | '/_landing/chat/$threadId'
+    | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
     | '/api/resume/session'
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   ToolsResumeRoute: typeof ToolsResumeRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ApiGithubContributionsRoute: typeof ApiGithubContributionsRoute
   ApiResumeGenerateRoute: typeof ApiResumeGenerateRoute
   ApiResumeGenerateCoverLetterRoute: typeof ApiResumeGenerateCoverLetterRoute
   ApiResumeSessionRoute: typeof ApiResumeSessionRoute
@@ -493,6 +506,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/github/contributions': {
+      id: '/api/github/contributions'
+      path: '/api/github/contributions'
+      fullPath: '/api/github/contributions'
+      preLoaderRoute: typeof ApiGithubContributionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_landing/chat/$threadId': {
       id: '/_landing/chat/$threadId'
       path: '/chat/$threadId'
@@ -550,6 +570,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsResumeRoute: ToolsResumeRoute,
   BlogIndexRoute: BlogIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ApiGithubContributionsRoute: ApiGithubContributionsRoute,
   ApiResumeGenerateRoute: ApiResumeGenerateRoute,
   ApiResumeGenerateCoverLetterRoute: ApiResumeGenerateCoverLetterRoute,
   ApiResumeSessionRoute: ApiResumeSessionRoute,

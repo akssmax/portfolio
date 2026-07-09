@@ -55,9 +55,9 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
         />
       </aside>
 
-      <div className="min-w-0 flex-1 pb-9 pl-2 pr-10 pt-[34px]">
+      <div className="min-w-0 flex-1 pb-14 pl-2 pr-10 pt-[34px]">
         <header
-          className="mb-5 rounded-lg p-3.5"
+          className="mb-4 rounded-lg p-3.5"
           style={{ backgroundColor: tint }}
         >
           <div className="mb-2.5 flex items-start gap-3">
@@ -619,7 +619,9 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
 
         <footer className="mt-2 flex items-center justify-between border-t border-neutral-200 pt-2.5">
           <HtmlLogomark brandColor={brandColor} width={18} />
-          <p className="text-[8px] text-neutral-500">Akshay Saini · Design Engineer</p>
+          <p className="text-[8px] text-neutral-500">
+            {document.name} · {document.title}
+          </p>
         </footer>
       </div>
     </div>

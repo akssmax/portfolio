@@ -96,7 +96,7 @@ function Landing1Layout() {
       "bg-background text-foreground flex flex-col relative",
       isChatRoute ? "h-svh" : "min-h-svh"
     )}>
-      {/* Viewport-fixed canvas — avoids sizing to full page scroll height */}
+      {/* Viewport-fixed dot field only — hero image lives in the hero section */}
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
         {showDotField ? (
           <React.Suspense fallback={null}>
@@ -114,14 +114,17 @@ function Landing1Layout() {
             />
           </React.Suspense>
         ) : null}
-        {/* Theme-aware gradient mask overlay */}
         <div
           className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
           aria-hidden
         />
       </div>
 
-      <SiteHeader />
+      <SiteHeader
+        tone={
+          !isChatRoute && resolvedTheme === "dark" ? "on-media" : "default"
+        }
+      />
       
       <main className={cn(
         "flex-1 relative z-10 flex flex-col w-full",

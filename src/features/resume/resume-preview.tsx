@@ -57,9 +57,9 @@ export function ResumePreview({
   return (
     <div className="flex h-full min-h-0 flex-col bg-muted/20">
       {/* Header with Navigation Tabs */}
-      <div className="border-b border-border bg-background px-5 py-3">
-        <div className="flex items-center justify-between gap-4">
-          <nav className="flex gap-6" aria-label="Resume Workspace Tabs">
+      <div className="border-b border-border bg-background px-3 py-3 sm:px-5">
+        <div className="flex items-center justify-between gap-3">
+          <nav className="flex gap-4 sm:gap-6" aria-label="Resume Workspace Tabs">
             <button
               type="button"
               onClick={() => onActiveTabChange?.("resume")}
@@ -75,21 +75,23 @@ export function ResumePreview({
                 <span className="absolute bottom-[-13px] left-0 right-0 h-[2px] bg-primary" />
               )}
             </button>
-            <button
-              type="button"
-              onClick={() => onActiveTabChange?.("cover-letter")}
-              className={cn(
-                "relative py-1 text-sm font-semibold transition-colors outline-none",
-                activeTab === "cover-letter"
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              Cover Letter
-              {activeTab === "cover-letter" && (
-                <span className="absolute bottom-[-13px] left-0 right-0 h-[2px] bg-primary" />
-              )}
-            </button>
+            {onActiveTabChange ? (
+              <button
+                type="button"
+                onClick={() => onActiveTabChange("cover-letter")}
+                className={cn(
+                  "relative py-1 text-sm font-semibold transition-colors outline-none",
+                  activeTab === "cover-letter"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Cover Letter
+                {activeTab === "cover-letter" && (
+                  <span className="absolute bottom-[-13px] left-0 right-0 h-[2px] bg-primary" />
+                )}
+              </button>
+            ) : null}
           </nav>
 
           <Button
@@ -119,7 +121,7 @@ export function ResumePreview({
       </div>
 
       {/* Main Preview Container */}
-      <div className="min-h-0 flex-1 overflow-auto p-6">
+      <div className="min-h-0 flex-1 overflow-auto p-3 sm:p-6">
         <div className="mx-auto w-full max-w-[794px]">
           <article
             className="aspect-[210/297] w-full overflow-hidden rounded-sm border border-border bg-white shadow-sm"

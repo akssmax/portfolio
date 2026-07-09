@@ -1,8 +1,12 @@
 "use client"
 
+import { useTheme } from "next-themes"
+
 import { cn } from "@/lib/utils"
 import {
   BRAND_COLOR_PRESETS,
+  DEFAULT_THEME_DARK_SWATCH,
+  DEFAULT_THEME_LIGHT_SWATCH,
   DEFAULT_THEME_PRESET,
   NEUTRAL_THEME_PRESETS,
 } from "@/lib/themes/registry"
@@ -19,13 +23,22 @@ type ColorPresetGridProps = {
   onNeutralSelect: (palette: NeutralPresetId) => void
 }
 
+function getPresetSwatch(preset: ThemePreset, isDark: boolean): string {
+  if (preset.id === "default") {
+    return isDark ? DEFAULT_THEME_DARK_SWATCH : DEFAULT_THEME_LIGHT_SWATCH
+  }
+  return preset.swatch
+}
+
 function PresetButton({
   preset,
   isActive,
+  isDark,
   onSelect,
 }: {
   preset: ThemePreset
   isActive: boolean
+  isDark: boolean
   onSelect: () => void
 }) {
   return (
@@ -42,7 +55,7 @@ function PresetButton({
     >
       <span
         className="size-6 shrink-0 rounded-full ring-1 ring-foreground/10"
-        style={{ backgroundColor: preset.swatch }}
+        style={{ backgroundColor: getPresetSwatch(preset, isDark) }}
       />
       <span className="w-full truncate text-[10px] font-medium leading-tight">
         {preset.label}
@@ -59,10 +72,12 @@ function PresetButton({
 function PresetGrid({
   presets,
   activePalette,
+  isDark,
   onSelect,
 }: {
   presets: ThemePreset[]
   activePalette: string | null
+  isDark: boolean
   onSelect: (id: string) => void
 }) {
   return (
@@ -72,6 +87,7 @@ function PresetGrid({
           key={preset.id}
           preset={preset}
           isActive={preset.id === activePalette}
+          isDark={isDark}
           onSelect={() => onSelect(preset.id)}
         />
       ))}
@@ -85,6 +101,8 @@ export function ColorPresetGrid({
   onBrandSelect,
   onNeutralSelect,
 }: ColorPresetGridProps) {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
   const brandPresets = [DEFAULT_THEME_PRESET, ...BRAND_COLOR_PRESETS]
 
   return (
@@ -94,6 +112,7 @@ export function ColorPresetGrid({
         <PresetGrid
           presets={brandPresets}
           activePalette={activeBrandPalette}
+          isDark={isDark}
           onSelect={(id) => onBrandSelect(id as BrandPresetId)}
         />
       </div>
@@ -103,6 +122,7 @@ export function ColorPresetGrid({
         <PresetGrid
           presets={NEUTRAL_THEME_PRESETS}
           activePalette={activeNeutralPalette}
+          isDark={isDark}
           onSelect={(id) => onNeutralSelect(id as NeutralPresetId)}
         />
       </div>
