@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { Menu, Sparkles } from "lucide-react"
 
@@ -19,6 +19,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+
+const SCROLL_ELEVATE_THRESHOLD_PX = 24
 
 export type NavItem =
   | { readonly label: string; readonly to: string; readonly isAnchor: false; readonly href?: never }
@@ -112,13 +114,38 @@ function MobileNavLink({
 type SiteHeaderProps = {
   /** Dark glass bar for photo heroes (light mode). Dark mode stays default. */
   tone?: "default" | "on-media"
+  /**
+   * Start with a lighter glass treatment, then animate blur/opacity up
+   * once the page is scrolled (homepage light mode).
+   */
+  elevateBlurOnScroll?: boolean
 }
 
-export function SiteHeader({ tone = "default" }: SiteHeaderProps) {
+export function SiteHeader({
+  tone = "default",
+  elevateBlurOnScroll = false,
+}: SiteHeaderProps) {
   const { fullMotion } = useAnimationProfile()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [elevated, setElevated] = useState(false)
   const { openChat } = usePortfolioChat()
   const onMedia = tone === "on-media"
+  const useScrollBlur = elevateBlurOnScroll && fullMotion && !onMedia
+
+  useEffect(() => {
+    if (!useScrollBlur) {
+      setElevated(false)
+      return
+    }
+
+    const update = () => {
+      setElevated(window.scrollY > SCROLL_ELEVATE_THRESHOLD_PX)
+    }
+
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    return () => window.removeEventListener("scroll", update)
+  }, [useScrollBlur])
 
   const closeMobileMenu = () => setMobileOpen(false)
 
@@ -134,9 +161,15 @@ export function SiteHeader({ tone = "default" }: SiteHeaderProps) {
           "fixed inset-x-0 top-0 z-50 border-b",
           onMedia
             ? "border-white/10 bg-neutral-950/75 text-white backdrop-blur-md dark:border-border/60 dark:bg-background/80 dark:text-foreground dark:backdrop-blur-sm"
-            : fullMotion
-              ? "border-border/60 bg-background/80 backdrop-blur-sm"
-              : "border-border/60 bg-background/95",
+            : useScrollBlur
+              ? elevated
+                ? "border-border/60 bg-background/80 backdrop-blur-sm"
+                : "border-border/15 bg-background/20 backdrop-blur-[1px]"
+              : fullMotion
+                ? "border-border/60 bg-background/80 backdrop-blur-sm"
+                : "border-border/60 bg-background/95",
+          useScrollBlur &&
+            "transition-[background-color,border-color,backdrop-filter,-webkit-backdrop-filter] duration-300 ease-out",
           fullMotion && "animate-in fade-in slide-in-from-top-2 duration-300",
         )}
       >

@@ -8,6 +8,7 @@ import viteReact from "@vitejs/plugin-react"
 import viteTsConfigPaths from "vite-tsconfig-paths"
 import tailwindcss from "@tailwindcss/vite"
 import { nitro } from "nitro/vite"
+import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const isDev = process.env.NODE_ENV !== "production"
@@ -20,12 +21,21 @@ const config = defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["flubber"],
+    include: ["flubber", "buffer"],
   },
   ssr: {
     noExternal: ["flubber"],
   },
   plugins: [
+    // @react-pdf/renderer needs Buffer in the browser (pdfkit file IDs, etc.)
+    nodePolyfills({
+      include: ["buffer"],
+      globals: {
+        Buffer: true,
+        global: false,
+        process: false,
+      },
+    }),
     ...(isDev ? [devtools()] : []),
     nitro({
       vercel: {

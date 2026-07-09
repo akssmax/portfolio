@@ -86,9 +86,11 @@ function Landing1Layout() {
   const { resolvedTheme } = useTheme()
   const location = useLocation()
   const isChatRoute = location.pathname.startsWith("/chat")
+  const isHome = location.pathname === "/"
+  const isLight = resolvedTheme === "light"
   const dotFieldAppearance = getDotFieldAppearance(
     brandColors,
-    resolvedTheme === "light" ? "light" : "dark",
+    isLight ? "light" : "dark",
   )
 
   return (
@@ -124,6 +126,7 @@ function Landing1Layout() {
         tone={
           !isChatRoute && resolvedTheme === "dark" ? "on-media" : "default"
         }
+        elevateBlurOnScroll={isHome && isLight}
       />
       
       <main className={cn(

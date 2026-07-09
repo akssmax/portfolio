@@ -1,26 +1,49 @@
 import { resolvePdfBrandColor } from "./color-utils"
+import { ensurePdfBuffer } from "./ensure-pdf-buffer"
 import { ResumePdfDocument } from "./layouts/resume-pdf-document"
 import { CoverLetterPdfDocument } from "./layouts/cover-letter-pdf-document"
 import { resolveDocumentImages } from "./pdf-image-utils"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId } from "./types"
+
+const PDF_GENERATION_TIMEOUT_MS = 30_000
+
+async function withTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((_, reject) => {
+        timer = setTimeout(() => {
+          reject(new Error(`${label} timed out. Please try again.`))
+        }, PDF_GENERATION_TIMEOUT_MS)
+      }),
+    ])
+  } finally {
+    if (timer) clearTimeout(timer)
+  }
+}
 
 export async function generateResumePdf(
   document: ResumeDocument,
   brandColor: string,
   layout: ResumeLayoutId = "classic",
 ): Promise<Blob> {
+  await ensurePdfBuffer()
   const { pdf } = await import("@react-pdf/renderer")
   const pdfBrandColor = resolvePdfBrandColor(brandColor)
 
   const documentWithImages = await resolveDocumentImages(document)
 
-  return pdf(
-    <ResumePdfDocument
-      document={documentWithImages}
-      brandColor={pdfBrandColor}
-      layout={layout}
-    />,
-  ).toBlob()
+  return withTimeout(
+    pdf(
+      <ResumePdfDocument
+        document={documentWithImages}
+        brandColor={pdfBrandColor}
+        layout={layout}
+      />,
+    ).toBlob(),
+    "Resume PDF generation",
+  )
 }
 
 export function getResumeFilename(name: string, layout: ResumeLayoutId = "classic"): string {
@@ -54,16 +77,20 @@ export async function generateCoverLetterPdf(
   brandColor: string,
   layout: ResumeLayoutId = "classic",
 ): Promise<Blob> {
+  await ensurePdfBuffer()
   const { pdf } = await import("@react-pdf/renderer")
   const pdfBrandColor = resolvePdfBrandColor(brandColor)
 
-  return pdf(
-    <CoverLetterPdfDocument
-      document={document}
-      brandColor={pdfBrandColor}
-      layout={layout}
-    />,
-  ).toBlob()
+  return withTimeout(
+    pdf(
+      <CoverLetterPdfDocument
+        document={document}
+        brandColor={pdfBrandColor}
+        layout={layout}
+      />,
+    ).toBlob(),
+    "Cover letter PDF generation",
+  )
 }
 
 export function getCoverLetterFilename(
