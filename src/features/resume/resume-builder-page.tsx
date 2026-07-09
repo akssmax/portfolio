@@ -28,7 +28,7 @@ import { ResumeWorkspaceShell } from "./resume-workspace-shell"
 import { useDownloadResume } from "./use-download-resume"
 import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
-import { getResumePreviewFontFamily } from "./layouts/html/resume-html-props"
+import { getResumePreviewFontFamily, preloadResumeFont } from "./layouts/html/resume-html-props"
 import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
@@ -197,6 +197,10 @@ function ResumeBuilderWorkspace() {
   })
 
   const fontFamily = getResumePreviewFontFamily(appearance.font)
+
+  useEffect(() => {
+    preloadResumeFont(appearance.font)
+  }, [appearance.font])
 
   const previewDocument = useMemo(() =>
     filterDocumentBySections(editedDocument, sections),

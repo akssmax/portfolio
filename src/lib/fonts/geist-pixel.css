@@ -1,8 +1,8 @@
-/* Geist Pixel — from geist/font/pixel (woff2 bundled in the geist package) */
+/* Geist Pixel — served from /public/fonts for production */
 
 @font-face {
   font-family: "Geist Pixel Square";
-  src: url("../../../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Square.woff2") format("woff2");
+  src: url("/fonts/geist-pixel-square.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Geist Pixel Grid";
-  src: url("../../../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Grid.woff2") format("woff2");
+  src: url("/fonts/geist-pixel-grid.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: "Geist Pixel Circle";
-  src: url("../../../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Circle.woff2") format("woff2");
+  src: url("/fonts/geist-pixel-circle.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -26,7 +26,7 @@
 
 @font-face {
   font-family: "Geist Pixel Triangle";
-  src: url("../../../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Triangle.woff2") format("woff2");
+  src: url("/fonts/geist-pixel-triangle.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: "Geist Pixel Line";
-  src: url("../../../node_modules/geist/dist/fonts/geist-pixel/GeistPixel-Line.woff2") format("woff2");
+  src: url("/fonts/geist-pixel-line.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;

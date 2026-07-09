@@ -1,8 +1,7 @@
-import type { FontPresetId } from "@/lib/themes/types"
-import { FONT_FAMILY_BY_PRESET } from "@/lib/fonts/font-families"
-
 import type { ResumeDisplayPreferences } from "../../resume-display-preferences"
 import type { ResumeDocument } from "../../types"
+
+export { getResumePreviewFontFamily, preloadResumeFont, resolveResumeFontPreset } from "../../resume-font-utils"
 
 export type ResumeHtmlLayoutProps = {
   document: ResumeDocument
@@ -10,8 +9,4 @@ export type ResumeHtmlLayoutProps = {
   fontFamily: string
   display: ResumeDisplayPreferences
   onChange?: (updated: ResumeDocument) => void
-}
-
-export function getResumePreviewFontFamily(font: FontPresetId): string {
-  return FONT_FAMILY_BY_PRESET[font] ?? FONT_FAMILY_BY_PRESET.geist
 }

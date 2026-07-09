@@ -40,7 +40,7 @@ import { cn } from "@/lib/utils"
 
 import { usePublicResumeGenerate } from "./use-public-resume-generate"
 import { filterDocumentBySections } from "@/features/resume/build-resume-document"
-import { getResumePreviewFontFamily } from "@/features/resume/layouts/html/resume-html-props"
+import { getResumePreviewFontFamily, preloadResumeFont } from "@/features/resume/layouts/html/resume-html-props"
 import type { ResumeDisplayPreferences } from "@/features/resume/resume-display-preferences"
 
 type WizardStep = "input" | "preview"
@@ -137,6 +137,11 @@ export function PublicResumeWizard() {
   const brandColor = resolveResumeBrandColor(colorSelection, primary)
   const fontFamily = getResumePreviewFontFamily(appearance.font)
   const previewDocument = editedDocument ? filterDocumentBySections(editedDocument, sections) : null
+
+  useEffect(() => {
+    preloadResumeFont(appearance.font)
+  }, [appearance.font])
+
   const generationError = error
   const validationError = inputError ? formatResumeValidationError(inputError) : null
   const urlPlaceholder = PROFILE_SOURCES[activeSourceHint]?.placeholder

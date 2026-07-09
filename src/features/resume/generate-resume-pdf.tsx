@@ -1,6 +1,7 @@
 import { resolvePdfBrandColor } from "./color-utils"
 import { ensurePdfBuffer } from "./ensure-pdf-buffer"
 import { registerResumePdfFont } from "./register-resume-fonts"
+import { resolveResumeFontPreset } from "./resume-font-utils"
 import { ResumePdfDocument } from "./layouts/resume-pdf-document"
 import { CoverLetterPdfDocument } from "./layouts/cover-letter-pdf-document"
 import { resolveDocumentImages } from "./pdf-image-utils"
@@ -37,7 +38,7 @@ export async function generateResumePdf(
   await ensurePdfBuffer()
   const { pdf } = await import("@react-pdf/renderer")
   const pdfBrandColor = resolvePdfBrandColor(brandColor)
-  const fontFamily = await registerResumePdfFont(fontPresetId)
+  const fontFamily = await registerResumePdfFont(resolveResumeFontPreset(fontPresetId))
 
   const documentWithImages = await resolveDocumentImages(document)
 
