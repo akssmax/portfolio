@@ -163,6 +163,11 @@ export function PdfCompanyLogo({ logoSrc, name, style }: PdfCompanyLogoProps) {
     )
   }
 
-  // Fallback to React-PDF standard Image tag for PNGs and other types
+  // react-pdf Image is unreliable for SVG (path or data URL); skip unknown SVGs.
+  const path = logoSrc.split("?")[0]?.toLowerCase() ?? ""
+  if (path.endsWith(".svg") || logoSrc.startsWith("data:image/svg+xml")) {
+    return null
+  }
+
   return <Image src={logoSrc} style={style} />
 }
