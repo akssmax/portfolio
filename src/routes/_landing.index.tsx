@@ -261,7 +261,7 @@ function Landing1IndexPage() {
   return (
     <div className="flex-1 flex flex-col w-full">
       {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
-      <section className="relative -mt-16 flex min-h-[min(92svh,720px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-20">
+      <section className="relative -mt-16 flex min-h-[min(88svh,680px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
         <div className="absolute inset-0" aria-hidden>
           <picture>
             <source srcSet={heroBackground.avif} type="image/avif" />
