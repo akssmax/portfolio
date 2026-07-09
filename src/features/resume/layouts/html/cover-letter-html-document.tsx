@@ -124,6 +124,101 @@ export function CoverLetterHtmlDocument({
       )
     }
 
+    if (layout === "minimal") {
+      return (
+        <header
+          className="mb-5 border-b pb-2.5"
+          style={{ borderBottomColor: brandColor }}
+        >
+          <div className="pb-1">
+            <EditableText
+              value={document.senderName}
+              onChange={(val) => handleFieldChange("senderName", val)}
+              tagName="h1"
+              className="text-xl font-bold leading-tight text-neutral-900"
+              placeholder="Your Name"
+            />
+          </div>
+          <div className="pb-1">
+            <EditableText
+              value={document.senderTitle}
+              onChange={(val) => handleFieldChange("senderTitle", val)}
+              tagName="p"
+              className="text-[11px]"
+              style={{ color: brandColor }}
+              placeholder="Professional Title"
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 text-[8.5px] text-neutral-500">
+            <EditableText
+              value={document.senderLocation}
+              onChange={(val) => handleFieldChange("senderLocation", val)}
+              placeholder="Location"
+            />
+            {document.senderContact?.email && (
+              <>
+                <span className="text-neutral-300">·</span>
+                <span>{document.senderContact.email}</span>
+              </>
+            )}
+            {document.senderContact?.phone && (
+              <>
+                <span className="text-neutral-300">·</span>
+                <span>{document.senderContact.phone}</span>
+              </>
+            )}
+          </div>
+        </header>
+      )
+    }
+
+    if (layout === "executive") {
+      return (
+        <header
+          className="mb-6 rounded px-4 py-3.5"
+          style={{ backgroundColor: brandColor }}
+        >
+          <div className="pb-1">
+            <EditableText
+              value={document.senderName}
+              onChange={(val) => handleFieldChange("senderName", val)}
+              tagName="h1"
+              className="text-2xl font-bold leading-tight text-white"
+              placeholder="Your Name"
+            />
+          </div>
+          <div className="pb-1">
+            <EditableText
+              value={document.senderTitle}
+              onChange={(val) => handleFieldChange("senderTitle", val)}
+              tagName="p"
+              className="text-xs font-bold text-white"
+              placeholder="Professional Title"
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 text-[9px] text-white/85">
+            <EditableText
+              value={document.senderLocation}
+              onChange={(val) => handleFieldChange("senderLocation", val)}
+              placeholder="Location"
+            />
+            {document.senderContact?.email && (
+              <>
+                <span className="text-white/50">·</span>
+                <span>{document.senderContact.email}</span>
+              </>
+            )}
+            {document.senderContact?.phone && (
+              <>
+                <span className="text-white/50">·</span>
+                <span>{document.senderContact.phone}</span>
+              </>
+            )}
+          </div>
+        </header>
+      )
+    }
+
     // Classic Header
     return (
       <header
@@ -260,7 +355,7 @@ export function CoverLetterHtmlDocument({
             style={{ backgroundColor: brandColor }}
           />
         </aside>
-        <div className="min-w-0 flex-1 pb-9 pl-2 pr-10 pt-[34px]">
+        <div className="min-w-0 flex-1 pb-14 pl-2 pr-10 pt-[34px]">
           {renderHeader()}
           <main className="mt-4">{renderLetterBody()}</main>
         </div>
@@ -268,9 +363,27 @@ export function CoverLetterHtmlDocument({
     )
   }
 
+  if (layout === "minimal") {
+    return (
+      <div className="px-12 py-9 bg-white min-h-full text-[10px]">
+        {renderHeader()}
+        <main className="mt-4">{renderLetterBody()}</main>
+      </div>
+    )
+  }
+
+  if (layout === "executive") {
+    return (
+      <div className="px-11 pt-8 pb-14 bg-white min-h-full text-[10px]">
+        {renderHeader()}
+        <main className="mt-4">{renderLetterBody()}</main>
+      </div>
+    )
+  }
+
   // Classic or Modern HTML shell
   return (
-    <div className={layout === "modern" ? "px-10 py-9 bg-white min-h-full" : "px-11 py-10 bg-white min-h-full text-[10px]"}>
+    <div className={layout === "modern" ? "px-10 pt-[34px] pb-14 bg-white min-h-full" : "px-11 py-10 bg-white min-h-full text-[10px]"}>
       {renderHeader()}
       <main className="mt-4">{renderLetterBody()}</main>
     </div>

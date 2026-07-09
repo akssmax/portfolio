@@ -1,49 +1,65 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 import { hexToRgba } from "../color-utils"
 import type { CoverLetterDocument, ResumeLayoutId } from "../types"
+import { RESUME_SPACING } from "./spacing-tokens"
 
-// PDF Page Margin coordinates
-const CLASSIC_MARGINS = {
-  paddingTop: 40,
-  paddingBottom: 40,
-  paddingHorizontal: 44,
-}
-
-const DESIGNER_MARGINS = {
-  paddingTop: 34,
-  paddingBottom: 44,
-  paddingRight: 40,
-  paddingLeft: 60,
-}
-
-const MODERN_MARGINS = {
-  paddingTop: 36,
-  paddingBottom: 40,
-  paddingHorizontal: 40,
-}
+const classic = RESUME_SPACING.classic
+const designer = RESUME_SPACING.designer
+const modern = RESUME_SPACING.modern
+const minimal = RESUME_SPACING.minimal
+const executive = RESUME_SPACING.executive
 
 const styles = StyleSheet.create({
   pageClassic: {
     fontFamily: "Helvetica",
-    fontSize: 10,
-    lineHeight: 1.45,
+    fontSize: classic.fontSize,
+    lineHeight: classic.lineHeight,
     color: "#171717",
-    ...CLASSIC_MARGINS,
+    paddingTop: classic.page.paddingTop,
+    paddingBottom: classic.page.paddingBottom,
+    paddingLeft: classic.page.paddingLeft,
+    paddingRight: classic.page.paddingRight,
   },
   pageDesigner: {
     position: "relative",
     fontFamily: "Helvetica",
-    fontSize: 10,
-    lineHeight: 1.45,
+    fontSize: designer.fontSize,
+    lineHeight: designer.lineHeight,
     color: "#171717",
-    ...DESIGNER_MARGINS,
+    paddingTop: designer.page.paddingTop,
+    paddingBottom: designer.page.paddingBottom,
+    paddingLeft: designer.page.paddingLeft,
+    paddingRight: designer.page.paddingRight,
   },
   pageModern: {
     fontFamily: "Helvetica",
-    fontSize: 10,
-    lineHeight: 1.45,
+    fontSize: modern.fontSize,
+    lineHeight: modern.lineHeight,
     color: "#171717",
-    ...MODERN_MARGINS,
+    paddingTop: modern.page.paddingTop,
+    paddingBottom: modern.page.paddingBottom,
+    paddingLeft: modern.page.paddingLeft,
+    paddingRight: modern.page.paddingRight,
+  },
+  pageMinimal: {
+    fontFamily: "Helvetica",
+    fontSize: minimal.fontSize,
+    lineHeight: minimal.lineHeight,
+    color: "#171717",
+    paddingTop: minimal.page.paddingTop,
+    paddingBottom: minimal.page.paddingBottom,
+    paddingLeft: minimal.page.paddingLeft,
+    paddingRight: minimal.page.paddingRight,
+  },
+  pageExecutive: {
+    fontFamily: "Helvetica",
+    fontSize: executive.fontSize,
+    lineHeight: executive.lineHeight,
+    color: "#171717",
+    paddingTop: executive.page.paddingTop,
+    paddingBottom: executive.page.paddingBottom,
+    paddingLeft: executive.page.paddingLeft,
+    paddingRight: executive.page.paddingRight,
   },
   sidebarStripe: {
     position: "absolute",
@@ -69,6 +85,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E5E5E5",
     paddingBottom: 12,
   },
+  headerExecutive: {
+    marginBottom: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
   nameClassic: {
     fontSize: 22,
     fontWeight: 700,
@@ -85,6 +107,17 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: "#0F1923",
   },
+  nameMinimal: {
+    fontSize: 20,
+    fontWeight: 700,
+    paddingBottom: 4,
+  },
+  nameExecutive: {
+    fontSize: 24,
+    fontWeight: 700,
+    color: "#FFFFFF",
+    paddingBottom: 4,
+  },
   titleClassic: {
     fontSize: 12,
     paddingBottom: 4,
@@ -99,6 +132,16 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     marginTop: 2,
   },
+  titleMinimal: {
+    fontSize: 11,
+    paddingBottom: 4,
+  },
+  titleExecutive: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: "#FFFFFF",
+    paddingBottom: 4,
+  },
   metaClassic: {
     fontSize: 9,
     color: "#525252",
@@ -111,6 +154,14 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#737373",
     marginTop: 4,
+  },
+  metaMinimal: {
+    fontSize: 8.5,
+    color: "#737373",
+  },
+  metaExecutive: {
+    fontSize: 9,
+    color: "rgba(255,255,255,0.85)",
   },
   letterContent: {
     flex: 1,
@@ -206,12 +257,33 @@ export function CoverLetterPdfDocument({
     </View>
   )
 
+  const renderMinimalHeader = () => (
+    <View style={[styles.headerClassic, { borderBottomColor: brandColor, borderBottomWidth: 1 }]}>
+      <Text style={styles.nameMinimal}>{document.senderName}</Text>
+      <Text style={[styles.titleMinimal, { color: brandColor }]}>{document.senderTitle}</Text>
+      <Text style={styles.metaMinimal}>
+        {document.senderLocation}
+        {document.senderContact?.email ? `  ·  ${document.senderContact.email}` : ""}
+        {document.senderContact?.phone ? `  ·  ${document.senderContact.phone}` : ""}
+      </Text>
+    </View>
+  )
+
+  const renderExecutiveHeader = () => (
+    <View style={[styles.headerExecutive, { backgroundColor: brandColor }]}>
+      <Text style={styles.nameExecutive}>{document.senderName}</Text>
+      <Text style={styles.titleExecutive}>{document.senderTitle}</Text>
+      <Text style={styles.metaExecutive}>
+        {document.senderLocation}
+        {document.senderContact?.email ? `  ·  ${document.senderContact.email}` : ""}
+        {document.senderContact?.phone ? `  ·  ${document.senderContact.phone}` : ""}
+      </Text>
+    </View>
+  )
+
   const renderLetterBody = () => (
     <View style={styles.letterContent}>
-      {/* Date */}
       <Text style={styles.date}>{document.date}</Text>
-
-      {/* Recipient */}
       <View style={styles.recipientBlock}>
         <Text style={styles.recipientName}>{document.recipientName}</Text>
         <Text style={styles.recipientCompany}>{document.recipientCompany}</Text>
@@ -219,23 +291,13 @@ export function CoverLetterPdfDocument({
           <Text style={styles.recipientAddress}>{document.recipientAddress}</Text>
         ) : null}
       </View>
-
-      {/* Subject */}
-      {document.subject ? (
-        <Text style={styles.subject}>{document.subject}</Text>
-      ) : null}
-
-      {/* Body paragraphs */}
+      {document.subject ? <Text style={styles.subject}>{document.subject}</Text> : null}
       {document.body.split("\n\n").map((p, idx) => (
         <Text key={idx} style={styles.paragraph}>
           {p}
         </Text>
       ))}
-
-      {/* Sign off */}
-      {document.signOff ? (
-        <Text style={styles.signOff}>{document.signOff}</Text>
-      ) : null}
+      {document.signOff ? <Text style={styles.signOff}>{document.signOff}</Text> : null}
     </View>
   )
 
@@ -256,6 +318,28 @@ export function CoverLetterPdfDocument({
       <Document>
         <Page size="A4" style={styles.pageModern}>
           {renderModernHeader()}
+          {renderLetterBody()}
+        </Page>
+      </Document>
+    )
+  }
+
+  if (layout === "minimal") {
+    return (
+      <Document>
+        <Page size="A4" style={styles.pageMinimal}>
+          {renderMinimalHeader()}
+          {renderLetterBody()}
+        </Page>
+      </Document>
+    )
+  }
+
+  if (layout === "executive") {
+    return (
+      <Document>
+        <Page size="A4" style={styles.pageExecutive}>
+          {renderExecutiveHeader()}
           {renderLetterBody()}
         </Page>
       </Document>

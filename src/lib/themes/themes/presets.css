@@ -201,10 +201,10 @@
 [data-theme="red"] {
   --primary: oklch(0.577 0.245 27.325);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -218,9 +218,9 @@
 .dark[data-theme="red"] {
   --primary: oklch(0.704 0.191 22.216);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -235,10 +235,10 @@
 [data-theme="rose"] {
   --primary: oklch(0.586 0.253 17.585);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -252,9 +252,9 @@
 .dark[data-theme="rose"] {
   --primary: oklch(0.712 0.194 13.428);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -269,10 +269,10 @@
 [data-theme="orange"] {
   --primary: oklch(0.705 0.213 47.604);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -286,9 +286,9 @@
 .dark[data-theme="orange"] {
   --primary: oklch(0.75 0.183 55.934);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -303,10 +303,10 @@
 [data-theme="amber"] {
   --primary: oklch(0.769 0.188 70.08);
   --primary-foreground: oklch(0.279 0.077 45.635);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -320,9 +320,9 @@
 .dark[data-theme="amber"] {
   --primary: oklch(0.828 0.189 84.429);
   --primary-foreground: oklch(0.279 0.077 45.635);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -337,10 +337,10 @@
 [data-theme="yellow"] {
   --primary: oklch(0.852 0.199 91.936);
   --primary-foreground: oklch(0.279 0.077 45.635);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -354,9 +354,9 @@
 .dark[data-theme="yellow"] {
   --primary: oklch(0.852 0.199 91.936);
   --primary-foreground: oklch(0.279 0.077 45.635);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -371,10 +371,10 @@
 [data-theme="lime"] {
   --primary: oklch(0.768 0.233 130.85);
   --primary-foreground: oklch(0.266 0.065 152.934);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -388,9 +388,9 @@
 .dark[data-theme="lime"] {
   --primary: oklch(0.768 0.233 130.85);
   --primary-foreground: oklch(0.266 0.065 152.934);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -405,10 +405,10 @@
 [data-theme="green"] {
   --primary: oklch(0.648 0.2 131.684);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -422,9 +422,9 @@
 .dark[data-theme="green"] {
   --primary: oklch(0.696 0.17 162.48);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -439,10 +439,10 @@
 [data-theme="emerald"] {
   --primary: oklch(0.696 0.17 162.48);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -456,9 +456,9 @@
 .dark[data-theme="emerald"] {
   --primary: oklch(0.765 0.177 163.223);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -473,10 +473,10 @@
 [data-theme="teal"] {
   --primary: oklch(0.6 0.118 184.704);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -490,9 +490,9 @@
 .dark[data-theme="teal"] {
   --primary: oklch(0.777 0.152 181.912);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -507,10 +507,10 @@
 [data-theme="cyan"] {
   --primary: oklch(0.715 0.143 215.221);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -524,9 +524,9 @@
 .dark[data-theme="cyan"] {
   --primary: oklch(0.789 0.154 211.53);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -541,10 +541,10 @@
 [data-theme="sky"] {
   --primary: oklch(0.685 0.169 237.323);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -558,9 +558,9 @@
 .dark[data-theme="sky"] {
   --primary: oklch(0.746 0.16 232.661);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -575,10 +575,10 @@
 [data-theme="blue"] {
   --primary: oklch(0.623 0.214 259.815);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -592,9 +592,9 @@
 .dark[data-theme="blue"] {
   --primary: oklch(0.707 0.165 254.624);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -609,10 +609,10 @@
 [data-theme="indigo"] {
   --primary: oklch(0.585 0.233 277.117);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -626,9 +626,9 @@
 .dark[data-theme="indigo"] {
   --primary: oklch(0.673 0.182 276.935);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -643,10 +643,10 @@
 [data-theme="violet"] {
   --primary: oklch(0.606 0.25 292.717);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -660,9 +660,9 @@
 .dark[data-theme="violet"] {
   --primary: oklch(0.702 0.183 293.541);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -677,10 +677,10 @@
 [data-theme="purple"] {
   --primary: oklch(0.627 0.265 303.9);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -694,9 +694,9 @@
 .dark[data-theme="purple"] {
   --primary: oklch(0.714 0.203 305.504);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -711,10 +711,10 @@
 [data-theme="fuchsia"] {
   --primary: oklch(0.667 0.295 322.15);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -728,9 +728,9 @@
 .dark[data-theme="fuchsia"] {
   --primary: oklch(0.738 0.211 322.762);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -745,10 +745,10 @@
 [data-theme="pink"] {
   --primary: oklch(0.656 0.241 354.308);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -762,9 +762,9 @@
 .dark[data-theme="pink"] {
   --primary: oklch(0.725 0.175 349.761);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -779,10 +779,10 @@
 [data-theme="claude"] {
   --primary: oklch(0.646 0.222 41.116);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -798,9 +798,9 @@
 .dark[data-theme="claude"] {
   --primary: oklch(0.704 0.191 22.216);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);
@@ -817,10 +817,10 @@
 [data-theme="vercel"] {
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -834,9 +834,9 @@
 .dark[data-theme="vercel"] {
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);

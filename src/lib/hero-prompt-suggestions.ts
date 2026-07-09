@@ -63,6 +63,20 @@ export const DEFAULT_HERO_PROMPT_SUGGESTIONS = HERO_PROMPT_SUGGESTION_POOL.slice
   HERO_SUGGESTION_COUNT,
 )
 
+/** Short prompts that cycle in the hero chat placeholder every few seconds. */
+export const HERO_PLACEHOLDER_PROMPTS = [
+  "Ask about Akshay's projects, product design experience, or RAG info...",
+  "What design systems has he built?",
+  "How does he ship Figma to React?",
+  "What's his experience with fintech?",
+  "Tell me about his work at 100x.bot",
+  "Which projects show his best work?",
+  "How does he partner with founders?",
+  "What agentic AI has he shipped?",
+  "Why should we hire Akshay?",
+  "What's his background in design engineering?",
+] as const
+
 function shuffleInPlace<T>(items: T[]) {
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

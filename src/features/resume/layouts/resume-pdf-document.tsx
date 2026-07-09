@@ -3,6 +3,8 @@ import { Document } from "@react-pdf/renderer"
 import type { ResumeDocument, ResumeLayoutId } from "../types"
 import { ClassicResumeLayout } from "./classic-layout"
 import { DesignerResumeLayout } from "./designer-layout"
+import { ExecutiveResumeLayout } from "./executive-layout"
+import { MinimalResumeLayout } from "./minimal-layout"
 import { ModernResumeLayout } from "./modern-layout"
 
 export function ResumePdfDocument({
@@ -20,6 +22,10 @@ export function ResumePdfDocument({
         <DesignerResumeLayout document={document} brandColor={brandColor} />
       ) : layout === "modern" ? (
         <ModernResumeLayout document={document} brandColor={brandColor} />
+      ) : layout === "minimal" ? (
+        <MinimalResumeLayout document={document} brandColor={brandColor} />
+      ) : layout === "executive" ? (
+        <ExecutiveResumeLayout document={document} brandColor={brandColor} />
       ) : (
         <ClassicResumeLayout document={document} brandColor={brandColor} />
       )}

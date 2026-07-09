@@ -1,5 +1,6 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
+import { useTheme } from "next-themes"
 import { ClipboardList, Sparkles, Star, Quote } from "lucide-react"
 import { LandingHeroRotatingCopy } from "@/components/landing/landing-hero-rotating-copy"
 import { AnimatePresence, motion } from "motion/react"
@@ -8,13 +9,17 @@ import { nanoid } from "nanoid"
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
 import { M3FeatureImage, M3ShapeImage, readStoredHeroPortraitIndex } from "@/components/m3-shapes"
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
+import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { useDeferredMount } from "@/hooks/use-deferred-mount"
 import { useInView } from "@/hooks/use-in-view"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { getRandomizedHeroPortraitItems, heroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import {
   DEFAULT_HERO_PROMPT_SUGGESTIONS,
   getRandomHeroPromptSuggestions,
+  HERO_PLACEHOLDER_PROMPTS,
   type HeroPromptSuggestion,
 } from "@/lib/hero-prompt-suggestions"
 import { LANDING_HERO_COPY } from "@/lib/hero-headlines"
@@ -25,6 +30,24 @@ import {
 } from "@/lib/motion-easing"
 import type { Testimonial } from "@/lib/testimonials"
 import { cn } from "@/lib/utils"
+
+const DotField = React.lazy(() => import("@/components/DotField"))
+
+const LIGHT_HERO_BACKGROUND = {
+  id: "valley",
+  label: "Sunny mountain valley",
+  avif: "/images/hero-light-valley.avif",
+  webp: "/images/hero-light-valley.webp",
+  jpg: "/images/hero-light-valley.jpg",
+} as const
+
+const DARK_HERO_BACKGROUND = {
+  id: "monolith",
+  label: "Monolith landscape",
+  avif: "/images/hero-atmosphere.avif",
+  webp: "/images/hero-atmosphere.webp",
+  jpg: "/images/hero-atmosphere.jpg",
+} as const
 
 const LazyContactSection = React.lazy(() =>
   import("@/components/landing/contact-section").then((module) => ({
@@ -79,8 +102,8 @@ function HeroPromptSuggestions({
             onClick={() => onSelect(item.query, targetMode)}
             className={cn(
               "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer text-xs",
-              "border-border/80 bg-card text-foreground/85 shadow-sm ring-1 ring-black/[0.05]",
-              "hover:-translate-y-px hover:border-primary/30 hover:bg-card hover:text-foreground hover:shadow-md",
+              "border-border/80 bg-background text-foreground shadow-sm ring-1 ring-black/[0.06]",
+              "hover:-translate-y-px hover:border-primary/30 hover:bg-background hover:text-foreground hover:shadow-md",
               "dark:border-border dark:bg-card/45 dark:text-muted-foreground dark:ring-0",
               "dark:hover:bg-card/85 dark:hover:text-foreground dark:shadow-sm",
               chipHoverTransition,
@@ -141,6 +164,15 @@ export const Route = createFileRoute("/_landing/")({
 
 function Landing1IndexPage() {
   const { canAnimate, fullMotion } = useAnimationProfile()
+  const showHeroDots = useDeferredMount(canAnimate)
+  const isMobile = useIsMobile()
+  const brandColors = useBrandColors()
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
+  const heroDotAppearance = getDotFieldAppearance(
+    brandColors,
+    resolvedTheme === "light" ? "light" : "dark",
+  )
   const { ref: aboutRef, inView: aboutInView } = useInView({ rootMargin: "120px" })
   const { ref: contactRef, inView: contactInView } = useInView({ rootMargin: "240px", once: true })
   // Retrieve loader data from the parent route '/_landing'
@@ -155,6 +187,8 @@ function Landing1IndexPage() {
     DEFAULT_HERO_PROMPT_SUGGESTIONS,
   )
   const [testimonialIndex, setTestimonialIndex] = React.useState(0)
+
+  const heroBackground = isDark ? DARK_HERO_BACKGROUND : LIGHT_HERO_BACKGROUND
 
   React.useEffect(() => {
     setPortraitItems(getRandomizedHeroPortraitItems())
@@ -226,18 +260,53 @@ function Landing1IndexPage() {
 
   return (
     <div className="flex-1 flex flex-col w-full">
-      {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center py-20 min-h-[500px] border-b border-border">
-        <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 flex flex-col items-center text-center space-y-8">
+      {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
+      <section className="relative -mt-16 flex min-h-[min(92svh,720px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-20">
+        <div className="absolute inset-0" aria-hidden>
+          <picture>
+            <source srcSet={heroBackground.avif} type="image/avif" />
+            <source srcSet={heroBackground.webp} type="image/webp" />
+            <img
+              src={heroBackground.jpg}
+              alt=""
+              width={1600}
+              height={900}
+              decoding="async"
+              fetchPriority="high"
+              className="absolute inset-0 size-full object-cover object-center"
+            />
+          </picture>
+          {/* Soft light-mode wash for copy contrast; dark-mode scrim for the monolith */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/15 to-background/40 dark:from-black/30 dark:via-black/20 dark:to-black/10" />
+          {showHeroDots ? (
+            <React.Suspense fallback={null}>
+              <DotField
+                className="absolute inset-0"
+                dotRadius={fullMotion ? 1.8 : 1.5}
+                dotSpacing={isMobile ? 18 : fullMotion ? 14 : 20}
+                bulgeStrength={isMobile ? 48 : fullMotion ? 67 : 40}
+                glowRadius={isMobile ? 120 : fullMotion ? 160 : 100}
+                sparkle={false}
+                waveAmplitude={0}
+                gradientFrom={heroDotAppearance.gradientFrom}
+                gradientTo={heroDotAppearance.gradientTo}
+                glowColor={heroDotAppearance.glowColor}
+              />
+            </React.Suspense>
+          ) : null}
+        </div>
+
+        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center space-y-8 px-4 text-center sm:px-6">
           <LandingHeroRotatingCopy slides={LANDING_HERO_COPY} intervalMs={7500} />
 
           {/* Chat Input wrapper with shared layout id */}
-          <PromptShell className="w-full pt-4 space-y-4" {...promptShellProps}>
+          <PromptShell className="w-full space-y-4 pt-4" {...promptShellProps}>
             <ChatPromptInput
               value={prompt}
               onValueChange={setPrompt}
               onSubmit={handleSubmitPrompt}
-              placeholder="Ask about Akshay's projects, product design experience, or RAG info..."
+              placeholders={HERO_PLACEHOLDER_PROMPTS}
+              tone="on-media"
             />
             <HeroPromptSuggestions suggestions={starterSuggestions} onSelect={handleSubmitPrompt} />
           </PromptShell>
@@ -252,7 +321,7 @@ function Landing1IndexPage() {
       {/* Meet the Designer & Engineer Section */}
       <section
         ref={aboutRef}
-        className="py-24 border-t border-border/80 bg-background/40 relative z-10 [content-visibility:auto] [contain-intrinsic-size:auto_720px]"
+        className="relative z-10 bg-background py-24 border-t border-border/80 [content-visibility:auto] [contain-intrinsic-size:auto_720px]"
       >
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] items-center">
@@ -267,7 +336,7 @@ function Landing1IndexPage() {
                   A product designer who designs in Figma and writes React code.
                 </h2>
                 <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                  I operate at the intersection of Figma and production code. Over the past 8+ years, I have helped fast-moving startups and enterprise teams build finance dashboards, configurable SaaS forms, devtools, and agentic AI workspaces.
+                  I operate at the intersection of Figma and production code. Over the past 6+ years, I have helped fast-moving startups and enterprise teams build finance dashboards, configurable SaaS forms, devtools, and agentic AI workspaces.
                 </p>
               </div>
 

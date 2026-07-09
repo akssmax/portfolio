@@ -27,7 +27,13 @@ const RESUME_SECTION_IDS: Array<ResumeSectionId> = [
   "interests",
 ]
 
-const VALID_LAYOUTS: Array<ResumeLayoutId> = ["classic", "designer", "modern"]
+const VALID_LAYOUTS: Array<ResumeLayoutId> = [
+  "classic",
+  "designer",
+  "modern",
+  "minimal",
+  "executive",
+]
 
 const VALID_PRESET_IDS = new Set<BrandPresetId>([
   DEFAULT_THEME_PRESET.id as BrandPresetId,

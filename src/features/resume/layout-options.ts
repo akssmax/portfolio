@@ -22,4 +22,14 @@ export const RESUME_LAYOUT_OPTIONS: {
     label: "Modern",
     description: "Two-column branded layout for a compact, structured presentation.",
   },
+  {
+    id: "minimal",
+    label: "Minimal",
+    description: "Ultra-clean single column with tight type. Maximum ATS friendliness.",
+  },
+  {
+    id: "executive",
+    label: "Executive",
+    description: "Strong header band and clear section rules for a senior product feel.",
+  },
 ]

@@ -164,7 +164,8 @@ export function LandingHeroRotatingCopy({
               <motion.h1
                 variants={titleVariants}
                 className={cn(
-                  "origin-bottom text-4xl font-semibold tracking-tight text-balance text-foreground font-heading leading-tight sm:text-5xl lg:text-6xl",
+                  "origin-bottom text-4xl font-semibold tracking-tight text-balance font-heading leading-tight sm:text-5xl lg:text-6xl",
+                  "text-foreground drop-shadow-[0_1px_10px_rgba(255,255,255,0.55)] dark:text-white dark:drop-shadow-[0_1px_12px_rgba(0,0,0,0.45)]",
                   fullMotion && "[transform-style:preserve-3d]",
                 )}
               >
@@ -172,7 +173,7 @@ export function LandingHeroRotatingCopy({
               </motion.h1>
               <motion.p
                 variants={subtitleVariants}
-                className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed text-balance sm:text-lg"
+                className="mx-auto max-w-2xl text-base leading-relaxed text-balance sm:text-lg text-foreground/80 drop-shadow-[0_1px_8px_rgba(255,255,255,0.5)] dark:text-white/85 dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]"
               >
                 {slide.subtitle}
               </motion.p>
@@ -180,10 +181,10 @@ export function LandingHeroRotatingCopy({
           </AnimatePresence>
         ) : (
           <div className="space-y-3">
-            <h1 className="text-4xl font-semibold tracking-tight text-balance text-foreground font-heading leading-tight sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-balance font-heading leading-tight sm:text-5xl lg:text-6xl text-foreground drop-shadow-[0_1px_10px_rgba(255,255,255,0.55)] dark:text-white dark:drop-shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
               {slide.title}
             </h1>
-            <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed text-balance sm:text-lg">
+            <p className="mx-auto max-w-2xl text-base leading-relaxed text-balance sm:text-lg text-foreground/80 drop-shadow-[0_1px_8px_rgba(255,255,255,0.5)] dark:text-white/85 dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
               {slide.subtitle}
             </p>
           </div>

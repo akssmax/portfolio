@@ -1,10 +1,10 @@
 [data-theme="blue"] {
   --primary: oklch(0.623 0.214 259.815);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 14%, oklch(0.965 0.012 0));
-  --secondary-foreground: color-mix(in oklch, var(--primary) 72%, oklch(0.22 0.02 0));
-  --accent: color-mix(in oklch, var(--primary) 10%, oklch(0.975 0.045 145));
-  --accent-foreground: color-mix(in oklch, var(--primary) 68%, oklch(0.28 0.06 145));
+  --secondary: oklch(from var(--primary) 0.955 calc(c * 0.22) h);
+  --secondary-foreground: oklch(from var(--primary) 0.34 calc(c * 0.78) h);
+  --accent: oklch(from var(--primary) 0.96 calc(c * 0.18) calc(h + 18));
+  --accent-foreground: oklch(from var(--primary) 0.36 calc(c * 0.72) calc(h + 18));
   --destructive: var(--primary);
   --ring: var(--primary);
   --chart-1: var(--primary);
@@ -18,9 +18,9 @@
 .dark[data-theme="blue"] {
   --primary: oklch(0.707 0.165 254.624);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: color-mix(in oklch, var(--primary) 18%, oklch(0.24 0.02 0));
-  --secondary-foreground: oklch(0.985 0 0);
-  --accent: color-mix(in oklch, var(--primary) 22%, oklch(0.28 0.04 145));
+  --secondary: oklch(from var(--primary) 0.28 calc(c * 0.32) h);
+  --secondary-foreground: oklch(from var(--primary) 0.92 calc(c * 0.18) h);
+  --accent: oklch(from var(--primary) 0.32 calc(c * 0.38) calc(h + 18));
   --accent-foreground: oklch(0.985 0 0);
   --destructive: var(--primary);
   --ring: var(--primary);

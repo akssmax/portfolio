@@ -2,19 +2,23 @@ import type { ReactNode } from "react"
 import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import type { ResumeDocument } from "../types"
+import { RESUME_SPACING } from "./spacing-tokens"
+
+const S = RESUME_SPACING.classic
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 40,
-    paddingBottom: 40,
-    paddingHorizontal: 44,
+    paddingTop: S.page.paddingTop,
+    paddingBottom: S.page.paddingBottom,
+    paddingLeft: S.page.paddingLeft,
+    paddingRight: S.page.paddingRight,
     fontFamily: "Helvetica",
-    fontSize: 10,
-    lineHeight: 1.45,
+    fontSize: S.fontSize,
+    lineHeight: S.lineHeight,
     color: "#171717",
   },
   header: {
-    marginBottom: 16,
+    marginBottom: S.headerGap,
     paddingBottom: 12,
     borderBottomWidth: 2,
   },
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   section: {
-    marginBottom: 14,
+    marginBottom: S.sectionGap,
   },
   sectionTitle: {
     fontSize: 11,
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
     color: "#262626",
   },
   job: {
-    marginBottom: 10,
+    marginBottom: S.jobGap,
   },
   jobHeader: {
     flexDirection: "row",
@@ -98,7 +102,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View style={styles.sectionTitleWrap}>
+      <View wrap={false} minPresenceAhead={28} style={styles.sectionTitleWrap}>
         <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
       </View>
       {children}
@@ -145,7 +149,12 @@ export function ClassicResumeLayout({
       {document.experience?.length ? (
         <Section title="Experience" brandColor={brandColor}>
           {document.experience.map((job) => (
-            <View key={`${job.company}-${job.period}`} style={styles.job}>
+            <View
+              key={`${job.company}-${job.period}`}
+              style={styles.job}
+              wrap={false}
+              minPresenceAhead={56}
+            >
               <View style={styles.jobHeader}>
                 <Text style={styles.jobTitle}>
                   {job.role} · {job.company}

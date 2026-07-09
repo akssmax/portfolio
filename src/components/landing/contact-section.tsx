@@ -1,7 +1,6 @@
 import { ArrowUpRight, Mail } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
-import { ContactDotGridBackground } from "@/components/landing/contact-dot-grid-background"
 import { GithubIcon, LinkedinIcon } from "@/components/icons/social-icons"
 import { Button } from "@/components/ui/button"
 import { useFullMotion } from "@/hooks/use-can-animate"
@@ -175,11 +174,10 @@ export function CtaSection({
       )}
 
 
-      {/* Background container with dots */}
-      <div className="absolute inset-0 opacity-55" aria-hidden>
-        <ContactDotGridBackground />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />
-      </div>
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10"
+        aria-hidden
+      />
 
       {/* Subtle Brand Watermarks on top-left and bottom-right */}
       {variant !== "minimal" && (

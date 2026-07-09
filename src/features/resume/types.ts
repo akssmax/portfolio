@@ -10,7 +10,12 @@ export type ResumeSectionId =
 
 export type ResumeSectionConfig = Record<ResumeSectionId, boolean>
 
-export type ResumeLayoutId = "classic" | "designer" | "modern"
+export type ResumeLayoutId =
+  | "classic"
+  | "designer"
+  | "modern"
+  | "minimal"
+  | "executive"
 
 export type ResumeExperienceItem = {
   company: string

@@ -22,6 +22,7 @@ import {
   saveResumeBuilderSettings,
 } from "./resume-builder-storage"
 import { ResumePreview } from "./resume-preview"
+import { ResumeWorkspaceShell } from "./resume-workspace-shell"
 import { useDownloadResume } from "./use-download-resume"
 import { downloadCoverLetterPdf } from "./generate-resume-pdf"
 import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
@@ -29,11 +30,6 @@ import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
 import { useBrandColors } from "@/hooks/use-brand-colors"
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -300,61 +296,50 @@ function ResumeBuilderWorkspace() {
   const error = resumeError || pdfError
 
   return (
-    <div className="h-svh bg-background">
-      <ResizablePanelGroup orientation="horizontal" className="h-full">
-        <ResizablePanel
-          id="resume-controls"
-          defaultSize={380}
-          minSize={320}
-          maxSize={520}
-        >
-          <div className="h-full min-w-[320px]">
-            <ResumeBuilderControls
-              layout={layout}
-              onLayoutChange={setLayout}
-              sections={sections}
-              onSectionsChange={setSections}
-              colorSelection={colorSelection}
-              onColorSelectionChange={setColorSelection}
-              brandColor={brandColor}
-              
-              activeTab={activeTab}
-              companyName={companyName}
-              onCompanyNameChange={setCompanyName}
-              jobTitle={jobTitle}
-              onJobTitleChange={setJobTitle}
-              instructions={instructions}
-              onInstructionsChange={setInstructions}
-              onGenerateCoverLetter={handleGenerateCoverLetter}
-              isGeneratingCoverLetter={isGeneratingCoverLetter}
-            />
-          </div>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel id="resume-preview" minSize={480}>
-          <ResumePreview
-            document={previewDocument}
-            colorSelection={colorSelection}
-            fallbackColor={primary}
-            layout={layout}
-            onDownload={handleDownload}
-            isGenerating={isGenerating}
-            downloadDisabled={
-              activeTab === "resume"
-                ? !hasEnabledSection(sections) || !isResumeBrandColorValid(colorSelection)
-                : !coverLetterDocument || !isResumeBrandColorValid(colorSelection)
-            }
-            error={error}
-            onChange={handleDocumentChange}
-            
-            activeTab={activeTab}
-            onActiveTabChange={setActiveTab}
-            coverLetterDocument={coverLetterDocument}
-            onCoverLetterDocumentChange={handleCoverLetterChange}
-          />
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+    <ResumeWorkspaceShell
+      className="h-svh"
+      controls={
+        <ResumeBuilderControls
+          layout={layout}
+          onLayoutChange={setLayout}
+          sections={sections}
+          onSectionsChange={setSections}
+          colorSelection={colorSelection}
+          onColorSelectionChange={setColorSelection}
+          brandColor={brandColor}
+          activeTab={activeTab}
+          companyName={companyName}
+          onCompanyNameChange={setCompanyName}
+          jobTitle={jobTitle}
+          onJobTitleChange={setJobTitle}
+          instructions={instructions}
+          onInstructionsChange={setInstructions}
+          onGenerateCoverLetter={handleGenerateCoverLetter}
+          isGeneratingCoverLetter={isGeneratingCoverLetter}
+        />
+      }
+      preview={
+        <ResumePreview
+          document={previewDocument}
+          colorSelection={colorSelection}
+          fallbackColor={primary}
+          layout={layout}
+          onDownload={handleDownload}
+          isGenerating={isGenerating}
+          downloadDisabled={
+            activeTab === "resume"
+              ? !hasEnabledSection(sections) || !isResumeBrandColorValid(colorSelection)
+              : !coverLetterDocument || !isResumeBrandColorValid(colorSelection)
+          }
+          error={error}
+          onChange={handleDocumentChange}
+          activeTab={activeTab}
+          onActiveTabChange={setActiveTab}
+          coverLetterDocument={coverLetterDocument}
+          onCoverLetterDocumentChange={handleCoverLetterChange}
+        />
+      }
+    />
   )
 }
 

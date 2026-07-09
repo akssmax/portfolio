@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { cn } from "@/lib/utils"
 
 export type NavItem =
   | { readonly label: string; readonly to: string; readonly isAnchor: false; readonly href?: never }
@@ -86,10 +87,16 @@ function MobileNavLink({
   )
 }
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  /** Dark glass bar for photo heroes (light mode). Dark mode stays default. */
+  tone?: "default" | "on-media"
+}
+
+export function SiteHeader({ tone = "default" }: SiteHeaderProps) {
   const { fullMotion } = useAnimationProfile()
   const [mobileOpen, setMobileOpen] = useState(false)
   const { openChat } = usePortfolioChat()
+  const onMedia = tone === "on-media"
 
   const closeMobileMenu = () => setMobileOpen(false)
 
@@ -101,17 +108,24 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 ${
-          fullMotion ? "bg-background/80 backdrop-blur-sm" : "bg-background/95"
-        }${
-          fullMotion ? " animate-in fade-in slide-in-from-top-2 duration-300" : ""
-        }`}
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b",
+          onMedia
+            ? "border-white/10 bg-neutral-950/75 text-white backdrop-blur-md dark:border-border/60 dark:bg-background/80 dark:text-foreground dark:backdrop-blur-sm"
+            : fullMotion
+              ? "border-border/60 bg-background/80 backdrop-blur-sm"
+              : "border-border/60 bg-background/95",
+          fullMotion && "animate-in fade-in slide-in-from-top-2 duration-300",
+        )}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             to="/"
             aria-label="Akshay Saini — home"
-            className="inline-flex min-w-0 shrink text-foreground"
+            className={cn(
+              "inline-flex min-w-0 shrink text-foreground",
+              onMedia && "text-white dark:text-foreground",
+            )}
           >
             <Logo className="h-5 sm:h-6" />
           </Link>
@@ -121,7 +135,15 @@ export function SiteHeader() {
             aria-label="Main navigation"
           >
             {navItems.map((item) => (
-              <HeaderNavLink key={item.isAnchor ? item.href : item.to} item={item} />
+              <HeaderNavLink
+                key={item.isAnchor ? item.href : item.to}
+                item={item}
+                className={
+                  onMedia
+                    ? "text-white/85 hover:bg-white/10 hover:text-white dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
+                    : undefined
+                }
+              />
             ))}
             <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
               <Sparkles className="size-3.5" aria-hidden />
@@ -138,7 +160,16 @@ export function SiteHeader() {
             <ThemeCustomizer />
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" aria-label="Open menu">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Open menu"
+                  className={
+                    onMedia
+                      ? "border-white/20 bg-white/10 text-white hover:bg-white/15 hover:text-white dark:border-input dark:bg-background dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
+                      : undefined
+                  }
+                >
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>

@@ -16,12 +16,15 @@ import type {
 } from "./types"
 import { DEFAULT_APPEARANCE } from "./types"
 
+export const DEFAULT_THEME_LIGHT_SWATCH = "oklch(0.696 0.17 162.48)"
+export const DEFAULT_THEME_DARK_SWATCH = "oklch(0.653 0.234 21.609)"
+
 export const DEFAULT_THEME_PRESET: ThemePreset = {
   id: "default",
   label: "Default",
-  swatch: "oklch(0.653 0.234 21.609)",
+  swatch: DEFAULT_THEME_LIGHT_SWATCH,
   category: "brand",
-  description: "Akshay brand — red, purple, green, navy",
+  description: "Emerald in light mode, brand accent in dark mode",
   isBrand: true,
 }
 

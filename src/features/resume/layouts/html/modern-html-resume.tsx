@@ -18,7 +18,7 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section className="mb-4">
+    <section className="mb-3.5">
       <div className="mb-2 flex items-center gap-2">
         <span
           className="h-[3px] w-3 rounded-full"
@@ -35,7 +35,7 @@ function Section({
 
 export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlResumeProps) {
   return (
-    <div className="px-10 py-9 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full">
+    <div className="px-10 pt-[34px] pb-14 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full">
       <header
         className="mb-5 border-b pb-3 flex justify-between items-start gap-4"
         style={{ borderBottomColor: brandColor }}
@@ -90,9 +90,9 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
         ) : null}
       </header>
 
-      <div className="flex-1 flex gap-6">
+      <div className="flex-1 flex gap-5">
         {/* Left Column - Contact, Skills, Education, Languages */}
-        <aside className="w-[180px] shrink-0 flex flex-col gap-4 border-r border-neutral-100 pr-5">
+        <aside className="w-[150px] shrink-0 flex flex-col gap-3.5 border-r border-neutral-200 pr-2.5">
           {document.contact ? (
             <Section title="Contact" brandColor={brandColor}>
               <div className="flex flex-col gap-1.5 text-[8.5px] text-neutral-800">
@@ -525,6 +525,12 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
           ) : null}
         </main>
       </div>
+
+      <footer className="mt-auto flex items-center justify-between border-t border-neutral-200 pt-2.5">
+        <span className="text-[8px] text-neutral-500">
+          {document.name} · {document.title}
+        </span>
+      </footer>
     </div>
   )
 }

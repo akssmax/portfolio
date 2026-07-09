@@ -31,10 +31,7 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
   const { fullMotion } = useAnimationProfile()
 
   return (
-    <footer className={`relative overflow-hidden ${hasTopBorder ? "border-t border-border" : ""}`}>
-      {/* Background color layer */}
-      <div className="absolute inset-0 bg-background -z-20" />
-
+    <footer className={`relative overflow-hidden bg-background ${hasTopBorder ? "border-t border-border" : ""}`}>
       {/* Glowing Gradient Background */}
       {footerGradient !== "none" && (
         <div className="absolute inset-x-0 bottom-0 h-[400px] pointer-events-none -z-10 overflow-hidden opacity-50 dark:opacity-75">
