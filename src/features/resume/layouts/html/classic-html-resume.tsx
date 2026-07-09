@@ -1,6 +1,7 @@
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import type { ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { cn } from "@/lib/utils"
 
 export function ClassicHtmlResume({
   document,
@@ -11,7 +12,10 @@ export function ClassicHtmlResume({
 }: ResumeHtmlLayoutProps) {
   return (
     <div
-      className="px-11 py-10 text-[10px] leading-[1.45] text-neutral-900"
+      className={cn(
+        "px-11 py-10 text-[10px] leading-[1.45] text-neutral-900",
+        RESUME_HTML_ROOT_CLASS,
+      )}
       style={{ fontFamily }}
     >
       <header

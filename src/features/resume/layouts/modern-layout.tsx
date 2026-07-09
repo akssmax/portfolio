@@ -16,6 +16,10 @@ import {
   DEFAULT_PDF_LAYOUT_PROPS,
   type ResumePdfLayoutProps,
 } from "./pdf-layout-props"
+import {
+  PDF_JOB_HEADER_PROPS,
+  PDF_SECTION_HEADING_PROPS,
+} from "./pdf-pagination-props"
 
 const S = RESUME_SPACING.modern
 const PAGE_MARGIN = {
@@ -70,10 +74,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 700,
     color: "#0F1923",
+    lineHeight: 1.15,
   },
   title: {
     fontSize: 11,
     fontWeight: 700,
+    lineHeight: 1.35,
     marginTop: 2,
   },
   meta: {
@@ -90,7 +96,6 @@ const styles = StyleSheet.create({
     borderColor: "#E5E5E5",
   },
   body: {
-    flex: 1,
     flexDirection: "row",
     gap: S.columnGap ?? 20,
   },
@@ -245,7 +250,7 @@ function Section({
           display={display}
         />
       ) : (
-        <View wrap={false} minPresenceAhead={32} style={styles.sectionHeader}>
+        <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionHeader}>
           <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
           <Text style={styles.sectionTitle}>{title}</Text>
         </View>
@@ -399,17 +404,15 @@ export function ModernResumeLayout({
 
           {document.education ? (
             <Section sectionId="education" title="Education" brandColor={brandColor} display={display}>
-              <View wrap={false} minPresenceAhead={24}>
-                <Text style={{ ...styles.educationText, fontWeight: "bold" }}>
-                  {document.education.degree}
-                </Text>
-                <Text style={{ ...styles.educationText, color: "#525252", marginTop: 1 }}>
-                  {document.education.school}
-                </Text>
-                <Text style={{ ...styles.educationText, color: "#737373", marginTop: 1 }}>
-                  {document.education.years}
-                </Text>
-              </View>
+              <Text style={{ ...styles.educationText, fontWeight: "bold" }}>
+                {document.education.degree}
+              </Text>
+              <Text style={{ ...styles.educationText, color: "#525252", marginTop: 1 }}>
+                {document.education.school}
+              </Text>
+              <Text style={{ ...styles.educationText, color: "#737373", marginTop: 1 }}>
+                {document.education.years}
+              </Text>
             </Section>
           ) : null}
 
@@ -440,13 +443,8 @@ export function ModernResumeLayout({
           {document.experience?.length ? (
             <Section sectionId="experience" title="Experience" brandColor={brandColor} display={display}>
               {document.experience.map((job) => (
-                <View
-                  key={`${job.company}-${job.period}`}
-                  style={styles.job}
-                  wrap={false}
-                  minPresenceAhead={64}
-                >
-                  <View style={styles.jobHeader}>
+                <View key={`${job.company}-${job.period}`} style={styles.job}>
+                  <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeader}>
                     <View style={styles.jobTitleRow}>
                       {job.logoSrc ? (
                         <View style={styles.jobLogoContainer}>
@@ -485,21 +483,15 @@ export function ModernResumeLayout({
           {document.certifications?.length ? (
             <Section sectionId="certifications" title="Certifications" brandColor={brandColor} display={display}>
               {document.certifications.map((certification) => (
-                <View
-                  key={`${certification.title}-${certification.date}`}
-                  wrap={false}
-                  minPresenceAhead={24}
-                >
-                  <Text style={styles.paragraph}>
-                    <Text style={{ fontWeight: "bold" }}>{certification.title}</Text>
-                    {" — "}
-                    <Text style={{ color: "#525252" }}>{certification.issuer}</Text>
-                    {" ("}
-                    <Text style={{ color: "#737373" }}>{certification.date}</Text>
-                    {")"}
-                    {certification.credentialId ? ` · ID ${certification.credentialId}` : ""}
-                  </Text>
-                </View>
+                <Text key={`${certification.title}-${certification.date}`} style={styles.paragraph}>
+                  <Text style={{ fontWeight: "bold" }}>{certification.title}</Text>
+                  {" — "}
+                  <Text style={{ color: "#525252" }}>{certification.issuer}</Text>
+                  {" ("}
+                  <Text style={{ color: "#737373" }}>{certification.date}</Text>
+                  {")"}
+                  {certification.credentialId ? ` · ID ${certification.credentialId}` : ""}
+                </Text>
               ))}
             </Section>
           ) : null}

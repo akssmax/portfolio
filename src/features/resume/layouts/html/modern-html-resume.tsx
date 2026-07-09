@@ -17,7 +17,8 @@ import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
 import { ResumeContactFields } from "./resume-contact-fields"
 import { ResumeListAddButton, ResumeListRemoveButton } from "./resume-list-controls"
-import type { ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { cn } from "@/lib/utils"
 
 export function ModernHtmlResume({
   document,
@@ -28,7 +29,10 @@ export function ModernHtmlResume({
 }: ResumeHtmlLayoutProps) {
   return (
     <div
-      className="px-10 pt-[34px] pb-14 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full"
+      className={cn(
+        "px-10 pt-[34px] pb-14 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full",
+        RESUME_HTML_ROOT_CLASS,
+      )}
       style={{ fontFamily }}
     >
       <header

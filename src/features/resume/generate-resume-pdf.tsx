@@ -32,7 +32,7 @@ export async function generateResumePdf(
   document: ResumeDocument,
   brandColor: string,
   layout: ResumeLayoutId = "classic",
-  fontPresetId: FontPresetId = "geist",
+  fontPresetId: FontPresetId = "inter",
   display?: ResumeDisplayPreferences,
 ): Promise<Blob> {
   await ensurePdfBuffer()
@@ -79,7 +79,7 @@ export async function downloadResumePdf({
   brandColor,
   layout = "classic",
   filename,
-  fontPresetId = "geist",
+  fontPresetId = "inter",
   display,
 }: {
   document: ResumeDocument

@@ -121,7 +121,7 @@ function createProfileBio(periods: string[]) {
 
 export const profile = {
   name: "Akshay Saini",
-  title: "Design Engineer",
+  title: "Product Designer / Design Engineer",
   role: "Design Engineer",
   company: "100x.bot",
   location: "Bengaluru (Bangalore), India",

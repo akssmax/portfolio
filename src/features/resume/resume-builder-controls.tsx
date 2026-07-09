@@ -216,7 +216,7 @@ export function ResumeBuilderControls({
                 type="text"
                 value={jobTitle}
                 onChange={(e) => onJobTitleChange?.(e.target.value)}
-                placeholder="e.g. Design Engineer"
+                placeholder="e.g. Product Designer / Design Engineer"
                 className="bg-background text-sm"
               />
             </div>

@@ -28,7 +28,7 @@ const SETTLE_MS = 2500
 
 const SAMPLE_DOCUMENT = {
   name: "Akshay Saini",
-  title: "Design Engineer",
+  title: "Product Designer / Design Engineer",
   location: "Bengaluru, India",
   portrait: {
     src: "/images/hero-portrait.png",

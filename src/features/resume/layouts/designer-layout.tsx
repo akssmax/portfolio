@@ -10,6 +10,10 @@ import {
   DEFAULT_PDF_LAYOUT_PROPS,
   type ResumePdfLayoutProps,
 } from "./pdf-layout-props"
+import {
+  PDF_JOB_HEADER_PROPS,
+  PDF_SECTION_HEADING_PROPS,
+} from "./pdf-pagination-props"
 
 const S = RESUME_SPACING.designer
 const PAGE_MARGIN = {
@@ -34,19 +38,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: 8,
-  },
-  continuationHeader: {
-    position: "absolute",
-    top: 0,
-    left: PAGE_MARGIN.paddingLeft,
-    right: PAGE_MARGIN.paddingRight,
-    height: PAGE_MARGIN.paddingTop,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    paddingBottom: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
   },
   continuationName: {
     fontSize: 9,
@@ -101,7 +92,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   headerLine: {
-    paddingBottom: 5,
+    marginBottom: 5,
   },
   name: {
     fontSize: 24,
@@ -112,7 +103,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 11,
     fontWeight: 700,
-    lineHeight: 1.15,
+    lineHeight: 1.25,
   },
   meta: {
     fontSize: 9,
@@ -237,7 +228,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View wrap={false} minPresenceAhead={40} style={styles.sectionHeader}>
+      <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionHeader}>
         <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
         <Text style={styles.sectionTitle}>{title}</Text>
       </View>
@@ -266,12 +257,24 @@ function PageChrome({
 
       <View
         fixed
+        style={{
+          position: "absolute",
+          top: PAGE_MARGIN.paddingTop - 11,
+          left: PAGE_MARGIN.paddingLeft,
+          right: PAGE_MARGIN.paddingRight,
+          borderBottomWidth: 1,
+          borderBottomColor: "#E5E5E5",
+          paddingBottom: 5,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+        }}
         render={({ pageNumber }) =>
           pageNumber > 1 ? (
-            <View style={styles.continuationHeader}>
+            <>
               <Text style={styles.continuationName}>{document.name}</Text>
               <Text style={styles.continuationMeta}>{document.title}</Text>
-            </View>
+            </>
           ) : null
         }
       />
@@ -377,10 +380,8 @@ export function DesignerResumeLayout({
             <View
               key={`${job.company}-${job.period}`}
               style={{ ...styles.job, borderLeftColor: brandColor }}
-              wrap={false}
-              minPresenceAhead={64}
             >
-              <View style={styles.jobHeader}>
+              <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeader}>
                 <View style={styles.jobTitleRow}>
                   {job.logoSrc ? (
                     <View style={styles.jobLogoContainer}>
@@ -418,15 +419,13 @@ export function DesignerResumeLayout({
 
       {document.education ? (
         <Section title="Education" brandColor={brandColor}>
-          <View wrap={false} minPresenceAhead={32}>
-            <Text style={styles.paragraph}>
+          <Text style={styles.paragraph}>
               {document.education.degree}
               {"\n"}
               {document.education.school} · {document.education.years}
               {"\n"}
               {document.education.location}
-            </Text>
-          </View>
+          </Text>
         </Section>
       ) : null}
 
@@ -453,19 +452,16 @@ export function DesignerResumeLayout({
       {document.certifications?.length ? (
         <Section title="Certifications" brandColor={brandColor}>
           {document.certifications.map((certification) => (
-            <View
+            <Text
               key={`${certification.title}-${certification.date}`}
-              wrap={false}
-              minPresenceAhead={24}
+              style={styles.paragraph}
             >
-              <Text style={styles.paragraph}>
                 {certification.title} — {certification.issuer} (
                 {certification.date})
                 {certification.credentialId
-                  ? ` · ID ${certification.credentialId}`
-                  : ""}
-              </Text>
-            </View>
+                ? ` · ID ${certification.credentialId}`
+                : ""}
+            </Text>
           ))}
         </Section>
       ) : null}
@@ -473,11 +469,9 @@ export function DesignerResumeLayout({
       {document.languages?.length ? (
         <Section title="Languages" brandColor={brandColor}>
           {document.languages.map((language) => (
-            <View key={language.name} wrap={false} minPresenceAhead={20}>
-              <Text style={styles.paragraph}>
-                {language.name} — {language.level}
-              </Text>
-            </View>
+            <Text key={language.name} style={styles.paragraph}>
+              {language.name} — {language.level}
+            </Text>
           ))}
         </Section>
       ) : null}

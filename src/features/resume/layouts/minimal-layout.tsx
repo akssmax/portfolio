@@ -1,11 +1,16 @@
 import type { ReactNode } from "react"
-import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
+import { Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import { RESUME_SPACING } from "./spacing-tokens"
 import {
   DEFAULT_PDF_LAYOUT_PROPS,
   type ResumePdfLayoutProps,
 } from "./pdf-layout-props"
+import {
+  PDF_JOB_HEADER_PROPS,
+  PDF_SECTION_HEADING_PROPS,
+} from "./pdf-pagination-props"
+import { PdfContactLines } from "./pdf-contact-lines"
 
 const S = RESUME_SPACING.minimal
 
@@ -22,18 +27,23 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: S.headerGap,
-    paddingBottom: 10,
+    paddingBottom: 12,
     borderBottomWidth: 1,
   },
-  headerLine: {
-    paddingBottom: 4,
+  nameLine: {
+    marginBottom: 5,
+  },
+  titleLine: {
+    marginBottom: 5,
   },
   name: {
     fontSize: 20,
     fontWeight: 700,
+    lineHeight: 1.2,
   },
   title: {
     fontSize: 11,
+    lineHeight: 1.4,
     color: "#404040",
   },
   meta: {
@@ -106,7 +116,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View wrap={false} minPresenceAhead={28} style={styles.sectionTitleWrap}>
+      <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionTitleWrap}>
         <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
       </View>
       {children}
@@ -122,10 +132,10 @@ export function MinimalResumeLayout({
   return (
     <Page size="A4" style={[styles.page, { fontFamily }]}>
       <View style={[styles.header, { borderBottomColor: brandColor }]}>
-        <View style={styles.headerLine}>
+        <View style={styles.nameLine}>
           <Text style={styles.name}>{document.name}</Text>
         </View>
-        <View style={styles.headerLine}>
+        <View style={styles.titleLine}>
           <Text style={[styles.title, { color: brandColor }]}>{document.title}</Text>
         </View>
         <View>
@@ -151,13 +161,8 @@ export function MinimalResumeLayout({
       {document.experience?.length ? (
         <Section title="Experience" brandColor={brandColor}>
           {document.experience.map((job) => (
-            <View
-              key={`${job.company}-${job.period}`}
-              style={styles.job}
-              wrap={false}
-              minPresenceAhead={56}
-            >
-              <View style={styles.jobHeader}>
+            <View key={`${job.company}-${job.period}`} style={styles.job}>
+              <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeader}>
                 <Text style={styles.jobTitle}>
                   {job.role} · {job.company}
                 </Text>
@@ -201,6 +206,17 @@ export function MinimalResumeLayout({
               {skill}
             </Text>
           ))}
+          {document.contact ? (
+            <PdfContactLines contact={document.contact} brandColor={brandColor} />
+          ) : null}
+        </Section>
+      ) : document.contact ? (
+        <Section title="Contact" brandColor={brandColor}>
+          <PdfContactLines
+            contact={document.contact}
+            brandColor={brandColor}
+            embedded={false}
+          />
         </Section>
       ) : null}
 
@@ -233,37 +249,6 @@ export function MinimalResumeLayout({
       {document.interests?.length ? (
         <Section title="Interests" brandColor={brandColor}>
           <Text style={styles.paragraph}>{document.interests.join(" · ")}</Text>
-        </Section>
-      ) : null}
-
-      {document.contact ? (
-        <Section title="Contact" brandColor={brandColor}>
-          <Text style={styles.contactLine}>{document.contact.email}</Text>
-          <Text style={styles.contactLine}>{document.contact.phone}</Text>
-          {document.contact.website ? (
-            <Link
-              src={document.contact.website}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.website}</Text>
-            </Link>
-          ) : null}
-          {document.contact.linkedin ? (
-            <Link
-              src={document.contact.linkedin}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.linkedin}</Text>
-            </Link>
-          ) : null}
-          {document.contact.github ? (
-            <Link
-              src={document.contact.github}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.github}</Text>
-            </Link>
-          ) : null}
         </Section>
       ) : null}
     </Page>

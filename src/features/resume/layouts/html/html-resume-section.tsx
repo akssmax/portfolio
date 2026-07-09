@@ -54,7 +54,7 @@ export function HtmlResumeSection({
         ) : null}
         <h2
           className={cn(
-            "text-[10px] font-bold uppercase tracking-[0.08em] text-[#0F1923]",
+            "font-[inherit] text-[10px] font-bold uppercase tracking-[0.08em] text-[#0F1923]",
             variant === "plain" && "text-[11px] tracking-wide",
             titleClassName,
           )}

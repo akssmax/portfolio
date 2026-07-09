@@ -5,6 +5,7 @@ import {
   type ResumeDisplayPreferences,
 } from "../../resume-display-preferences"
 import type { ResumeSectionId } from "../../types"
+import { PDF_SECTION_HEADING_PROPS } from "../pdf-pagination-props"
 import { PdfResumeIcon } from "./pdf-resume-icons"
 
 type PdfResumeSectionTitleProps = {
@@ -27,7 +28,10 @@ export function PdfResumeSectionTitle({
     : undefined
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 6, ...style }}>
+    <View
+      {...PDF_SECTION_HEADING_PROPS}
+      style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 6, ...style }}
+    >
       {!iconName ? (
         <View
           style={{

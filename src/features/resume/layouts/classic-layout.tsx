@@ -1,11 +1,16 @@
 import type { ReactNode } from "react"
-import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
+import { Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import { RESUME_SPACING } from "./spacing-tokens"
 import {
   DEFAULT_PDF_LAYOUT_PROPS,
   type ResumePdfLayoutProps,
 } from "./pdf-layout-props"
+import {
+  PDF_JOB_HEADER_PROPS,
+  PDF_SECTION_HEADING_PROPS,
+} from "./pdf-pagination-props"
+import { PdfContactLines } from "./pdf-contact-lines"
 
 const S = RESUME_SPACING.classic
 
@@ -26,14 +31,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   headerLine: {
-    paddingBottom: 8,
+    marginBottom: 5,
   },
   name: {
     fontSize: 22,
     fontWeight: 700,
+    lineHeight: 1.15,
   },
   title: {
     fontSize: 12,
+    lineHeight: 1.35,
   },
   meta: {
     fontSize: 9,
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
     color: "#262626",
   },
   skillLine: {
-    marginBottom: 3,
+    marginBottom: 2,
     color: "#262626",
   },
   contactLine: {
@@ -105,7 +112,7 @@ function Section({
 }) {
   return (
     <View style={styles.section}>
-      <View wrap={false} minPresenceAhead={28} style={styles.sectionTitleWrap}>
+      <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionTitleWrap}>
         <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
       </View>
       {children}
@@ -150,13 +157,8 @@ export function ClassicResumeLayout({
       {document.experience?.length ? (
         <Section title="Experience" brandColor={brandColor}>
           {document.experience.map((job) => (
-            <View
-              key={`${job.company}-${job.period}`}
-              style={styles.job}
-              wrap={false}
-              minPresenceAhead={56}
-            >
-              <View style={styles.jobHeader}>
+            <View key={`${job.company}-${job.period}`} style={styles.job}>
+              <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeader}>
                 <Text style={styles.jobTitle}>
                   {job.role} · {job.company}
                 </Text>
@@ -200,6 +202,17 @@ export function ClassicResumeLayout({
               {skill}
             </Text>
           ))}
+          {document.contact ? (
+            <PdfContactLines contact={document.contact} brandColor={brandColor} />
+          ) : null}
+        </Section>
+      ) : document.contact ? (
+        <Section title="Contact" brandColor={brandColor}>
+          <PdfContactLines
+            contact={document.contact}
+            brandColor={brandColor}
+            embedded={false}
+          />
         </Section>
       ) : null}
 
@@ -232,37 +245,6 @@ export function ClassicResumeLayout({
       {document.interests?.length ? (
         <Section title="Interests" brandColor={brandColor}>
           <Text style={styles.paragraph}>{document.interests.join(" · ")}</Text>
-        </Section>
-      ) : null}
-
-      {document.contact ? (
-        <Section title="Contact" brandColor={brandColor}>
-          <Text style={styles.contactLine}>{document.contact.email}</Text>
-          <Text style={styles.contactLine}>{document.contact.phone}</Text>
-          {document.contact.website ? (
-            <Link
-              src={document.contact.website}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.website}</Text>
-            </Link>
-          ) : null}
-          {document.contact.linkedin ? (
-            <Link
-              src={document.contact.linkedin}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.linkedin}</Text>
-            </Link>
-          ) : null}
-          {document.contact.github ? (
-            <Link
-              src={document.contact.github}
-              style={[styles.link, { color: brandColor }]}
-            >
-              <Text>{document.contact.github}</Text>
-            </Link>
-          ) : null}
         </Section>
       ) : null}
     </Page>

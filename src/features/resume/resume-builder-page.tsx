@@ -32,6 +32,7 @@ import { getResumePreviewFontFamily, preloadResumeFont } from "./layouts/html/re
 import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
+import type { FontPresetId } from "@/lib/themes/types"
 import { useBrandColors } from "@/hooks/use-brand-colors"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -191,16 +192,21 @@ function ResumeBuilderWorkspace() {
     const defaults = createDefaultResumeBuilderSettings(appearance)
     return (stored ?? defaults).display
   })
+  const [font, setFont] = useState<FontPresetId>(() => {
+    const stored = loadResumeBuilderSettings()
+    const defaults = createDefaultResumeBuilderSettings(appearance)
+    return (stored ?? defaults).font
+  })
 
   const [editedDocument, setEditedDocument] = useState<ResumeDocument>(() => {
     return loadResumeDocument() ?? buildResumeDocument(DEFAULT_RESUME_SECTIONS)
   })
 
-  const fontFamily = getResumePreviewFontFamily(appearance.font)
+  const fontFamily = getResumePreviewFontFamily(font)
 
   useEffect(() => {
-    preloadResumeFont(appearance.font)
-  }, [appearance.font])
+    preloadResumeFont(font)
+  }, [font])
 
   const previewDocument = useMemo(() =>
     filterDocumentBySections(editedDocument, sections),
@@ -236,8 +242,8 @@ function ResumeBuilderWorkspace() {
 
   // Auto-saves layout settings
   useEffect(() => {
-    saveResumeBuilderSettings({ layout, sections, colorSelection, display })
-  }, [layout, sections, colorSelection, display])
+    saveResumeBuilderSettings({ layout, sections, colorSelection, display, font })
+  }, [layout, sections, colorSelection, display, font])
 
   // Auto-saves AI letter settings
   useEffect(() => {
@@ -256,7 +262,7 @@ function ResumeBuilderWorkspace() {
         brandColor,
         layout,
         document: previewDocument,
-        fontPresetId: appearance.font,
+        fontPresetId: font,
         display,
       })
     } else if (coverLetterDocument) {
@@ -346,6 +352,8 @@ function ResumeBuilderWorkspace() {
           fallbackColor={primary}
           layout={layout}
           fontFamily={fontFamily}
+          fontPreset={font}
+          onFontPresetChange={setFont}
           display={display}
           onDownload={handleDownload}
           isGenerating={isGenerating}

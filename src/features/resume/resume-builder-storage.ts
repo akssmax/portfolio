@@ -16,7 +16,10 @@ import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import {
   BRAND_COLOR_PRESETS,
   DEFAULT_THEME_PRESET,
+  isFontPresetId,
 } from "@/lib/themes/registry"
+import type { FontPresetId } from "@/lib/themes/types"
+import { RESUME_DEFAULT_FONT, resolveResumeFontPreset } from "./resume-font-utils"
 
 const STORAGE_KEY = "resume-builder-settings"
 const DOCUMENT_STORAGE_KEY = "resume-builder-document"
@@ -50,6 +53,7 @@ export type ResumeBuilderSettings = {
   sections: ResumeSectionConfig
   colorSelection: ResumeBrandColorSelection
   display: ResumeDisplayPreferences
+  font: FontPresetId
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -98,6 +102,9 @@ function parseResumeBuilderSettings(value: unknown): ResumeBuilderSettings | nul
   const colorSelection = parseColorSelection(value.colorSelection)
   const display =
     parseResumeDisplayPreferences(value.display) ?? DEFAULT_RESUME_DISPLAY_PREFERENCES
+  const font = resolveResumeFontPreset(
+    typeof value.font === "string" && isFontPresetId(value.font) ? value.font : RESUME_DEFAULT_FONT,
+  )
 
   if (!sections || !colorSelection) return null
 
@@ -106,6 +113,7 @@ function parseResumeBuilderSettings(value: unknown): ResumeBuilderSettings | nul
     sections,
     colorSelection,
     display,
+    font,
   }
 }
 
@@ -135,6 +143,7 @@ export function saveResumeBuilderSettings(settings: ResumeBuilderSettings): void
 export function createDefaultResumeBuilderSettings(appearance: {
   palette: BrandPresetId
   customBrandColor: string | null
+  font: FontPresetId
 }): ResumeBuilderSettings {
   return {
     layout: DEFAULT_RESUME_LAYOUT,
@@ -143,6 +152,7 @@ export function createDefaultResumeBuilderSettings(appearance: {
       ? { type: "custom", hex: appearance.customBrandColor }
       : { type: "preset", presetId: appearance.palette },
     display: DEFAULT_RESUME_DISPLAY_PREFERENCES,
+    font: RESUME_DEFAULT_FONT,
   }
 }
 

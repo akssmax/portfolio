@@ -5,7 +5,8 @@ import { HtmlLogomark } from "./html-logomark"
 import { ResumePortraitImage } from "./resume-portrait-image"
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import type { ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { cn } from "@/lib/utils"
 
 function formatWebsiteLabel(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
@@ -24,7 +25,10 @@ export function DesignerHtmlResume({
 
   return (
     <div
-      className="flex min-h-full text-[10px] leading-[1.45] text-neutral-900"
+      className={cn(
+        "flex min-h-full text-[10px] leading-[1.45] text-neutral-900",
+        RESUME_HTML_ROOT_CLASS,
+      )}
       style={{ fontFamily }}
     >
       <aside className="relative flex w-[52px] shrink-0 flex-col items-center pt-9">

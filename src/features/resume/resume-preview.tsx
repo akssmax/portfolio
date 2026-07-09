@@ -15,6 +15,9 @@ import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { FontPresetId } from "@/lib/themes/types"
+
+import { ResumeFontSelect } from "./resume-font-select"
 
 type ResumePreviewProps = {
   document: ResumeDocument
@@ -22,6 +25,8 @@ type ResumePreviewProps = {
   fallbackColor: string
   layout: ResumeLayoutId
   fontFamily: string
+  fontPreset?: FontPresetId
+  onFontPresetChange?: (font: FontPresetId) => void
   display: ResumeDisplayPreferences
   onDownload: () => void
   isGenerating: boolean
@@ -42,6 +47,8 @@ export function ResumePreview({
   fallbackColor,
   layout,
   fontFamily,
+  fontPreset,
+  onFontPresetChange,
   display,
   onDownload,
   isGenerating,
@@ -76,24 +83,29 @@ export function ResumePreview({
             </TabsList>
           </Tabs>
 
-          <Button
-            type="button"
-            className="shrink-0 font-semibold text-xs"
-            disabled={isGenerating || downloadDisabled}
-            onClick={onDownload}
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 aria-hidden className="animate-spin" />
-                Generating PDF…
-              </>
-            ) : (
-              <>
-                <Download aria-hidden />
-                Download PDF
-              </>
-            )}
-          </Button>
+          <div className="flex shrink-0 items-center gap-2">
+            {fontPreset && onFontPresetChange ? (
+              <ResumeFontSelect value={fontPreset} onChange={onFontPresetChange} />
+            ) : null}
+            <Button
+              type="button"
+              className="shrink-0 font-semibold text-xs"
+              disabled={isGenerating || downloadDisabled}
+              onClick={onDownload}
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 aria-hidden className="animate-spin" />
+                  Generating PDF…
+                </>
+              ) : (
+                <>
+                  <Download aria-hidden />
+                  Download PDF
+                </>
+              )}
+            </Button>
+          </div>
         </div>
         {error ? (
           <p className="mt-2 text-sm text-destructive" role="alert">

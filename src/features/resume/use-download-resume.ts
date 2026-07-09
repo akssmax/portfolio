@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react"
 
 import { buildResumeDocument } from "./build-resume-document"
-import { resolveResumeFontPreset } from "./resume-font-utils"
+import { resolveResumeFontPreset, RESUME_DEFAULT_FONT } from "./resume-font-utils"
 import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type { ResumeLayoutId, ResumeSectionConfig } from "./types"
 import type { FontPresetId } from "@/lib/themes/types"
@@ -28,7 +28,7 @@ export function useDownloadResume() {
 
       try {
         const resumeDocument = document ?? buildResumeDocument(sections)
-        const resolvedFont = resolveResumeFontPreset(fontPresetId ?? "geist")
+        const resolvedFont = resolveResumeFontPreset(fontPresetId ?? RESUME_DEFAULT_FONT)
         const { downloadResumePdf, getResumeFilename } = await import("./generate-resume-pdf")
         await downloadResumePdf({
           document: resumeDocument,

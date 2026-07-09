@@ -1,6 +1,7 @@
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import type { ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { cn } from "@/lib/utils"
 
 export function MinimalHtmlResume({
   document,
@@ -11,7 +12,10 @@ export function MinimalHtmlResume({
 }: ResumeHtmlLayoutProps) {
   return (
     <div
-      className="px-12 py-9 text-[10px] leading-[1.4] text-neutral-900"
+      className={cn(
+        "px-12 py-9 text-[10px] leading-[1.4] text-neutral-900",
+        RESUME_HTML_ROOT_CLASS,
+      )}
       style={{ fontFamily }}
     >
       <header
@@ -27,12 +31,12 @@ export function MinimalHtmlResume({
             placeholder="Your Name"
           />
         </div>
-        <div className="pb-1">
+        <div className="pb-1.5">
           <EditableText
             value={document.title}
             onChange={onChange ? (val) => onChange({ ...document, title: val }) : undefined}
             tagName="p"
-            className="text-[11px]"
+            className="text-[11px] leading-snug"
             style={{ color: brandColor }}
             placeholder="Professional Title"
           />
