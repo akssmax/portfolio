@@ -16,6 +16,8 @@ type ProjectsShowcaseGroupProps = {
   projects: ShowcaseProject[]
   variant?: "default" | "section"
   id?: string
+  /** Tighter top padding so the intro peeks below the hero fold. */
+  compactTop?: boolean
 }
 
 function ProjectsShowcaseGroup({
@@ -26,12 +28,14 @@ function ProjectsShowcaseGroup({
   projects,
   variant = "default",
   id,
+  compactTop = false,
 }: ProjectsShowcaseGroupProps) {
   return (
     <section
       id={id}
       className={cn(
-        "relative z-10 py-20 sm:py-24 [content-visibility:auto] [contain-intrinsic-size:auto_900px]",
+        "relative z-10 pb-20 sm:pb-24 [content-visibility:auto] [contain-intrinsic-size:auto_900px]",
+        compactTop ? "pt-8 sm:pt-10" : "pt-20 sm:pt-24",
         variant === "section" && "border-t border-border/80 bg-section text-section-foreground"
       )}
     >
@@ -104,6 +108,7 @@ export function ProjectsShowcase({
           heading="AI-assisted products designed and shipped fast"
           description="Agentic AI products designed and shipped with AI-assisted workflows."
           projects={recentProjects}
+          compactTop
         />
         <ProjectsShowcaseGroup
           id="case-studies"
