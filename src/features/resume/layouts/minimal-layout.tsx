@@ -1,8 +1,11 @@
 import type { ReactNode } from "react"
 import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
-import type { ResumeDocument } from "../types"
 import { RESUME_SPACING } from "./spacing-tokens"
+import {
+  DEFAULT_PDF_LAYOUT_PROPS,
+  type ResumePdfLayoutProps,
+} from "./pdf-layout-props"
 
 const S = RESUME_SPACING.minimal
 
@@ -114,12 +117,10 @@ function Section({
 export function MinimalResumeLayout({
   document,
   brandColor,
-}: {
-  document: ResumeDocument
-  brandColor: string
-}) {
+  fontFamily = DEFAULT_PDF_LAYOUT_PROPS.fontFamily,
+}: ResumePdfLayoutProps) {
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={[styles.page, { fontFamily }]}>
       <View style={[styles.header, { borderBottomColor: brandColor }]}>
         <View style={styles.headerLine}>
           <Text style={styles.name}>{document.name}</Text>

@@ -6,7 +6,6 @@ import { Loader2, Lock } from "lucide-react"
 
 import {
   ResumeBuilderControls,
-  createInitialResumeBuilderState,
   hasEnabledSection,
 } from "./resume-builder-controls"
 import {
@@ -16,17 +15,21 @@ import {
 
 } from "./resume-brand-color-utils"
 import {
+  createDefaultResumeBuilderSettings,
   loadCoverLetterDocument,
   loadResumeBuilderSettings,
+  loadResumeDocument,
   saveCoverLetterDocument,
   saveResumeBuilderSettings,
+  saveResumeDocument,
 } from "./resume-builder-storage"
 import { ResumePreview } from "./resume-preview"
 import { ResumeWorkspaceShell } from "./resume-workspace-shell"
 import { useDownloadResume } from "./use-download-resume"
-import { downloadCoverLetterPdf } from "./generate-resume-pdf"
 import { buildResumeDocument, filterDocumentBySections } from "./build-resume-document"
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
+import { getResumePreviewFontFamily } from "./layouts/html/resume-html-props"
+import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
 import { useBrandColors } from "@/hooks/use-brand-colors"
@@ -168,25 +171,32 @@ function ResumeBuilderWorkspace() {
 
   const [layout, setLayout] = useState<ResumeLayoutId>(() => {
     const stored = loadResumeBuilderSettings()
-    const defaults = createInitialResumeBuilderState(appearance)
+    const defaults = createDefaultResumeBuilderSettings(appearance)
     return (stored ?? defaults).layout
   })
   const [sections, setSections] = useState<ResumeSectionConfig>(() => {
     const stored = loadResumeBuilderSettings()
-    const defaults = createInitialResumeBuilderState(appearance)
+    const defaults = createDefaultResumeBuilderSettings(appearance)
     return (stored ?? defaults).sections
   })
   const [colorSelection, setColorSelection] = useState<ResumeBrandColorSelection>(
     () => {
       const stored = loadResumeBuilderSettings()
-      const defaults = createInitialResumeBuilderState(appearance)
+      const defaults = createDefaultResumeBuilderSettings(appearance)
       return (stored ?? defaults).colorSelection
     },
   )
+  const [display, setDisplay] = useState<ResumeDisplayPreferences>(() => {
+    const stored = loadResumeBuilderSettings()
+    const defaults = createDefaultResumeBuilderSettings(appearance)
+    return (stored ?? defaults).display
+  })
 
-  const [editedDocument, setEditedDocument] = useState<ResumeDocument>(() =>
-    buildResumeDocument(DEFAULT_RESUME_SECTIONS)
-  )
+  const [editedDocument, setEditedDocument] = useState<ResumeDocument>(() => {
+    return loadResumeDocument() ?? buildResumeDocument(DEFAULT_RESUME_SECTIONS)
+  })
+
+  const fontFamily = getResumePreviewFontFamily(appearance.font)
 
   const previewDocument = useMemo(() =>
     filterDocumentBySections(editedDocument, sections),
@@ -207,6 +217,8 @@ function ResumeBuilderWorkspace() {
       if (updated.certifications !== undefined) next.certifications = updated.certifications
       if (updated.languages !== undefined) next.languages = updated.languages
       if (updated.interests !== undefined) next.interests = updated.interests
+      if (updated.portrait !== undefined) next.portrait = updated.portrait
+      saveResumeDocument(next)
       return next
     })
   }
@@ -220,8 +232,8 @@ function ResumeBuilderWorkspace() {
 
   // Auto-saves layout settings
   useEffect(() => {
-    saveResumeBuilderSettings({ layout, sections, colorSelection })
-  }, [layout, sections, colorSelection])
+    saveResumeBuilderSettings({ layout, sections, colorSelection, display })
+  }, [layout, sections, colorSelection, display])
 
   // Auto-saves AI letter settings
   useEffect(() => {
@@ -240,10 +252,13 @@ function ResumeBuilderWorkspace() {
         brandColor,
         layout,
         document: previewDocument,
+        fontPresetId: appearance.font,
+        display,
       })
     } else if (coverLetterDocument) {
       setIsGeneratingPdf(true)
       try {
+        const { downloadCoverLetterPdf } = await import("./generate-resume-pdf")
         await downloadCoverLetterPdf({
           document: coverLetterDocument,
           brandColor,
@@ -307,6 +322,8 @@ function ResumeBuilderWorkspace() {
           colorSelection={colorSelection}
           onColorSelectionChange={setColorSelection}
           brandColor={brandColor}
+          display={display}
+          onDisplayChange={setDisplay}
           activeTab={activeTab}
           companyName={companyName}
           onCompanyNameChange={setCompanyName}
@@ -324,6 +341,8 @@ function ResumeBuilderWorkspace() {
           colorSelection={colorSelection}
           fallbackColor={primary}
           layout={layout}
+          fontFamily={fontFamily}
+          display={display}
           onDownload={handleDownload}
           isGenerating={isGenerating}
           downloadDisabled={

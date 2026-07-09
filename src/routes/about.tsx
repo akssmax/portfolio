@@ -5,7 +5,7 @@ import { AboutHero } from "@/components/about/about-hero"
 import { EducationSection } from "@/components/about/education-section"
 import { ExperienceTimeline } from "@/components/about/experience-timeline"
 import { InterestsSection } from "@/components/about/interests-section"
-import { GithubActivitySection } from "@/components/about/github-activity-section"
+// import { GithubActivitySection } from "@/components/about/github-activity-section"
 import { SkillsToolsSection } from "@/components/about/skills-tools-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
@@ -83,7 +83,7 @@ function AboutPage() {
         <ExperienceTimeline />
         <EducationSection />
         <SkillsToolsSection />
-        <GithubActivitySection />
+        {/* <GithubActivitySection /> */}
         <InterestsSection />
         <AboutConnectSection />
       </main>

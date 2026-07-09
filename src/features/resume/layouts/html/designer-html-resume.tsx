@@ -1,53 +1,32 @@
 import { CompanyLogo } from "@/components/shared/company-logo"
 
 import { cssColorWithAlpha } from "../../color-utils"
-import type { ResumeDocument } from "../../types"
 import { HtmlLogomark } from "./html-logomark"
 import { ResumePortraitImage } from "./resume-portrait-image"
 import { EditableText } from "./editable-text"
+import { HtmlResumeSection } from "./html-resume-section"
+import type { ResumeHtmlLayoutProps } from "./resume-html-props"
 
 function formatWebsiteLabel(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
 }
 
-type DesignerHtmlResumeProps = {
-  document: ResumeDocument
-  brandColor: string
-  onChange?: (updated: ResumeDocument) => void
-}
-
-function Section({
-  title,
+export function DesignerHtmlResume({
+  document,
   brandColor,
-  children,
-}: {
-  title: string
-  brandColor: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="mb-4">
-      <div className="mb-2 flex items-center gap-2">
-        <span
-          className="h-[3px] w-3.5 rounded-full"
-          style={{ backgroundColor: brandColor }}
-        />
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#0F1923]">
-          {title}
-        </h2>
-      </div>
-      {children}
-    </section>
-  )
-}
-
-export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerHtmlResumeProps) {
+  fontFamily,
+  display,
+  onChange,
+}: ResumeHtmlLayoutProps) {
   const tint = cssColorWithAlpha(brandColor, 0.08)
   const pillBackground = cssColorWithAlpha(brandColor, 0.12)
   const pillBorder = cssColorWithAlpha(brandColor, 0.25)
 
   return (
-    <div className="flex min-h-full text-[10px] leading-[1.45] text-neutral-900">
+    <div
+      className="flex min-h-full text-[10px] leading-[1.45] text-neutral-900"
+      style={{ fontFamily }}
+    >
       <aside className="relative flex w-[52px] shrink-0 flex-col items-center pt-9">
         <span
           className="absolute inset-y-0 left-0 w-2"
@@ -162,7 +141,7 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
         </header>
 
         {document.summary ? (
-          <Section title="Summary" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="summary" title="Summary" brandColor={brandColor} display={display}>
             {document.summary.split("\n\n").map((paragraph, idx) => (
               <EditableText
                 key={idx}
@@ -182,11 +161,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 placeholder="Summary paragraph"
               />
             ))}
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.experience?.length ? (
-          <Section title="Experience" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="experience" title="Experience" brandColor={brandColor} display={display}>
             {document.experience.map((job, jobIdx) => (
               <article
                 key={`${job.company}-${job.period}-${jobIdx}`}
@@ -302,11 +281,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 ) : null}
               </article>
             ))}
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.education ? (
-          <Section title="Education" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="education" title="Education" brandColor={brandColor} display={display}>
             <div className="text-neutral-800">
               <EditableText
                 value={document.education.degree}
@@ -364,11 +343,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 placeholder="Location"
               />
             </div>
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.skills?.length ? (
-          <Section title="Skills" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="skills" title="Skills" brandColor={brandColor} display={display}>
             <div className="flex flex-wrap gap-1.5">
               {document.skills.map((skill, sIdx) => (
                 <span
@@ -395,11 +374,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 </span>
               ))}
             </div>
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.certifications?.length ? (
-          <Section title="Certifications" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="certifications" title="Certifications" brandColor={brandColor} display={display}>
             {document.certifications.map((certification, cIdx) => (
               <p
                 key={`${certification.title}-${certification.date}-${cIdx}`}
@@ -467,11 +446,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 ) : null}
               </p>
             ))}
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.languages?.length ? (
-          <Section title="Languages" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="languages" title="Languages" brandColor={brandColor} display={display}>
             {document.languages.map((language, lIdx) => (
               <p key={`${language.name}-${lIdx}`} className="mb-1 text-neutral-800">
                 <EditableText
@@ -503,11 +482,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 />
               </p>
             ))}
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.interests?.length ? (
-          <Section title="Interests" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="interests" title="Interests" brandColor={brandColor} display={display}>
             <div className="flex flex-wrap gap-1.5">
               {document.interests.map((interest, iIdx) => (
                 <span
@@ -534,11 +513,11 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 </span>
               ))}
             </div>
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         {document.contact ? (
-          <Section title="Links" brandColor={brandColor}>
+          <HtmlResumeSection sectionId="contact" title="Links" brandColor={brandColor} display={display}>
             {document.contact.website ? (
               onChange ? (
                 <p className="mb-1">
@@ -614,7 +593,7 @@ export function DesignerHtmlResume({ document, brandColor, onChange }: DesignerH
                 </a>
               )
             ) : null}
-          </Section>
+          </HtmlResumeSection>
         ) : null}
 
         <footer className="mt-2 flex items-center justify-between border-t border-neutral-200 pt-2.5">

@@ -1,37 +1,19 @@
-import type { ResumeDocument } from "../../types"
 import { EditableText } from "./editable-text"
+import { HtmlResumeSection } from "./html-resume-section"
+import type { ResumeHtmlLayoutProps } from "./resume-html-props"
 
-type ExecutiveHtmlResumeProps = {
-  document: ResumeDocument
-  brandColor: string
-  onChange?: (updated: ResumeDocument) => void
-}
-
-function Section({
-  title,
+export function ExecutiveHtmlResume({
+  document,
   brandColor,
-  children,
-}: {
-  title: string
-  brandColor: string
-  children: React.ReactNode
-}) {
+  fontFamily,
+  display,
+  onChange,
+}: ResumeHtmlLayoutProps) {
   return (
-    <section className="mb-3.5">
-      <h2
-        className="mb-2 border-b border-neutral-200 pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
-        style={{ color: brandColor }}
-      >
-        {title}
-      </h2>
-      {children}
-    </section>
-  )
-}
-
-export function ExecutiveHtmlResume({ document, brandColor, onChange }: ExecutiveHtmlResumeProps) {
-  return (
-    <div className="flex min-h-full flex-col px-11 pt-8 pb-14 text-[10px] leading-[1.45] text-neutral-900">
+    <div
+      className="flex min-h-full flex-col px-11 pt-8 pb-14 text-[10px] leading-[1.45] text-neutral-900"
+      style={{ fontFamily }}
+    >
       <header
         className="mb-[18px] rounded px-4 py-3.5"
         style={{ backgroundColor: brandColor }}
@@ -77,7 +59,7 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
       </header>
 
       {document.summary ? (
-        <Section title="Summary" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="summary" title="Summary" brandColor={brandColor} display={display} variant="plain">
           {document.summary.split("\n\n").map((paragraph, idx) => (
             <EditableText
               key={idx}
@@ -97,11 +79,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               placeholder="Summary paragraph"
             />
           ))}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.experience?.length ? (
-        <Section title="Experience" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="experience" title="Experience" brandColor={brandColor} display={display} variant="plain">
           {document.experience.map((job, jobIdx) => (
             <article key={`${job.company}-${job.period}-${jobIdx}`} className="mb-2.5">
               <div className="flex items-start justify-between gap-3 pb-1">
@@ -206,11 +188,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               ) : null}
             </article>
           ))}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.education ? (
-        <Section title="Education" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="education" title="Education" brandColor={brandColor} display={display} variant="plain">
           <div className="text-neutral-800">
             <EditableText
               value={document.education.degree}
@@ -268,11 +250,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               placeholder="Location"
             />
           </div>
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.skills?.length ? (
-        <Section title="Skills" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="skills" title="Skills" brandColor={brandColor} display={display} variant="plain">
           {document.skills.map((skill, sIdx) => (
             <p key={sIdx} className="mb-0.5 text-neutral-800">
               <EditableText
@@ -290,11 +272,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               />
             </p>
           ))}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.certifications?.length ? (
-        <Section title="Certifications" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="certifications" title="Certifications" brandColor={brandColor} display={display} variant="plain">
           {document.certifications.map((certification, cIdx) => (
             <p
               key={`${certification.title}-${certification.date}-${cIdx}`}
@@ -362,11 +344,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               ) : null}
             </p>
           ))}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.languages?.length ? (
-        <Section title="Languages" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="languages" title="Languages" brandColor={brandColor} display={display} variant="plain">
           {document.languages.map((language, lIdx) => (
             <p key={`${language.name}-${lIdx}`} className="mb-1 text-neutral-800">
               <EditableText
@@ -398,11 +380,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               />
             </p>
           ))}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.interests?.length ? (
-        <Section title="Interests" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="interests" title="Interests" brandColor={brandColor} display={display} variant="plain">
           <p className="text-neutral-800">
             <EditableText
               value={document.interests.join(" · ")}
@@ -417,11 +399,11 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               placeholder="Interest 1 · Interest 2"
             />
           </p>
-        </Section>
+        </HtmlResumeSection>
       ) : null}
 
       {document.contact ? (
-        <Section title="Contact" brandColor={brandColor}>
+        <HtmlResumeSection sectionId="contact" title="Contact" brandColor={brandColor} display={display} variant="plain">
           <p className="mb-0.5 text-neutral-800">
             <EditableText
               value={document.contact.email}
@@ -527,7 +509,7 @@ export function ExecutiveHtmlResume({ document, brandColor, onChange }: Executiv
               </a>
             )
           ) : null}
-        </Section>
+        </HtmlResumeSection>
       ) : null}
       <footer className="mt-auto flex items-center justify-between border-t border-neutral-200 pt-2.5">
         <span className="text-[8px] text-neutral-500">

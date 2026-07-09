@@ -1,18 +1,19 @@
 "use client"
 
-import { Loader2 } from "lucide-react"
+import { FileText, Loader2 } from "lucide-react"
 import { cssColorWithAlpha } from "./color-utils"
-import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
 import {
-  DEFAULT_RESUME_LAYOUT,
   RESUME_LAYOUT_OPTIONS,
 } from "./layout-options"
 import {
   ResumeBrandColorPicker
   
 } from "./resume-brand-color-picker"
+import { ResumeDisplayControls } from "./resume-display-controls"
+import {
+  type ResumeDisplayPreferences,
+} from "./resume-display-preferences"
 import { RESUME_SECTION_OPTIONS } from "./resume-section-options"
-import type { BrandPresetId } from "@/lib/themes/types"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-picker";
 import type { ResumeLayoutId, ResumeSectionConfig, ResumeSectionId } from "./types"
 import { Button } from "@/components/ui/button"
@@ -141,6 +142,8 @@ export type ResumeBuilderControlsProps = {
   colorSelection: ResumeBrandColorSelection
   onColorSelectionChange: (selection: ResumeBrandColorSelection) => void
   brandColor: string
+  display: ResumeDisplayPreferences
+  onDisplayChange: (display: ResumeDisplayPreferences) => void
   
   // Cover Letter settings props
   activeTab?: "resume" | "cover-letter"
@@ -166,6 +169,8 @@ export function ResumeBuilderControls({
   colorSelection,
   onColorSelectionChange,
   brandColor,
+  display,
+  onDisplayChange,
   
   activeTab = "resume",
   companyName = "",
@@ -186,11 +191,8 @@ export function ResumeBuilderControls({
   if (activeTab === "cover-letter") {
     return (
       <div className="flex h-full min-w-0 w-full flex-col">
-        <div className="border-b border-border px-5 py-5">
+        <div className="flex min-h-[61px] items-center border-b border-border px-5 py-3">
           <h1 className="text-base font-semibold text-foreground">Cover letter builder</h1>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Generate and customize a matching cover letter utilizing your resume data.
-          </p>
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-6">
@@ -317,12 +319,18 @@ export function ResumeBuilderControls({
 
   return (
     <div className="flex h-full min-w-0 w-full flex-col">
-      <div className="border-b border-border px-5 py-5">
-        <h1 className="text-lg font-semibold text-foreground">Resume builder</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Tune layout, sections, and brand color. Preview updates live on the
-          right.
-        </p>
+      <div className="flex min-h-[61px] items-center border-b border-border bg-muted/30 px-5 py-3">
+        <div className="flex items-center gap-3">
+          <div
+            className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background shadow-xs"
+            aria-hidden
+          >
+            <FileText className="size-4 text-muted-foreground" />
+          </div>
+          <h2 className="min-w-0 text-base font-semibold leading-tight text-foreground">
+            Resume builder
+          </h2>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-5">
@@ -336,36 +344,36 @@ export function ResumeBuilderControls({
           <RadioGroup
             value={layout}
             onValueChange={(value) => onLayoutChange(value as ResumeLayoutId)}
-            className="grid gap-3 sm:grid-cols-1"
+            className="grid grid-cols-2 gap-2"
           >
             {RESUME_LAYOUT_OPTIONS.map((option) => (
               <label
                 key={option.id}
                 htmlFor={`resume-builder-layout-${option.id}`}
                 className={cn(
-                  "cursor-pointer rounded-lg border bg-background p-3 transition-colors touch-manipulation",
+                  "group cursor-pointer rounded-lg border bg-background p-2.5 transition-colors touch-manipulation",
                   layout === option.id
                     ? "border-primary ring-1 ring-primary/30"
                     : "border-border hover:border-primary/40",
                 )}
               >
-                <div className="flex items-start gap-3">
-                  <RadioGroupItem
-                    id={`resume-builder-layout-${option.id}`}
-                    value={option.id}
-                    className="mt-0.5 size-4"
-                  />
-                  <span className="min-w-0 flex-1 space-y-2">
-                    <span className="block space-y-1">
-                      <span className="block text-sm font-medium text-foreground">
+                <div className="flex flex-col gap-2">
+                  <LayoutPreview layout={option.id} brandColor={brandColor} />
+                  <div className="flex items-start gap-2">
+                    <RadioGroupItem
+                      id={`resume-builder-layout-${option.id}`}
+                      value={option.id}
+                      className="mt-0.5 size-3.5 shrink-0"
+                    />
+                    <span className="min-w-0 space-y-0.5">
+                      <span className="block text-xs font-medium leading-tight text-foreground">
                         {option.label}
                       </span>
-                      <span className="block text-xs text-muted-foreground">
+                      <span className="block text-[10px] leading-snug text-muted-foreground">
                         {option.description}
                       </span>
                     </span>
-                    <LayoutPreview layout={option.id} brandColor={brandColor} />
-                  </span>
+                  </div>
                 </div>
               </label>
             ))}
@@ -411,6 +419,12 @@ export function ResumeBuilderControls({
         <Separator className="my-5" />
 
         <section className="space-y-3">
+          <ResumeDisplayControls display={display} onChange={onDisplayChange} />
+        </section>
+
+        <Separator className="my-5" />
+
+        <section className="space-y-3">
           <div>
             <Label>Brand color</Label>
             <p className="mt-1 text-xs text-muted-foreground">
@@ -427,21 +441,4 @@ export function ResumeBuilderControls({
       </div>
     </div>
   )
-}
-
-export function createInitialResumeBuilderState(appearance: {
-  palette: BrandPresetId
-  customBrandColor: string | null
-}): {
-  layout: ResumeLayoutId
-  sections: ResumeSectionConfig
-  colorSelection: ResumeBrandColorSelection
-} {
-  return {
-    layout: DEFAULT_RESUME_LAYOUT,
-    sections: DEFAULT_RESUME_SECTIONS,
-    colorSelection: appearance.customBrandColor
-      ? { type: "custom", hex: appearance.customBrandColor }
-      : { type: "preset", presetId: appearance.palette },
-  }
 }

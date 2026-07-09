@@ -6,6 +6,10 @@ import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
 import { RESUME_SPACING } from "./spacing-tokens"
+import {
+  DEFAULT_PDF_LAYOUT_PROPS,
+  type ResumePdfLayoutProps,
+} from "./pdf-layout-props"
 
 const S = RESUME_SPACING.designer
 const PAGE_MARGIN = {
@@ -292,16 +296,14 @@ function PageChrome({
 export function DesignerResumeLayout({
   document,
   brandColor,
-}: {
-  document: ResumeDocument
-  brandColor: string
-}) {
+  fontFamily = DEFAULT_PDF_LAYOUT_PROPS.fontFamily,
+}: ResumePdfLayoutProps) {
   const tint = hexToRgba(brandColor, 0.08)
   const pillBackground = hexToRgba(brandColor, 0.12)
   const pillBorder = hexToRgba(brandColor, 0.25)
 
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={[styles.page, { fontFamily }]}>
       <PageChrome document={document} brandColor={brandColor} />
 
       <View style={{ ...styles.header, backgroundColor: tint }}>

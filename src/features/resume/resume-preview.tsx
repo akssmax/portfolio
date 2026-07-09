@@ -8,20 +8,21 @@ import { buildResumeDocument } from "./build-resume-document"
 import { ResumeHtmlDocument } from "./layouts/html/resume-html-document"
 import { CoverLetterHtmlDocument } from "./layouts/html/cover-letter-html-document"
 import {
-  
-  getResumeColorSelectionKey,
   resolveResumeBrandColor
 } from "./resume-brand-color-utils"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-utils";
+import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId, ResumeSectionConfig } from "./types"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type ResumePreviewProps = {
   document: ResumeDocument
   colorSelection: ResumeBrandColorSelection
   fallbackColor: string
   layout: ResumeLayoutId
+  fontFamily: string
+  display: ResumeDisplayPreferences
   onDownload: () => void
   isGenerating: boolean
   downloadDisabled: boolean
@@ -40,6 +41,8 @@ export function ResumePreview({
   colorSelection,
   fallbackColor,
   layout,
+  fontFamily,
+  display,
   onDownload,
   isGenerating,
   downloadDisabled,
@@ -52,47 +55,26 @@ export function ResumePreview({
   onCoverLetterDocumentChange,
 }: ResumePreviewProps) {
   const brandColor = resolveResumeBrandColor(colorSelection, fallbackColor)
-  const colorKey = getResumeColorSelectionKey(colorSelection)
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-muted/20">
       {/* Header with Navigation Tabs */}
       <div className="border-b border-border bg-background px-3 py-3 sm:px-5">
         <div className="flex items-center justify-between gap-3">
-          <nav className="flex gap-4 sm:gap-6" aria-label="Resume Workspace Tabs">
-            <button
-              type="button"
-              onClick={() => onActiveTabChange?.("resume")}
-              className={cn(
-                "relative py-1 text-sm font-semibold transition-colors outline-none",
-                activeTab === "resume"
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              Resume
-              {activeTab === "resume" && (
-                <span className="absolute bottom-[-13px] left-0 right-0 h-[2px] bg-primary" />
-              )}
-            </button>
-            {onActiveTabChange ? (
-              <button
-                type="button"
-                onClick={() => onActiveTabChange("cover-letter")}
-                className={cn(
-                  "relative py-1 text-sm font-semibold transition-colors outline-none",
-                  activeTab === "cover-letter"
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Cover Letter
-                {activeTab === "cover-letter" && (
-                  <span className="absolute bottom-[-13px] left-0 right-0 h-[2px] bg-primary" />
-                )}
-              </button>
-            ) : null}
-          </nav>
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) =>
+              onActiveTabChange?.(value as "resume" | "cover-letter")
+            }
+            className="min-w-0"
+          >
+            <TabsList aria-label="Resume Workspace Tabs">
+              <TabsTrigger value="resume">Resume</TabsTrigger>
+              {onActiveTabChange ? (
+                <TabsTrigger value="cover-letter">Cover Letter</TabsTrigger>
+              ) : null}
+            </TabsList>
+          </Tabs>
 
           <Button
             type="button"
@@ -130,15 +112,17 @@ export function ResumePreview({
             <div className="h-full overflow-y-auto">
               {activeTab === "resume" ? (
                 <ResumeHtmlDocument
-                  key={`${layout}-${colorKey}`}
+                  key={layout}
                   document={document}
                   brandColor={brandColor}
+                  fontFamily={fontFamily}
+                  display={display}
                   layout={layout}
                   onChange={onChange}
                 />
               ) : coverLetterDocument ? (
                 <CoverLetterHtmlDocument
-                  key={`cl-${layout}-${colorKey}`}
+                  key={`cl-${layout}`}
                   document={coverLetterDocument}
                   brandColor={brandColor}
                   layout={layout}

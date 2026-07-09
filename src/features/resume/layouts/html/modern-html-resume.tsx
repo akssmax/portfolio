@@ -1,41 +1,36 @@
-import type { ResumeDocument } from "../../types"
-import { EditableText } from "./editable-text"
 import { CompanyLogo } from "@/components/shared/company-logo"
 
-type ModernHtmlResumeProps = {
-  document: ResumeDocument
-  brandColor: string
-  onChange?: (updated: ResumeDocument) => void
-}
+import {
+  addCertification,
+  addExperienceHighlight,
+  addExperienceJob,
+  addLanguage,
+  addSkill,
+  addSummaryParagraph,
+  removeCertification,
+  removeExperienceHighlight,
+  removeExperienceJob,
+  removeLanguage,
+  removeSkill,
+} from "../../resume-document-mutations"
+import { EditableText } from "./editable-text"
+import { HtmlResumeSection } from "./html-resume-section"
+import { ResumeContactFields } from "./resume-contact-fields"
+import { ResumeListAddButton, ResumeListRemoveButton } from "./resume-list-controls"
+import type { ResumeHtmlLayoutProps } from "./resume-html-props"
 
-function Section({
-  title,
+export function ModernHtmlResume({
+  document,
   brandColor,
-  children,
-}: {
-  title: string
-  brandColor: string
-  children: React.ReactNode
-}) {
+  fontFamily,
+  display,
+  onChange,
+}: ResumeHtmlLayoutProps) {
   return (
-    <section className="mb-3.5">
-      <div className="mb-2 flex items-center gap-2">
-        <span
-          className="h-[3px] w-3 rounded-full"
-          style={{ backgroundColor: brandColor }}
-        />
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.08em] text-[#0F1923]">
-          {title}
-        </h2>
-      </div>
-      {children}
-    </section>
-  )
-}
-
-export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlResumeProps) {
-  return (
-    <div className="px-10 pt-[34px] pb-14 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full">
+    <div
+      className="px-10 pt-[34px] pb-14 text-[10px] leading-[1.45] text-neutral-900 flex flex-col min-h-full"
+      style={{ fontFamily }}
+    >
       <header
         className="mb-5 border-b pb-3 flex justify-between items-start gap-4"
         style={{ borderBottomColor: brandColor }}
@@ -91,121 +86,38 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
       </header>
 
       <div className="flex-1 flex gap-5">
-        {/* Left Column - Contact, Skills, Education, Languages */}
         <aside className="w-[150px] shrink-0 flex flex-col gap-3.5 border-r border-neutral-200 pr-2.5">
           {document.contact ? (
-            <Section title="Contact" brandColor={brandColor}>
-              <div className="flex flex-col gap-1.5 text-[8.5px] text-neutral-800">
-                <p>
-                  <EditableText
-                    value={document.contact.email}
-                    onChange={
-                      onChange
-                        ? (val) =>
-                            onChange({
-                              ...document,
-                              contact: { ...document.contact!, email: val },
-                            })
-                        : undefined
-                    }
-                    placeholder="Email"
-                  />
-                </p>
-                <p>
-                  <EditableText
-                    value={document.contact.phone}
-                    onChange={
-                      onChange
-                        ? (val) =>
-                            onChange({
-                              ...document,
-                              contact: { ...document.contact!, phone: val },
-                            })
-                        : undefined
-                    }
-                    placeholder="Phone"
-                  />
-                </p>
-                {document.contact.website ? (
-                  onChange ? (
-                    <EditableText
-                      value={document.contact.website}
-                      onChange={(val) =>
-                        onChange({
-                          ...document,
-                          contact: { ...document.contact!, website: val },
-                        })
-                      }
-                      style={{ color: brandColor }}
-                      placeholder="Website"
-                    />
-                  ) : (
-                    <a
-                      href={document.contact.website}
-                      className="hover:underline truncate block"
-                      style={{ color: brandColor }}
-                    >
-                      {document.contact.website.replace(/^https?:\/\/(www\.)?/, "")}
-                    </a>
-                  )
-                ) : null}
-                {document.contact.linkedin ? (
-                  onChange ? (
-                    <EditableText
-                      value={document.contact.linkedin}
-                      onChange={(val) =>
-                        onChange({
-                          ...document,
-                          contact: { ...document.contact!, linkedin: val },
-                        })
-                      }
-                      style={{ color: brandColor }}
-                      placeholder="LinkedIn"
-                    />
-                  ) : (
-                    <a
-                      href={document.contact.linkedin}
-                      className="hover:underline truncate block"
-                      style={{ color: brandColor }}
-                    >
-                      {document.contact.linkedin.replace(/^https?:\/\/(www\.)?/, "")}
-                    </a>
-                  )
-                ) : null}
-                {document.contact.github ? (
-                  onChange ? (
-                    <EditableText
-                      value={document.contact.github}
-                      onChange={(val) =>
-                        onChange({
-                          ...document,
-                          contact: { ...document.contact!, github: val },
-                        })
-                      }
-                      style={{ color: brandColor }}
-                      placeholder="GitHub"
-                    />
-                  ) : (
-                    <a
-                      href={document.contact.github}
-                      className="hover:underline truncate block"
-                      style={{ color: brandColor }}
-                    >
-                      {document.contact.github.replace(/^https?:\/\/(www\.)?/, "")}
-                    </a>
-                  )
-                ) : null}
-              </div>
-            </Section>
+            <HtmlResumeSection
+              sectionId="contact"
+              title="Contact"
+              brandColor={brandColor}
+              display={display}
+            >
+              <ResumeContactFields
+                contact={document.contact}
+                brandColor={brandColor}
+                display={display}
+                document={document}
+                onChange={onChange}
+                className="text-[8.5px] text-neutral-800"
+                linkClassName="truncate block"
+              />
+            </HtmlResumeSection>
           ) : null}
 
           {document.skills?.length ? (
-            <Section title="Skills" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="skills"
+              title="Skills"
+              brandColor={brandColor}
+              display={display}
+            >
               <div className="flex flex-wrap gap-1">
                 {document.skills.map((skill, sIdx) => (
                   <span
                     key={sIdx}
-                    className="rounded-md border px-1.5 py-0.5 text-[8px] text-neutral-800 bg-neutral-50/50 border-neutral-200"
+                    className="group/skill inline-flex items-center gap-0.5 rounded-md border px-1.5 py-0.5 text-[8px] text-neutral-800 bg-neutral-50/50 border-neutral-200"
                   >
                     <EditableText
                       value={skill}
@@ -220,14 +132,33 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                       }
                       placeholder="Skill"
                     />
+                    {onChange ? (
+                      <ResumeListRemoveButton
+                        label={`Remove skill ${sIdx + 1}`}
+                        onClick={() => onChange(removeSkill(document, sIdx))}
+                        className="opacity-0 group-hover/skill:opacity-100"
+                      />
+                    ) : null}
                   </span>
                 ))}
               </div>
-            </Section>
+              {onChange ? (
+                <ResumeListAddButton
+                  label="Add skill"
+                  onClick={() => onChange(addSkill(document))}
+                  className="mt-1"
+                />
+              ) : null}
+            </HtmlResumeSection>
           ) : null}
 
           {document.education ? (
-            <Section title="Education" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="education"
+              title="Education"
+              brandColor={brandColor}
+              display={display}
+            >
               <div className="text-[8.5px] text-neutral-800">
                 <p className="font-semibold">
                   <EditableText
@@ -275,14 +206,19 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                   />
                 </p>
               </div>
-            </Section>
+            </HtmlResumeSection>
           ) : null}
 
           {document.languages?.length ? (
-            <Section title="Languages" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="languages"
+              title="Languages"
+              brandColor={brandColor}
+              display={display}
+            >
               <div className="flex flex-col gap-1 text-[8.5px] text-neutral-800">
                 {document.languages.map((language, lIdx) => (
-                  <div key={lIdx} className="flex justify-between gap-1">
+                  <div key={lIdx} className="group/lang flex items-start justify-between gap-1">
                     <EditableText
                       value={language.name}
                       onChange={
@@ -297,31 +233,51 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                       className="font-medium"
                       placeholder="Language"
                     />
-                    <EditableText
-                      value={language.level}
-                      onChange={
-                        onChange
-                          ? (val) => {
-                              const newLanguages = [...document.languages!]
-                              newLanguages[lIdx] = { ...language, level: val }
-                              onChange({ ...document, languages: newLanguages })
-                            }
-                          : undefined
-                      }
-                      className="text-neutral-500 text-right"
-                      placeholder="Level"
-                    />
+                    <div className="flex items-center gap-0.5">
+                      <EditableText
+                        value={language.level}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newLanguages = [...document.languages!]
+                                newLanguages[lIdx] = { ...language, level: val }
+                                onChange({ ...document, languages: newLanguages })
+                              }
+                            : undefined
+                        }
+                        className="text-neutral-500 text-right"
+                        placeholder="Level"
+                      />
+                      {onChange ? (
+                        <ResumeListRemoveButton
+                          label={`Remove language ${lIdx + 1}`}
+                          onClick={() => onChange(removeLanguage(document, lIdx))}
+                          className="opacity-0 group-hover/lang:opacity-100"
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 ))}
               </div>
-            </Section>
+              {onChange ? (
+                <ResumeListAddButton
+                  label="Add language"
+                  onClick={() => onChange(addLanguage(document))}
+                  className="mt-1"
+                />
+              ) : null}
+            </HtmlResumeSection>
           ) : null}
         </aside>
 
-        {/* Right Column - Summary, Experience, Certifications, Interests */}
         <main className="flex-1 min-w-0 flex flex-col gap-4">
           {document.summary ? (
-            <Section title="Summary" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="summary"
+              title="Summary"
+              brandColor={brandColor}
+              display={display}
+            >
               {document.summary.split("\n\n").map((paragraph, idx) => (
                 <EditableText
                   key={idx}
@@ -341,14 +297,32 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                   placeholder="Summary paragraph"
                 />
               ))}
-            </Section>
+              {onChange ? (
+                <ResumeListAddButton
+                  label="Add paragraph"
+                  onClick={() => onChange(addSummaryParagraph(document))}
+                />
+              ) : null}
+            </HtmlResumeSection>
           ) : null}
 
           {document.experience?.length ? (
-            <Section title="Experience" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="experience"
+              title="Experience"
+              brandColor={brandColor}
+              display={display}
+            >
               <div className="flex flex-col gap-3">
                 {document.experience.map((job, jobIdx) => (
-                  <article key={jobIdx}>
+                  <article key={jobIdx} className="group/job relative">
+                    {onChange ? (
+                      <ResumeListRemoveButton
+                        label={`Remove job ${jobIdx + 1}`}
+                        onClick={() => onChange(removeExperienceJob(document, jobIdx))}
+                        className="absolute -right-1 -top-1 opacity-0 group-hover/job:opacity-100"
+                      />
+                    ) : null}
                     <div className="flex justify-between items-start gap-2 mb-1">
                       <div className="flex items-center gap-1.5 min-w-0">
                         {job.logoSrc ? (
@@ -423,7 +397,7 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                     {job.highlights?.length ? (
                       <ul className="list-disc pl-3 text-neutral-800 space-y-0.5">
                         {job.highlights.map((highlight, hIdx) => (
-                          <li key={hIdx}>
+                          <li key={hIdx} className="group/hl flex items-start gap-1">
                             <EditableText
                               value={highlight}
                               onChange={
@@ -439,74 +413,123 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                               }
                               placeholder="Highlight"
                             />
+                            {onChange ? (
+                              <ResumeListRemoveButton
+                                label={`Remove highlight ${hIdx + 1}`}
+                                onClick={() =>
+                                  onChange(removeExperienceHighlight(document, jobIdx, hIdx))
+                                }
+                                className="opacity-0 group-hover/hl:opacity-100"
+                              />
+                            ) : null}
                           </li>
                         ))}
                       </ul>
                     ) : null}
+                    {onChange ? (
+                      <ResumeListAddButton
+                        label="Add bullet"
+                        onClick={() => onChange(addExperienceHighlight(document, jobIdx))}
+                        className="mt-0.5"
+                      />
+                    ) : null}
                   </article>
                 ))}
               </div>
-            </Section>
+              {onChange ? (
+                <ResumeListAddButton
+                  label="Add role"
+                  onClick={() => onChange(addExperienceJob(document))}
+                  className="mt-1"
+                />
+              ) : null}
+            </HtmlResumeSection>
           ) : null}
 
           {document.certifications?.length ? (
-            <Section title="Certifications" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="certifications"
+              title="Certifications"
+              brandColor={brandColor}
+              display={display}
+            >
               <div className="flex flex-col gap-1.5">
                 {document.certifications.map((certification, cIdx) => (
-                  <div key={cIdx} className="text-neutral-800">
-                    <EditableText
-                      value={certification.title}
-                      onChange={
-                        onChange
-                          ? (val) => {
-                              const newCertifications = [...document.certifications!]
-                              newCertifications[cIdx] = { ...certification, title: val }
-                              onChange({ ...document, certifications: newCertifications })
-                            }
-                          : undefined
-                      }
-                      className="font-medium"
-                      placeholder="Certification Title"
-                    />
-                    {" — "}
-                    <EditableText
-                      value={certification.issuer}
-                      onChange={
-                        onChange
-                          ? (val) => {
-                              const newCertifications = [...document.certifications!]
-                              newCertifications[cIdx] = { ...certification, issuer: val }
-                              onChange({ ...document, certifications: newCertifications })
-                            }
-                          : undefined
-                      }
-                      className="text-neutral-600"
-                      placeholder="Issuer"
-                    />
-                    {" ("}
-                    <EditableText
-                      value={certification.date}
-                      onChange={
-                        onChange
-                          ? (val) => {
-                              const newCertifications = [...document.certifications!]
-                              newCertifications[cIdx] = { ...certification, date: val }
-                              onChange({ ...document, certifications: newCertifications })
-                            }
-                          : undefined
-                      }
-                      className="text-neutral-500"
-                      placeholder="Date"
-                    />
-                    {")"}
+                  <div key={cIdx} className="group/cert flex items-start gap-1 text-neutral-800">
+                    <div className="min-w-0 flex-1">
+                      <EditableText
+                        value={certification.title}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newCertifications = [...document.certifications!]
+                                newCertifications[cIdx] = { ...certification, title: val }
+                                onChange({ ...document, certifications: newCertifications })
+                              }
+                            : undefined
+                        }
+                        className="font-medium"
+                        placeholder="Certification Title"
+                      />
+                      {" — "}
+                      <EditableText
+                        value={certification.issuer}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newCertifications = [...document.certifications!]
+                                newCertifications[cIdx] = { ...certification, issuer: val }
+                                onChange({ ...document, certifications: newCertifications })
+                              }
+                            : undefined
+                        }
+                        className="text-neutral-600"
+                        placeholder="Issuer"
+                      />
+                      {" ("}
+                      <EditableText
+                        value={certification.date}
+                        onChange={
+                          onChange
+                            ? (val) => {
+                                const newCertifications = [...document.certifications!]
+                                newCertifications[cIdx] = { ...certification, date: val }
+                                onChange({ ...document, certifications: newCertifications })
+                              }
+                            : undefined
+                        }
+                        className="text-neutral-500"
+                        placeholder="Date"
+                      />
+                      {")"}
+                    </div>
+                    {onChange ? (
+                      <ResumeListRemoveButton
+                        label={`Remove certification ${cIdx + 1}`}
+                        onClick={() => onChange(removeCertification(document, cIdx))}
+                        className="opacity-0 group-hover/cert:opacity-100"
+                      />
+                    ) : null}
                   </div>
                 ))}
               </div>
-            </Section>
+              {onChange ? (
+                <ResumeListAddButton
+                  label="Add certification"
+                  onClick={() => onChange(addCertification(document))}
+                  className="mt-1"
+                />
+              ) : null}
+            </HtmlResumeSection>
           ) : null}
 
           {document.interests?.length ? (
-            <Section title="Interests" brandColor={brandColor}>
+            <HtmlResumeSection
+              sectionId="interests"
+              title="Interests"
+              brandColor={brandColor}
+              display={display}
+            >
               <p className="text-neutral-800">
                 <EditableText
                   value={document.interests.join(" · ")}
@@ -521,7 +544,7 @@ export function ModernHtmlResume({ document, brandColor, onChange }: ModernHtmlR
                   placeholder="Interest 1 · Interest 2"
                 />
               </p>
-            </Section>
+            </HtmlResumeSection>
           ) : null}
         </main>
       </div>

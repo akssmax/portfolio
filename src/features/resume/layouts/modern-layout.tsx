@@ -1,10 +1,21 @@
 import type { ReactNode } from "react"
 import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
-import type { ResumeDocument } from "../types"
+import {
+  DEFAULT_CONTACT_ICONS,
+  type ResumeContactIconField,
+  type ResumeDisplayPreferences,
+} from "../resume-display-preferences"
+import type { ResumeDocument, ResumeSectionId } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
+import { PdfResumeIcon } from "./pdf/pdf-resume-icons"
+import { PdfResumeSectionTitle } from "./pdf/pdf-resume-section"
 import { RESUME_SPACING } from "./spacing-tokens"
+import {
+  DEFAULT_PDF_LAYOUT_PROPS,
+  type ResumePdfLayoutProps,
+} from "./pdf-layout-props"
 
 const S = RESUME_SPACING.modern
 const PAGE_MARGIN = {
@@ -212,20 +223,57 @@ const styles = StyleSheet.create({
 })
 
 function Section({
+  sectionId,
   title,
   brandColor,
+  display,
   children,
 }: {
+  sectionId?: ResumeSectionId
   title: string
   brandColor: string
+  display?: ResumeDisplayPreferences
   children: ReactNode
 }) {
   return (
     <View style={styles.section}>
-      <View wrap={false} minPresenceAhead={32} style={styles.sectionHeader}>
-        <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
-        <Text style={styles.sectionTitle}>{title}</Text>
-      </View>
+      {display && sectionId ? (
+        <PdfResumeSectionTitle
+          sectionId={sectionId}
+          title={title}
+          brandColor={brandColor}
+          display={display}
+        />
+      ) : (
+        <View wrap={false} minPresenceAhead={32} style={styles.sectionHeader}>
+          <View style={{ ...styles.sectionAccent, backgroundColor: brandColor }} />
+          <Text style={styles.sectionTitle}>{title}</Text>
+        </View>
+      )}
+      {children}
+    </View>
+  )
+}
+
+function PdfContactLine({
+  field,
+  display,
+  brandColor,
+  children,
+}: {
+  field: ResumeContactIconField
+  display: ResumeDisplayPreferences
+  brandColor: string
+  children: React.ReactNode
+}) {
+  const showIcon = display.showContactIcons
+  const iconName = DEFAULT_CONTACT_ICONS[field]
+
+  return (
+    <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 4, marginBottom: 2 }}>
+      {showIcon && iconName ? (
+        <PdfResumeIcon name={iconName} color={brandColor} size={7} />
+      ) : null}
       {children}
     </View>
   )
@@ -262,12 +310,11 @@ function PageChrome({
 export function ModernResumeLayout({
   document,
   brandColor,
-}: {
-  document: ResumeDocument
-  brandColor: string
-}) {
+  fontFamily = DEFAULT_PDF_LAYOUT_PROPS.fontFamily,
+  display = DEFAULT_PDF_LAYOUT_PROPS.display,
+}: ResumePdfLayoutProps) {
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={[styles.page, { fontFamily }]}>
       <PageChrome document={document} brandColor={brandColor} />
 
       <View style={{ ...styles.header, borderBottomColor: brandColor }}>
@@ -292,44 +339,54 @@ export function ModernResumeLayout({
         {/* Left Column - Contact, Skills, Education, Languages */}
         <View style={styles.leftColumn}>
           {document.contact ? (
-            <Section title="Contact" brandColor={brandColor}>
-              <Text style={styles.contactText}>{document.contact.email}</Text>
-              <Text style={styles.contactText}>{document.contact.phone}</Text>
+            <Section sectionId="contact" title="Contact" brandColor={brandColor} display={display}>
+              <PdfContactLine field="email" display={display} brandColor={brandColor}>
+                <Text style={styles.contactText}>{document.contact.email}</Text>
+              </PdfContactLine>
+              <PdfContactLine field="phone" display={display} brandColor={brandColor}>
+                <Text style={styles.contactText}>{document.contact.phone}</Text>
+              </PdfContactLine>
               {document.contact.website ? (
-                <Link
-                  src={document.contact.website}
-                  style={{ ...styles.link, color: brandColor }}
-                >
-                  <Text style={styles.contactText}>
-                    {formatWebsiteLabel(document.contact.website)}
-                  </Text>
-                </Link>
+                <PdfContactLine field="website" display={display} brandColor={brandColor}>
+                  <Link
+                    src={document.contact.website}
+                    style={{ ...styles.link, color: brandColor }}
+                  >
+                    <Text style={styles.contactText}>
+                      {formatWebsiteLabel(document.contact.website)}
+                    </Text>
+                  </Link>
+                </PdfContactLine>
               ) : null}
               {document.contact.linkedin ? (
-                <Link
-                  src={document.contact.linkedin}
-                  style={{ ...styles.link, color: brandColor }}
-                >
-                  <Text style={styles.contactText}>
-                    {formatWebsiteLabel(document.contact.linkedin)}
-                  </Text>
-                </Link>
+                <PdfContactLine field="linkedin" display={display} brandColor={brandColor}>
+                  <Link
+                    src={document.contact.linkedin}
+                    style={{ ...styles.link, color: brandColor }}
+                  >
+                    <Text style={styles.contactText}>
+                      {formatWebsiteLabel(document.contact.linkedin)}
+                    </Text>
+                  </Link>
+                </PdfContactLine>
               ) : null}
               {document.contact.github ? (
-                <Link
-                  src={document.contact.github}
-                  style={{ ...styles.link, color: brandColor }}
-                >
-                  <Text style={styles.contactText}>
-                    {formatWebsiteLabel(document.contact.github)}
-                  </Text>
-                </Link>
+                <PdfContactLine field="github" display={display} brandColor={brandColor}>
+                  <Link
+                    src={document.contact.github}
+                    style={{ ...styles.link, color: brandColor }}
+                  >
+                    <Text style={styles.contactText}>
+                      {formatWebsiteLabel(document.contact.github)}
+                    </Text>
+                  </Link>
+                </PdfContactLine>
               ) : null}
             </Section>
           ) : null}
 
           {document.skills?.length ? (
-            <Section title="Skills" brandColor={brandColor}>
+            <Section sectionId="skills" title="Skills" brandColor={brandColor} display={display}>
               <View style={styles.skillWrap}>
                 {document.skills.map((skill) => (
                   <Text key={skill} style={styles.skillPill}>
@@ -341,7 +398,7 @@ export function ModernResumeLayout({
           ) : null}
 
           {document.education ? (
-            <Section title="Education" brandColor={brandColor}>
+            <Section sectionId="education" title="Education" brandColor={brandColor} display={display}>
               <View wrap={false} minPresenceAhead={24}>
                 <Text style={{ ...styles.educationText, fontWeight: "bold" }}>
                   {document.education.degree}
@@ -357,7 +414,7 @@ export function ModernResumeLayout({
           ) : null}
 
           {document.languages?.length ? (
-            <Section title="Languages" brandColor={brandColor}>
+            <Section sectionId="languages" title="Languages" brandColor={brandColor} display={display}>
               {document.languages.map((language) => (
                 <View key={language.name} style={styles.languageRow}>
                   <Text style={styles.languageName}>{language.name}</Text>
@@ -371,7 +428,7 @@ export function ModernResumeLayout({
         {/* Right Column - Summary, Experience, Certifications, Interests */}
         <View style={styles.rightColumn}>
           {document.summary ? (
-            <Section title="Summary" brandColor={brandColor}>
+            <Section sectionId="summary" title="Summary" brandColor={brandColor} display={display}>
               {document.summary.split("\n\n").map((paragraph) => (
                 <Text key={paragraph.slice(0, 24)} style={styles.paragraph}>
                   {paragraph}
@@ -381,7 +438,7 @@ export function ModernResumeLayout({
           ) : null}
 
           {document.experience?.length ? (
-            <Section title="Experience" brandColor={brandColor}>
+            <Section sectionId="experience" title="Experience" brandColor={brandColor} display={display}>
               {document.experience.map((job) => (
                 <View
                   key={`${job.company}-${job.period}`}
@@ -426,7 +483,7 @@ export function ModernResumeLayout({
           ) : null}
 
           {document.certifications?.length ? (
-            <Section title="Certifications" brandColor={brandColor}>
+            <Section sectionId="certifications" title="Certifications" brandColor={brandColor} display={display}>
               {document.certifications.map((certification) => (
                 <View
                   key={`${certification.title}-${certification.date}`}
@@ -448,7 +505,7 @@ export function ModernResumeLayout({
           ) : null}
 
           {document.interests?.length ? (
-            <Section title="Interests" brandColor={brandColor}>
+            <Section sectionId="interests" title="Interests" brandColor={brandColor} display={display}>
               <Text style={styles.paragraph}>{document.interests.join(" · ")}</Text>
             </Section>
           ) : null}

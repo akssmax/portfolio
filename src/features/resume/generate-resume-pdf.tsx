@@ -1,9 +1,13 @@
 import { resolvePdfBrandColor } from "./color-utils"
 import { ensurePdfBuffer } from "./ensure-pdf-buffer"
+import { registerResumePdfFont } from "./register-resume-fonts"
 import { ResumePdfDocument } from "./layouts/resume-pdf-document"
 import { CoverLetterPdfDocument } from "./layouts/cover-letter-pdf-document"
 import { resolveDocumentImages } from "./pdf-image-utils"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId } from "./types"
+import type { ResumeDisplayPreferences } from "./resume-display-preferences"
+import { DEFAULT_RESUME_DISPLAY_PREFERENCES } from "./resume-display-preferences"
+import type { FontPresetId } from "@/lib/themes/types"
 
 const PDF_GENERATION_TIMEOUT_MS = 30_000
 
@@ -27,10 +31,13 @@ export async function generateResumePdf(
   document: ResumeDocument,
   brandColor: string,
   layout: ResumeLayoutId = "classic",
+  fontPresetId: FontPresetId = "geist",
+  display?: ResumeDisplayPreferences,
 ): Promise<Blob> {
   await ensurePdfBuffer()
   const { pdf } = await import("@react-pdf/renderer")
   const pdfBrandColor = resolvePdfBrandColor(brandColor)
+  const fontFamily = await registerResumePdfFont(fontPresetId)
 
   const documentWithImages = await resolveDocumentImages(document)
 
@@ -40,6 +47,8 @@ export async function generateResumePdf(
         document={documentWithImages}
         brandColor={pdfBrandColor}
         layout={layout}
+        fontFamily={fontFamily}
+        display={display ?? DEFAULT_RESUME_DISPLAY_PREFERENCES}
       />,
     ).toBlob(),
     "Resume PDF generation",
@@ -56,13 +65,17 @@ export async function downloadResumePdf({
   brandColor,
   layout = "classic",
   filename,
+  fontPresetId = "geist",
+  display,
 }: {
   document: ResumeDocument
   brandColor: string
   layout?: ResumeLayoutId
   filename?: string
+  fontPresetId?: FontPresetId
+  display?: ResumeDisplayPreferences
 }) {
-  const blob = await generateResumePdf(document, brandColor, layout)
+  const blob = await generateResumePdf(document, brandColor, layout, fontPresetId, display)
   const url = URL.createObjectURL(blob)
   const anchor = window.document.createElement("a")
   anchor.href = url

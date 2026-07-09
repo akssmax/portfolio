@@ -34,7 +34,6 @@ export function AboutConnectSection() {
   const shouldReduceMotion = useReducedMotion()
 
   const m3Size = 180
-  const topCutoutPosition = "left"
   const bottomCutoutPosition = "right"
 
   const getPositionClass = (pos: "left" | "center" | "right") => {
@@ -52,7 +51,7 @@ export function AboutConnectSection() {
     const path = m3ShapePaths["flower"]
     if (!path) return null
 
-    const pos = isBottom ? bottomCutoutPosition : topCutoutPosition
+    const pos = bottomCutoutPosition
     const posClass = getPositionClass(pos)
 
     return (
@@ -82,13 +81,6 @@ export function AboutConnectSection() {
       id="connect"
       className="relative overflow-hidden bg-primary text-primary-foreground"
     >
-      {/* --- TOP EDGE DECORATIONS --- */}
-      <>
-        {/* Straight line spanning the entire width */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
-        {/* Overlapping M3 shape acting as the cutout */}
-        {renderM3Cutout(false)}
-      </>
       <div className="absolute inset-0 opacity-55" aria-hidden>
         <ContactDotGridBackground />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10" />

@@ -1,5 +1,6 @@
 import { Document } from "@react-pdf/renderer"
 
+import type { ResumeDisplayPreferences } from "../resume-display-preferences"
 import type { ResumeDocument, ResumeLayoutId } from "../types"
 import { ClassicResumeLayout } from "./classic-layout"
 import { DesignerResumeLayout } from "./designer-layout"
@@ -11,23 +12,29 @@ export function ResumePdfDocument({
   document,
   brandColor,
   layout,
+  fontFamily,
+  display,
 }: {
   document: ResumeDocument
   brandColor: string
   layout: ResumeLayoutId
+  fontFamily: string
+  display: ResumeDisplayPreferences
 }) {
+  const layoutProps = { document, brandColor, fontFamily, display }
+
   return (
     <Document>
       {layout === "designer" ? (
-        <DesignerResumeLayout document={document} brandColor={brandColor} />
+        <DesignerResumeLayout {...layoutProps} />
       ) : layout === "modern" ? (
-        <ModernResumeLayout document={document} brandColor={brandColor} />
+        <ModernResumeLayout {...layoutProps} />
       ) : layout === "minimal" ? (
-        <MinimalResumeLayout document={document} brandColor={brandColor} />
+        <MinimalResumeLayout {...layoutProps} />
       ) : layout === "executive" ? (
-        <ExecutiveResumeLayout document={document} brandColor={brandColor} />
+        <ExecutiveResumeLayout {...layoutProps} />
       ) : (
-        <ClassicResumeLayout document={document} brandColor={brandColor} />
+        <ClassicResumeLayout {...layoutProps} />
       )}
     </Document>
   )

@@ -4,6 +4,10 @@ import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 import type { ResumeDocument } from "../types"
 import { RESUME_SPACING } from "./spacing-tokens"
 import { ResumeLogomark } from "./resume-logomark"
+import {
+  DEFAULT_PDF_LAYOUT_PROPS,
+  type ResumePdfLayoutProps,
+} from "./pdf-layout-props"
 
 const S = RESUME_SPACING.executive
 
@@ -165,12 +169,10 @@ function PageChrome({
 export function ExecutiveResumeLayout({
   document,
   brandColor,
-}: {
-  document: ResumeDocument
-  brandColor: string
-}) {
+  fontFamily = DEFAULT_PDF_LAYOUT_PROPS.fontFamily,
+}: ResumePdfLayoutProps) {
   return (
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={[styles.page, { fontFamily }]}>
       <PageChrome document={document} brandColor={brandColor} />
       <View style={[styles.header, { backgroundColor: brandColor }]}>
         <View style={styles.headerLine}>

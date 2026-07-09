@@ -21,10 +21,10 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useBrandColors } from "@/hooks/use-brand-colors"
 import {
-  createInitialResumeBuilderState,
   hasEnabledSection,
   ResumeBuilderControls,
 } from "@/features/resume/resume-builder-controls"
+import { createDefaultResumeBuilderSettings } from "@/features/resume/resume-builder-storage"
 import {
   isResumeBrandColorValid,
   resolveResumeBrandColor,
@@ -40,6 +40,8 @@ import { cn } from "@/lib/utils"
 
 import { usePublicResumeGenerate } from "./use-public-resume-generate"
 import { filterDocumentBySections } from "@/features/resume/build-resume-document"
+import { getResumePreviewFontFamily } from "@/features/resume/layouts/html/resume-html-props"
+import type { ResumeDisplayPreferences } from "@/features/resume/resume-display-preferences"
 
 type WizardStep = "input" | "preview"
 
@@ -116,7 +118,7 @@ export function PublicResumeWizard() {
   }
 
   const defaults = useMemo(
-    () => createInitialResumeBuilderState(appearance),
+    () => createDefaultResumeBuilderSettings(appearance),
     [appearance],
   )
   const [layout, setLayout] = useState<ResumeLayoutId>(defaults.layout)
@@ -124,13 +126,16 @@ export function PublicResumeWizard() {
   const [colorSelection, setColorSelection] = useState<ResumeBrandColorSelection>(
     defaults.colorSelection,
   )
+  const [display, setDisplay] = useState<ResumeDisplayPreferences>(defaults.display)
 
   useEffect(() => {
     setLayout(defaults.layout)
     setColorSelection(defaults.colorSelection)
+    setDisplay(defaults.display)
   }, [defaults])
 
   const brandColor = resolveResumeBrandColor(colorSelection, primary)
+  const fontFamily = getResumePreviewFontFamily(appearance.font)
   const previewDocument = editedDocument ? filterDocumentBySections(editedDocument, sections) : null
   const generationError = error
   const validationError = inputError ? formatResumeValidationError(inputError) : null
@@ -168,6 +173,8 @@ export function PublicResumeWizard() {
       brandColor,
       layout,
       document: previewDocument,
+      fontPresetId: appearance.font,
+      display,
     })
   }
 
@@ -350,6 +357,8 @@ export function PublicResumeWizard() {
                         colorSelection={colorSelection}
                         onColorSelectionChange={setColorSelection}
                         brandColor={brandColor}
+                        display={display}
+                        onDisplayChange={setDisplay}
                       />
                     </div>
                   </div>
@@ -361,6 +370,8 @@ export function PublicResumeWizard() {
                       colorSelection={colorSelection}
                       fallbackColor={primary}
                       layout={layout}
+                      fontFamily={fontFamily}
+                      display={display}
                       onDownload={handleDownload}
                       isGenerating={isDownloading}
                       downloadDisabled={

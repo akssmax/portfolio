@@ -3,14 +3,17 @@
 import { useCallback, useState } from "react"
 
 import { buildResumeDocument } from "./build-resume-document"
-import { downloadResumePdf, getResumeFilename } from "./generate-resume-pdf"
+import type { ResumeDisplayPreferences } from "./resume-display-preferences"
 import type { ResumeLayoutId, ResumeSectionConfig } from "./types"
+import type { FontPresetId } from "@/lib/themes/types"
 
 type DownloadResumeOptions = {
   sections: ResumeSectionConfig
   brandColor: string
   layout: ResumeLayoutId
   document?: import("./types").ResumeDocument
+  fontPresetId?: FontPresetId
+  display?: ResumeDisplayPreferences
 }
 
 export function useDownloadResume() {
@@ -18,16 +21,19 @@ export function useDownloadResume() {
   const [error, setError] = useState<string | null>(null)
 
   const downloadResume = useCallback(
-    async ({ sections, brandColor, layout, document }: DownloadResumeOptions) => {
+    async ({ sections, brandColor, layout, document, fontPresetId, display }: DownloadResumeOptions) => {
       setIsGenerating(true)
       setError(null)
 
       try {
         const resumeDocument = document ?? buildResumeDocument(sections)
+        const { downloadResumePdf, getResumeFilename } = await import("./generate-resume-pdf")
         await downloadResumePdf({
           document: resumeDocument,
           brandColor,
           layout,
+          fontPresetId,
+          display,
           filename: getResumeFilename(resumeDocument.name, layout),
         })
       } catch (cause) {
