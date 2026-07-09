@@ -188,8 +188,6 @@ function Landing1IndexPage() {
   )
   const [testimonialIndex, setTestimonialIndex] = React.useState(0)
 
-  const heroBackground = isDark ? DARK_HERO_BACKGROUND : LIGHT_HERO_BACKGROUND
-
   React.useEffect(() => {
     setPortraitItems(getRandomizedHeroPortraitItems())
     setStarterSuggestions(getRandomHeroPromptSuggestions())
@@ -263,19 +261,40 @@ function Landing1IndexPage() {
       {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
       <section className="relative -mt-16 flex min-h-[min(88svh,680px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
         <div className="absolute inset-0" aria-hidden>
-          <picture>
-            <source srcSet={heroBackground.avif} type="image/avif" />
-            <source srcSet={heroBackground.webp} type="image/webp" />
-            <img
-              src={heroBackground.jpg}
-              alt=""
-              width={1600}
-              height={900}
-              decoding="async"
-              fetchPriority="high"
-              className="absolute inset-0 size-full object-cover object-center"
-            />
-          </picture>
+          {/*
+            Mount both atmospheres and toggle with the html.dark class.
+            Updating <picture>/<source> srcSet alone often fails to swap in browsers.
+          */}
+          <div className="absolute inset-0 dark:hidden">
+            <picture>
+              <source srcSet={LIGHT_HERO_BACKGROUND.avif} type="image/avif" />
+              <source srcSet={LIGHT_HERO_BACKGROUND.webp} type="image/webp" />
+              <img
+                src={LIGHT_HERO_BACKGROUND.jpg}
+                alt=""
+                width={1600}
+                height={900}
+                decoding="async"
+                fetchPriority={isDark ? "low" : "high"}
+                className="absolute inset-0 size-full object-cover object-center"
+              />
+            </picture>
+          </div>
+          <div className="absolute inset-0 hidden dark:block">
+            <picture>
+              <source srcSet={DARK_HERO_BACKGROUND.avif} type="image/avif" />
+              <source srcSet={DARK_HERO_BACKGROUND.webp} type="image/webp" />
+              <img
+                src={DARK_HERO_BACKGROUND.jpg}
+                alt=""
+                width={1600}
+                height={900}
+                decoding="async"
+                fetchPriority={isDark ? "high" : "low"}
+                className="absolute inset-0 size-full object-cover object-center"
+              />
+            </picture>
+          </div>
           {/* Soft light-mode wash for copy contrast; dark-mode scrim for the monolith */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/15 to-background/40 dark:from-black/30 dark:via-black/20 dark:to-black/10" />
           {showHeroDots ? (
