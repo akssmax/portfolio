@@ -22,6 +22,7 @@
     "capture:tulr": "node --import tsx scripts/capture-tulr-screenshots.ts",
     "generate:themes": "node --import tsx scripts/generate-theme-css.ts",
     "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
+    "generate:og-banner": "node --import tsx scripts/generate-og-banner.ts",
     "build:rag": "node --env-file=.env.local --import tsx scripts/build-rag-index.ts",
     "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts"
   },

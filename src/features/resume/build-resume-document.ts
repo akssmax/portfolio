@@ -14,9 +14,10 @@ function buildSkillsList(): string[] {
     {},
   )
 
-  const toolLines = Object.entries(groupedTools).map(
-    ([category, names]) => `${category}: ${names.join(", ")}`,
-  )
+  const toolLines = Object.entries(groupedTools).map(([category, names]) => {
+    const label = category === "Design" ? "Design Tools" : category
+    return `${label}: ${names.join(", ")}`
+  })
 
   return [
     `Design: ${profile.designSkills.join(", ")}`,

@@ -28,7 +28,7 @@ export const Route = createRootRoute({
       },
       {
         name: "description",
-        content: `Akshay Saini — Product Designer and Design Engineer based in Bengaluru. ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period))} in design across fintech, devtools, and agentic AI at 100x.bot, Kodo, and Unlogged (YC S22).`,
+        content: `Akshay Saini — Product Designer and Design Engineer based in Bengaluru. ${getDesignCareerSpanLabel(profile.experience.map((item) => item.period))} in design across fintech, devtools, and agentic AI at 100x.bot, Kodo (YC W21), and Unlogged (YC S22).`,
       },
     ],
     links: [

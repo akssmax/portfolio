@@ -3,6 +3,7 @@ import {
   type ResumeContactIconField,
   type ResumeDisplayPreferences,
 } from "../../resume-display-preferences"
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
 import type { ResumeContact, ResumeDocument } from "../../types"
 import { EditableText } from "./editable-text"
 import { ResumeIcon } from "./resume-icon"
@@ -67,18 +68,50 @@ export function ResumeContactFields({
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       <ContactRow iconField="email" display={display} brandColor={brandColor} className={itemClassName}>
-        <EditableText
-          value={contact.email}
-          onChange={onChange ? (val) => updateContact({ email: val }) : undefined}
-          placeholder="Email"
-        />
+        {onChange ? (
+          <>
+            <span className="max-sm:hidden">
+              <EditableText
+                value={contact.email}
+                onChange={(val) => updateContact({ email: val })}
+                placeholder="Email"
+              />
+            </span>
+            <a
+              href={toMailtoHref(contact.email)}
+              className={cn("no-underline hover:underline sm:hidden", linkClassName)}
+            >
+              {contact.email}
+            </a>
+          </>
+        ) : (
+          <a href={toMailtoHref(contact.email)} className={cn("hover:underline", linkClassName)}>
+            {contact.email}
+          </a>
+        )}
       </ContactRow>
       <ContactRow iconField="phone" display={display} brandColor={brandColor} className={itemClassName}>
-        <EditableText
-          value={contact.phone}
-          onChange={onChange ? (val) => updateContact({ phone: val }) : undefined}
-          placeholder="Phone"
-        />
+        {onChange ? (
+          <>
+            <span className="max-sm:hidden">
+              <EditableText
+                value={contact.phone}
+                onChange={(val) => updateContact({ phone: val })}
+                placeholder="Phone"
+              />
+            </span>
+            <a
+              href={toTelHref(contact.phone)}
+              className={cn("no-underline hover:underline sm:hidden", linkClassName)}
+            >
+              {contact.phone}
+            </a>
+          </>
+        ) : (
+          <a href={toTelHref(contact.phone)} className={cn("hover:underline", linkClassName)}>
+            {contact.phone}
+          </a>
+        )}
       </ContactRow>
       {contact.website !== undefined ? (
         <ContactRow iconField="website" display={display} brandColor={brandColor} className={itemClassName}>

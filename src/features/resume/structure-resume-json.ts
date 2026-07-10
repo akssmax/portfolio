@@ -10,7 +10,7 @@ const STRUCTURE_USER_PROMPT = [
   "  certifications?: [{ title, issuer, date }], languages?: [{ name, level }], interests?: string[] }",
   "Rules: skills MUST be a flat string array (not an object). education MUST be one object (not array).",
   "Use role not position. Use period not start_date. description must be a string.",
-  "If unknown, use — for missing text fields. No markdown fences.",
+  "If unknown, use - for missing text fields. No markdown fences.",
 ].join(" ")
 
 export async function structureResumeDocumentJson(options: {

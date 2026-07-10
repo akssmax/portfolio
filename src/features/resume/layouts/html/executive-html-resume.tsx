@@ -1,5 +1,6 @@
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
 import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
 import { cn } from "@/lib/utils"
 
@@ -299,7 +300,7 @@ export function ExecutiveHtmlResume({
                 }
                 placeholder="Certification Title"
               />
-              {" — "}
+              {" - "}
               <EditableText
                 value={certification.issuer}
                 onChange={
@@ -368,7 +369,7 @@ export function ExecutiveHtmlResume({
                 }
                 placeholder="Language"
               />
-              {" — "}
+              {" - "}
               <EditableText
                 value={language.level}
                 onChange={
@@ -409,34 +410,60 @@ export function ExecutiveHtmlResume({
       {document.contact ? (
         <HtmlResumeSection sectionId="contact" title="Contact" brandColor={brandColor} display={display} variant="plain">
           <p className="mb-0.5 text-neutral-800">
-            <EditableText
-              value={document.contact.email}
-              onChange={
-                onChange
-                  ? (val) =>
+            {onChange ? (
+              <>
+                <span className="max-sm:hidden">
+                  <EditableText
+                    value={document.contact.email}
+                    onChange={(val) =>
                       onChange({
                         ...document,
                         contact: { ...document.contact!, email: val },
                       })
-                  : undefined
-              }
-              placeholder="Email"
-            />
+                    }
+                    placeholder="Email"
+                  />
+                </span>
+                <a
+                  href={toMailtoHref(document.contact.email)}
+                  className="no-underline hover:underline sm:hidden"
+                >
+                  {document.contact.email}
+                </a>
+              </>
+            ) : (
+              <a href={toMailtoHref(document.contact.email)} className="no-underline hover:underline">
+                {document.contact.email}
+              </a>
+            )}
           </p>
           <p className="mb-0.5 text-neutral-800">
-            <EditableText
-              value={document.contact.phone}
-              onChange={
-                onChange
-                  ? (val) =>
+            {onChange ? (
+              <>
+                <span className="max-sm:hidden">
+                  <EditableText
+                    value={document.contact.phone}
+                    onChange={(val) =>
                       onChange({
                         ...document,
                         contact: { ...document.contact!, phone: val },
                       })
-                  : undefined
-              }
-              placeholder="Phone"
-            />
+                    }
+                    placeholder="Phone"
+                  />
+                </span>
+                <a
+                  href={toTelHref(document.contact.phone)}
+                  className="no-underline hover:underline sm:hidden"
+                >
+                  {document.contact.phone}
+                </a>
+              </>
+            ) : (
+              <a href={toTelHref(document.contact.phone)} className="no-underline hover:underline">
+                {document.contact.phone}
+              </a>
+            )}
           </p>
           {document.contact.website ? (
             onChange ? (

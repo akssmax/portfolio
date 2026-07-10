@@ -52,6 +52,19 @@ export function ExperienceSection() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
+                  {"highlights" in item && item.highlights?.length ? (
+                    <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+                      {item.highlights.map((highlight) => (
+                        <li key={highlight} className="flex gap-2">
+                          <span
+                            className="mt-2 size-1 shrink-0 rounded-full bg-primary"
+                            aria-hidden
+                          />
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               </div>
             </motion.article>

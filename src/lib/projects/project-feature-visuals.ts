@@ -35,9 +35,12 @@ export const PROJECT_FEATURE_VISUALS: Record<string, FeatureVisualConfig> = {
     imageAlt: "100x.Bot marketing site — mobile homepage",
   },
   "resume-builder": {
-    layout: "compact-phone",
-    imageSrc: "/projects/resume-builder/mobile.webp",
-    imageAlt: "Resume Builder — mobile LinkedIn import tool",
+    layout: "wide-dual",
+    desktopSrc: "/projects/resume-builder/preview.webp",
+    mobileSrc: "/projects/resume-builder/mobile.webp",
+    desktopAlt: "Resume Builder — customize layout, fonts, and live PDF preview",
+    mobileAlt: "Resume Builder — responsive mobile editor and preview",
+    urlBar: "akshaysaini.xyz/tools/resume",
   },
   kodo: {
     layout: "compact-phone",

@@ -16,7 +16,7 @@ function asTrimmedString(value: unknown): string {
 }
 
 function isPlaceholder(value: string): boolean {
-  return !value || value === "—" || value === "-" || value === "N/A"
+  return !value || value === "-" || value === "—" || value === "N/A"
 }
 
 function normalizeSkillsValue(value: unknown): string[] | undefined {
@@ -90,22 +90,22 @@ function normalizePeriod(item: Record<string, unknown>): string {
     return [start, end || "Present"].filter(Boolean).join(" – ")
   }
 
-  return "—"
+  return "-"
 }
 
 function normalizeExperienceItem(
   item: Record<string, unknown>,
 ): Record<string, unknown> | null {
-  const company = asTrimmedString(item.company ?? item.employer ?? item.organization) || "—"
+  const company = asTrimmedString(item.company ?? item.employer ?? item.organization) || "-"
   const role =
-    asTrimmedString(item.role ?? item.position ?? item.job_title ?? item.title) || "—"
+    asTrimmedString(item.role ?? item.position ?? item.job_title ?? item.title) || "-"
   const period = normalizePeriod(item)
   const location = asTrimmedString(item.location ?? item.city)
   const description =
     normalizeDescription(item.description) ||
     normalizeDescription(item.highlights) ||
     normalizeDescription(item.responsibilities) ||
-    "—"
+    "-"
 
   if (isPlaceholder(company) && isPlaceholder(role) && isPlaceholder(description)) {
     return null
@@ -255,7 +255,7 @@ export function buildMinimalResumeDocument(
   return {
     name: slugToDisplayName(linkedInSlug),
     title: "Professional",
-    location: "—",
+    location: "-",
     summary:
       "Draft resume generated from your Profile URL. Review and edit sections before downloading.",
     contact: {
@@ -306,7 +306,7 @@ export function formatResumeValidationError(error: string): {
     return {
       title: "Generation failed",
       description:
-        "The AI response wasn't valid resume data. Try again — a profile summary is optional but can improve accuracy.",
+        "The AI response wasn't valid resume data. Try again - a profile summary is optional but can improve accuracy.",
     }
   }
 
@@ -334,7 +334,7 @@ export function formatResumeValidationError(error: string): {
   return {
     title: "Couldn't generate resume",
     description:
-      "We couldn't structure a resume from the available data. Try again — a profile summary is optional but can improve accuracy.",
+      "We couldn't structure a resume from the available data. Try again - a profile summary is optional but can improve accuracy.",
   }
 }
 
@@ -363,7 +363,7 @@ export function validateResumeDocument(
     asTrimmedString(rawRecord.name) ||
     (context.linkedInSlug ? slugToDisplayName(context.linkedInSlug) : "")
   const title = asTrimmedString(rawRecord.title) || "Professional"
-  const location = asTrimmedString(rawRecord.location) || "—"
+  const location = asTrimmedString(rawRecord.location) || "-"
 
   if (!name) {
     return { ok: false, error: "Resume name is required." }
@@ -404,11 +404,11 @@ export function validateResumeDocument(
       }
 
       return {
-        company: asTrimmedString(item.company) || "—",
-        role: asTrimmedString(item.role) || "—",
-        period: asTrimmedString(item.period) || "—",
+        company: asTrimmedString(item.company) || "-",
+        role: asTrimmedString(item.role) || "-",
+        period: asTrimmedString(item.period) || "-",
         location: asTrimmedString(item.location),
-        description: asTrimmedString(item.description) || "—",
+        description: asTrimmedString(item.description) || "-",
         ...(isStringArray(item.highlights)
           ? { highlights: item.highlights.map((h) => h.trim()).filter(Boolean) }
           : {}),
@@ -422,9 +422,9 @@ export function validateResumeDocument(
     }
     const { degree, school, years, location: eduLocation } = rawRecord.education
     document.education = {
-      degree: asTrimmedString(degree) || "—",
-      school: asTrimmedString(school) || "—",
-      years: asTrimmedString(years) || "—",
+      degree: asTrimmedString(degree) || "-",
+      school: asTrimmedString(school) || "-",
+      years: asTrimmedString(years) || "-",
       location: asTrimmedString(eduLocation),
     }
   }
@@ -452,9 +452,9 @@ export function validateResumeDocument(
     document.certifications = rawRecord.certifications
       .filter(isRecord)
       .map((item) => ({
-        title: asTrimmedString(item.title ?? item.name) || "—",
-        issuer: asTrimmedString(item.issuer ?? item.organization) || "—",
-        date: asTrimmedString(item.date ?? item.year) || "—",
+        title: asTrimmedString(item.title ?? item.name) || "-",
+        issuer: asTrimmedString(item.issuer ?? item.organization) || "-",
+        date: asTrimmedString(item.date ?? item.year) || "-",
         ...(typeof item.credentialId === "string"
           ? { credentialId: item.credentialId.trim() }
           : {}),
@@ -466,8 +466,8 @@ export function validateResumeDocument(
     document.languages = rawRecord.languages
       .filter(isRecord)
       .map((item) => ({
-        name: asTrimmedString(item.name ?? item.language) || "—",
-        level: asTrimmedString(item.level ?? item.proficiency) || "—",
+        name: asTrimmedString(item.name ?? item.language) || "-",
+        level: asTrimmedString(item.level ?? item.proficiency) || "-",
       }))
       .filter((item) => !isPlaceholder(item.name))
   }

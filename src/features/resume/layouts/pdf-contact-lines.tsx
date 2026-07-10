@@ -1,5 +1,6 @@
 import { Link, StyleSheet, Text, View } from "@react-pdf/renderer"
 
+import { toMailtoHref, toTelHref } from "../contact-link-utils"
 import type { ResumeDocument } from "../types"
 
 const styles = StyleSheet.create({
@@ -38,8 +39,12 @@ export function PdfContactLines({
 }) {
   return (
     <View style={embedded ? styles.block : undefined}>
-      <Text style={styles.line}>{contact.email}</Text>
-      <Text style={styles.line}>{contact.phone}</Text>
+      <Link src={toMailtoHref(contact.email)} style={styles.link}>
+        <Text style={styles.line}>{contact.email}</Text>
+      </Link>
+      <Link src={toTelHref(contact.phone)} style={styles.link}>
+        <Text style={styles.line}>{contact.phone}</Text>
+      </Link>
       {contact.website ? (
         <Link src={contact.website} style={[styles.link, { color: brandColor }]}>
           <Text>{formatLinkLabel(contact.website)}</Text>

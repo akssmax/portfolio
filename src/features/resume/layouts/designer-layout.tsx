@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import { hexToRgba } from "../color-utils"
+import { toMailtoHref, toTelHref } from "../contact-link-utils"
 import type { ResumeDocument } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
@@ -331,24 +332,28 @@ export function DesignerResumeLayout({
 
         {document.contact ? (
           <View style={styles.contactRow}>
-            <Text
-              style={{
-                ...styles.contactPill,
-                backgroundColor: pillBackground,
-                color: brandColor,
-              }}
-            >
-              {document.contact.email}
-            </Text>
-            <Text
-              style={{
-                ...styles.contactPill,
-                backgroundColor: pillBackground,
-                color: brandColor,
-              }}
-            >
-              {document.contact.phone}
-            </Text>
+            <Link src={toMailtoHref(document.contact.email)} style={{ textDecoration: "none" }}>
+              <Text
+                style={{
+                  ...styles.contactPill,
+                  backgroundColor: pillBackground,
+                  color: brandColor,
+                }}
+              >
+                {document.contact.email}
+              </Text>
+            </Link>
+            <Link src={toTelHref(document.contact.phone)} style={{ textDecoration: "none" }}>
+              <Text
+                style={{
+                  ...styles.contactPill,
+                  backgroundColor: pillBackground,
+                  color: brandColor,
+                }}
+              >
+                {document.contact.phone}
+              </Text>
+            </Link>
             {document.contact.website ? (
               <Text
                 style={{
@@ -456,7 +461,7 @@ export function DesignerResumeLayout({
               key={`${certification.title}-${certification.date}`}
               style={styles.paragraph}
             >
-                {certification.title} — {certification.issuer} (
+                {certification.title}  - {certification.issuer} (
                 {certification.date})
                 {certification.credentialId
                 ? ` · ID ${certification.credentialId}`
@@ -470,7 +475,7 @@ export function DesignerResumeLayout({
         <Section title="Languages" brandColor={brandColor}>
           {document.languages.map((language) => (
             <Text key={language.name} style={styles.paragraph}>
-              {language.name} — {language.level}
+              {language.name}  - {language.level}
             </Text>
           ))}
         </Section>

@@ -1,6 +1,7 @@
 "use client"
 
-import { FileText, Loader2 } from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { ArrowLeft, FileText, Loader2 } from "lucide-react"
 import { cssColorWithAlpha } from "./color-utils"
 import {
   RESUME_LAYOUT_OPTIONS,
@@ -24,6 +25,21 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { useBrandColors } from "@/hooks/use-brand-colors"
 import { cn } from "@/lib/utils"
+
+function ResumeBuilderBackButton() {
+  return (
+    <Button
+      asChild
+      variant="ghost"
+      size="icon-sm"
+      className="shrink-0 text-muted-foreground"
+    >
+      <Link to="/" aria-label="Back to portfolio">
+        <ArrowLeft className="size-4" />
+      </Link>
+    </Button>
+  )
+}
 
 
 function LayoutPreview({
@@ -191,7 +207,8 @@ export function ResumeBuilderControls({
   if (activeTab === "cover-letter") {
     return (
       <div className="flex h-full min-w-0 w-full flex-col">
-        <div className="flex min-h-[61px] items-center border-b border-border px-5 py-3">
+        <div className="flex min-h-[61px] items-center gap-2 border-b border-border px-5 py-3">
+          <ResumeBuilderBackButton />
           <h1 className="text-base font-semibold text-foreground">Cover letter builder</h1>
         </div>
 
@@ -320,7 +337,8 @@ export function ResumeBuilderControls({
   return (
     <div className="flex h-full min-w-0 w-full flex-col">
       <div className="flex min-h-[61px] items-center border-b border-border bg-muted/30 px-5 py-3">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <ResumeBuilderBackButton />
           <div
             className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background shadow-xs"
             aria-hidden

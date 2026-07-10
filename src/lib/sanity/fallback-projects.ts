@@ -998,7 +998,7 @@ export const fallbackProjects: Project[] = [
     title: "Kodo — Intake-to-Pay Platform",
     slug: "kodo",
     description:
-      "Enterprise fintech marketing site and product UI for procure-to-pay — designed in Figma, built in Framer, and shipped across AP, payments, cards, and reimbursements.",
+      "YC W21 enterprise fintech marketing site and product UI for procure-to-pay — designed in Figma, built in Framer, and shipped across AP, payments, cards, and reimbursements.",
     tag: "Enterprise Fintech",
     featured: true,
     workSection: "caseStudy",
@@ -1013,14 +1013,14 @@ export const fallbackProjects: Project[] = [
     seo: {
       metaTitle: "Kodo — Intake-to-Pay Platform — Case Study",
       metaDescription:
-        "How an enterprise procure-to-pay fintech got a full marketing site in Framer and end-to-end product design across AP automation, vendor payouts, corporate cards, and reimbursements.",
+        "How a YC W21 enterprise procure-to-pay fintech got a full marketing site in Framer and end-to-end product design across AP automation, vendor payouts, corporate cards, and reimbursements.",
     },
     content: [
       {
         _type: "sectionHeading",
         _key: "k-h-context",
         title: "Context",
-        subtitle: "Product design lead on an enterprise intake-to-pay fintech platform.",
+        subtitle: "Product design lead on a YC W21 enterprise intake-to-pay fintech platform.",
       },
       {
         _type: "richTextBlock",
@@ -1028,7 +1028,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "k-rt-context-1",
-            "Kodo is an intake-to-pay platform for businesses of all sizes — accounts payable automation, vendor payouts, corporate cards, and reimbursements — trusted by more than 2,000 companies.",
+            "Kodo is a Y Combinator W21 intake-to-pay platform for businesses of all sizes — accounts payable automation, vendor payouts, corporate cards, and reimbursements — trusted by more than 2,000 companies.",
           ),
           {
             _type: "block" as const,
@@ -1299,7 +1299,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "k-rt-outcome-1",
-            "Over 21 months at Kodo, I led design across the full intake-to-pay platform and shipped the marketing site at kodo.com — from Figma exploration through Framer production. The site is live and converting enterprise fintech buyers while the product serves 2,000+ companies with AP automation, payments, cards, and reimbursements.",
+            "Over 21 months at Kodo, a YC W21 company, I led design across the full intake-to-pay platform and shipped the marketing site at kodo.com — from Figma exploration through Framer production. The site is live and converting enterprise fintech buyers while the product serves 2,000+ companies with AP automation, payments, cards, and reimbursements.",
           ),
         ],
       },

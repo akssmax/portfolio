@@ -6,6 +6,7 @@ import {
   type ResumeContactIconField,
   type ResumeDisplayPreferences,
 } from "../resume-display-preferences"
+import { toMailtoHref, toTelHref } from "../contact-link-utils"
 import type { ResumeDocument, ResumeSectionId } from "../types"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
@@ -346,10 +347,14 @@ export function ModernResumeLayout({
           {document.contact ? (
             <Section sectionId="contact" title="Contact" brandColor={brandColor} display={display}>
               <PdfContactLine field="email" display={display} brandColor={brandColor}>
-                <Text style={styles.contactText}>{document.contact.email}</Text>
+                <Link src={toMailtoHref(document.contact.email)} style={{ textDecoration: "none" }}>
+                  <Text style={styles.contactText}>{document.contact.email}</Text>
+                </Link>
               </PdfContactLine>
               <PdfContactLine field="phone" display={display} brandColor={brandColor}>
-                <Text style={styles.contactText}>{document.contact.phone}</Text>
+                <Link src={toTelHref(document.contact.phone)} style={{ textDecoration: "none" }}>
+                  <Text style={styles.contactText}>{document.contact.phone}</Text>
+                </Link>
               </PdfContactLine>
               {document.contact.website ? (
                 <PdfContactLine field="website" display={display} brandColor={brandColor}>
@@ -485,7 +490,7 @@ export function ModernResumeLayout({
               {document.certifications.map((certification) => (
                 <Text key={`${certification.title}-${certification.date}`} style={styles.paragraph}>
                   <Text style={{ fontWeight: "bold" }}>{certification.title}</Text>
-                  {" — "}
+                  {" - "}
                   <Text style={{ color: "#525252" }}>{certification.issuer}</Text>
                   {" ("}
                   <Text style={{ color: "#737373" }}>{certification.date}</Text>

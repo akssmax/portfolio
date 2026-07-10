@@ -66,19 +66,17 @@ const styles = StyleSheet.create({
     marginBottom: S.jobGap,
   },
   jobHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 12,
     paddingBottom: 4,
   },
   jobTitle: {
     fontSize: 10.5,
     fontWeight: 700,
+    marginBottom: 2,
   },
   jobMeta: {
     fontSize: 9,
     color: "#525252",
-    textAlign: "right",
+    marginBottom: 1,
   },
   bulletList: {
     marginTop: 4,
@@ -162,11 +160,8 @@ export function ClassicResumeLayout({
                 <Text style={styles.jobTitle}>
                   {job.role} · {job.company}
                 </Text>
-                <Text style={styles.jobMeta}>
-                  {job.period}
-                  {"\n"}
-                  {job.location}
-                </Text>
+                <Text style={styles.jobMeta}>{job.period}</Text>
+                <Text style={styles.jobMeta}>{job.location}</Text>
               </View>
               <Text style={styles.paragraph}>{job.description}</Text>
               {job.highlights?.length ? (
@@ -223,7 +218,7 @@ export function ClassicResumeLayout({
               key={`${certification.title}-${certification.date}`}
               style={styles.paragraph}
             >
-              {certification.title} — {certification.issuer} ({certification.date})
+              {certification.title}  - {certification.issuer} ({certification.date})
               {certification.credentialId
                 ? ` · ID ${certification.credentialId}`
                 : ""}
@@ -236,7 +231,7 @@ export function ClassicResumeLayout({
         <Section title="Languages" brandColor={brandColor}>
           {document.languages.map((language) => (
             <Text key={language.name} style={styles.paragraph}>
-              {language.name} — {language.level}
+              {language.name}  - {language.level}
             </Text>
           ))}
         </Section>

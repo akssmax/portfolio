@@ -10,7 +10,14 @@ const experience = [
     period: "Dec 2025 – Present",
     location: "Bengaluru, India",
     description:
-      "Designing agentic AI workflows — scraping, automation, and data visualization tools that turn raw web data into structured insights.",
+      "Design and build agentic AI product experiences for a browser-native automation platform  - extension UI, marketing site, and design system.",
+    highlights: [
+      "Redesigned the Chromium extension with shadcn/ui and semantic design tokens",
+      "Managed and collaborated with 2 junior developers to ship features faster",
+      "Website revamp with MCP & Cursor  - code-based handoff from initial Figma design",
+      "Built design system on shadcn/ui with AI-native components",
+      "Multiple code-based prototypes for sales team and feature development",
+    ],
   },
   {
     company: "Kodo",
@@ -18,11 +25,11 @@ const experience = [
     websiteUrl: "https://www.kodo.com/",
     role: "Senior Product Designer",
     period: "Feb 2024 – Nov 2025",
-    location: "Pune, India",
+    location: "Pune, India · YC W21",
     description:
-      "Led design on procure-to-pay flows for an enterprise fintech product — translating complex finance and compliance requirements into intuitive workflows.",
+      "Led design on procure-to-pay flows for a YC W21 enterprise fintech product  - translating complex finance and compliance requirements into intuitive workflows.",
     highlights: [
-      "Built unified Kodo design system (native light/dark mode) — Tamagui and MD3 versions",
+      "Built unified Kodo design system (native light/dark mode)  - Tamagui and MD3 versions",
       "New website in Framer with Framer Motion and custom React components",
       "Kodo ERP P2P (Procure-to-Pay) v1 launch with enterprise customers",
       "UPI app demo for NPCI",
@@ -40,7 +47,7 @@ const experience = [
     period: "Dec 2021 – Jan 2024",
     location: "Remote · YC S22",
     description:
-      "Designed developer tooling experiences for a YC S22 open-source Java debugging platform — from onboarding to real-time performance monitoring.",
+      "Designed developer tooling experiences for a YC S22 open-source Java debugging platform  - from onboarding to real-time performance monitoring.",
     highlights: [
       "Plugin design for IntelliJ IDEA",
       "Website design & development built from scratch in Webflow",
@@ -60,7 +67,7 @@ const experience = [
     period: "May 2020 – Dec 2021",
     location: "Gurgaon, India · AuthMe Id Services",
     description:
-      "Designed Tulr — a no-code platform combining videos, tables, forms, and calendars with automation. One-shot replacement for Airtable, Typeform, Calendly, and Loom.",
+      "Designed Tulr  - a no-code platform combining videos, tables, forms, and calendars with automation. One-shot replacement for Airtable, Typeform, Calendly, and Loom.",
     highlights: [
       "Mobile and web product design for the no-code builder",
       "Built 700+ custom component library",
@@ -116,7 +123,7 @@ const experience = [
 
 function createProfileBio(periods: string[]) {
   const span = getDesignCareerSpanLabel(periods)
-  return `As a self-taught Product Designer and Design Engineer with ${span.toLowerCase()} in design based in Bangalore (Bengaluru), India, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform and YC-backed devtools to enterprise fintech, I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.`
+  return `As a self-taught Product Designer and Design Engineer with ${span.toLowerCase()} in design based in Bangalore (Bengaluru), India, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform to YC-backed fintech at Kodo (W21) and devtools at Unlogged (S22), I partner closely with product and engineering  - and now design agentic AI experiences at 100x.bot.`
 }
 
 export const profile = {
@@ -130,7 +137,7 @@ export const profile = {
     shape: "arch",
   },
   tagline:
-    "I design and build product UI for founders and early teams — from Figma to React, so you ship faster with less rework.",
+    "I design and build product UI for founders and early teams  - from Figma to React, so you ship faster with less rework.",
   bio: createProfileBio(experience.map((item) => item.period)),
   contact: {
     email: "akshaysaini.design@gmail.com",

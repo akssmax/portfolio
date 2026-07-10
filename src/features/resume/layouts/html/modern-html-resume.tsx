@@ -475,7 +475,7 @@ export function ModernHtmlResume({
                         className="font-medium"
                         placeholder="Certification Title"
                       />
-                      {" — "}
+                      {" - "}
                       <EditableText
                         value={certification.issuer}
                         onChange={

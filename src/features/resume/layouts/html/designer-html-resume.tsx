@@ -1,6 +1,7 @@
 import { CompanyLogo } from "@/components/shared/company-logo"
 
 import { cssColorWithAlpha } from "../../color-utils"
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
 import { HtmlLogomark } from "./html-logomark"
 import { ResumePortraitImage } from "./resume-portrait-image"
 import { EditableText } from "./editable-text"
@@ -88,37 +89,63 @@ export function DesignerHtmlResume({
                 className="rounded-full px-2 py-1 text-[8.5px]"
                 style={{ backgroundColor: pillBackground, color: brandColor }}
               >
-                <EditableText
-                  value={document.contact.email}
-                  onChange={
-                    onChange
-                      ? (val) =>
+                {onChange ? (
+                  <>
+                    <span className="max-sm:hidden">
+                      <EditableText
+                        value={document.contact.email}
+                        onChange={(val) =>
                           onChange({
                             ...document,
                             contact: { ...document.contact!, email: val },
                           })
-                      : undefined
-                  }
-                  placeholder="Email"
-                />
+                        }
+                        placeholder="Email"
+                      />
+                    </span>
+                    <a
+                      href={toMailtoHref(document.contact.email)}
+                      className="no-underline sm:hidden"
+                    >
+                      {document.contact.email}
+                    </a>
+                  </>
+                ) : (
+                  <a href={toMailtoHref(document.contact.email)} className="no-underline">
+                    {document.contact.email}
+                  </a>
+                )}
               </span>
               <span
                 className="rounded-full px-2 py-1 text-[8.5px]"
                 style={{ backgroundColor: pillBackground, color: brandColor }}
               >
-                <EditableText
-                  value={document.contact.phone}
-                  onChange={
-                    onChange
-                      ? (val) =>
+                {onChange ? (
+                  <>
+                    <span className="max-sm:hidden">
+                      <EditableText
+                        value={document.contact.phone}
+                        onChange={(val) =>
                           onChange({
                             ...document,
                             contact: { ...document.contact!, phone: val },
                           })
-                      : undefined
-                  }
-                  placeholder="Phone"
-                />
+                        }
+                        placeholder="Phone"
+                      />
+                    </span>
+                    <a
+                      href={toTelHref(document.contact.phone)}
+                      className="no-underline sm:hidden"
+                    >
+                      {document.contact.phone}
+                    </a>
+                  </>
+                ) : (
+                  <a href={toTelHref(document.contact.phone)} className="no-underline">
+                    {document.contact.phone}
+                  </a>
+                )}
               </span>
               {document.contact.website ? (
                 <span
@@ -401,7 +428,7 @@ export function DesignerHtmlResume({
                   }
                   placeholder="Certification Title"
                 />
-                {" — "}
+                {" - "}
                 <EditableText
                   value={certification.issuer}
                   onChange={
@@ -470,7 +497,7 @@ export function DesignerHtmlResume({
                   }
                   placeholder="Language"
                 />
-                {" — "}
+                {" - "}
                 <EditableText
                   value={language.level}
                   onChange={

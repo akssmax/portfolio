@@ -8,7 +8,7 @@ import {
 const MISTRAL_SHAPED_OUTPUT = {
   name: "Akshay Saini",
   title: "Software Engineer",
-  location: "—",
+  location: "-",
   contact: {
     email: null,
     phone: null,
@@ -64,7 +64,7 @@ describe("validateResumeDocument", () => {
     if (result.ok) {
       expect(result.document.name).toBe("Jane Doe")
       expect(result.document.title).toBe("Professional")
-      expect(result.document.location).toBe("—")
+      expect(result.document.location).toBe("-")
     }
   })
 

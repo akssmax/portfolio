@@ -32,6 +32,10 @@ async function resolveImageSrc(url: string): Promise<string | undefined> {
   }
 }
 
+export async function resolveResumeImageSrc(url: string): Promise<string | undefined> {
+  return resolveImageSrc(url)
+}
+
 export async function resolveDocumentImages(document: ResumeDocument): Promise<ResumeDocument> {
   const resolvedPortrait = document.portrait
     ? {

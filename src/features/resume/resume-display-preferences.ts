@@ -1,3 +1,7 @@
+import {
+  clampAccentFade,
+  resolveMinimalAccentImageId,
+} from "./minimal-accent-utils"
 import type { ResumeSectionId } from "./types"
 
 /** Lucide icon names used in resume UI. */
@@ -24,6 +28,12 @@ export type ResumeContactIconField = "email" | "phone" | "website" | "linkedin" 
 export type ResumeDisplayPreferences = {
   showContactIcons: boolean
   showSectionIcons: boolean
+  /** Faded accent image on the last page of the minimal layout. */
+  showMinimalAccentImage: boolean
+  /** Portrait selfie or hero atmosphere background. */
+  minimalAccentImage: "portrait" | "atmosphere"
+  /** Gradient wash strength over the accent image (0 = subtle, 100 = heavy). */
+  minimalAccentFade: number
 }
 
 export const DEFAULT_CONTACT_ICONS: Record<ResumeContactIconField, ResumeIconName> = {
@@ -48,6 +58,9 @@ export const DEFAULT_SECTION_ICONS: Partial<Record<ResumeSectionId, ResumeIconNa
 export const DEFAULT_RESUME_DISPLAY_PREFERENCES: ResumeDisplayPreferences = {
   showContactIcons: true,
   showSectionIcons: true,
+  showMinimalAccentImage: true,
+  minimalAccentImage: "atmosphere",
+  minimalAccentFade: 65,
 }
 
 export function parseResumeDisplayPreferences(
@@ -62,5 +75,14 @@ export function parseResumeDisplayPreferences(
   return {
     showContactIcons: record.showContactIcons,
     showSectionIcons: record.showSectionIcons,
+    showMinimalAccentImage:
+      typeof record.showMinimalAccentImage === "boolean"
+        ? record.showMinimalAccentImage
+        : true,
+    minimalAccentImage: resolveMinimalAccentImageId(record.minimalAccentImage),
+    minimalAccentFade:
+      typeof record.minimalAccentFade === "number"
+        ? clampAccentFade(record.minimalAccentFade)
+        : DEFAULT_RESUME_DISPLAY_PREFERENCES.minimalAccentFade,
   }
 }

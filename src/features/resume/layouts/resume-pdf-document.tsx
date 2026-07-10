@@ -14,12 +14,14 @@ export function ResumePdfDocument({
   layout,
   fontFamily,
   display,
+  accentImageSrc,
 }: {
   document: ResumeDocument
   brandColor: string
   layout: ResumeLayoutId
   fontFamily: string
   display: ResumeDisplayPreferences
+  accentImageSrc?: string
 }) {
   const layoutProps = { document, brandColor, fontFamily, display }
 
@@ -30,7 +32,7 @@ export function ResumePdfDocument({
       ) : layout === "modern" ? (
         <ModernResumeLayout {...layoutProps} />
       ) : layout === "minimal" ? (
-        <MinimalResumeLayout {...layoutProps} />
+        <MinimalResumeLayout {...layoutProps} accentImageSrc={accentImageSrc} />
       ) : layout === "executive" ? (
         <ExecutiveResumeLayout {...layoutProps} />
       ) : (

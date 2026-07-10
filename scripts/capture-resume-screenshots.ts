@@ -42,10 +42,14 @@ const SAMPLE_DOCUMENT = {
       role: "Design Engineer",
       period: "2025 — Present",
       location: "Remote",
-      description: "Design and build agentic AI product UI for a YC-backed browser automation platform.",
+      description:
+        "Design and build agentic AI product experiences for a browser-native automation platform — extension UI, marketing site, and design system.",
       highlights: [
-        "Shipped marketing site, agent extension prototype, and AI resume tooling",
-        "Own Figma-to-React delivery with semantic design tokens",
+        "Redesigned the Chromium extension with shadcn/ui and semantic design tokens",
+        "Managed and collaborated with 2 junior developers to ship features faster",
+        "Website revamp with MCP & Cursor — code-based handoff from initial Figma design",
+        "Built design system on shadcn/ui with AI-native components",
+        "Multiple code-based prototypes for sales team and feature development",
       ],
     },
     {

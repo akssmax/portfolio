@@ -1,5 +1,7 @@
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
+import { pickMinimalAccentPreferences, MINIMAL_ACCENT_IMAGE_OPTIONS } from "../../minimal-accent-utils"
 import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
 import { cn } from "@/lib/utils"
 
@@ -10,10 +12,13 @@ export function MinimalHtmlResume({
   display,
   onChange,
 }: ResumeHtmlLayoutProps) {
+  const accent = pickMinimalAccentPreferences(display)
+  const accentOption = MINIMAL_ACCENT_IMAGE_OPTIONS[accent.imageId]
+
   return (
     <div
       className={cn(
-        "px-12 py-9 text-[10px] leading-[1.4] text-neutral-900",
+        "relative px-12 py-9 text-[10px] leading-[1.4] text-neutral-900",
         RESUME_HTML_ROOT_CLASS,
       )}
       style={{ fontFamily }}
@@ -301,7 +306,7 @@ export function MinimalHtmlResume({
                 }
                 placeholder="Certification Title"
               />
-              {" — "}
+              {" - "}
               <EditableText
                 value={certification.issuer}
                 onChange={
@@ -370,7 +375,7 @@ export function MinimalHtmlResume({
                 }
                 placeholder="Language"
               />
-              {" — "}
+              {" - "}
               <EditableText
                 value={language.level}
                 onChange={
@@ -411,34 +416,60 @@ export function MinimalHtmlResume({
       {document.contact ? (
         <HtmlResumeSection sectionId="contact" title="Contact" brandColor={brandColor} display={display} variant="plain">
           <p className="mb-0.5 text-neutral-800">
-            <EditableText
-              value={document.contact.email}
-              onChange={
-                onChange
-                  ? (val) =>
+            {onChange ? (
+              <>
+                <span className="max-sm:hidden">
+                  <EditableText
+                    value={document.contact.email}
+                    onChange={(val) =>
                       onChange({
                         ...document,
                         contact: { ...document.contact!, email: val },
                       })
-                  : undefined
-              }
-              placeholder="Email"
-            />
+                    }
+                    placeholder="Email"
+                  />
+                </span>
+                <a
+                  href={toMailtoHref(document.contact.email)}
+                  className="no-underline hover:underline sm:hidden"
+                >
+                  {document.contact.email}
+                </a>
+              </>
+            ) : (
+              <a href={toMailtoHref(document.contact.email)} className="no-underline hover:underline">
+                {document.contact.email}
+              </a>
+            )}
           </p>
           <p className="mb-0.5 text-neutral-800">
-            <EditableText
-              value={document.contact.phone}
-              onChange={
-                onChange
-                  ? (val) =>
+            {onChange ? (
+              <>
+                <span className="max-sm:hidden">
+                  <EditableText
+                    value={document.contact.phone}
+                    onChange={(val) =>
                       onChange({
                         ...document,
                         contact: { ...document.contact!, phone: val },
                       })
-                  : undefined
-              }
-              placeholder="Phone"
-            />
+                    }
+                    placeholder="Phone"
+                  />
+                </span>
+                <a
+                  href={toTelHref(document.contact.phone)}
+                  className="no-underline hover:underline sm:hidden"
+                >
+                  {document.contact.phone}
+                </a>
+              </>
+            ) : (
+              <a href={toTelHref(document.contact.phone)} className="no-underline hover:underline">
+                {document.contact.phone}
+              </a>
+            )}
           </p>
           {document.contact.website ? (
             onChange ? (
@@ -516,6 +547,27 @@ export function MinimalHtmlResume({
             )
           ) : null}
         </HtmlResumeSection>
+      ) : null}
+
+      {display.showMinimalAccentImage ? (
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute bottom-6 right-6 z-0 overflow-hidden",
+            accentOption.htmlSizeClass,
+          )}
+        >
+          <img
+            src={accent.src}
+            alt=""
+            className="h-full w-full object-cover"
+            style={{ opacity: accent.fadeStyles.imageOpacity }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: accent.fadeStyles.htmlGradient }}
+          />
+        </div>
       ) : null}
     </div>
   )
