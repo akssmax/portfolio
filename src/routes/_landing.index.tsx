@@ -200,30 +200,44 @@ function Landing1IndexPage() {
     setTestimonialIndex(nextIndex % testimonials.length)
   }, [])
 
-  const handleSubmitPrompt = (text: string, mode: "gen-ui" | "chat") => {
-    const threadId = nanoid(10)
-    
-    // Save first message in localStorage to initiate the thread history
-    const initialThread = {
-      id: threadId,
-      createdAt: new Date().toISOString(),
-      messages: [
-        {
-          id: nanoid(),
-          role: "user" as const,
-          content: text,
+  const handleSubmitPrompt = React.useCallback(
+    (text: string, mode: "gen-ui" | "chat") => {
+      const trimmed = text.trim()
+      if (!trimmed) return
+
+      const threadId = nanoid(10)
+
+      // Save first message in localStorage to initiate the thread history
+      const initialThread = {
+        id: threadId,
+        createdAt: new Date().toISOString(),
+        messages: [
+          {
+            id: nanoid(),
+            role: "user" as const,
+            content: trimmed,
+            mode,
+          },
+        ],
+      }
+
+      try {
+        localStorage.setItem(`portfolio_thread_${threadId}`, JSON.stringify(initialThread))
+      } catch {
+        // Continue — chat route also reads navigation state as a fallback.
+      }
+
+      navigate({
+        to: "/chat/$threadId",
+        params: { threadId },
+        state: {
+          initialPrompt: trimmed,
           mode,
         },
-      ],
-    }
-    
-    localStorage.setItem(`portfolio_thread_${threadId}`, JSON.stringify(initialThread))
-    
-    navigate({
-      to: "/chat/$threadId",
-      params: { threadId },
-    })
-  }
+      })
+    },
+    [navigate],
+  )
 
   // Map recent projects with live URLs
   const recentProjectsList = React.useMemo(() => {
@@ -253,6 +267,7 @@ function Landing1IndexPage() {
     ? {
         layoutId: "chat-prompt-input-container",
         transition: { type: "spring" as const, stiffness: 220, damping: 28 },
+        style: { pointerEvents: "auto" as const },
       }
     : {}
 
@@ -260,7 +275,7 @@ function Landing1IndexPage() {
     <div className="flex-1 flex flex-col w-full">
       {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
       <section className="relative -mt-16 flex min-h-[min(88svh,680px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
-        <div className="absolute inset-0" aria-hidden>
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
           {/*
             Mount both atmospheres and toggle with the html.dark class.
             Updating <picture>/<source> srcSet alone often fails to swap in browsers.
@@ -318,17 +333,23 @@ function Landing1IndexPage() {
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center space-y-8 px-4 text-center sm:px-6">
           <LandingHeroRotatingCopy slides={LANDING_HERO_COPY} intervalMs={7500} />
 
-          {/* Chat Input wrapper with shared layout id */}
-          <PromptShell className="w-full space-y-4 pt-4" {...promptShellProps}>
-            <ChatPromptInput
-              value={prompt}
-              onValueChange={setPrompt}
-              onSubmit={handleSubmitPrompt}
-              placeholders={HERO_PLACEHOLDER_PROMPTS}
-              tone="on-media"
+          {/* Chat input shares layoutId with the thread page; pills stay outside it so clicks aren't blocked. */}
+          <div className="relative z-20 w-full space-y-4 pt-4">
+            <PromptShell className="w-full" {...promptShellProps}>
+              <ChatPromptInput
+                value={prompt}
+                onValueChange={setPrompt}
+                onSubmit={handleSubmitPrompt}
+                placeholders={HERO_PLACEHOLDER_PROMPTS}
+                tone="on-media"
+                variant="expanded"
+              />
+            </PromptShell>
+            <HeroPromptSuggestions
+              suggestions={starterSuggestions}
+              onSelect={handleSubmitPrompt}
             />
-            <HeroPromptSuggestions suggestions={starterSuggestions} onSelect={handleSubmitPrompt} />
-          </PromptShell>
+          </div>
         </div>
       </section>
 

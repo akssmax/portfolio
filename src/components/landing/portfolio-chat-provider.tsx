@@ -1,9 +1,7 @@
 "use client"
 
 import {
-  Suspense,
   createContext,
-  lazy,
   useCallback,
   useContext,
   useMemo,
@@ -11,11 +9,7 @@ import {
 } from "react"
 import posthog from "posthog-js"
 
-const PortfolioChatSheet = lazy(() =>
-  import("@/components/landing/portfolio-chat-sheet").then((module) => ({
-    default: module.PortfolioChatSheet,
-  })),
-)
+import { PortfolioChatSheet } from "@/components/landing/portfolio-chat-sheet"
 
 type PortfolioChatContextValue = {
   openChat: () => void
@@ -31,10 +25,8 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
 
   const openChat = useCallback(() => {
     setInitialMessage(null)
-    setSessionKey((key) => key + 1)
     setOpen(true)
 
-    // Track AI panel open and ensure session recording starts
     const key = import.meta.env.VITE_POSTHOG_KEY
     if (typeof window !== "undefined" && key) {
       try {
@@ -50,7 +42,6 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
     setInitialMessage(message)
     setOpen(true)
 
-    // Track AI panel open with context and ensure session recording starts
     const key = import.meta.env.VITE_POSTHOG_KEY
     if (typeof window !== "undefined" && key) {
       try {
@@ -73,14 +64,17 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
   return (
     <PortfolioChatContext.Provider value={value}>
       {children}
-      <Suspense fallback={null}>
-        <PortfolioChatSheet
-          key={sessionKey}
-          open={open}
-          onOpenChange={setOpen}
-          initialMessage={initialMessage}
-        />
-      </Suspense>
+      <PortfolioChatSheet
+        key={sessionKey}
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next)
+          if (!next) {
+            setSessionKey((key) => key + 1)
+          }
+        }}
+        initialMessage={initialMessage}
+      />
     </PortfolioChatContext.Provider>
   )
 }

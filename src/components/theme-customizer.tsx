@@ -1,8 +1,7 @@
 "use client"
 
 import { Palette } from "lucide-react"
-
-
+import { useSyncExternalStore } from "react"
 import { ColorPresetGrid } from "./theme-customizer/color-preset-grid"
 import { ColorVisionPicker } from "./theme-customizer/color-vision-picker"
 import { FontPicker } from "./theme-customizer/font-picker"
@@ -26,7 +25,12 @@ import {
 import { Button } from "@/components/ui/button"
 import { useAppearance } from "@/components/appearance-provider"
 
+const subscribe = () => () => {}
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
+
 export function ThemeCustomizer() {
+  const isClient = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
   const {
     appearance,
     setPalette,
@@ -40,9 +44,15 @@ export function ThemeCustomizer() {
     mounted,
   } = useAppearance()
 
-  if (!mounted) {
+  if (!isClient || !mounted) {
     return (
-      <Button variant="outline" size="icon" disabled aria-label="Customize theme">
+      <Button
+        variant="outline"
+        size="icon"
+        aria-label="Customize theme"
+        className="pointer-events-none opacity-60"
+        tabIndex={-1}
+      >
         <Palette className="size-4" />
       </Button>
     )

@@ -65,9 +65,10 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const stored = readAppearanceFromStorage()
     setAppearance(stored)
+    runApplyAppearance(stored)
+    setMounted(true)
     void loadFontPreset(stored.font).then(() => {
       runApplyAppearance(stored)
-      setMounted(true)
     })
   }, [runApplyAppearance])
 

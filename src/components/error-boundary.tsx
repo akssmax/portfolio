@@ -8,6 +8,8 @@ type ErrorBoundaryProps = {
   children: ReactNode
   title?: string
   showHeader?: boolean
+  variant?: "page" | "panel"
+  className?: string
   onError?: (error: Error, info: ErrorInfo) => void
 }
 
@@ -41,6 +43,8 @@ export class ErrorBoundary extends Component<
           reset={this.reset}
           title={this.props.title}
           showHeader={this.props.showHeader}
+          variant={this.props.variant}
+          className={this.props.className}
         />
       )
     }

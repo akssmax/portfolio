@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, useLocation } from "@tanstack/react-router"
 import * as React from "react"
-import { ArrowLeft, X } from "lucide-react"
+import { X } from "lucide-react"
 import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
@@ -41,12 +41,18 @@ type ThreadStore = {
   messages: ThreadMessage[]
 }
 
+type ChatThreadNavigationState = {
+  initialPrompt?: string
+  mode?: "gen-ui" | "chat"
+}
+
 export const Route = createFileRoute("/_landing/chat/$threadId")({
   component: ChatThreadPage,
 })
 
 function ChatThreadPage() {
   const { threadId } = Route.useParams()
+  const location = useLocation()
   const fullMotion = useFullMotion()
   const [messages, setMessages] = React.useState<ThreadMessage[]>([])
   const [input, setInput] = React.useState("")
@@ -57,30 +63,62 @@ function ChatThreadPage() {
   const abortRef = React.useRef<AbortController | null>(null)
   const isInitialTriggered = React.useRef(false)
 
-  // Load thread from localStorage
+  // Load thread from localStorage, with router-state fallback for fresh navigations.
   React.useEffect(() => {
     const key = `portfolio_thread_${threadId}`
     const stored = localStorage.getItem(key)
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as ThreadStore
-        setMessages(parsed.messages)
-        const lastUserMsg = [...parsed.messages].reverse().find(m => m.role === "user")
-        if (lastUserMsg?.mode) {
-          setMode(lastUserMsg.mode)
+        if (parsed.messages.length > 0) {
+          setMessages(parsed.messages)
+          const lastUserMsg = [...parsed.messages].reverse().find((m) => m.role === "user")
+          if (lastUserMsg?.mode) {
+            setMode(lastUserMsg.mode)
+          }
+          return
         }
       } catch {
-        // ignore
+        // ignore malformed cache and fall through to navigation state
       }
-    } else {
-      const newThread: ThreadStore = {
+    }
+
+    const navState = location.state as ChatThreadNavigationState | undefined
+    const initialPrompt = navState?.initialPrompt?.trim()
+    if (initialPrompt) {
+      const seededThread: ThreadStore = {
         id: threadId,
         createdAt: new Date().toISOString(),
-        messages: [],
+        messages: [
+          {
+            id: nanoid(),
+            role: "user",
+            content: initialPrompt,
+            mode: navState?.mode ?? "chat",
+          },
+        ],
       }
-      localStorage.setItem(key, JSON.stringify(newThread))
+      try {
+        localStorage.setItem(key, JSON.stringify(seededThread))
+      } catch {
+        // ignore storage failures — in-memory state still boots the thread
+      }
+      setMessages(seededThread.messages)
+      setMode(navState?.mode ?? "chat")
+      return
     }
-  }, [threadId])
+
+    const newThread: ThreadStore = {
+      id: threadId,
+      createdAt: new Date().toISOString(),
+      messages: [],
+    }
+    try {
+      localStorage.setItem(key, JSON.stringify(newThread))
+    } catch {
+      // ignore
+    }
+  }, [location.state, threadId])
 
   // Save messages to localStorage
   const saveThread = React.useCallback((updatedMessages: ThreadMessage[]) => {
@@ -118,7 +156,8 @@ function ChatThreadPage() {
   const handleSendMessage = React.useCallback(async (
     text: string,
     selectedMode: "gen-ui" | "chat",
-    currentMessages = messages
+    currentMessages = messages,
+    options?: { skipUserMessage?: boolean },
   ) => {
     if (!text.trim() || status === "streaming") return
 
@@ -136,7 +175,9 @@ function ChatThreadPage() {
       content: "",
     }
 
-    const nextMessages = [...currentMessages, userMsg, assistantMsg]
+    const nextMessages = options?.skipUserMessage
+      ? [...currentMessages, assistantMsg]
+      : [...currentMessages, userMsg, assistantMsg]
     setMessages(nextMessages)
     saveThread(nextMessages)
     setInput("")
@@ -281,26 +322,14 @@ function ChatThreadPage() {
       const firstMsg = messages[0]
       const userMode = firstMsg.mode || "chat"
       setMode(userMode)
-      handleSendMessage(firstMsg.content, userMode, [])
+      void handleSendMessage(firstMsg.content, userMode, messages, {
+        skipUserMessage: true,
+      })
     }
   }, [messages, handleSendMessage])
 
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 bg-transparent">
-      {/* Thread Header Bar */}
-      <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-6 w-full shrink-0">
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-all"
-        >
-          <ArrowLeft className="size-4" />
-          Back to portfolio
-        </Link>
-        <span className="text-[10px] font-mono text-muted-foreground bg-muted/65 border border-border/40 px-2 py-0.5 rounded-md">
-          Thread ID: {threadId}
-        </span>
-      </div>
-
       {/* Messages Scroll Area using Conversation and StickToBottom */}
       <div className="flex-1 min-h-0 relative flex flex-col w-full overflow-y-hidden">
         <Conversation className="flex-1 min-h-0 bg-transparent px-4 py-8 sm:px-6">
@@ -318,7 +347,7 @@ function ChatThreadPage() {
                     ) : (
                       /* Assistant Message Layout */
                       <div className="flex gap-3 items-start select-text w-full">
-                        <M3AnimatingAvatar className="size-8.5 shrink-0" />
+                        <M3AnimatingAvatar className="size-8.5 shrink-0 max-md:hidden" />
                         <div className="flex-1 space-y-3 min-w-0">
                           {/* Chain of Thought accordion */}
                           {(message.searching || (message.toolCalls && message.toolCalls.length > 0) || !message.content) && (
@@ -427,6 +456,7 @@ function ChatThreadPage() {
           <motion.div
             className="w-full max-w-2xl"
             layoutId="chat-prompt-input-container"
+            style={{ pointerEvents: "auto" }}
             transition={{ type: "spring", stiffness: 220, damping: 28 }}
           >
             <ChatPromptInput
@@ -438,7 +468,7 @@ function ChatThreadPage() {
               isModeDisabled={status === "streaming"}
               disabled={status === "streaming"}
               loading={status === "streaming"}
-              placeholder="Send a message or ask another prompt..."
+              placeholder="Ask anything..."
             />
           </motion.div>
         ) : (
@@ -452,7 +482,7 @@ function ChatThreadPage() {
               isModeDisabled={status === "streaming"}
               disabled={status === "streaming"}
               loading={status === "streaming"}
-              placeholder="Send a message or ask another prompt..."
+              placeholder="Ask anything..."
             />
           </div>
         )}

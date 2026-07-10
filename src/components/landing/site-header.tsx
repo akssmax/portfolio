@@ -1,13 +1,18 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Link } from "@tanstack/react-router"
-import { Menu, Sparkles } from "lucide-react"
+import { Link, useLocation } from "@tanstack/react-router"
+import { ArrowLeft, Menu, Sparkles } from "lucide-react"
 
 import { Logo } from "@/components/brand/logo"
 import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 import {
   Sheet,
@@ -111,6 +116,33 @@ function MobileNavLink({
   )
 }
 
+function BackToPortfolioButton({ onMedia = false }: { onMedia?: boolean }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className={cn(
+            "shrink-0",
+            onMedia
+              ? "text-white/85 hover:bg-white/10 hover:text-white dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+          asChild
+        >
+          <Link to="/" aria-label="Back to portfolio">
+            <ArrowLeft className="size-4" />
+          </Link>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="bottom" sideOffset={6}>
+        Back to portfolio
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
 type SiteHeaderProps = {
   /** Dark glass bar for photo heroes (light mode). Dark mode stays default. */
   tone?: "default" | "on-media"
@@ -129,6 +161,8 @@ export function SiteHeader({
   const [mobileOpen, setMobileOpen] = useState(false)
   const [elevated, setElevated] = useState(false)
   const { openChat } = usePortfolioChat()
+  const location = useLocation()
+  const isChatRoute = location.pathname.startsWith("/chat")
   const onMedia = tone === "on-media"
   const useScrollBlur = elevateBlurOnScroll && fullMotion && !onMedia
 
@@ -158,7 +192,7 @@ export function SiteHeader({
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b",
+          "fixed inset-x-0 top-0 z-[100] isolate border-b",
           onMedia
             ? "border-white/10 bg-neutral-950/75 text-white backdrop-blur-md dark:border-border/60 dark:bg-background/80 dark:text-foreground dark:backdrop-blur-sm"
             : useScrollBlur
@@ -174,16 +208,19 @@ export function SiteHeader({
         )}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link
-            to="/"
-            aria-label="Akshay Saini — home"
-            className={cn(
-              "inline-flex min-w-0 shrink text-foreground",
-              onMedia && "text-white dark:text-foreground",
-            )}
-          >
-            <Logo className="h-5 sm:h-6" />
-          </Link>
+          <div className="inline-flex min-w-0 items-center gap-1.5 sm:gap-2">
+            {isChatRoute ? <BackToPortfolioButton onMedia={onMedia} /> : null}
+            <Link
+              to="/"
+              aria-label="Akshay Saini — home"
+              className={cn(
+                "inline-flex min-w-0 shrink text-foreground",
+                onMedia && "text-white dark:text-foreground",
+              )}
+            >
+              <Logo className="h-5 sm:h-6" />
+            </Link>
+          </div>
 
           <nav
             className="hidden items-center gap-1 md:flex"
@@ -201,18 +238,22 @@ export function SiteHeader({
                 }
               />
             ))}
-            <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
-              <Sparkles className="size-3.5" aria-hidden />
-              Ask AI
-            </Button>
+            {!isChatRoute ? (
+              <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
+                <Sparkles className="size-3.5" aria-hidden />
+                Ask AI
+              </Button>
+            ) : null}
             <ThemeCustomizer />
           </nav>
 
           <div className="flex items-center gap-2 md:hidden">
-            <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
-              <Sparkles className="size-3.5" aria-hidden />
-              Ask AI
-            </Button>
+            {!isChatRoute ? (
+              <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
+                <Sparkles className="size-3.5" aria-hidden />
+                Ask AI
+              </Button>
+            ) : null}
             <ThemeCustomizer />
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -241,6 +282,18 @@ export function SiteHeader({
                   className="flex flex-col gap-1 px-2 py-3"
                   aria-label="Mobile navigation"
                 >
+                  {isChatRoute ? (
+                    <SheetClose asChild>
+                      <Link
+                        to="/"
+                        className="flex h-11 w-full items-center gap-2 rounded-md px-3 text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        onClick={closeMobileMenu}
+                      >
+                        <ArrowLeft className="size-4" aria-hidden />
+                        Back to portfolio
+                      </Link>
+                    </SheetClose>
+                  ) : null}
                   {navItems.map((item) => (
                     <MobileNavLink
                       key={item.isAnchor ? item.href : item.to}
@@ -250,12 +303,14 @@ export function SiteHeader({
                   ))}
                 </nav>
 
-                <div className="mt-auto border-t border-border p-4">
-                  <Button className="w-full gap-1.5" onClick={handleAskAi}>
-                    <Sparkles className="size-3.5" aria-hidden />
-                    Ask AI
-                  </Button>
-                </div>
+                {!isChatRoute ? (
+                  <div className="mt-auto border-t border-border p-4">
+                    <Button className="w-full gap-1.5" onClick={handleAskAi}>
+                      <Sparkles className="size-3.5" aria-hidden />
+                      Ask AI
+                    </Button>
+                  </div>
+                ) : null}
               </SheetContent>
             </Sheet>
           </div>

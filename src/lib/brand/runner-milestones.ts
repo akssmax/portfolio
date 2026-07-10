@@ -184,7 +184,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Sticky notes everywhere",
     era: "design",
     distanceThreshold: MILESTONE_STEP * 15,
-    svgSrc: "/tools/figjam.svg",
+    svgSrc: "/tools/runner/figjam.svg",
   },
   {
     id: "framer",
@@ -193,7 +193,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Motion meets UI",
     era: "design",
     distanceThreshold: MILESTONE_STEP * 16,
-    svgSrc: "/tools/framer.svg",
+    svgSrc: "/tools/runner/framer.svg",
   },
   {
     id: "webflow",
@@ -202,7 +202,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Visual dev unlocked",
     era: "ship",
     distanceThreshold: MILESTONE_STEP * 17,
-    svgSrc: "/tools/webflow.svg",
+    svgSrc: "/tools/runner/webflow.svg",
   },
   {
     id: "miro",
@@ -211,7 +211,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Infinite whiteboard energy",
     era: "design",
     distanceThreshold: MILESTONE_STEP * 18,
-    svgSrc: "/tools/miro.svg",
+    svgSrc: "/tools/runner/miro.svg",
   },
   {
     id: "dribbble",
@@ -238,7 +238,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Micro-motion obsession",
     era: "design",
     distanceThreshold: MILESTONE_STEP * 21,
-    svgSrc: "/tools/jitter.svg",
+    svgSrc: "/tools/runner/jitter.svg",
   },
   {
     id: "storybook",
@@ -274,7 +274,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Docs, specs, and chaos",
     era: "ship",
     distanceThreshold: MILESTONE_STEP * 25,
-    svgSrc: "/tools/notion.svg",
+    svgSrc: "/tools/runner/notion.svg",
   },
   {
     id: "cursor",
@@ -283,7 +283,7 @@ export const RUNNER_MILESTONES: readonly RunnerMilestone[] = [
     tagline: "Shipping pixels in prod",
     era: "ship",
     distanceThreshold: MILESTONE_STEP * 26,
-    svgSrc: "/tools/cursor.svg",
+    svgSrc: "/tools/runner/cursor.svg",
   },
 ] as const
 

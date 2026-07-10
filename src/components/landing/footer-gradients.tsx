@@ -119,6 +119,20 @@ function peakPath(widthFrac: number, heightFrac: number, pointiness: number): st
   ].join(" ")
 }
 
+// --- Custom Hook for Theme (avoids SSR hydration mismatch) ---
+
+/** next-themes `resolvedTheme` is undefined on SSR; defer light/dark picks until mounted. */
+function useMountedLightTheme() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  return mounted && resolvedTheme === "light"
+}
+
 // --- Custom Hook for Reveal Animation ---
 
 function useGradientReveal({
@@ -211,9 +225,9 @@ export function DiaGradient({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const scaleY = useGradientReveal({ reveal, riseMs, replayKey, ref })
-  const { resolvedTheme } = useTheme()
+  const isLight = useMountedLightTheme()
   
-  const activeStops = stops || (resolvedTheme === "light" ? DIA_STOPS_LIGHT : DIA_STOPS_DARK)
+  const activeStops = stops || (isLight ? DIA_STOPS_LIGHT : DIA_STOPS_DARK)
   const heights = bellHeights(bars, peak, valley)
   const colW = VBW / bars
 
@@ -291,9 +305,9 @@ export function PeakedGradient({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const scaleY = useGradientReveal({ reveal, riseMs, replayKey, ref })
-  const { resolvedTheme } = useTheme()
+  const isLight = useMountedLightTheme()
 
-  const activeColors = colors || (resolvedTheme === "light" ? PEAKED_COLORS_LIGHT : PEAKED_COLORS_DARK)
+  const activeColors = colors || (isLight ? PEAKED_COLORS_LIGHT : PEAKED_COLORS_DARK)
   const fid = `peak-blur-${replayKey}`
 
   // back (darkest, widest, lowest) -> front (lightest, narrowest, tallest)
@@ -362,13 +376,12 @@ export function DodgeGradient({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const scaleY = useGradientReveal({ reveal, riseMs, replayKey, ref })
-  const { resolvedTheme } = useTheme()
+  const isLight = useMountedLightTheme()
 
-  const activeColors = colors || (resolvedTheme === "light" ? DODGE_RAINBOW_LIGHT : DODGE_RAINBOW_DARK)
+  const activeColors = colors || (isLight ? DODGE_RAINBOW_LIGHT : DODGE_RAINBOW_DARK)
   const band = activeColors.concat(activeColors[0] || "#FF0000")
   
-  // In light mode, a soft screen blend is sometimes more pleasing, but we'll use color-dodge/normal for standard implementation
-  const blendMode = resolvedTheme === "light" ? "color-dodge, normal" : "color-dodge, normal"
+  const blendMode = "color-dodge, normal"
   
   const BACKGROUND =
     "linear-gradient(0deg, #000000 0%, #f7f7f7 100%), " +
@@ -432,8 +445,8 @@ export function Fold3DGradient({
   foldAngle?: number
   depth?: number
 }) {
-  const { resolvedTheme } = useTheme()
-  const activeStops = stops || (resolvedTheme === "light" ? AURORA_STOPS_LIGHT : AURORA_STOPS_DARK)
+  const isLight = useMountedLightTheme()
+  const activeStops = stops || (isLight ? AURORA_STOPS_LIGHT : AURORA_STOPS_DARK)
 
   return (
     <div
