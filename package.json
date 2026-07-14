@@ -23,6 +23,8 @@
     "generate:themes": "node --import tsx scripts/generate-theme-css.ts",
     "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
     "generate:og-banner": "node --import tsx scripts/generate-og-banner.ts",
+    "generate:sitemap": "node --import tsx scripts/generate-sitemap.ts",
+    "prebuild": "npm run generate:sitemap",
     "build:rag": "node --env-file=.env.local --import tsx scripts/build-rag-index.ts",
     "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts"
   },
