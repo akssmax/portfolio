@@ -14,6 +14,7 @@ describe("corpus-builder", () => {
     expect(docs.length).toBeGreaterThan(10)
     expect(docs.some((doc) => doc.source.startsWith("project/"))).toBe(true)
     expect(docs.some((doc) => doc.source === "profile")).toBe(true)
+    expect(docs.some((doc) => doc.id === "profile-hiring")).toBe(true)
   })
 
   it("chunks long documents", () => {

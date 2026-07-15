@@ -262,14 +262,10 @@ function Landing1IndexPage() {
   }, [caseStudies])
 
   const activeTestimonial = testimonials[testimonialIndex]
-  const PromptShell = fullMotion ? motion.div : "div"
-  const promptShellProps = fullMotion
-    ? {
-        layoutId: "chat-prompt-input-container",
-        transition: { type: "spring" as const, stiffness: 220, damping: 28 },
-        style: { pointerEvents: "auto" as const },
-      }
-    : {}
+  const PromptShell = "div"
+  const promptShellProps = {
+    style: { pointerEvents: "auto" as const },
+  }
 
   return (
     <div className="flex-1 flex flex-col w-full">

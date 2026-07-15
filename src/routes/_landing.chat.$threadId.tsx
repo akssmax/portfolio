@@ -1,7 +1,6 @@
 import { createFileRoute, useLocation } from "@tanstack/react-router"
 import * as React from "react"
 import { X } from "lucide-react"
-import { motion } from "motion/react"
 import { nanoid } from "nanoid"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
@@ -453,12 +452,7 @@ function ChatThreadPage() {
       {/* Static flex-flow Bottom Prompt Box */}
       <div className="bg-gradient-to-t from-background via-background/90 to-transparent p-4 pb-6 w-full flex justify-center shrink-0 border-t border-border/20 z-10">
         {fullMotion ? (
-          <motion.div
-            className="w-full max-w-2xl"
-            layoutId="chat-prompt-input-container"
-            style={{ pointerEvents: "auto" }}
-            transition={{ type: "spring", stiffness: 220, damping: 28 }}
-          >
+          <div className="w-full max-w-2xl" style={{ pointerEvents: "auto" }}>
             <ChatPromptInput
               value={input}
               onValueChange={setInput}
@@ -470,7 +464,7 @@ function ChatThreadPage() {
               loading={status === "streaming"}
               placeholder="Ask anything..."
             />
-          </motion.div>
+          </div>
         ) : (
           <div className="w-full max-w-2xl">
             <ChatPromptInput

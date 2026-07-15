@@ -1,6 +1,7 @@
 import { toPlainText } from "@portabletext/toolkit"
 import type { PortableTextBlock } from "@portabletext/react"
 
+import { buildHiringProfileText } from "@/lib/hiring-profile"
 import { HERO_COPY, LANDING_HERO_COPY } from "@/lib/hero-headlines"
 import { profile } from "@/lib/profile"
 import { fallbackProjects } from "@/lib/sanity/fallback-projects"
@@ -235,6 +236,18 @@ function buildVisualCaseStudyDocuments(): CorpusDocument[] {
   return docs
 }
 
+function buildHiringDocuments(): CorpusDocument[] {
+  return [
+    {
+      id: "profile-hiring",
+      source: "profile",
+      sourceLabel: "Hiring & Recruiter FAQ",
+      text: buildHiringProfileText(),
+      href: "/experience",
+    },
+  ]
+}
+
 function buildPortfolioSiteDocuments(): CorpusDocument[] {
   const recentProjects = fallbackProjects.filter(
     (project) => project.workSection === "recentProject",
@@ -287,6 +300,7 @@ function buildPortfolioSiteDocuments(): CorpusDocument[] {
 export function buildCorpusDocuments(): CorpusDocument[] {
   return [
     ...buildProfileDocuments(),
+    ...buildHiringDocuments(),
     ...buildProjectDocuments(),
     ...buildVisualCaseStudyDocuments(),
     ...buildPortfolioSiteDocuments(),

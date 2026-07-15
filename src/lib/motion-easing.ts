@@ -28,5 +28,13 @@ export const cardVisualSlowTransition =
 export const chipHoverTransition =
   "transition-[transform,border-color,background-color,color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none motion-reduce:hover:transform-none"
 
+/** Framer layout tween for chat prompt resize — ease-out, no spring bounce. */
+export const PROMPT_LAYOUT_TRANSITION = {
+  layout: { duration: 0.25, ease: EASE_OUT_SMOOTH },
+} as const
+
+export const promptHeightTransition =
+  "transition-[height] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+
 export const surfaceHoverTransition =
   "transition-[border-color,box-shadow,transform] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"

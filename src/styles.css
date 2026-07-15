@@ -138,3 +138,7 @@
   }
 }
 
+/* Chat inputs use a proportional UI font so caret + placeholder align reliably. */
+.font-input-ui {
+  font-family: "Geist Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}

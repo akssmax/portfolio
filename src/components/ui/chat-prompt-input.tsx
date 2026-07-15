@@ -1,5 +1,6 @@
 "use client"
 
+import "@fontsource-variable/geist"
 import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import {
@@ -17,6 +18,12 @@ import {
   Cpu,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import {
+  PROMPT_LAYOUT_TRANSITION,
+  promptHeightTransition,
+} from "@/lib/motion-easing"
+
+export const CHAT_PROMPT_SHARED_LAYOUT_ID = "chat-prompt-input-container"
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition"
 import type { ProjectCard } from "@/lib/sanity/types"
 import { getFallbackProjectCards } from "@/lib/sanity/fallback-projects"
@@ -361,10 +368,19 @@ function useChatPromptInput({
   React.useEffect(() => {
     const textarea = textareaRef.current
     if (!textarea) return
-    textarea.style.height = "auto"
+
     const isMinimalSurface = variant !== "expanded"
     const maxHeight = isMinimalSurface ? 128 : 192
+    const previousHeight = textarea.getBoundingClientRect().height
+
+    textarea.style.height = "auto"
     const nextHeight = Math.min(textarea.scrollHeight, maxHeight)
+
+    if (Math.abs(previousHeight - nextHeight) > 1) {
+      textarea.style.height = `${previousHeight}px`
+      void textarea.offsetHeight
+    }
+
     textarea.style.height = `${nextHeight}px`
     setIsMultiline(isMinimalSurface && nextHeight > 30)
   }, [showExpanded, value, variant])
@@ -424,7 +440,7 @@ function ModeToggle({
   return (
     <div
       className={cn(
-        "flex items-center bg-muted/60 p-0.5 border border-border/40",
+        "flex shrink-0 items-center bg-muted/60 p-0.5 border border-border/40",
         compact ? "rounded-full shadow-sm" : "rounded-lg",
       )}
     >
@@ -433,7 +449,7 @@ function ModeToggle({
         disabled={isModeDisabled || disabled || loading}
         onClick={() => setMode("chat")}
         className={cn(
-          "flex items-center gap-1 rounded-full font-semibold transition-all duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
+          "flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full font-semibold transition-[color,background-color,box-shadow] duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
           compact ? "px-2.5 py-1 text-[10px]" : "gap-1.5 rounded-md px-3 py-1.5 text-xs",
           mode === "chat"
             ? "bg-background text-foreground shadow-xs"
@@ -448,7 +464,7 @@ function ModeToggle({
         disabled={isModeDisabled || disabled || loading}
         onClick={() => setMode("gen-ui")}
         className={cn(
-          "flex items-center gap-1 rounded-full font-semibold transition-all duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
+          "flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full font-semibold transition-[color,background-color,box-shadow] duration-250 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
           compact ? "px-2.5 py-1 text-[10px]" : "gap-1.5 rounded-md px-3 py-1.5 text-xs",
           mode === "gen-ui"
             ? "bg-background text-foreground shadow-xs"
@@ -652,9 +668,56 @@ function AttachedProjectPills({ controller }: { controller: ChatPromptController
   )
 }
 
+function ModeToggleShell({
+  className,
+  children,
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
+  const shouldReduceMotion = useReducedMotion()
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>
+  }
+
+  return (
+    <motion.div layout={false} className={className}>
+      {children}
+    </motion.div>
+  )
+}
+
+function PromptLayoutSurface({
+  className,
+  children,
+  sharedLayout = false,
+}: {
+  className?: string
+  children: React.ReactNode
+  sharedLayout?: boolean
+}) {
+  const shouldReduceMotion = useReducedMotion()
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>
+  }
+
+  return (
+    <motion.div
+      layout
+      layoutId={sharedLayout ? CHAT_PROMPT_SHARED_LAYOUT_ID : undefined}
+      transition={PROMPT_LAYOUT_TRANSITION}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 function PromptTextarea({
   controller,
-  rows = 2,
+  rows = 1,
   className,
   singleLine = false,
 }: {
@@ -665,13 +728,25 @@ function PromptTextarea({
 }) {
   const shouldReduceMotion = useReducedMotion()
 
+  const surfaceClass = singleLine ? "min-h-5 py-0" : "min-h-10 py-1"
+  const typographyClass = cn(
+    "font-input-ui w-full text-sm leading-5",
+    surfaceClass,
+  )
+
   return (
-    <>
+    <div
+      className={cn(
+        "grid w-full [&>*]:col-start-1 [&>*]:row-start-1",
+        singleLine ? "min-h-5" : "min-h-10",
+        className,
+      )}
+    >
       {controller.showAnimatedPlaceholder ? (
         <div
           className={cn(
-            "pointer-events-none absolute inset-x-1 z-[1] flex items-center overflow-hidden text-left text-sm text-muted-foreground/75",
-            singleLine ? "inset-y-0" : "top-1",
+            "pointer-events-none overflow-hidden text-left text-muted-foreground/75",
+            typographyClass,
           )}
           aria-hidden
         >
@@ -682,10 +757,10 @@ function PromptTextarea({
               <motion.span
                 key={controller.activePlaceholder}
                 className="block truncate"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               >
                 {controller.activePlaceholder}
               </motion.span>
@@ -707,14 +782,13 @@ function PromptTextarea({
         disabled={controller.disabled || controller.loading}
         rows={rows}
         className={cn(
-          "relative z-[2] w-full resize-none bg-transparent text-sm text-foreground outline-hidden placeholder:text-muted-foreground/75 overflow-y-auto",
-          singleLine
-            ? "min-h-5 max-h-32 w-full py-0 leading-5"
-            : "min-h-[3rem] max-h-[12rem] py-1 leading-relaxed",
-          className,
+          "relative z-[1] resize-none bg-transparent text-foreground outline-hidden placeholder:text-muted-foreground/75 overflow-y-auto",
+          promptHeightTransition,
+          typographyClass,
+          singleLine ? "max-h-32" : "max-h-[12rem]",
         )}
       />
-    </>
+    </div>
   )
 }
 
@@ -781,7 +855,7 @@ export function ChatPromptInputMinimal({
 }) {
   return (
     <div className={cn("relative", className)}>
-      <div className="absolute bottom-full left-3 z-20 mb-2">
+      <ModeToggleShell className="absolute bottom-full left-3 z-20 mb-2">
         <ModeToggle
           mode={controller.mode}
           setMode={controller.setMode}
@@ -790,7 +864,7 @@ export function ChatPromptInputMinimal({
           isModeDisabled={controller.isModeDisabled}
           compact
         />
-      </div>
+      </ModeToggleShell>
 
       {controller.attachedProjects.length > 0 ? (
         <div className="mb-2 rounded-2xl border border-border/60 bg-background/90 p-1.5 shadow-sm backdrop-blur-sm">
@@ -798,9 +872,10 @@ export function ChatPromptInputMinimal({
         </div>
       ) : null}
 
-      <div
+      <PromptLayoutSurface
+        sharedLayout
         className={cn(
-          "flex gap-1 rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-all duration-300",
+          "flex gap-1 rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
           controller.isMultiline ? "items-end" : "items-center",
           onMedia
             ? "border-border/70 bg-background/90 backdrop-blur-md dark:bg-card/70"
@@ -831,7 +906,7 @@ export function ChatPromptInputMinimal({
           <VoiceButton controller={controller} />
           <SubmitButton controller={controller} />
         </div>
-      </div>
+      </PromptLayoutSurface>
     </div>
   )
 }
@@ -847,19 +922,8 @@ export function ChatPromptInputExpanded({
   className?: string
 }) {
   return (
-    <div
-      className={cn(
-        "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-all duration-300",
-        onMedia &&
-          "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
-        controller.isFocused && "border-primary ring-2 ring-primary/20 bg-card/85",
-        controller.isFocused && onMedia && "bg-background dark:bg-card/85",
-        className,
-      )}
-    >
-      <AttachedProjectPills controller={controller} />
-
-      <div className="flex items-center gap-1.5 self-start px-2 pt-1">
+    <div className={cn("relative w-full", className)}>
+      <ModeToggleShell className="absolute left-4 top-3 z-10">
         <ModeToggle
           mode={controller.mode}
           setMode={controller.setMode}
@@ -867,10 +931,22 @@ export function ChatPromptInputExpanded({
           loading={controller.loading}
           isModeDisabled={controller.isModeDisabled}
         />
-      </div>
+      </ModeToggleShell>
 
-      <div className="relative flex flex-col px-2 pb-1.5">
-        <PromptTextarea controller={controller} />
+      <PromptLayoutSurface
+        sharedLayout
+        className={cn(
+          "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 pt-12 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          onMedia &&
+            "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
+          controller.isFocused && "border-primary ring-2 ring-primary/20 bg-card/85",
+          controller.isFocused && onMedia && "bg-background dark:bg-card/85",
+        )}
+      >
+        <AttachedProjectPills controller={controller} />
+
+        <div className="relative flex flex-col px-2 pb-1.5">
+        <PromptTextarea controller={controller} rows={1} />
 
         <div className="mt-3 flex items-center justify-between border-t border-border/40 pt-2">
           <button
@@ -889,6 +965,7 @@ export function ChatPromptInputExpanded({
           </div>
         </div>
       </div>
+      </PromptLayoutSurface>
     </div>
   )
 }
@@ -921,20 +998,20 @@ export function ChatPromptInput({
           {showMinimal ? (
             <motion.div
               key="minimal"
-              initial={{ opacity: 0, y: 10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.99, pointerEvents: "none" }}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, pointerEvents: "none" }}
+              transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
             >
               <ChatPromptInputMinimal controller={controller} onMedia={onMedia} />
             </motion.div>
           ) : (
             <motion.div
               key="expanded"
-              initial={{ opacity: 0, y: 12, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.99, pointerEvents: "none" }}
-              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, pointerEvents: "none" }}
+              transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
             >
               <ChatPromptInputExpanded controller={controller} onMedia={onMedia} />
             </motion.div>
