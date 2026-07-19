@@ -86,7 +86,236 @@ const UNLOGGED_TECH_STACK_ITEMS = [
   { name: "IntelliJ IDEA", logoSrc: "/companies/unlogged.svg" },
 ]
 
+const RUPEELENS_TECH_STACK_ITEMS = [
+  { name: "React", logoSrc: "/projects/chat-shell/tech/react.svg" },
+  { name: "TypeScript", logoSrc: "/projects/chat-shell/tech/typescript.svg" },
+  { name: "TanStack Start", logoSrc: "/projects/chat-shell/tech/vite.svg" },
+  { name: "Tailwind CSS", logoSrc: "/projects/chat-shell/tech/tailwindcss.svg" },
+  { name: "shadcn/ui", logoSrc: "/projects/chat-shell/tech/shadcn.svg" },
+  { name: "Mistral", logoSrc: "/projects/chat-shell/tech/mistral.svg" },
+  { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
+]
+
 export const fallbackProjects: Project[] = [
+  {
+    _id: "fallback-rupeelens",
+    title: "RupeeLens",
+    slug: "rupeelens",
+    description:
+      "Personal finance from Indian bank statements — local-first import, AI categorization, and spending insights in ₹.",
+    tag: "Product UI",
+    featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
+    coverImageUrl: "/projects/rupeelens/hero.webp",
+    year: "Jul 2026",
+    role: "Design Engineer",
+    client: "Personal",
+    tools: ["Cursor", "Mistral", "TanStack Start"],
+    publishedAt: "2026-07-18T00:00:00.000Z",
+    metrics: "Local-first · Multi-bank CSV/PDF · AI categorize",
+    seo: {
+      metaTitle: "RupeeLens — Case Study",
+      metaDescription:
+        "How a local-first personal finance app turns Indian bank CSV, Excel, and PDF statements into categorized spending insights with Mistral AI.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-context",
+        title: "Context",
+        subtitle: "Solo personal build for Indian bank-statement finance.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-context",
+        body: [
+          textBlock(
+            "rl-rt-context-1",
+            "RupeeLens turns messy Indian bank exports into a private spending dashboard. Instead of Plaid-style bank connects, you upload the CSV, Excel, or PDF you already download from netbanking — Axis-first, with HDFC, ICICI, SBI, and more.",
+          ),
+          textBlock(
+            "rl-rt-context-2",
+            "Statements stay in the browser by default (IndexedDB). Only narration, date, and amount leave the device when AI categorization runs — a privacy story that fits how people actually share bank files in India.",
+          ),
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "rl-collab",
+        subtitle: "Solo design-engineering build — product design through deployment.",
+        items: [
+          {
+            name: "Akshay Saini",
+            role: "Design Engineer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "rl-metrics-top",
+        items: [
+          { value: "8+", label: "Bank parsers" },
+          { value: "Local", label: "First storage" },
+          { value: "AI", label: "Categorize + chat" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-challenge",
+        body: [
+          textBlock(
+            "rl-rt-challenge-1",
+            "Indian bank statements are inconsistent — debit/credit columns swap, UPI narrations are noisy, and most global finance apps ignore CSV/PDF exports. The product had to feel calm and trustworthy while handling parsing quirks, duplicate imports, and optional cloud sync without forcing an account up front.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-shipped",
+        title: "What I shipped",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-shipped",
+        body: [
+          textBlock(
+            "rl-rt-shipped-1",
+            "A full personal-finance workspace — import, categorize, explore, and ask — designed as a teal fintech shell on TanStack Start.",
+          ),
+          ...bulletList("rl-rt-shipped-b", [
+            "Multi-bank statement import — CSV, Excel, and PDF with bank detection and Axis debit/credit fixes",
+            "Local-first IndexedDB ledger with an optional Neon Auth path that migrates data on signup",
+            "Hybrid categorization — Indian merchant rules (Blinkit, Swiggy, Netflix…) plus Mistral for the long tail",
+            "Dashboard with income/expense/net, category breakdown, weekly cashflow, and trends",
+            "Transactions, spending, subscriptions, and credits/debits views with export",
+            "RupeeLens AI side panel for chat and insights grounded in imported transactions",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "rl-tech",
+        items: RUPEELENS_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `rl-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "rl-img-hero",
+        src: "/projects/rupeelens/hero.webp",
+        alt: "RupeeLens dashboard — income, expenses, category breakdown, and cashflow",
+        caption: "Dashboard — overview of income, spend, categories, and weekly cashflow",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "rl-gallery-core",
+        caption: "Core surfaces — ledger, spend charts, and recurring merchants",
+        images: [
+          {
+            src: "/projects/rupeelens/transactions.webp",
+            alt: "Transactions table with filters and categorization",
+          },
+          {
+            src: "/projects/rupeelens/spending.webp",
+            alt: "Spending view with weekly and daily debit charts",
+          },
+          {
+            src: "/projects/rupeelens/subscriptions.webp",
+            alt: "Subscriptions detection with estimated monthly total",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-privacy",
+        title: "Local-first, then cloud",
+        subtitle: "Incognito browser storage with an upgrade path — not a locked login wall.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-privacy",
+        body: [
+          textBlock(
+            "rl-rt-privacy-1",
+            "People can import a statement and explore the dashboard without creating an account. When they want the same ledger on another device, Neon Auth signup migrates IndexedDB into Postgres — keeping the privacy default while offering continuity.",
+          ),
+          ...bulletList("rl-rt-privacy-b", [
+            "CSVs never leave the browser for storage",
+            "AI calls send only narration, date, and amount",
+            "Sources view surfaces duplicates, overlaps, and row-count mismatches",
+          ]),
+        ],
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "rl-gallery-more",
+        caption: "Money flow and trends — credits vs debits plus daily/weekly insights",
+        images: [
+          {
+            src: "/projects/rupeelens/credits-debits.webp",
+            alt: "Credits and debits tabbed transaction views",
+          },
+          {
+            src: "/projects/rupeelens/trends.webp",
+            alt: "Dashboard trends tab with spend charts and insights",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-decisions",
+        body: bulletList("rl-rt-decisions-b", [
+          "Statement upload over bank OAuth — matches how Indian users already export data",
+          "Teal Geist shell with dense charts/tables — calm fintech productivity, not a marketing landing",
+          "Background categorize jobs so import never blocks exploration",
+          "Drill-down from dashboard merchants/categories into filtered transactions",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "rl-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "rl-rt-outcome",
+        body: [
+          textBlock(
+            "rl-rt-outcome-1",
+            "Shipped as a personal product on Vercel — a complete India-first finance loop from bank export to AI-assisted insight, with a live demo and open GitHub repo.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "rl-embed-live",
+        url: "https://rupeelens-coral.vercel.app/",
+        label: "View live app",
+        embedType: "link",
+      },
+      {
+        _type: "embed",
+        _key: "rl-embed-github",
+        url: "https://github.com/akssmax/Rupeelens",
+        label: "View on GitHub",
+        embedType: "link",
+      },
+    ],
+  },
   {
     _id: "fallback-100x-landing-page",
     title: "100x.Bot Marketing Site",
@@ -797,7 +1026,7 @@ export const fallbackProjects: Project[] = [
     description:
       "V1 agent extension prototype — chat, workflows, data explorer, and app generation in one shell.",
     tag: "Product UI",
-    featured: true,
+    featured: false,
     workSection: "recentProject",
     buildBadge: "built-with-ai",
     coverImageUrl: "/projects/v1-100x-proto/hero.webp",

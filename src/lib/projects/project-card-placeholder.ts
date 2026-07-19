@@ -4,6 +4,10 @@ type RecentProjectPlaceholder = {
 }
 
 const RECENT_PROJECT_PLACEHOLDERS: Record<string, RecentProjectPlaceholder> = {
+  rupeelens: {
+    initials: "₹",
+    fallbackClassName: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+  },
   "100x-landing-page": {
     initials: "100x",
     fallbackClassName: "bg-primary/15 text-primary",

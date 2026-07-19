@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "motion/react"
-import { Cpu, FileUser, Layout, Sparkles, Terminal } from "lucide-react"
+import { Cpu, FileUser, IndianRupee, Layout, Sparkles, Terminal } from "lucide-react"
 
 import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import type {MonogramPatternTone, MonogramPatternVariant} from "@/components/brand/monogram-patterns";
@@ -13,6 +13,8 @@ import {
 
 function getPatternVariantForSlug(slug: string): MonogramPatternVariant {
   switch (slug) {
+    case "rupeelens":
+      return "grid"
     case "100x-landing-page":
       return "offset"
     case "100x-chat-shell":
@@ -28,6 +30,8 @@ function getPatternVariantForSlug(slug: string): MonogramPatternVariant {
 
 function getPatternToneForSlug(slug: string): MonogramPatternTone {
   switch (slug) {
+    case "rupeelens":
+      return "primary"
     case "100x-landing-page":
       return "accent"
     case "100x-chat-shell":
@@ -77,6 +81,13 @@ const PROJECT_ICON_CONFIG: Record<
     }
   | undefined
 > = {
+  rupeelens: {
+    Icon: IndianRupee,
+    bgGradient: "from-emerald-500/15 via-teal-500/5 to-transparent",
+    iconColor: "text-emerald-700 dark:text-emerald-300",
+    glowColor: "shadow-emerald-500/10 dark:shadow-emerald-500/5",
+    borderColor: "border-emerald-500/20",
+  },
   "100x-landing-page": {
     Icon: Layout,
     bgGradient: "from-secondary/15 via-secondary/5 to-transparent",

@@ -16,6 +16,7 @@ import {
   Terminal,
   FileUser,
   Cpu,
+  IndianRupee,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
@@ -42,6 +43,11 @@ const PROJECT_ICON_CONFIG: Record<
     }
   | undefined
 > = {
+  rupeelens: {
+    Icon: IndianRupee,
+    bgGradient: "from-emerald-500/15 via-teal-500/5 to-transparent",
+    iconColor: "text-emerald-700 dark:text-emerald-300",
+  },
   "100x-landing-page": {
     Icon: Layout,
     bgGradient: "from-secondary/15 via-secondary/5 to-transparent",
@@ -880,7 +886,7 @@ export function ChatPromptInputMinimal({
           onMedia
             ? "border-border/70 bg-background/90 backdrop-blur-md dark:bg-card/70"
             : "border-border/60 bg-muted/35 backdrop-blur-sm dark:bg-muted/25",
-          controller.isFocused && "border-primary/40 ring-2 ring-primary/15 bg-background/95",
+          controller.isFocused && "border-primary dark:border-primary bg-background/95",
         )}
       >
         <button
@@ -939,8 +945,8 @@ export function ChatPromptInputExpanded({
           "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 pt-12 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
           onMedia &&
             "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
-          controller.isFocused && "border-primary ring-2 ring-primary/20 bg-card/85",
-          controller.isFocused && onMedia && "bg-background dark:bg-card/85",
+          controller.isFocused && "border-primary dark:border-primary bg-card/85",
+          controller.isFocused && onMedia && "bg-background dark:bg-card/85 dark:border-primary",
         )}
       >
         <AttachedProjectPills controller={controller} />

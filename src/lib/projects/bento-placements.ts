@@ -5,7 +5,7 @@ export type BentoPlacement = {
   size: BentoSize
 }
 
-export const BENTO_HERO_SLUG = "100x-chat-shell"
+export const BENTO_HERO_SLUG = "rupeelens"
 
 const compactPlacement: BentoPlacement = {
   colSpan: "col-span-full lg:col-span-1",

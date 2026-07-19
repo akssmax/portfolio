@@ -20,6 +20,7 @@
     "capture:kodo": "node --import tsx scripts/capture-kodo-screenshots.ts",
     "capture:unlogged": "node --import tsx scripts/capture-unlogged-screenshots.ts",
     "capture:tulr": "node --import tsx scripts/capture-tulr-screenshots.ts",
+    "capture:rupeelens": "node --import tsx scripts/capture-rupeelens-screenshots.ts",
     "generate:themes": "node --import tsx scripts/generate-theme-css.ts",
     "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
     "generate:og-banner": "node --import tsx scripts/generate-og-banner.ts",

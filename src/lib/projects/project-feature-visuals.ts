@@ -16,13 +16,18 @@ export type CompactPhoneFeatureVisual = {
 export type FeatureVisualConfig = WideDualFeatureVisual | CompactPhoneFeatureVisual
 
 export const PROJECT_FEATURE_VISUALS: Record<string, FeatureVisualConfig> = {
-  "100x-chat-shell": {
+  rupeelens: {
     layout: "wide-dual",
-    desktopSrc: "/projects/chat-shell/hero.webp",
-    mobileSrc: "/projects/chat-shell/mobile-chat.webp",
-    desktopAlt: "Design with AI — Design Studio desktop view",
-    mobileAlt: "Design with AI — New Chat mobile view",
-    urlBar: "llm-daisyui-shell.vercel.app/design",
+    desktopSrc: "/projects/rupeelens/hero.webp",
+    mobileSrc: "/projects/rupeelens/mobile.webp",
+    desktopAlt: "RupeeLens — dashboard desktop view",
+    mobileAlt: "RupeeLens — dashboard mobile view",
+    urlBar: "rupeelens-coral.vercel.app",
+  },
+  "100x-chat-shell": {
+    layout: "compact-phone",
+    imageSrc: "/projects/chat-shell/mobile-chat.webp",
+    imageAlt: "Design with AI — New Chat mobile view",
   },
   "v1-100x-proto": {
     layout: "compact-phone",

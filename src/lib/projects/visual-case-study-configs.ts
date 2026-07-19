@@ -305,6 +305,110 @@ const LANDING_PAGE_100X: VisualCaseStudyConfig = {
   ],
 }
 
+const RUPEELENS_APP = "https://rupeelens-coral.vercel.app"
+
+const RUPEELENS: VisualCaseStudyConfig = {
+  liveUrl: `${RUPEELENS_APP}/`,
+  ctaLabel: "Open live app",
+  secondaryUrl: "https://github.com/akssmax/Rupeelens",
+  secondaryLabel: "View on GitHub",
+  heroImageSrc: "/projects/rupeelens/hero.webp",
+  heroImageAlt: "RupeeLens — personal finance dashboard",
+  heroImageHref: `${RUPEELENS_APP}/`,
+  stack: [
+    "React",
+    "TypeScript",
+    "TanStack Start",
+    "Tailwind",
+    "shadcn/ui",
+    "Mistral",
+    "IndexedDB",
+    "Neon",
+  ],
+  stats: [
+    { value: "8+", label: "Bank parsers" },
+    { value: "Local", label: "First by default" },
+    { value: "AI", label: "Categorize + chat" },
+  ],
+  builtSummary:
+    "India-first statement finance — import CSV/Excel/PDF, categorize with rules + Mistral, explore spend in one shell.",
+  footerNote:
+    "Personal product — local-first privacy with an optional Neon cloud upgrade path.",
+  highlights: [
+    "Multi-bank statement import with Axis-first parsing and debit/credit fixes",
+    "IndexedDB local ledger; optional Neon Auth migrates data on signup",
+    "Hybrid categorization — Indian merchant rules plus Mistral for the long tail",
+    "Dashboard with income/expense, categories, cashflow, and trends",
+    "Subscriptions detection, credits/debits views, and CSV/PDF export",
+    "RupeeLens AI side panel grounded in imported transactions",
+  ],
+  designNotes: [
+    "Upload-first onboarding — no login wall before the first statement",
+    "Teal Geist fintech shell with dense charts and a collapsible sidebar",
+    "Background categorize jobs so import never blocks exploration",
+    "Sources integrity — duplicates, overlaps, and row-count mismatches",
+  ],
+  galleries: [
+    {
+      title: "Overview",
+      description: "Income, spend, categories, and weekly cashflow from an imported statement.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/rupeelens/dashboard.webp",
+          alt: "RupeeLens dashboard overview",
+          label: "Dashboard",
+          href: `${RUPEELENS_APP}/`,
+        },
+      ],
+    },
+    {
+      title: "Ledger & spend",
+      description: "Filterable transactions, spending charts, and recurring merchants.",
+      layout: "row",
+      images: [
+        {
+          src: "/projects/rupeelens/transactions.webp",
+          alt: "Transactions table",
+          label: "Transactions",
+          href: `${RUPEELENS_APP}/transactions`,
+        },
+        {
+          src: "/projects/rupeelens/spending.webp",
+          alt: "Spending charts",
+          label: "Spending",
+          href: `${RUPEELENS_APP}/spending`,
+        },
+        {
+          src: "/projects/rupeelens/subscriptions.webp",
+          alt: "Subscriptions detection",
+          label: "Subscriptions",
+          href: `${RUPEELENS_APP}/subscriptions`,
+        },
+      ],
+    },
+    {
+      title: "Money flow",
+      description: "Credits vs debits and trend insights over the imported period.",
+      layout: "row",
+      images: [
+        {
+          src: "/projects/rupeelens/credits-debits.webp",
+          alt: "Credits and debits views",
+          label: "Credits / Debits",
+          href: `${RUPEELENS_APP}/credits-debits`,
+        },
+        {
+          src: "/projects/rupeelens/trends.webp",
+          alt: "Trends tab with spend insights",
+          label: "Trends",
+          href: `${RUPEELENS_APP}/`,
+        },
+      ],
+    },
+  ],
+}
+
 const RESUME_BUILDER: VisualCaseStudyConfig = {
   liveUrl: siteUrl("/tools/resume"),
   ctaLabel: "Try the tool",
@@ -382,6 +486,7 @@ const RESUME_BUILDER: VisualCaseStudyConfig = {
 }
 
 const VISUAL_CASE_STUDY_CONFIGS: Record<string, VisualCaseStudyConfig> = {
+  rupeelens: RUPEELENS,
   "100x-chat-shell": DESIGN_WITH_AI,
   "100x-landing-page": LANDING_PAGE_100X,
   "v1-100x-proto": V1_100X_PROTO,

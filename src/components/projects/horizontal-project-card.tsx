@@ -1,7 +1,17 @@
 import * as React from "react"
 import { Link } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
-import { Cpu, FileUser, History, Layout, Sparkles, Star, Terminal, ExternalLink } from "lucide-react"
+import {
+  Cpu,
+  ExternalLink,
+  FileUser,
+  History,
+  IndianRupee,
+  Layout,
+  Sparkles,
+  Star,
+  Terminal,
+} from "lucide-react"
 
 import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import { getImageUrl } from "@/lib/sanity/image"
@@ -20,6 +30,13 @@ const PROJECT_ICON_CONFIG: Record<
     }
   | undefined
 > = {
+  rupeelens: {
+    Icon: IndianRupee,
+    bgGradient: "from-emerald-500/15 via-teal-500/5 to-transparent",
+    iconColor: "text-emerald-700 dark:text-emerald-300",
+    glowColor: "shadow-emerald-500/10 dark:shadow-emerald-500/5",
+    borderColor: "border-emerald-500/20",
+  },
   "100x-landing-page": {
     Icon: Layout,
     bgGradient: "from-secondary/15 via-secondary/5 to-transparent",

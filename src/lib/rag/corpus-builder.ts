@@ -287,6 +287,7 @@ function buildPortfolioSiteDocuments(): CorpusDocument[] {
         "- /resume — password-protected owner workspace for tailoring Akshay's resume PDF from seeded profile data.",
         "- Portfolio chat — RAG-grounded answers about Akshay's work, plus Brave web search for external facts.",
         "Featured recent projects with live demos:",
+        "- RupeeLens (rupeelens) — https://rupeelens-coral.vercel.app/ — local-first Indian bank statement finance with AI categorization",
         "- Design with AI (100x-chat-shell) — https://llm-daisyui-shell.vercel.app/",
         "- 100x.Bot marketing site — https://100x.bot/",
         "- 100x Agent Extension — https://agent.akshaysaini.xyz/",
