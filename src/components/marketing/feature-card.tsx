@@ -67,6 +67,30 @@ export function FeatureCard({
   const isExternalLiveLink = Boolean(externalHref?.startsWith("http"))
   const projectSearch = linkFrom ? { from: linkFrom } : undefined
 
+  const caseStudyLinkProps = {
+    to: "/projects/$slug" as const,
+    params: { slug },
+    search: projectSearch,
+  }
+
+  const hoverActionClassName = cn(
+    "translate-y-0.5 opacity-0 pointer-events-none",
+    "group-hover/card:translate-y-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto",
+    cardActionTransition,
+  )
+
+  const titleElement = (
+    <h3
+      className={cn(
+        "font-semibold tracking-tight text-foreground group-hover/card:text-primary",
+        cardTitleTransition,
+        titleSize[size],
+      )}
+    >
+      {title}
+    </h3>
+  )
+
   return (
     <article
       className={cn(
@@ -78,64 +102,70 @@ export function FeatureCard({
     >
       <div className={cn("flex flex-1 flex-col", isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6")}>
         <div className={cn("flex items-start justify-between gap-3", isCompact ? "mb-3" : "mb-4")}>
-          <Link
-            to="/projects/$slug"
-            params={{ slug }}
-            search={projectSearch}
-            className="min-w-0 flex-1 text-left"
-          >
-            <h3
-              className={cn(
-                "font-semibold tracking-tight text-foreground group-hover/card:text-primary",
-                cardTitleTransition,
-                titleSize[size],
-              )}
+          {isExternalLiveLink ? (
+            <a
+              href={externalHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-w-0 flex-1 text-left"
             >
-              {title}
-            </h3>
-          </Link>
+              {titleElement}
+            </a>
+          ) : (
+            <Link {...caseStudyLinkProps} className="min-w-0 flex-1 text-left">
+              {titleElement}
+            </Link>
+          )}
 
-          <div className="flex shrink-0 items-center gap-1.5">
-            {externalHref ? (
-              isExternalLiveLink ? (
+          <div
+            className={cn(
+              "flex shrink-0 items-center gap-1.5",
+              isExternalLiveLink && hoverActionClassName,
+            )}
+          >
+            {isExternalLiveLink ? (
+              <>
+                <Link
+                  {...caseStudyLinkProps}
+                  className={cn(
+                    "inline-flex items-center rounded-full border border-border/60 bg-background/80 px-2.5 py-1 text-xs font-medium text-muted-foreground",
+                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                  )}
+                >
+                  View details
+                </Link>
                 <a
                   href={externalHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
+                    "inline-flex size-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground",
                     "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                    "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
-                    cardActionTransition,
                   )}
                   aria-label={`Open ${title} live`}
                 >
-                  <ArrowUpRight className="size-4" />
+                  <ArrowUpRight className="size-4" aria-hidden />
                 </a>
-              ) : (
-                <Link
-                  to={externalHref}
-                  className={cn(
-                    "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
-                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                    "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
-                    cardActionTransition,
-                  )}
-                  aria-label={`Open ${title}`}
-                >
-                  <ArrowUpRight className="size-4" />
-                </Link>
-              )
-            ) : (
+              </>
+            ) : externalHref ? (
               <Link
-                to="/projects/$slug"
-                params={{ slug }}
-                search={projectSearch}
+                to={externalHref}
                 className={cn(
                   "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
                   "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                  "lg:translate-y-0.5 lg:opacity-0 lg:group-hover/card:translate-y-0 lg:group-hover/card:opacity-100",
-                  cardActionTransition,
+                  hoverActionClassName,
+                )}
+                aria-label={`Open ${title}`}
+              >
+                <ArrowUpRight className="size-4" />
+              </Link>
+            ) : (
+              <Link
+                {...caseStudyLinkProps}
+                className={cn(
+                  "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
+                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                  hoverActionClassName,
                 )}
                 aria-label={`View ${title} case study`}
               >
@@ -145,14 +175,20 @@ export function FeatureCard({
           </div>
         </div>
 
-        <Link
-          to="/projects/$slug"
-          params={{ slug }}
-          search={projectSearch}
-          className="block flex-1 min-h-0"
-        >
-          {visual}
-        </Link>
+        {isExternalLiveLink ? (
+          <a
+            href={externalHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block flex-1 min-h-0"
+          >
+            {visual}
+          </a>
+        ) : (
+          <Link {...caseStudyLinkProps} className="block flex-1 min-h-0">
+            {visual}
+          </Link>
+        )}
 
         {!isCompact ? (
           <>
