@@ -274,7 +274,7 @@ function Landing1IndexPage() {
   return (
     <div className="flex-1 flex flex-col w-full">
       {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
-      <section className="relative -mt-16 flex min-h-[min(88svh,680px)] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
+      <section className="relative -mt-16 flex min-h-[90vh] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           {/*
             Mount both atmospheres and toggle with the html.dark class.
@@ -389,8 +389,8 @@ function Landing1IndexPage() {
                     <p className="text-foreground font-semibold">He/Him</p>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-muted-foreground font-medium">Age</p>
-                    <p className="text-foreground font-semibold">29 years old</p>
+                    <p className="text-muted-foreground font-medium">Experience</p>
+                    <p className="text-foreground font-semibold">6+ years in design</p>
                   </div>
                   <div className="space-y-1">
                     <p className="text-muted-foreground font-medium">Hometown</p>

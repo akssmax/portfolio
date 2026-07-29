@@ -1,4 +1,4 @@
-import { FeatureCard } from "@/components/marketing/feature-card"
+import { FeatureCard, type FeatureCardPrimaryLink } from "@/components/marketing/feature-card"
 import { FeatureCardVisual } from "@/components/marketing/feature-card-visual"
 import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 import {
@@ -15,6 +15,7 @@ type FeatureCardGridProps = {
   projects: ShowcaseProject[]
   className?: string
   linkFrom?: CaseStudyFrom
+  primaryLink?: FeatureCardPrimaryLink
 }
 
 function ProjectFeatureCard({
@@ -22,11 +23,13 @@ function ProjectFeatureCard({
   size,
   className,
   linkFrom,
+  primaryLink,
 }: {
   project: ShowcaseProject
   size: BentoSize
   className?: string
   linkFrom?: CaseStudyFrom
+  primaryLink?: FeatureCardPrimaryLink
 }) {
   return (
     <FeatureCard
@@ -40,12 +43,18 @@ function ProjectFeatureCard({
       size={size}
       className={className}
       linkFrom={linkFrom}
+      primaryLink={primaryLink}
       visual={<FeatureCardVisual project={project} size={size} />}
     />
   )
 }
 
-export function FeatureCardGrid({ projects, className, linkFrom }: FeatureCardGridProps) {
+export function FeatureCardGrid({
+  projects,
+  className,
+  linkFrom,
+  primaryLink = "live",
+}: FeatureCardGridProps) {
   if (projects.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card/30 py-16 text-center">
@@ -60,7 +69,7 @@ export function FeatureCardGrid({ projects, className, linkFrom }: FeatureCardGr
     <div
       className={cn(
         "grid gap-4 sm:gap-5 lg:gap-6",
-        getBentoGridClass(projects.length),
+        getBentoGridClass(projects.length, projects),
         className
       )}
     >
@@ -77,6 +86,7 @@ export function FeatureCardGrid({ projects, className, linkFrom }: FeatureCardGr
             size={placement.size}
             className={placement.colSpan}
             linkFrom={linkFrom}
+            primaryLink={primaryLink}
           />
         )
       })}

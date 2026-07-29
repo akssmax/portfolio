@@ -20,6 +20,8 @@ const titleSize: Record<BentoSize, string> = {
   wide: "text-xl sm:text-2xl lg:text-3xl",
 }
 
+export type FeatureCardPrimaryLink = "live" | "case-study"
+
 type FeatureCardProps = {
   title: string
   description?: string
@@ -32,6 +34,8 @@ type FeatureCardProps = {
   visual: React.ReactNode
   className?: string
   linkFrom?: CaseStudyFrom
+  /** When "case-study", the card opens the project page; live URL stays on the arrow action. */
+  primaryLink?: FeatureCardPrimaryLink
 }
 
 function BuildBadgeTag({ badge }: { badge: BuildBadge }) {
@@ -60,9 +64,11 @@ export function FeatureCard({
   visual,
   className,
   linkFrom,
+  primaryLink = "live",
 }: FeatureCardProps) {
   const isCompact = size === "compact"
-  const isExternalLiveLink = Boolean(externalHref?.startsWith("http"))
+  const hasExternalLiveUrl = Boolean(externalHref?.startsWith("http"))
+  const useExternalPrimary = hasExternalLiveUrl && primaryLink === "live"
   const projectSearch = linkFrom ? { from: linkFrom } : undefined
 
   const caseStudyLinkProps = {
@@ -95,33 +101,47 @@ export function FeatureCard({
         "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs",
         "hover:-translate-y-0.5 hover:border-border hover:shadow-lg",
         cardHoverTransition,
+        !useExternalPrimary && "cursor-pointer",
         className,
       )}
     >
-      <div className={cn("flex flex-1 flex-col", isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6")}>
+      {!useExternalPrimary ? (
+        <Link
+          {...caseStudyLinkProps}
+          className="absolute inset-0 z-[1] rounded-2xl"
+          aria-label={`View ${title} case study`}
+        />
+      ) : null}
+
+      <div
+        className={cn(
+          "relative flex flex-1 flex-col",
+          !useExternalPrimary && "pointer-events-none",
+          isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6",
+        )}
+      >
         <div className={cn("flex items-start justify-between gap-3", isCompact ? "mb-3" : "mb-4")}>
-          {isExternalLiveLink ? (
+          {useExternalPrimary ? (
             <a
               href={externalHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 flex-1 text-left"
+              className="relative z-[2] min-w-0 flex-1 text-left"
             >
               {titleElement}
             </a>
           ) : (
-            <Link {...caseStudyLinkProps} className="min-w-0 flex-1 text-left">
-              {titleElement}
-            </Link>
+            <div className="min-w-0 flex-1 text-left">{titleElement}</div>
           )}
 
           <div
             className={cn(
-              "flex shrink-0 items-center gap-1.5",
-              isExternalLiveLink && hoverActionClassName,
+              "relative z-[2] flex shrink-0 items-center gap-1.5",
+              !useExternalPrimary && "pointer-events-auto",
+              (useExternalPrimary || hasExternalLiveUrl) && hoverActionClassName,
             )}
           >
-            {isExternalLiveLink ? (
+            {useExternalPrimary ? (
               <>
                 <Link
                   {...caseStudyLinkProps}
@@ -145,6 +165,19 @@ export function FeatureCard({
                   <ArrowUpRight className="size-4" aria-hidden />
                 </a>
               </>
+            ) : hasExternalLiveUrl ? (
+              <a
+                href={externalHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "inline-flex size-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground",
+                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+                )}
+                aria-label={`Open ${title} live`}
+              >
+                <ArrowUpRight className="size-4" aria-hidden />
+              </a>
             ) : externalHref ? (
               <Link
                 to={externalHref}
@@ -173,19 +206,17 @@ export function FeatureCard({
           </div>
         </div>
 
-        {isExternalLiveLink ? (
+        {useExternalPrimary ? (
           <a
             href={externalHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="block flex-1 min-h-0"
+            className="relative z-[2] block flex-1 min-h-0"
           >
             {visual}
           </a>
         ) : (
-          <Link {...caseStudyLinkProps} className="block flex-1 min-h-0">
-            {visual}
-          </Link>
+          <div className="block flex-1 min-h-0">{visual}</div>
         )}
 
         {!isCompact ? (

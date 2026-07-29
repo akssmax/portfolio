@@ -13,9 +13,11 @@ import { cn } from "@/lib/utils"
 
 const visualAspect: Record<BentoSize, string> = {
   compact: "aspect-[4/5] min-h-[240px] sm:min-h-[280px]",
-  default: "aspect-[16/10] min-h-[220px]",
+  default: "aspect-[16/10] min-h-[260px] sm:min-h-[300px]",
   wide: "min-h-[280px] sm:min-h-[340px] lg:min-h-[400px]",
 }
+
+const compactPhoneDefaultAspect = "min-h-[640px]"
 
 type FeatureCardVisualProps = {
   project: ProjectCard
@@ -40,7 +42,9 @@ export function FeatureCardVisual({
   const aspectClass =
     isCompactPhone && size === "compact"
       ? "aspect-[9/16] min-h-[240px] sm:min-h-[280px]"
-      : visualAspect[size]
+      : isCompactPhone && size === "default"
+        ? compactPhoneDefaultAspect
+        : visualAspect[size]
 
   return (
     <div

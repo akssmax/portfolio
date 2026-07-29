@@ -20,7 +20,7 @@ export function CompactPhoneCardVisual({
     <div className={cn("relative h-full w-full overflow-hidden", className)}>
       <DiagonalPattern />
 
-      <div className="absolute inset-3">
+      <div className="absolute inset-2.5 sm:inset-3">
         <PhoneShell
           className={cn(
             "size-full will-change-transform",

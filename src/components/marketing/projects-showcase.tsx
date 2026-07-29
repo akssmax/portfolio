@@ -17,7 +17,8 @@ type ProjectsShowcaseGroupProps = {
   variant?: "default" | "section"
   id?: string
   /** Tighter top padding so the intro peeks below the hero fold. */
-  compactTop?: boolean
+  /** When "case-study", card click opens the project page instead of the live URL. */
+  primaryLink?: "live" | "case-study"
 }
 
 function ProjectsShowcaseGroup({
@@ -29,6 +30,7 @@ function ProjectsShowcaseGroup({
   variant = "default",
   id,
   compactTop = false,
+  primaryLink = "live",
 }: ProjectsShowcaseGroupProps) {
   return (
     <section
@@ -46,7 +48,7 @@ function ProjectsShowcaseGroup({
           heading={heading}
           description={description}
         />
-        <FeatureCardGrid projects={projects} linkFrom="home" />
+        <FeatureCardGrid projects={projects} linkFrom="home" primaryLink={primaryLink} />
       </div>
     </section>
   )
@@ -118,6 +120,7 @@ export function ProjectsShowcase({
           description="Deep dives from pre-LLM product design — Figma to shipped UI without AI codegen."
           projects={caseStudies}
           variant="section"
+          primaryLink="case-study"
         />
       </div>
     </div>

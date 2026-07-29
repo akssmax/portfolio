@@ -6,14 +6,25 @@ export type BentoPlacement = {
 }
 
 export const BENTO_HERO_SLUG = "postforge"
+export const BENTO_SECONDARY_WIDE_SLUG = "rupeelens"
 
 const compactPlacement: BentoPlacement = {
   colSpan: "col-span-full lg:col-span-1",
   size: "compact",
 }
 
+const defaultPlacement: BentoPlacement = {
+  colSpan: "col-span-full md:col-span-1",
+  size: "default",
+}
+
 const widePlacement: BentoPlacement = {
   colSpan: "col-span-full lg:col-span-3",
+  size: "wide",
+}
+
+const fullWidthWidePlacement: BentoPlacement = {
+  colSpan: "col-span-full",
   size: "wide",
 }
 
@@ -41,12 +52,23 @@ export function getBentoPlacements(projectCount: number): BentoPlacement[] {
   }
 }
 
-/** Assign bento spans per project, with an optional hero slug getting the wide slot. */
+/** Assign bento spans per project, with optional hero + secondary wide slots. */
 export function getBentoPlacementsForProjects(
   projects: Array<{ slug: string }>,
   heroSlug: string = BENTO_HERO_SLUG,
+  secondaryWideSlug: string = BENTO_SECONDARY_WIDE_SLUG,
 ): BentoPlacement[] {
   const heroIndex = projects.findIndex((project) => project.slug === heroSlug)
+  const secondaryWideIndex = projects.findIndex((project) => project.slug === secondaryWideSlug)
+
+  if (projects.length === 4 && heroIndex !== -1 && secondaryWideIndex !== -1) {
+    return projects.map((_, index) => {
+      if (index === heroIndex || index === secondaryWideIndex) {
+        return fullWidthWidePlacement
+      }
+      return defaultPlacement
+    })
+  }
 
   if (projects.length === 4 && heroIndex !== -1) {
     return projects.map((_, index) =>
@@ -57,8 +79,22 @@ export function getBentoPlacementsForProjects(
   return getBentoPlacements(projects.length)
 }
 
-export function getBentoGridClass(projectCount: number): string {
+export function getBentoGridClass(
+  projectCount: number,
+  projects?: Array<{ slug: string }>,
+): string {
   if (projectCount <= 1) return "grid-cols-1"
   if (projectCount === 2) return "grid-cols-1 md:grid-cols-2"
+
+  if (projects && projectCount === 4) {
+    const hasDualWideLayout =
+      projects.some((project) => project.slug === BENTO_HERO_SLUG) &&
+      projects.some((project) => project.slug === BENTO_SECONDARY_WIDE_SLUG)
+
+    if (hasDualWideLayout) {
+      return "grid-cols-1 md:grid-cols-2"
+    }
+  }
+
   return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 }
