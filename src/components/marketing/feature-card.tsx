@@ -101,7 +101,7 @@ export function FeatureCard({
         "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs",
         "hover:-translate-y-0.5 hover:border-border hover:shadow-lg",
         cardHoverTransition,
-        !useExternalPrimary && "cursor-pointer",
+        "cursor-pointer",
         className,
       )}
     >
@@ -111,25 +111,37 @@ export function FeatureCard({
           className="absolute inset-0 z-[1] rounded-2xl"
           aria-label={`View ${title} case study`}
         />
-      ) : null}
+      ) : (
+        <a
+          href={externalHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-0 z-[1] rounded-2xl md:hidden"
+          aria-label={`Open ${title} live`}
+        />
+      )}
 
       <div
         className={cn(
           "relative flex flex-1 flex-col",
           !useExternalPrimary && "pointer-events-none",
+          useExternalPrimary && "max-md:pointer-events-none",
           isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6",
         )}
       >
         <div className={cn("flex items-start justify-between gap-3", isCompact ? "mb-3" : "mb-4")}>
           {useExternalPrimary ? (
-            <a
-              href={externalHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative z-[2] min-w-0 flex-1 text-left"
-            >
-              {titleElement}
-            </a>
+            <>
+              <div className="min-w-0 flex-1 text-left md:hidden">{titleElement}</div>
+              <a
+                href={externalHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-[2] hidden min-w-0 flex-1 text-left md:block"
+              >
+                {titleElement}
+              </a>
+            </>
           ) : (
             <div className="min-w-0 flex-1 text-left">{titleElement}</div>
           )}
@@ -207,14 +219,17 @@ export function FeatureCard({
         </div>
 
         {useExternalPrimary ? (
-          <a
-            href={externalHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-[2] block flex-1 min-h-0"
-          >
-            {visual}
-          </a>
+          <>
+            <div className="block flex-1 min-h-0 md:hidden">{visual}</div>
+            <a
+              href={externalHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-[2] hidden flex-1 min-h-0 md:block"
+            >
+              {visual}
+            </a>
+          </>
         ) : (
           <div className="block flex-1 min-h-0">{visual}</div>
         )}
