@@ -16,6 +16,14 @@ export type CompactPhoneFeatureVisual = {
 export type FeatureVisualConfig = WideDualFeatureVisual | CompactPhoneFeatureVisual
 
 export const PROJECT_FEATURE_VISUALS: Record<string, FeatureVisualConfig> = {
+  postforge: {
+    layout: "wide-dual",
+    desktopSrc: "/projects/postforge/hero.webp",
+    mobileSrc: "/projects/postforge/mobile.webp",
+    desktopAlt: "Postforge — landing with live editor preview",
+    mobileAlt: "Postforge — mobile landing",
+    urlBar: "postforge-kohl.vercel.app",
+  },
   rupeelens: {
     layout: "wide-dual",
     desktopSrc: "/projects/rupeelens/hero.webp",

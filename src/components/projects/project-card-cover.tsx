@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "motion/react"
-import { Cpu, FileUser, IndianRupee, Layout, Sparkles, Terminal } from "lucide-react"
+import { Cpu, FileUser, IndianRupee, Layout, Palette, Sparkles, Terminal } from "lucide-react"
 
 import type { ProjectCard as ProjectCardType } from "@/lib/sanity/types"
 import type {MonogramPatternTone, MonogramPatternVariant} from "@/components/brand/monogram-patterns";
@@ -13,6 +13,8 @@ import {
 
 function getPatternVariantForSlug(slug: string): MonogramPatternVariant {
   switch (slug) {
+    case "postforge":
+      return "concentric"
     case "rupeelens":
       return "grid"
     case "100x-landing-page":
@@ -30,6 +32,8 @@ function getPatternVariantForSlug(slug: string): MonogramPatternVariant {
 
 function getPatternToneForSlug(slug: string): MonogramPatternTone {
   switch (slug) {
+    case "postforge":
+      return "accent"
     case "rupeelens":
       return "primary"
     case "100x-landing-page":
@@ -81,6 +85,13 @@ const PROJECT_ICON_CONFIG: Record<
     }
   | undefined
 > = {
+  postforge: {
+    Icon: Palette,
+    bgGradient: "from-accent/15 via-accent/5 to-transparent",
+    iconColor: "text-accent-foreground",
+    glowColor: "shadow-accent/10 dark:shadow-accent/5",
+    borderColor: "border-accent/20",
+  },
   rupeelens: {
     Icon: IndianRupee,
     bgGradient: "from-emerald-500/15 via-teal-500/5 to-transparent",

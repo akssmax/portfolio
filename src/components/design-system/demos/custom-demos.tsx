@@ -63,7 +63,6 @@ export function FeatureCardDemo() {
         tag={project.tag}
         buildBadge={project.buildBadge}
         metrics={project.metrics}
-        featured={project.featured}
         visual={<FeatureCardVisual project={project} />}
       />
     </div>

@@ -1,6 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Loader2 } from "lucide-react"
+
+import { cn } from "@/lib/utils"
 
 /** A4 width at 96 CSS px/in — matches HTML preview column. */
 const A4_PREVIEW_MAX_WIDTH_PX = 794
@@ -8,6 +11,7 @@ const A4_PREVIEW_MAX_WIDTH_PX = 794
 type ResumePdfCanvasPreviewProps = {
   pdfUrl: string
   showPageBreaks?: boolean
+  className?: string
 }
 
 let workerConfigured = false
@@ -36,24 +40,47 @@ function getPageDisplaySize(
   return { displayWidth, displayHeight, renderScale }
 }
 
+function waitForLayout(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve())
+    })
+  })
+}
+
+function measureContainerWidth(element: HTMLElement): number {
+  const measuredWidth = element.clientWidth
+  if (measuredWidth > 0) {
+    return Math.min(measuredWidth, A4_PREVIEW_MAX_WIDTH_PX)
+  }
+
+  const parentWidth = element.parentElement?.clientWidth ?? A4_PREVIEW_MAX_WIDTH_PX
+  return Math.min(parentWidth, A4_PREVIEW_MAX_WIDTH_PX)
+}
+
 export function ResumePdfCanvasPreview({
   pdfUrl,
   showPageBreaks = false,
+  className,
 }: ResumePdfCanvasPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isRendering, setIsRendering] = useState(true)
 
   useEffect(() => {
     let cancelled = false
-    const host = containerRef.current
-    if (!host) return
-    const containerEl = host
+    const containerEl = containerRef.current
+    if (!containerEl) return
 
     containerEl.replaceChildren()
     setError(null)
+    setIsRendering(true)
 
     async function renderPdf() {
       try {
+        await waitForLayout()
+        if (cancelled) return
+
         await configurePdfWorker()
         const pdfjs = await import("pdfjs-dist")
         const loadingTask = pdfjs.getDocument(pdfUrl)
@@ -62,7 +89,7 @@ export function ResumePdfCanvasPreview({
         if (cancelled) return
 
         const pixelRatio = window.devicePixelRatio || 1
-        const containerWidth = containerEl.clientWidth || A4_PREVIEW_MAX_WIDTH_PX
+        const containerWidth = measureContainerWidth(containerEl)
 
         for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
           if (cancelled) return
@@ -89,6 +116,14 @@ export function ResumePdfCanvasPreview({
           pageShell.style.width = `${displayWidth}px`
           pageShell.appendChild(canvas)
 
+          const context = canvas.getContext("2d")
+          if (!context) {
+            throw new Error("Unable to initialize PDF canvas.")
+          }
+
+          await page.render({ canvasContext: context, viewport }).promise
+          if (cancelled) return
+
           if (showPageBreaks && pageNumber < pdf.numPages) {
             const breakShell = document.createElement("div")
             breakShell.className =
@@ -108,16 +143,14 @@ export function ResumePdfCanvasPreview({
             }
             containerEl.appendChild(pageShell)
           }
+        }
 
-          const context = canvas.getContext("2d")
-          if (!context) {
-            throw new Error("Unable to initialize PDF canvas.")
-          }
-
-          await page.render({ canvasContext: context, viewport }).promise
+        if (!cancelled) {
+          setIsRendering(false)
         }
       } catch (cause) {
         if (!cancelled) {
+          setIsRendering(false)
           setError(
             cause instanceof Error ? cause.message : "Unable to render A4 preview.",
           )
@@ -127,39 +160,33 @@ export function ResumePdfCanvasPreview({
 
     void renderPdf()
 
-    let resizeTimer: number | undefined
-    const observer = new ResizeObserver(() => {
-      if (cancelled) return
-      if (resizeTimer !== undefined) window.clearTimeout(resizeTimer)
-      resizeTimer = window.setTimeout(() => {
-        containerEl.replaceChildren()
-        void renderPdf()
-      }, 150)
-    })
-    observer.observe(containerEl)
-
     return () => {
       cancelled = true
-      if (resizeTimer !== undefined) window.clearTimeout(resizeTimer)
-      observer.disconnect()
     }
   }, [pdfUrl, showPageBreaks])
 
-  if (error) {
-    return (
-      <div className="flex h-full items-center justify-center p-6">
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      </div>
-    )
-  }
-
   return (
-    <div
-      ref={containerRef}
-      className="mx-auto w-full max-w-[794px] overflow-y-auto py-4"
-      aria-label="A4 PDF preview"
-    />
+    <div className={cn("relative h-full w-full", className)}>
+      {isRendering && !error ? (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-neutral-200/80 text-muted-foreground dark:bg-neutral-900/80">
+          <Loader2 aria-hidden className="size-8 animate-spin" />
+          <p className="text-sm">Rendering pages…</p>
+        </div>
+      ) : null}
+
+      {error ? (
+        <div className="flex h-full items-center justify-center p-6">
+          <p className="text-sm text-destructive" role="alert">
+            {error}
+          </p>
+        </div>
+      ) : (
+        <div
+          ref={containerRef}
+          className="mx-auto h-full w-full max-w-[794px] overflow-y-auto px-4 py-4 sm:px-6"
+          aria-label="A4 PDF preview"
+        />
+      )}
+    </div>
   )
 }

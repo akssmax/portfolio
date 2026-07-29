@@ -28,7 +28,6 @@ type FeatureCardProps = {
   tag?: string
   buildBadge?: BuildBadge | null
   metrics?: string | null
-  featured?: boolean
   size?: BentoSize
   visual: React.ReactNode
   className?: string
@@ -57,7 +56,6 @@ export function FeatureCard({
   tag,
   buildBadge,
   metrics,
-  featured,
   size = "default",
   visual,
   className,
@@ -199,12 +197,6 @@ export function FeatureCard({
                 </span>
               ) : null}
               {buildBadge ? <BuildBadgeTag badge={buildBadge} /> : null}
-              {featured ? (
-                <Tag variant="outline" className="gap-1 text-[10px] py-0.5 px-2 font-medium border-amber-500/30 text-amber-600 dark:text-amber-400">
-                  <Sparkles className="size-3" aria-hidden />
-                  Featured
-                </Tag>
-              ) : null}
             </div>
 
             {description ? (

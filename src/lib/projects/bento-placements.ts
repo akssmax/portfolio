@@ -5,7 +5,7 @@ export type BentoPlacement = {
   size: BentoSize
 }
 
-export const BENTO_HERO_SLUG = "rupeelens"
+export const BENTO_HERO_SLUG = "postforge"
 
 const compactPlacement: BentoPlacement = {
   colSpan: "col-span-full lg:col-span-1",

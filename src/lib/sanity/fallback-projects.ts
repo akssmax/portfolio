@@ -96,7 +96,194 @@ const RUPEELENS_TECH_STACK_ITEMS = [
   { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
 ]
 
+const POSTFORGE_TECH_STACK_ITEMS = [
+  { name: "Next.js", logoSrc: "/projects/chat-shell/tech/vite.svg" },
+  { name: "React", logoSrc: "/projects/chat-shell/tech/react.svg" },
+  { name: "TypeScript", logoSrc: "/projects/chat-shell/tech/typescript.svg" },
+  { name: "Tailwind CSS", logoSrc: "/projects/chat-shell/tech/tailwindcss.svg" },
+  { name: "HeroUI", logoSrc: "/projects/chat-shell/tech/shadcn.svg" },
+  { name: "Framer Motion", logoSrc: "/projects/100x/tech/framer.svg" },
+  { name: "Mistral", logoSrc: "/projects/chat-shell/tech/mistral.svg" },
+  { name: "Vercel", logoSrc: "/projects/chat-shell/tech/vercel.svg" },
+]
+
 export const fallbackProjects: Project[] = [
+  {
+    _id: "fallback-postforge",
+    title: "Postforge",
+    slug: "postforge",
+    description:
+      "On-brand social posts and slide decks — upload a logo, shuffle layouts, brief AI in chat, and export from one canvas.",
+    tag: "Product UI",
+    featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
+    coverImageUrl: "/projects/postforge/hero.webp",
+    year: "Jul 2026",
+    role: "Design Engineer",
+    client: "Personal",
+    tools: ["Cursor", "Mistral", "Next.js"],
+    publishedAt: "2026-07-29T00:00:00.000Z",
+    metrics: "Brand kit · 20+ layouts · AI brief · Export",
+    seo: {
+      metaTitle: "Postforge — Case Study",
+      metaDescription:
+        "How a brand-first social design tool turns a logo into layouts, AI-drafted posts, and export-ready slide decks on a focused canvas.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "pf-h-context",
+        title: "Context",
+        subtitle: "Solo personal build for brand-first social and slide design.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "pf-rt-context",
+        body: [
+          textBlock(
+            "pf-rt-context-1",
+            "Postforge is a personal design tool for marketing teams and founders who need on-brand social posts and slide decks without opening Figma for every variant. Upload a logo once — the app extracts colors, builds backgrounds, and tiles logo patterns across every composition.",
+          ),
+          textBlock(
+            "pf-rt-context-2",
+            "Built with Next.js, HeroUI, and Framer Motion as a focused canvas experience — from Shuffle exploration through AI brief chat to PNG/PDF export.",
+          ),
+        ],
+      },
+      {
+        _type: "collaborators",
+        _key: "pf-collab",
+        subtitle: "Solo design-engineering build — product design through deployment.",
+        items: [
+          {
+            name: "Akshay Saini",
+            role: "Design Engineer",
+            initials: "AS",
+          },
+        ],
+      },
+      {
+        _type: "metrics",
+        _key: "pf-metrics-top",
+        items: [
+          { value: "20+", label: "Layout patterns" },
+          { value: "AI", label: "Brief + chat refine" },
+          { value: "1", label: "Canvas export flow" },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "pf-h-challenge",
+        title: "The challenge",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "pf-rt-challenge",
+        body: [
+          textBlock(
+            "pf-rt-challenge-1",
+            "Social design tools often start from a blank canvas or generic templates that ignore brand context. Postforge had to feel fast and exploratory — Shuffle through finished compositions, apply a real brand kit, and still support AI-assisted copy without breaking the visual system.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "pf-h-shipped",
+        title: "What I shipped",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "pf-rt-shipped",
+        body: [
+          textBlock(
+            "pf-rt-shipped-1",
+            "A full product surface — landing, design tool, visual library, and slide decks — with a cohesive ink-and-ember forge aesthetic.",
+          ),
+          ...bulletList("pf-rt-shipped-b", [
+            "Brand kit — logo upload extracts palette, backgrounds, and tiled logo patterns",
+            "Shuffle — cycle layout, surface, pattern, and copy across artboards in one click",
+            "AI brief — describe a post in plain language, refine in chat without leaving the editor",
+            "20+ layout patterns with a searchable layout catalog",
+            "Visual library — brand-aware illustration blocks and Storyset integration",
+            "Export — PNG artboards and PDF slide decks from the same canvas",
+          ]),
+        ],
+      },
+      {
+        _type: "techStack",
+        _key: "pf-tech",
+        items: POSTFORGE_TECH_STACK_ITEMS.map((item, index) => ({
+          ...item,
+          _key: `pf-tech-${index}`,
+        })),
+      },
+      {
+        _type: "staticImage",
+        _key: "pf-img-hero",
+        src: "/projects/postforge/hero.webp",
+        alt: "Postforge landing — hero with live editor preview and brand showcase",
+        caption: "Landing — ink-and-ember forge atmosphere with live hero editor",
+        fullBleed: true,
+      },
+      {
+        _type: "staticImageGallery",
+        _key: "pf-gallery-core",
+        caption: "Core surfaces — design tool, visual library, and slide decks",
+        images: [
+          {
+            src: "/projects/postforge/tool.webp",
+            alt: "Postforge design tool with brand kit and canvas",
+          },
+          {
+            src: "/projects/postforge/visuals.webp",
+            alt: "Visual library with brand-aware illustration blocks",
+          },
+          {
+            src: "/projects/postforge/slides.webp",
+            alt: "Slide deck compositions and export",
+          },
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "pf-h-decisions",
+        title: "Design decisions",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "pf-rt-decisions",
+        body: bulletList("pf-rt-decisions-b", [
+          "Logo-first onboarding — brand kit before blank canvas, not after",
+          "Shuffle as exploration — finished compositions instead of empty frames",
+          "Split editor shell — chat brief beside canvas for iterative refinement",
+          "Landing hero as live product demo — not static screenshots",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "pf-h-outcome",
+        title: "Outcome",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "pf-rt-outcome",
+        body: [
+          textBlock(
+            "pf-rt-outcome-1",
+            "Shipped as a personal product on Vercel — a complete brand-first design loop from logo upload to export-ready social posts and slide decks.",
+          ),
+        ],
+      },
+      {
+        _type: "embed",
+        _key: "pf-embed-live",
+        url: "https://postforge-kohl.vercel.app/",
+        label: "View live app",
+        embedType: "link",
+      },
+    ],
+  },
   {
     _id: "fallback-rupeelens",
     title: "RupeeLens",
@@ -631,7 +818,7 @@ export const fallbackProjects: Project[] = [
     description:
       "A personal AI workspace — streaming chat, memory, RAG, and a conversational design studio in one shell.",
     tag: "Product UI",
-    featured: true,
+    featured: false,
     workSection: "recentProject",
     buildBadge: "built-with-ai",
     coverImageUrl: "/projects/chat-shell/hero.webp",

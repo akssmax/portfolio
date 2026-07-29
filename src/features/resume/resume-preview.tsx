@@ -1,13 +1,14 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Download, Eye, Loader2, Pencil, Sparkles } from "lucide-react"
+import { Download, Eye, Loader2, Sparkles } from "lucide-react"
 
 
 import { buildResumeDocument } from "./build-resume-document"
 import { ResumeHtmlDocument } from "./layouts/html/resume-html-document"
 import { CoverLetterHtmlDocument } from "./layouts/html/cover-letter-html-document"
-import { ResumeA4PdfPreview } from "./resume-a4-pdf-preview"
+import { ResumeA4PagedHtmlPreview } from "./resume-a4-paged-html-preview"
+import { ResumeA4PreviewDialog } from "./resume-a4-preview-dialog"
 import {
   resolveResumeBrandColor
 } from "./resume-brand-color-utils"
@@ -19,8 +20,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { FontPresetId } from "@/lib/themes/types"
 
 import { ResumeFontSelect } from "./resume-font-select"
-
-type PreviewSurface = "pdf" | "edit"
 
 type ResumePreviewProps = {
   document: ResumeDocument
@@ -65,7 +64,8 @@ export function ResumePreview({
   onCoverLetterDocumentChange,
 }: ResumePreviewProps) {
   const brandColor = resolveResumeBrandColor(colorSelection, fallbackColor)
-  const [previewSurface, setPreviewSurface] = useState<PreviewSurface>("pdf")
+  const [a4PreviewOpen, setA4PreviewOpen] = useState(false)
+  const a4PreviewDisabled = activeTab === "cover-letter" && !coverLetterDocument
   const resolvedFontPreset = fontPreset ?? "inter"
 
   return (
@@ -92,48 +92,17 @@ export function ResumePreview({
             {fontPreset && onFontPresetChange ? (
               <ResumeFontSelect value={fontPreset} onChange={onFontPresetChange} />
             ) : null}
-            <div className="hidden items-center rounded-md border border-border bg-background p-0.5 sm:flex">
-              <Button
-                type="button"
-                variant={previewSurface === "pdf" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 px-2.5 text-xs"
-                onClick={() => setPreviewSurface("pdf")}
-              >
-                <Eye aria-hidden />
-                PDF pages
-              </Button>
-              <Button
-                type="button"
-                variant={previewSurface === "edit" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 px-2.5 text-xs"
-                onClick={() => setPreviewSurface("edit")}
-              >
-                <Pencil aria-hidden />
-                Edit
-              </Button>
-            </div>
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="shrink-0 text-xs sm:hidden"
-              onClick={() =>
-                setPreviewSurface((current) => (current === "pdf" ? "edit" : "pdf"))
-              }
+              className="shrink-0 text-xs"
+              disabled={a4PreviewDisabled || isGenerating}
+              onClick={() => setA4PreviewOpen(true)}
             >
-              {previewSurface === "pdf" ? (
-                <>
-                  <Pencil aria-hidden />
-                  Edit
-                </>
-              ) : (
-                <>
-                  <Eye aria-hidden />
-                  PDF
-                </>
-              )}
+              <Eye aria-hidden />
+              <span className="hidden sm:inline">A4 Preview</span>
+              <span className="sm:hidden">Preview</span>
             </Button>
             <Button
               type="button"
@@ -162,54 +131,30 @@ export function ResumePreview({
         ) : null}
       </div>
 
-      {/* Main Preview Container */}
+      {/* Main Preview Container — editable HTML with A4 page breaks */}
       <div className="min-h-0 flex-1 overflow-auto bg-muted/30 p-3 sm:p-6">
         {activeTab === "resume" ? (
-          previewSurface === "pdf" ? (
-            <ResumeA4PdfPreview
-              activeTab="resume"
-              resumeDocument={document}
-              coverLetterDocument={null}
+          <ResumeA4PagedHtmlPreview label="Resume preview">
+            <ResumeHtmlDocument
+              key={layout}
+              document={document}
               brandColor={brandColor}
-              layout={layout}
-              fontPreset={resolvedFontPreset}
+              fontFamily={fontFamily}
               display={display}
+              layout={layout}
+              onChange={onChange}
             />
-          ) : (
-            <article className="mx-auto w-full max-w-[794px] overflow-hidden rounded-sm border border-border bg-white shadow-sm">
-              <ResumeHtmlDocument
-                key={layout}
-                document={document}
-                brandColor={brandColor}
-                fontFamily={fontFamily}
-                display={display}
-                layout={layout}
-                onChange={onChange}
-              />
-            </article>
-          )
+          </ResumeA4PagedHtmlPreview>
         ) : coverLetterDocument ? (
-          previewSurface === "pdf" ? (
-            <ResumeA4PdfPreview
-              activeTab="cover-letter"
-              resumeDocument={document}
-              coverLetterDocument={coverLetterDocument}
+          <ResumeA4PagedHtmlPreview label="Cover letter preview">
+            <CoverLetterHtmlDocument
+              key={`cl-${layout}`}
+              document={coverLetterDocument}
               brandColor={brandColor}
               layout={layout}
-              fontPreset={resolvedFontPreset}
-              display={display}
+              onChange={onCoverLetterDocumentChange}
             />
-          ) : (
-            <article className="mx-auto w-full max-w-[794px] overflow-hidden rounded-sm border border-border bg-white shadow-sm">
-              <CoverLetterHtmlDocument
-                key={`cl-${layout}`}
-                document={coverLetterDocument}
-                brandColor={brandColor}
-                layout={layout}
-                onChange={onCoverLetterDocumentChange}
-              />
-            </article>
-          )
+          </ResumeA4PagedHtmlPreview>
         ) : (
           <div className="mx-auto flex aspect-[210/297] w-full max-w-[794px] items-center justify-center rounded-sm border border-border bg-white p-8 text-center text-muted-foreground shadow-sm">
             <div>
@@ -227,6 +172,18 @@ export function ResumePreview({
           </div>
         )}
       </div>
+
+      <ResumeA4PreviewDialog
+        open={a4PreviewOpen}
+        onOpenChange={setA4PreviewOpen}
+        activeTab={activeTab}
+        resumeDocument={document}
+        coverLetterDocument={coverLetterDocument}
+        brandColor={brandColor}
+        layout={layout}
+        fontPreset={resolvedFontPreset}
+        display={display}
+      />
     </div>
   )
 }

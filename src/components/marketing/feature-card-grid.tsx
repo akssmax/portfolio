@@ -37,7 +37,6 @@ function ProjectFeatureCard({
       tag={project.tag}
       buildBadge={project.buildBadge}
       metrics={project.metrics}
-      featured={project.featured}
       size={size}
       className={className}
       linkFrom={linkFrom}

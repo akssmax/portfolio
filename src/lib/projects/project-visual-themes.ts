@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import { Cpu, FileUser, IndianRupee, Layout, Sparkles, Terminal } from "lucide-react"
+import { Cpu, FileUser, IndianRupee, Layout, Palette, Sparkles, Terminal } from "lucide-react"
 
 import type {
   MonogramPatternTone,
@@ -31,6 +31,18 @@ const DEFAULT_THEME: ProjectVisualTheme = {
 }
 
 export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
+  postforge: {
+    Icon: Palette,
+    gradientLight:
+      "from-[#FFD400]/35 via-[#FA3D1D]/20 to-[#FFC0FD]/25",
+    gradientDark:
+      "from-[#FA3D1D]/22 via-[#FD02F5]/14 to-[#340B05]/35",
+    iconColor: "text-accent-foreground",
+    borderColor: "border-accent/20",
+    glowColor: "shadow-accent/10 dark:shadow-accent/5",
+    patternVariant: "concentric",
+    patternTone: "accent",
+  },
   rupeelens: {
     Icon: IndianRupee,
     gradientLight:

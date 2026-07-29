@@ -15,9 +15,15 @@ type GeneratePdfApiPayload = {
   display?: ResumeDisplayPreferences
 }
 
-async function fetchPdfFromApi(payload: GeneratePdfApiPayload): Promise<Blob> {
+async function fetchPdfFromApi(
+  payload: GeneratePdfApiPayload,
+  signal?: AbortSignal,
+): Promise<Blob> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), CLIENT_PDF_FETCH_TIMEOUT_MS)
+
+  const abortFromParent = () => controller.abort()
+  signal?.addEventListener("abort", abortFromParent, { once: true })
 
   try {
     const response = await fetch("/api/resume/generate-pdf", {
@@ -46,11 +52,15 @@ async function fetchPdfFromApi(payload: GeneratePdfApiPayload): Promise<Blob> {
     return response.blob()
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
+      if (signal?.aborted || controller.signal.aborted) {
+        throw error
+      }
       throw new Error("Resume PDF generation timed out. Please try again.")
     }
     throw error
   } finally {
     clearTimeout(timer)
+    signal?.removeEventListener("abort", abortFromParent)
   }
 }
 
@@ -60,16 +70,20 @@ export async function generateResumePdf(
   layout: ResumeLayoutId = "classic",
   fontPresetId: FontPresetId = "inter",
   display?: ResumeDisplayPreferences,
+  signal?: AbortSignal,
 ): Promise<Blob> {
   if (typeof window !== "undefined") {
-    return fetchPdfFromApi({
-      kind: "resume",
-      document,
-      brandColor,
-      layout,
-      fontPresetId,
-      display,
-    })
+    return fetchPdfFromApi(
+      {
+        kind: "resume",
+        document,
+        brandColor,
+        layout,
+        fontPresetId,
+        display,
+      },
+      signal,
+    )
   }
 
   const { generateResumePdfDirect } = await import("./generate-resume-pdf-direct")
@@ -117,14 +131,18 @@ export async function generateCoverLetterPdf(
   document: CoverLetterDocument,
   brandColor: string,
   layout: ResumeLayoutId = "classic",
+  signal?: AbortSignal,
 ): Promise<Blob> {
   if (typeof window !== "undefined") {
-    return fetchPdfFromApi({
-      kind: "cover-letter",
-      coverLetterDocument: document,
-      brandColor,
-      layout,
-    })
+    return fetchPdfFromApi(
+      {
+        kind: "cover-letter",
+        coverLetterDocument: document,
+        brandColor,
+        layout,
+      },
+      signal,
+    )
   }
 
   const { generateCoverLetterPdfDirect } = await import("./generate-resume-pdf-direct")

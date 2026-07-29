@@ -36,6 +36,7 @@ export function useResumePdfPreviewUrl({
   const [error, setError] = useState<string | null>(null)
   const pdfUrlRef = useRef<string | null>(null)
   const requestIdRef = useRef(0)
+  const abortRef = useRef<AbortController | null>(null)
 
   function clearPdfUrl() {
     if (pdfUrlRef.current) {
@@ -46,6 +47,9 @@ export function useResumePdfPreviewUrl({
   }
 
   useEffect(() => {
+    abortRef.current?.abort()
+    abortRef.current = null
+
     if (!enabled) {
       clearPdfUrl()
       setError(null)
@@ -61,6 +65,9 @@ export function useResumePdfPreviewUrl({
     }
 
     const requestId = ++requestIdRef.current
+    const abortController = new AbortController()
+    abortRef.current = abortController
+
     setIsLoading(true)
     setError(null)
 
@@ -75,8 +82,14 @@ export function useResumePdfPreviewUrl({
                   layout,
                   fontPreset,
                   display,
+                  abortController.signal,
                 )
-              : await generateCoverLetterPdf(coverLetterDocument!, brandColor, layout)
+              : await generateCoverLetterPdf(
+                  coverLetterDocument!,
+                  brandColor,
+                  layout,
+                  abortController.signal,
+                )
 
           if (requestId !== requestIdRef.current) return
 
@@ -86,6 +99,8 @@ export function useResumePdfPreviewUrl({
           setPdfUrl(objectUrl)
         } catch (cause) {
           if (requestId !== requestIdRef.current) return
+          if (cause instanceof DOMException && cause.name === "AbortError") return
+
           clearPdfUrl()
           setError(
             cause instanceof Error ? cause.message : "Unable to generate A4 preview.",
@@ -100,6 +115,7 @@ export function useResumePdfPreviewUrl({
 
     return () => {
       window.clearTimeout(timer)
+      abortController.abort()
     }
   }, [
     enabled,
@@ -114,6 +130,7 @@ export function useResumePdfPreviewUrl({
 
   useEffect(() => {
     return () => {
+      abortRef.current?.abort()
       if (pdfUrlRef.current) {
         URL.revokeObjectURL(pdfUrlRef.current)
       }

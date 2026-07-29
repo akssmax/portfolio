@@ -64,20 +64,25 @@ export function ResumeA4PreviewDialog({
         </DialogHeader>
 
         <div className="relative min-h-0 flex-1 overflow-hidden bg-neutral-200/80 dark:bg-neutral-900/80">
-          {isLoading ? (
-            <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
-              <Loader2 aria-hidden className="size-8 animate-spin" />
-              <p className="text-sm">Generating A4 preview…</p>
-            </div>
-          ) : error ? (
+          {error ? (
             <div className="flex h-full items-center justify-center p-6">
               <p className="text-sm text-destructive" role="alert">
                 {error}
               </p>
             </div>
-          ) : pdfUrl ? (
-            <ResumePdfCanvasPreview pdfUrl={pdfUrl} />
-          ) : null}
+          ) : isLoading || !pdfUrl ? (
+            <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
+              <Loader2 aria-hidden className="size-8 animate-spin" />
+              <p className="text-sm">Generating A4 preview…</p>
+            </div>
+          ) : (
+            <ResumePdfCanvasPreview
+              key={pdfUrl}
+              pdfUrl={pdfUrl}
+              showPageBreaks
+              className="max-w-none"
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>

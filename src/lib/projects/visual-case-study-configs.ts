@@ -305,6 +305,81 @@ const LANDING_PAGE_100X: VisualCaseStudyConfig = {
   ],
 }
 
+const POSTFORGE_APP = "https://postforge-kohl.vercel.app"
+
+const POSTFORGE: VisualCaseStudyConfig = {
+  liveUrl: `${POSTFORGE_APP}/`,
+  ctaLabel: "Open live app",
+  heroImageSrc: "/projects/postforge/hero.webp",
+  heroImageAlt: "Postforge — brand-first social design tool",
+  heroImageHref: `${POSTFORGE_APP}/tool`,
+  stack: [
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Tailwind",
+    "HeroUI",
+    "Framer Motion",
+    "Mistral",
+  ],
+  stats: [
+    { value: "20+", label: "Layout patterns" },
+    { value: "AI", label: "Brief + chat" },
+    { value: "1", label: "Export flow" },
+  ],
+  builtSummary:
+    "Brand-first social posts and slide decks — logo to export on one focused canvas.",
+  footerNote: "Personal product — Shuffle exploration, AI brief, and PNG/PDF export.",
+  highlights: [
+    "Brand kit — logo upload extracts palette, backgrounds, and tiled patterns",
+    "Shuffle — cycle layout, surface, pattern, and copy across artboards",
+    "AI brief — describe a post in plain language, refine in chat beside the canvas",
+    "20+ layout patterns with searchable layout catalog",
+    "Visual library — brand-aware illustration blocks",
+    "Export — PNG artboards and PDF slide decks from the same editor",
+  ],
+  designNotes: [
+    "Logo-first onboarding — brand context before blank canvas",
+    "Ink-and-ember forge aesthetic with live hero editor on the landing page",
+    "Split editor shell — chat brief beside canvas for iterative refinement",
+    "Solo personal build — design through deployment on Vercel",
+  ],
+  galleries: [
+    {
+      title: "Design tool",
+      description: "Brand kit, canvas, Shuffle, and AI brief in one editor shell.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/postforge/tool.webp",
+          alt: "Postforge design tool with brand kit and canvas",
+          label: "Editor",
+          href: `${POSTFORGE_APP}/tool`,
+        },
+      ],
+    },
+    {
+      title: "Library & decks",
+      description: "Visual blocks and slide deck compositions.",
+      layout: "row",
+      images: [
+        {
+          src: "/projects/postforge/visuals.webp",
+          alt: "Visual library with brand-aware illustrations",
+          label: "Visual library",
+          href: `${POSTFORGE_APP}/visuals`,
+        },
+        {
+          src: "/projects/postforge/slides.webp",
+          alt: "Slide deck compositions",
+          label: "Slide decks",
+          href: `${POSTFORGE_APP}/slides`,
+        },
+      ],
+    },
+  ],
+}
+
 const RUPEELENS_APP = "https://rupeelens-coral.vercel.app"
 
 const RUPEELENS: VisualCaseStudyConfig = {
@@ -486,6 +561,7 @@ const RESUME_BUILDER: VisualCaseStudyConfig = {
 }
 
 const VISUAL_CASE_STUDY_CONFIGS: Record<string, VisualCaseStudyConfig> = {
+  postforge: POSTFORGE,
   rupeelens: RUPEELENS,
   "100x-chat-shell": DESIGN_WITH_AI,
   "100x-landing-page": LANDING_PAGE_100X,
