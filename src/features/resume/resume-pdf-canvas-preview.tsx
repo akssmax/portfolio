@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Loader2 } from "lucide-react"
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url"
 
 import { cn } from "@/lib/utils"
 
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils"
 const A4_PREVIEW_MAX_WIDTH_PX = 794
 
 type ResumePdfCanvasPreviewProps = {
-  pdfUrl: string
+  pdfData: ArrayBuffer
   showPageBreaks?: boolean
   className?: string
 }
@@ -19,10 +20,7 @@ let workerConfigured = false
 async function configurePdfWorker() {
   if (workerConfigured) return
   const pdfjs = await import("pdfjs-dist")
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url,
-  ).toString()
+  pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker
   workerConfigured = true
 }
 
@@ -59,7 +57,7 @@ function measureContainerWidth(element: HTMLElement): number {
 }
 
 export function ResumePdfCanvasPreview({
-  pdfUrl,
+  pdfData,
   showPageBreaks = false,
   className,
 }: ResumePdfCanvasPreviewProps) {
@@ -83,7 +81,11 @@ export function ResumePdfCanvasPreview({
 
         await configurePdfWorker()
         const pdfjs = await import("pdfjs-dist")
-        const loadingTask = pdfjs.getDocument(pdfUrl)
+        const loadingTask = pdfjs.getDocument({
+          data: new Uint8Array(pdfData),
+          useWorkerFetch: false,
+          isEvalSupported: false,
+        })
         const pdf = await loadingTask.promise
 
         if (cancelled) return
@@ -163,7 +165,7 @@ export function ResumePdfCanvasPreview({
     return () => {
       cancelled = true
     }
-  }, [pdfUrl, showPageBreaks])
+  }, [pdfData, showPageBreaks])
 
   return (
     <div className={cn("relative h-full w-full", className)}>

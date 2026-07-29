@@ -39,7 +39,7 @@ export function ResumeA4PreviewDialog({
   fontPreset,
   display,
 }: ResumeA4PreviewDialogProps) {
-  const { pdfUrl, isLoading, error } = useResumePdfPreviewUrl({
+  const { pdfData, previewVersion, isLoading, error } = useResumePdfPreviewUrl({
     enabled: open,
     activeTab,
     resumeDocument,
@@ -70,15 +70,15 @@ export function ResumeA4PreviewDialog({
                 {error}
               </p>
             </div>
-          ) : isLoading || !pdfUrl ? (
+          ) : isLoading || !pdfData ? (
             <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
               <Loader2 aria-hidden className="size-8 animate-spin" />
               <p className="text-sm">Generating A4 preview…</p>
             </div>
           ) : (
             <ResumePdfCanvasPreview
-              key={pdfUrl}
-              pdfUrl={pdfUrl}
+              key={previewVersion}
+              pdfData={pdfData}
               showPageBreaks
               className="max-w-none"
             />

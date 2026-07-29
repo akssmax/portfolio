@@ -31,34 +31,28 @@ export function useResumePdfPreviewUrl({
   fontPreset,
   display,
 }: UseResumePdfPreviewUrlOptions) {
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+  const [pdfData, setPdfData] = useState<ArrayBuffer | null>(null)
+  const [previewVersion, setPreviewVersion] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const pdfUrlRef = useRef<string | null>(null)
   const requestIdRef = useRef(0)
   const abortRef = useRef<AbortController | null>(null)
-
-  function clearPdfUrl() {
-    if (pdfUrlRef.current) {
-      URL.revokeObjectURL(pdfUrlRef.current)
-      pdfUrlRef.current = null
-    }
-    setPdfUrl(null)
-  }
 
   useEffect(() => {
     abortRef.current?.abort()
     abortRef.current = null
 
     if (!enabled) {
-      clearPdfUrl()
+      setPdfData(null)
+      setPreviewVersion(0)
       setError(null)
       setIsLoading(false)
       return
     }
 
     if (activeTab === "cover-letter" && !coverLetterDocument) {
-      clearPdfUrl()
+      setPdfData(null)
+      setPreviewVersion(0)
       setError("Generate a cover letter first to preview it.")
       setIsLoading(false)
       return
@@ -93,15 +87,14 @@ export function useResumePdfPreviewUrl({
 
           if (requestId !== requestIdRef.current) return
 
-          clearPdfUrl()
-          const objectUrl = URL.createObjectURL(blob)
-          pdfUrlRef.current = objectUrl
-          setPdfUrl(objectUrl)
+          const arrayBuffer = await blob.arrayBuffer()
+          setPdfData(arrayBuffer)
+          setPreviewVersion((version) => version + 1)
         } catch (cause) {
           if (requestId !== requestIdRef.current) return
           if (cause instanceof DOMException && cause.name === "AbortError") return
 
-          clearPdfUrl()
+          setPdfData(null)
           setError(
             cause instanceof Error ? cause.message : "Unable to generate A4 preview.",
           )
@@ -131,11 +124,8 @@ export function useResumePdfPreviewUrl({
   useEffect(() => {
     return () => {
       abortRef.current?.abort()
-      if (pdfUrlRef.current) {
-        URL.revokeObjectURL(pdfUrlRef.current)
-      }
     }
   }, [])
 
-  return { pdfUrl, isLoading, error }
+  return { pdfData, previewVersion, isLoading, error }
 }
