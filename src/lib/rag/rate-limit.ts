@@ -27,6 +27,11 @@ export const RESUME_GEN_RATE_LIMIT: RateLimitConfig = {
   maxRequests: process.env.NODE_ENV === "development" ? 50 : 3,
 }
 
+export const RESUME_PDF_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 60 * 60 * 1000,
+  maxRequests: process.env.NODE_ENV === "development" ? 200 : 60,
+}
+
 export function checkRateLimit(
   key: string,
   config: RateLimitConfig = CHAT_RATE_LIMIT,

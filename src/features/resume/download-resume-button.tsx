@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect } from "react"
 import { Download, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -29,10 +28,6 @@ export function DownloadResumeButton({
 }: DownloadResumeButtonProps) {
   const { primary } = useBrandColors()
   const { downloadResume, isGenerating } = useDownloadResume()
-
-  useEffect(() => {
-    void import("./generate-resume-pdf")
-  }, [])
 
   return (
     <Button

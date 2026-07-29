@@ -29,7 +29,7 @@ export const OFFICIAL_PROJECTS: ResumeProjectItem[] = [
     url: "https://rupeelens-coral.vercel.app/",
     meta: "Personal project | Design Engineer | Jul 2026",
     description:
-      "Built an India-first, local-first finance experience with 8+ bank parsers, CSV/Excel/PDF import, hybrid rules plus Mistral categorization, spending insights, subscriptions detection, and grounded AI chat.",
+      "Built an India-first, local-first finance experience with 8+ bank parsers, CSV/Excel/PDF import, hybrid rules plus Mistral categorization, spending insights, subscription detection, and grounded AI chat.",
     stack:
       "React, TypeScript, TanStack Start, Tailwind, shadcn/ui, IndexedDB, Mistral, Neon",
   },

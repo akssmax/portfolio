@@ -1,12 +1,13 @@
 "use client"
 
-import { useMemo } from "react"
-import { Download, Loader2, Sparkles } from "lucide-react"
+import { useMemo, useState } from "react"
+import { Download, Eye, Loader2, Pencil, Sparkles } from "lucide-react"
 
 
 import { buildResumeDocument } from "./build-resume-document"
 import { ResumeHtmlDocument } from "./layouts/html/resume-html-document"
 import { CoverLetterHtmlDocument } from "./layouts/html/cover-letter-html-document"
+import { ResumeA4PdfPreview } from "./resume-a4-pdf-preview"
 import {
   resolveResumeBrandColor
 } from "./resume-brand-color-utils"
@@ -18,6 +19,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { FontPresetId } from "@/lib/themes/types"
 
 import { ResumeFontSelect } from "./resume-font-select"
+
+type PreviewSurface = "pdf" | "edit"
 
 type ResumePreviewProps = {
   document: ResumeDocument
@@ -62,6 +65,8 @@ export function ResumePreview({
   onCoverLetterDocumentChange,
 }: ResumePreviewProps) {
   const brandColor = resolveResumeBrandColor(colorSelection, fallbackColor)
+  const [previewSurface, setPreviewSurface] = useState<PreviewSurface>("pdf")
+  const resolvedFontPreset = fontPreset ?? "inter"
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-muted/20">
@@ -87,6 +92,49 @@ export function ResumePreview({
             {fontPreset && onFontPresetChange ? (
               <ResumeFontSelect value={fontPreset} onChange={onFontPresetChange} />
             ) : null}
+            <div className="hidden items-center rounded-md border border-border bg-background p-0.5 sm:flex">
+              <Button
+                type="button"
+                variant={previewSurface === "pdf" ? "secondary" : "ghost"}
+                size="sm"
+                className="h-7 px-2.5 text-xs"
+                onClick={() => setPreviewSurface("pdf")}
+              >
+                <Eye aria-hidden />
+                PDF pages
+              </Button>
+              <Button
+                type="button"
+                variant={previewSurface === "edit" ? "secondary" : "ghost"}
+                size="sm"
+                className="h-7 px-2.5 text-xs"
+                onClick={() => setPreviewSurface("edit")}
+              >
+                <Pencil aria-hidden />
+                Edit
+              </Button>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="shrink-0 text-xs sm:hidden"
+              onClick={() =>
+                setPreviewSurface((current) => (current === "pdf" ? "edit" : "pdf"))
+              }
+            >
+              {previewSurface === "pdf" ? (
+                <>
+                  <Pencil aria-hidden />
+                  Edit
+                </>
+              ) : (
+                <>
+                  <Eye aria-hidden />
+                  PDF
+                </>
+              )}
+            </Button>
             <Button
               type="button"
               className="shrink-0 font-semibold text-xs"
@@ -115,47 +163,69 @@ export function ResumePreview({
       </div>
 
       {/* Main Preview Container */}
-      <div className="min-h-0 flex-1 overflow-auto p-3 sm:p-6">
-        <div className="mx-auto w-full max-w-[794px]">
-          <article
-            className="aspect-[210/297] w-full overflow-hidden rounded-sm border border-border bg-white shadow-sm"
-            aria-label={`${activeTab === "resume" ? "Resume" : "Cover Letter"} preview`}
-          >
-            <div className="h-full overflow-y-auto">
-              {activeTab === "resume" ? (
-                <ResumeHtmlDocument
-                  key={layout}
-                  document={document}
-                  brandColor={brandColor}
-                  fontFamily={fontFamily}
-                  display={display}
-                  layout={layout}
-                  onChange={onChange}
-                />
-              ) : coverLetterDocument ? (
-                <CoverLetterHtmlDocument
-                  key={`cl-${layout}`}
-                  document={coverLetterDocument}
-                  brandColor={brandColor}
-                  layout={layout}
-                  onChange={onCoverLetterDocumentChange}
-                />
-              ) : (
-                <div className="flex h-full flex-col items-center justify-center p-8 text-center text-muted-foreground">
-                  <div className="rounded-full bg-muted/40 p-4 mb-4 border border-border">
-                    <Sparkles className="size-8 text-primary animate-pulse" />
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground mb-1">
-                    AI Cover Letter Draft
-                  </h3>
-                  <p className="text-xs max-w-sm leading-relaxed mb-4 text-muted-foreground">
-                    Tailor a matching cover letter instantly. Fill in the company and job role fields in the left controls panel and click generate.
-                  </p>
-                </div>
-              )}
+      <div className="min-h-0 flex-1 overflow-auto bg-muted/30 p-3 sm:p-6">
+        {activeTab === "resume" ? (
+          previewSurface === "pdf" ? (
+            <ResumeA4PdfPreview
+              activeTab="resume"
+              resumeDocument={document}
+              coverLetterDocument={null}
+              brandColor={brandColor}
+              layout={layout}
+              fontPreset={resolvedFontPreset}
+              display={display}
+            />
+          ) : (
+            <article className="mx-auto w-full max-w-[794px] overflow-hidden rounded-sm border border-border bg-white shadow-sm">
+              <ResumeHtmlDocument
+                key={layout}
+                document={document}
+                brandColor={brandColor}
+                fontFamily={fontFamily}
+                display={display}
+                layout={layout}
+                onChange={onChange}
+              />
+            </article>
+          )
+        ) : coverLetterDocument ? (
+          previewSurface === "pdf" ? (
+            <ResumeA4PdfPreview
+              activeTab="cover-letter"
+              resumeDocument={document}
+              coverLetterDocument={coverLetterDocument}
+              brandColor={brandColor}
+              layout={layout}
+              fontPreset={resolvedFontPreset}
+              display={display}
+            />
+          ) : (
+            <article className="mx-auto w-full max-w-[794px] overflow-hidden rounded-sm border border-border bg-white shadow-sm">
+              <CoverLetterHtmlDocument
+                key={`cl-${layout}`}
+                document={coverLetterDocument}
+                brandColor={brandColor}
+                layout={layout}
+                onChange={onCoverLetterDocumentChange}
+              />
+            </article>
+          )
+        ) : (
+          <div className="mx-auto flex aspect-[210/297] w-full max-w-[794px] items-center justify-center rounded-sm border border-border bg-white p-8 text-center text-muted-foreground shadow-sm">
+            <div>
+              <div className="mb-4 rounded-full border border-border bg-muted/40 p-4">
+                <Sparkles className="mx-auto size-8 animate-pulse text-primary" />
+              </div>
+              <h3 className="mb-1 text-sm font-semibold text-foreground">
+                AI Cover Letter Draft
+              </h3>
+              <p className="mx-auto max-w-sm text-xs leading-relaxed text-muted-foreground">
+                Tailor a matching cover letter instantly. Fill in the company and job role fields
+                in the left controls panel and click generate.
+              </p>
             </div>
-          </article>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )

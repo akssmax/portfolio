@@ -30,6 +30,7 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
 import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
+import { Route as ApiResumeGeneratePdfRouteImport } from './routes/api/resume/generate-pdf'
 import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
 import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
 import { Route as ApiGithubContributionsRouteImport } from './routes/api/github/contributions'
@@ -141,6 +142,11 @@ const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
   path: '/api/resume/session',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiResumeGeneratePdfRoute = ApiResumeGeneratePdfRouteImport.update({
+  id: '/api/resume/generate-pdf',
+  path: '/api/resume/generate-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiResumeGenerateCoverLetterRoute =
   ApiResumeGenerateCoverLetterRouteImport.update({
     id: '/api/resume/generate-cover-letter',
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
+  '/api/resume/generate-pdf': typeof ApiResumeGeneratePdfRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -210,6 +217,7 @@ export interface FileRoutesByTo {
   '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
+  '/api/resume/generate-pdf': typeof ApiResumeGeneratePdfRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -238,6 +246,7 @@ export interface FileRoutesById {
   '/api/github/contributions': typeof ApiGithubContributionsRoute
   '/api/resume/generate': typeof ApiResumeGenerateRoute
   '/api/resume/generate-cover-letter': typeof ApiResumeGenerateCoverLetterRoute
+  '/api/resume/generate-pdf': typeof ApiResumeGeneratePdfRoute
   '/api/resume/session': typeof ApiResumeSessionRoute
   '/api/resume/unlock': typeof ApiResumeUnlockRoute
   '/design-system/components/$slug': typeof DesignSystemComponentsSlugRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
+    | '/api/resume/generate-pdf'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -291,6 +301,7 @@ export interface FileRouteTypes {
     | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
+    | '/api/resume/generate-pdf'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/api/github/contributions'
     | '/api/resume/generate'
     | '/api/resume/generate-cover-letter'
+    | '/api/resume/generate-pdf'
     | '/api/resume/session'
     | '/api/resume/unlock'
     | '/design-system/components/$slug'
@@ -339,6 +351,7 @@ export interface RootRouteChildren {
   ApiGithubContributionsRoute: typeof ApiGithubContributionsRoute
   ApiResumeGenerateRoute: typeof ApiResumeGenerateRoute
   ApiResumeGenerateCoverLetterRoute: typeof ApiResumeGenerateCoverLetterRoute
+  ApiResumeGeneratePdfRoute: typeof ApiResumeGeneratePdfRoute
   ApiResumeSessionRoute: typeof ApiResumeSessionRoute
   ApiResumeUnlockRoute: typeof ApiResumeUnlockRoute
 }
@@ -492,6 +505,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeSessionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/resume/generate-pdf': {
+      id: '/api/resume/generate-pdf'
+      path: '/api/resume/generate-pdf'
+      fullPath: '/api/resume/generate-pdf'
+      preLoaderRoute: typeof ApiResumeGeneratePdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/resume/generate-cover-letter': {
       id: '/api/resume/generate-cover-letter'
       path: '/api/resume/generate-cover-letter'
@@ -573,6 +593,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGithubContributionsRoute: ApiGithubContributionsRoute,
   ApiResumeGenerateRoute: ApiResumeGenerateRoute,
   ApiResumeGenerateCoverLetterRoute: ApiResumeGenerateCoverLetterRoute,
+  ApiResumeGeneratePdfRoute: ApiResumeGeneratePdfRoute,
   ApiResumeSessionRoute: ApiResumeSessionRoute,
   ApiResumeUnlockRoute: ApiResumeUnlockRoute,
 }

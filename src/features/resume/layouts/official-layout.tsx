@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
-import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
+import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import type { ResumeDocument, ResumeExperienceItem, ResumeProjectItem } from "../types"
-import { hexToRgba } from "../color-utils"
+import { blendHexOverWhite } from "../color-utils"
 import { RESUME_SPACING } from "./spacing-tokens"
 import { getPdfSectionMarginBottom } from "../section-spacing-utils"
 import type { ResumeDisplayPreferences } from "../resume-display-preferences"
@@ -11,7 +11,12 @@ import {
   type ResumePdfLayoutProps,
 } from "./pdf-layout-props"
 import {
-  PDF_JOB_HEADER_PROPS,
+  PDF_EXPERIENCE_BLOCK_PROPS,
+  PDF_EXPERIENCE_SECTION_INTRO_PROPS,
+  PDF_GRID_ROW_PROPS,
+  PDF_GRID_SECTION_HEADING_PROPS,
+  PDF_HEADER_BAND_PROPS,
+  PDF_PROJECT_CARD_PROPS,
   PDF_SECTION_HEADING_PROPS,
 } from "./pdf-pagination-props"
 import {
@@ -37,8 +42,17 @@ import {
   OFFICIAL_HEADER_NAME_COLOR,
   OFFICIAL_HEADER_TAGLINE_COLOR,
 } from "../official-resume-content"
+import { PdfResumePortrait } from "./pdf/pdf-resume-portrait"
 
 const S = RESUME_SPACING.official
+
+/** Shared bordered container for official grid sections (matches HTML rounded-sm boxes). */
+const OFFICIAL_BORDERED_FRAME = {
+  borderWidth: 1,
+  borderColor: "#E5E5E5",
+  borderRadius: 4,
+  backgroundColor: "#FFFFFF",
+} as const
 
 const styles = StyleSheet.create({
   page: {
@@ -47,6 +61,7 @@ const styles = StyleSheet.create({
     paddingBottom: S.page.paddingBottom + S.footerReserve,
     paddingLeft: S.page.paddingLeft,
     paddingRight: S.page.paddingRight,
+    backgroundColor: "#FFFFFF",
     fontFamily: "Helvetica",
     fontSize: S.fontSize,
     lineHeight: S.lineHeight,
@@ -64,28 +79,22 @@ const styles = StyleSheet.create({
     color: "#737373",
   },
   header: {
+    marginTop: -S.page.paddingTop,
     marginBottom: S.headerGap,
+    marginHorizontal: -S.page.paddingLeft,
   },
   headerBand: {
     backgroundColor: OFFICIAL_HEADER_BG,
-    marginHorizontal: -S.page.paddingLeft,
     paddingHorizontal: S.page.paddingLeft,
-    paddingTop: 10,
-    paddingBottom: 12,
+    paddingTop: 28,
+    paddingBottom: 16,
     marginBottom: 8,
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 12,
   },
   headerTextColumn: {
     flex: 1,
     minWidth: 0,
-  },
-  portrait: {
-    width: 68,
-    height: 68,
-    borderRadius: 10,
-    objectFit: "cover",
   },
   name: {
     fontSize: 19,
@@ -152,10 +161,7 @@ const styles = StyleSheet.create({
   metricsRow: {
     flexDirection: "row",
     marginBottom: 0,
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
-    borderRadius: 2,
-    backgroundColor: "#FFFFFF",
+    ...OFFICIAL_BORDERED_FRAME,
   },
   metricCell: {
     flex: 1,
@@ -182,10 +188,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
   },
   strengthGrid: {
-    borderWidth: 1,
-    borderRadius: 2,
-    borderColor: "#E5E5E5",
-    backgroundColor: "#FFFFFF",
+    ...OFFICIAL_BORDERED_FRAME,
   },
   strengthRow: {
     flexDirection: "row",
@@ -231,11 +234,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    gap: 12,
   },
   jobTitleColumn: {
     flex: 1,
     minWidth: 0,
+    paddingRight: 12,
   },
   jobRole: {
     fontSize: 10.5,
@@ -276,30 +279,27 @@ const styles = StyleSheet.create({
     fontSize: 9.5,
     lineHeight: 1.38,
   },
-  projectGrid: {
+  gridRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+    marginBottom: 8,
   },
-  experienceGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+  gridCell: {
+    width: "50%",
+    paddingRight: 4,
+  },
+  gridCellRight: {
+    width: "50%",
+    paddingLeft: 4,
+    paddingRight: 0,
   },
   experienceCard: {
-    width: "48%",
     padding: 8,
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
-    borderRadius: 2,
-    backgroundColor: "#FFFFFF",
+    ...OFFICIAL_BORDERED_FRAME,
   },
   projectCard: {
-    width: "48%",
-    marginBottom: 4,
+    width: "100%",
     padding: 8,
-    borderWidth: 1,
-    borderRadius: 2,
+    ...OFFICIAL_BORDERED_FRAME,
   },
   projectTitle: {
     fontSize: 10,
@@ -329,11 +329,14 @@ const styles = StyleSheet.create({
     lineHeight: 1.35,
   },
   capabilityGrid: {
+    ...OFFICIAL_BORDERED_FRAME,
+  },
+  capabilityRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
-    borderRadius: 2,
+  },
+  capabilityRowDivider: {
+    borderTopWidth: 1,
+    borderTopColor: "#E5E5E5",
   },
   capabilityColumn: {
     width: "50%",
@@ -343,9 +346,6 @@ const styles = StyleSheet.create({
   },
   capabilityColumnRight: {
     borderRightWidth: 1,
-  },
-  capabilityColumnBottom: {
-    borderBottomWidth: 1,
   },
   capabilityLabel: {
     fontSize: 9,
@@ -376,18 +376,31 @@ const styles = StyleSheet.create({
   },
 })
 
+function chunkPair<T>(items: T[]): T[][] {
+  const rows: T[][] = []
+  for (let i = 0; i < items.length; i += 2) {
+    rows.push(items.slice(i, i + 2))
+  }
+  return rows
+}
+
 function Section({
   title,
   brandColor,
   children,
   style,
   display,
+  headingProps = PDF_SECTION_HEADING_PROPS,
 }: {
   title: string
   brandColor: string
   children: ReactNode
   style?: typeof styles.section
   display: ResumeDisplayPreferences
+  headingProps?: {
+    wrap?: boolean
+    minPresenceAhead?: number
+  }
 }) {
   return (
     <View
@@ -397,7 +410,7 @@ function Section({
         ...(style ? [style] : []),
       ]}
     >
-      <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionTitleWrap}>
+      <View {...headingProps} style={styles.sectionTitleWrap}>
         <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
       </View>
       {children}
@@ -417,7 +430,7 @@ function OfficialHeader({
 
   return (
     <View style={styles.header}>
-      <View style={styles.headerBand}>
+      <View {...PDF_HEADER_BAND_PROPS} style={styles.headerBand}>
         <View style={styles.headerTextColumn}>
           <Text style={styles.name}>{document.name}</Text>
           <Text style={[styles.title, { color: brandColor }]}>
@@ -444,7 +457,7 @@ function OfficialHeader({
           ) : null}
         </View>
         {document.portrait ? (
-          <Image src={document.portrait.src} style={styles.portrait} />
+          <PdfResumePortrait src={document.portrait.src} brandColor={brandColor} />
         ) : null}
       </View>
     </View>
@@ -457,6 +470,7 @@ function CoreStrengthsGrid({ rows }: { rows: string[][] }) {
       {rows.map((row, rowIndex) => (
         <View
           key={`strength-row-${rowIndex}`}
+          {...PDF_GRID_ROW_PROPS}
           style={[styles.strengthRow, rowIndex > 0 ? styles.strengthRowDivider : {}]}
         >
           {row.map((skill, columnIndex) => (
@@ -484,8 +498,11 @@ function ExperienceBlock({
   isLast?: boolean
 }) {
   return (
-    <View style={[styles.job, isLast ? styles.jobLast : {}]}>
-      <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeaderRow}>
+    <View
+      {...PDF_EXPERIENCE_BLOCK_PROPS}
+      style={[styles.job, isLast ? styles.jobLast : {}]}
+    >
+      <View style={styles.jobHeaderRow}>
         <View style={styles.jobTitleColumn}>
           <Text style={styles.jobRole}>{job.role}</Text>
           <Text style={styles.jobCompany}>
@@ -513,6 +530,64 @@ function ExperienceBlock({
   )
 }
 
+function ExperienceListSection({
+  title,
+  brandColor,
+  display,
+  jobs,
+  gridLayout,
+}: {
+  title: string
+  brandColor: string
+  display: ResumeDisplayPreferences
+  jobs: ResumeExperienceItem[]
+  gridLayout: boolean
+}) {
+  if (gridLayout) {
+    return (
+      <Section
+        title={title}
+        brandColor={brandColor}
+        display={display}
+        headingProps={PDF_GRID_SECTION_HEADING_PROPS}
+      >
+        <ExperienceGrid jobs={jobs} />
+      </Section>
+    )
+  }
+
+  const [firstJob, ...restJobs] = jobs
+
+  return (
+    <View
+      style={[
+        styles.section,
+        { marginBottom: getPdfSectionMarginBottom(display) },
+      ]}
+    >
+      {firstJob ? (
+        <View {...PDF_EXPERIENCE_SECTION_INTRO_PROPS}>
+          <View style={styles.sectionTitleWrap}>
+            <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
+          </View>
+          <ExperienceBlock job={firstJob} isLast={restJobs.length === 0} />
+        </View>
+      ) : (
+        <View style={styles.sectionTitleWrap}>
+          <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
+        </View>
+      )}
+      {restJobs.map((job, index) => (
+        <ExperienceBlock
+          key={`${job.company}-${job.period}`}
+          job={job}
+          isLast={index === restJobs.length - 1}
+        />
+      ))}
+    </View>
+  )
+}
+
 function ProjectCard({
   project,
   brandColor,
@@ -520,12 +595,13 @@ function ProjectCard({
   project: ResumeProjectItem
   brandColor: string
 }) {
-  const cardTint = hexToRgba(brandColor, 0.07)
-  const cardBorder = hexToRgba(brandColor, 0.22)
+  const cardTint = blendHexOverWhite(brandColor, 0.07)
+  const cardBorder = blendHexOverWhite(brandColor, 0.22)
   const metaParts = parseProjectMetaParts(project.meta, project.url)
 
   return (
     <View
+      {...PDF_PROJECT_CARD_PROPS}
       style={[
         styles.projectCard,
         { backgroundColor: cardTint, borderColor: cardBorder },
@@ -554,6 +630,91 @@ function ProjectCard({
       </Text>
       <Text style={styles.projectDescription}>{project.description}</Text>
       <Text style={styles.projectStack}>Stack: {project.stack}</Text>
+    </View>
+  )
+}
+
+function ProjectGrid({
+  projects,
+  brandColor,
+}: {
+  projects: ResumeProjectItem[]
+  brandColor: string
+}) {
+  return (
+    <View>
+      {chunkPair(projects).map((row, rowIndex) => (
+        <View
+          key={`project-row-${rowIndex}`}
+          {...PDF_GRID_ROW_PROPS}
+          style={styles.gridRow}
+        >
+          {row.map((project, columnIndex) => (
+            <View
+              key={project.title}
+              style={columnIndex === 0 ? styles.gridCell : styles.gridCellRight}
+            >
+              <ProjectCard project={project} brandColor={brandColor} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  )
+}
+
+function ExperienceGrid({ jobs }: { jobs: ResumeExperienceItem[] }) {
+  return (
+    <View>
+      {chunkPair(jobs).map((row, rowIndex) => (
+        <View
+          key={`experience-row-${rowIndex}`}
+          {...PDF_GRID_ROW_PROPS}
+          style={styles.gridRow}
+        >
+          {row.map((job, columnIndex) => (
+            <View
+              key={`${job.company}-${job.period}`}
+              style={columnIndex === 0 ? styles.gridCell : styles.gridCellRight}
+            >
+              <View style={styles.experienceCard}>
+                <ExperienceBlock job={job} isLast />
+              </View>
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  )
+}
+
+function CapabilitiesToolsGrid({
+  categories,
+}: {
+  categories: ReturnType<typeof getOfficialCapabilities>
+}) {
+  return (
+    <View style={styles.capabilityGrid}>
+      {chunkPair(categories).map((row, rowIndex) => (
+        <View
+          key={`capability-row-${rowIndex}`}
+          {...PDF_GRID_ROW_PROPS}
+          style={[styles.capabilityRow, rowIndex > 0 ? styles.capabilityRowDivider : {}]}
+        >
+          {row.map((category, columnIndex) => (
+            <View
+              key={category.label}
+              style={[
+                styles.capabilityColumn,
+                columnIndex === 0 && row.length > 1 ? styles.capabilityColumnRight : {},
+              ]}
+            >
+              <Text style={styles.capabilityLabel}>{category.label}</Text>
+              <Text style={styles.capabilityValues}>{category.values}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
     </View>
   )
 }
@@ -592,8 +753,6 @@ export function OfficialResumeLayout({
   const education = getOfficialEducation(document)
   const certifications = getOfficialCertifications(document)
   const linkParts = buildOfficialLinkParts(document)
-  const capabilityLastRowStart =
-    capabilities.length - (capabilities.length % 2 === 0 ? 2 : 1)
   const sectionGap = getPdfSectionMarginBottom(display)
 
   return (
@@ -648,117 +807,92 @@ export function OfficialResumeLayout({
       ) : null}
 
       {professional.length ? (
-        <Section title="Professional Experience" brandColor={brandColor} display={display}>
-          {display.experienceGridLayout ? (
-            <View style={styles.experienceGrid}>
-              {professional.map((job) => (
-                <View key={`${job.company}-${job.period}`} style={styles.experienceCard}>
-                  <ExperienceBlock job={job} isLast />
-                </View>
-              ))}
-            </View>
-          ) : (
-            professional.map((job, index) => (
-              <ExperienceBlock
-                key={`${job.company}-${job.period}`}
-                job={job}
-                isLast={index === professional.length - 1}
-              />
-            ))
-          )}
-        </Section>
+        <ExperienceListSection
+          title="Professional Experience"
+          brandColor={brandColor}
+          display={display}
+          jobs={professional}
+          gridLayout={display.experienceGridLayout}
+        />
       ) : null}
 
       {projects.length ? (
-        <Section title="Selected Product Work" brandColor={brandColor} display={display}>
-          <View style={styles.projectGrid}>
-            {projects.map((project) => (
-              <ProjectCard key={project.title} project={project} brandColor={brandColor} />
-            ))}
-          </View>
+        <Section
+          title="Selected Product Work"
+          brandColor={brandColor}
+          display={display}
+          headingProps={PDF_GRID_SECTION_HEADING_PROPS}
+        >
+          <ProjectGrid projects={projects} brandColor={brandColor} />
         </Section>
       ) : null}
 
       {earlier.length ? (
-        <Section title="Earlier Experience" brandColor={brandColor} display={display}>
-          {display.experienceGridLayout ? (
-            <View style={styles.experienceGrid}>
-              {earlier.map((job) => (
-                <View key={`${job.company}-${job.period}`} style={styles.experienceCard}>
-                  <ExperienceBlock job={job} isLast />
-                </View>
-              ))}
-            </View>
-          ) : (
-            earlier.map((job, index) => (
-              <ExperienceBlock
-                key={`${job.company}-${job.period}`}
-                job={job}
-                isLast={index === earlier.length - 1}
-              />
-            ))
-          )}
-        </Section>
+        <ExperienceListSection
+          title="Earlier Experience"
+          brandColor={brandColor}
+          display={display}
+          jobs={earlier}
+          gridLayout={display.experienceGridLayout}
+        />
       ) : null}
 
       {education || certifications.length ? (
-        <Section title="Education and Certification" brandColor={brandColor} display={display}>
+        <Section
+          title="Education and Certification"
+          brandColor={brandColor}
+          display={display}
+          headingProps={PDF_GRID_SECTION_HEADING_PROPS}
+        >
           <View style={styles.capabilityGrid}>
-            {education ? (
-              <View
-                style={[
-                  styles.capabilityColumn,
-                  certifications.length > 0 ? styles.capabilityColumnRight : {},
-                  { width: certifications.length > 0 ? "50%" : "100%" },
-                ]}
-              >
-                <Text style={styles.capabilityLabel}>{education.degree}</Text>
-                <Text style={styles.capabilityValues}>{education.school}</Text>
-                <Text style={styles.capabilityValues}>
-                  {education.years} | {education.location}
-                </Text>
-              </View>
-            ) : null}
-            {certifications.length ? (
-              <View style={[styles.capabilityColumn, { width: education ? "50%" : "100%" }]}>
-                {certifications.map((certification) => (
-                  <View
-                    key={`${certification.title}-${certification.date}`}
-                    style={{ marginBottom: certifications.length > 1 ? 6 : 0 }}
-                  >
-                    <Text style={styles.capabilityLabel}>{certification.title}</Text>
-                    <Text style={styles.capabilityValues}>{certification.issuer}</Text>
-                    <Text style={styles.capabilityValues}>
-                      {certification.date}
-                      {certification.credentialId
-                        ? ` | Credential ID ${certification.credentialId}`
-                        : ""}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            ) : null}
+            <View {...PDF_GRID_ROW_PROPS} style={styles.capabilityRow}>
+              {education ? (
+                <View
+                  style={[
+                    styles.capabilityColumn,
+                    certifications.length > 0 ? styles.capabilityColumnRight : {},
+                    { width: certifications.length > 0 ? "50%" : "100%" },
+                  ]}
+                >
+                  <Text style={styles.capabilityLabel}>{education.degree}</Text>
+                  <Text style={styles.capabilityValues}>{education.school}</Text>
+                  <Text style={styles.capabilityValues}>
+                    {education.years} | {education.location}
+                  </Text>
+                </View>
+              ) : null}
+              {certifications.length ? (
+                <View style={[styles.capabilityColumn, { width: education ? "50%" : "100%" }]}>
+                  {certifications.map((certification) => (
+                    <View
+                      key={`${certification.title}-${certification.date}`}
+                      style={{ marginBottom: certifications.length > 1 ? 6 : 0 }}
+                    >
+                      <Text style={styles.capabilityLabel}>{certification.title}</Text>
+                      <Text style={styles.capabilityValues}>{certification.issuer}</Text>
+                      <Text style={styles.capabilityValues}>
+                        {certification.date}
+                        {certification.credentialId
+                          ? ` | Credential ID ${certification.credentialId}`
+                          : ""}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
+            </View>
           </View>
         </Section>
       ) : null}
 
       {capabilities.length ? (
-        <Section title="Capabilities and Tools" brandColor={brandColor} display={display}>
-          <View style={styles.capabilityGrid}>
-            {capabilities.map((category, index) => (
-              <View
-                key={category.label}
-                style={[
-                  styles.capabilityColumn,
-                  index % 2 === 0 ? styles.capabilityColumnRight : {},
-                  index < capabilityLastRowStart ? styles.capabilityColumnBottom : {},
-                ]}
-              >
-                <Text style={styles.capabilityLabel}>{category.label}</Text>
-                <Text style={styles.capabilityValues}>{category.values}</Text>
-              </View>
-            ))}
-          </View>
+        <Section
+          title="Capabilities and Tools"
+          brandColor={brandColor}
+          display={display}
+          headingProps={PDF_GRID_SECTION_HEADING_PROPS}
+        >
+          <CapabilitiesToolsGrid categories={capabilities} />
         </Section>
       ) : null}
 

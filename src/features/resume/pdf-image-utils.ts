@@ -19,28 +19,43 @@ export async function fetchImageAsBase64(url: string): Promise<string> {
   })
 }
 
-async function resolveImageSrc(url: string): Promise<string | undefined> {
+function toAbsoluteImageUrl(url: string, baseUrl?: string): string {
+  if (!baseUrl || url.startsWith("http") || url.startsWith("data:")) return url
+  if (url.startsWith("/")) return `${baseUrl}${url}`
+  return `${baseUrl}/${url}`
+}
+
+async function resolveImageSrc(
+  url: string,
+  baseUrl?: string,
+): Promise<string | undefined> {
   // Keep SVG paths as-is so PdfCompanyLogo can match known logos to vector paths.
   // react-pdf's <Image> also handles SVG data URLs poorly in some browsers.
   if (isSvgImageUrl(url)) return url
 
   try {
-    return await fetchImageAsBase64(url)
+    return await fetchImageAsBase64(toAbsoluteImageUrl(url, baseUrl))
   } catch {
     // Skip broken assets rather than failing the whole PDF export.
     return undefined
   }
 }
 
-export async function resolveResumeImageSrc(url: string): Promise<string | undefined> {
-  return resolveImageSrc(url)
+export async function resolveResumeImageSrc(
+  url: string,
+  baseUrl?: string,
+): Promise<string | undefined> {
+  return resolveImageSrc(url, baseUrl)
 }
 
-export async function resolveDocumentImages(document: ResumeDocument): Promise<ResumeDocument> {
+export async function resolveDocumentImages(
+  document: ResumeDocument,
+  baseUrl?: string,
+): Promise<ResumeDocument> {
   let resolvedPortrait: ResumeDocument["portrait"]
 
   if (document.portrait) {
-    const resolvedSrc = await resolveImageSrc(document.portrait.src)
+    const resolvedSrc = await resolveImageSrc(document.portrait.src, baseUrl)
     resolvedPortrait = resolvedSrc
       ? { ...document.portrait, src: resolvedSrc }
       : undefined
@@ -50,7 +65,7 @@ export async function resolveDocumentImages(document: ResumeDocument): Promise<R
     ? await Promise.all(
         document.experience.map(async (job): Promise<ResumeExperienceItem> => ({
           ...job,
-          logoSrc: job.logoSrc ? await resolveImageSrc(job.logoSrc) : undefined,
+          logoSrc: job.logoSrc ? await resolveImageSrc(job.logoSrc, baseUrl) : undefined,
         })),
       )
     : undefined

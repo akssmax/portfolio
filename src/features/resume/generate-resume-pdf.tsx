@@ -1,33 +1,56 @@
-import { resolvePdfBrandColor } from "./color-utils"
-import { getMinimalAccentImageSrc } from "./minimal-accent-utils"
-import { ensurePdfBuffer } from "./ensure-pdf-buffer"
-import { registerResumePdfFont } from "./register-resume-fonts"
-import { resolveResumeFontPreset } from "./resume-font-utils"
-import { ResumePdfDocument } from "./layouts/resume-pdf-document"
-import { CoverLetterPdfDocument } from "./layouts/cover-letter-pdf-document"
-import { resolveDocumentImages, resolveResumeImageSrc } from "./pdf-image-utils"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId } from "./types"
 import type { ResumeDisplayPreferences } from "./resume-display-preferences"
-import {
-  normalizeResumeDisplayPreferences,
-} from "./resume-display-preferences"
+import { resolvePdfBrandColor } from "./color-utils"
 import type { FontPresetId } from "@/lib/themes/types"
 
-const PDF_GENERATION_TIMEOUT_MS = 30_000
+const CLIENT_PDF_FETCH_TIMEOUT_MS = 60_000
 
-async function withTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
-  let timer: ReturnType<typeof setTimeout> | undefined
+type GeneratePdfApiPayload = {
+  kind?: "resume" | "cover-letter"
+  document?: ResumeDocument
+  coverLetterDocument?: CoverLetterDocument
+  brandColor: string
+  layout?: ResumeLayoutId
+  fontPresetId?: FontPresetId
+  display?: ResumeDisplayPreferences
+}
+
+async function fetchPdfFromApi(payload: GeneratePdfApiPayload): Promise<Blob> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), CLIENT_PDF_FETCH_TIMEOUT_MS)
+
   try {
-    return await Promise.race([
-      promise,
-      new Promise<T>((_, reject) => {
-        timer = setTimeout(() => {
-          reject(new Error(`${label} timed out. Please try again.`))
-        }, PDF_GENERATION_TIMEOUT_MS)
+    const response = await fetch("/api/resume/generate-pdf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...payload,
+        brandColor: resolvePdfBrandColor(payload.brandColor),
       }),
-    ])
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      let message = "Unable to generate resume PDF."
+      try {
+        const errorBody = (await response.json()) as {
+          error?: { message?: string }
+        }
+        message = errorBody.error?.message ?? message
+      } catch {
+        // Ignore malformed error payloads.
+      }
+      throw new Error(message)
+    }
+
+    return response.blob()
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error("Resume PDF generation timed out. Please try again.")
+    }
+    throw error
   } finally {
-    if (timer) clearTimeout(timer)
+    clearTimeout(timer)
   }
 }
 
@@ -38,33 +61,19 @@ export async function generateResumePdf(
   fontPresetId: FontPresetId = "inter",
   display?: ResumeDisplayPreferences,
 ): Promise<Blob> {
-  await ensurePdfBuffer()
-  const { pdf } = await import("@react-pdf/renderer")
-  const pdfBrandColor = resolvePdfBrandColor(brandColor)
-  const fontFamily = await registerResumePdfFont(resolveResumeFontPreset(fontPresetId))
+  if (typeof window !== "undefined") {
+    return fetchPdfFromApi({
+      kind: "resume",
+      document,
+      brandColor,
+      layout,
+      fontPresetId,
+      display,
+    })
+  }
 
-  const documentWithImages = await resolveDocumentImages(document)
-  const resolvedDisplay = normalizeResumeDisplayPreferences(display)
-  const accentImageSrc =
-    layout === "minimal" && resolvedDisplay.showMinimalAccentImage
-      ? await resolveResumeImageSrc(
-          getMinimalAccentImageSrc(resolvedDisplay.minimalAccentImage),
-        )
-      : undefined
-
-  return withTimeout(
-    pdf(
-      <ResumePdfDocument
-        document={documentWithImages}
-        brandColor={pdfBrandColor}
-        layout={layout}
-        fontFamily={fontFamily}
-        display={resolvedDisplay}
-        accentImageSrc={accentImageSrc}
-      />,
-    ).toBlob(),
-    "Resume PDF generation",
-  )
+  const { generateResumePdfDirect } = await import("./generate-resume-pdf-direct")
+  return generateResumePdfDirect(document, brandColor, layout, fontPresetId, display)
 }
 
 export function getResumeFilename(name: string, layout: ResumeLayoutId = "classic"): string {
@@ -104,26 +113,22 @@ export async function downloadResumePdf({
   triggerBlobDownload(blob, filename ?? getResumeFilename(document.name, layout))
 }
 
-// Cover Letter PDF Compile & Download Utilities
 export async function generateCoverLetterPdf(
   document: CoverLetterDocument,
   brandColor: string,
   layout: ResumeLayoutId = "classic",
 ): Promise<Blob> {
-  await ensurePdfBuffer()
-  const { pdf } = await import("@react-pdf/renderer")
-  const pdfBrandColor = resolvePdfBrandColor(brandColor)
+  if (typeof window !== "undefined") {
+    return fetchPdfFromApi({
+      kind: "cover-letter",
+      coverLetterDocument: document,
+      brandColor,
+      layout,
+    })
+  }
 
-  return withTimeout(
-    pdf(
-      <CoverLetterPdfDocument
-        document={document}
-        brandColor={pdfBrandColor}
-        layout={layout}
-      />,
-    ).toBlob(),
-    "Cover letter PDF generation",
-  )
+  const { generateCoverLetterPdfDirect } = await import("./generate-resume-pdf-direct")
+  return generateCoverLetterPdfDirect(document, brandColor, layout)
 }
 
 export function getCoverLetterFilename(
@@ -155,3 +160,8 @@ export async function downloadCoverLetterPdf({
     filename ?? getCoverLetterFilename(document.senderName, document.recipientCompany, layout),
   )
 }
+
+export {
+  generateCoverLetterPdfDirect,
+  generateResumePdfDirect,
+} from "./generate-resume-pdf-direct"

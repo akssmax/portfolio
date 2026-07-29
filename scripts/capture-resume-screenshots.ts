@@ -43,13 +43,13 @@ const SAMPLE_DOCUMENT = {
       period: "2025 — Present",
       location: "Remote",
       description:
-        "Design and build agentic AI product experiences for a browser-native automation platform — extension UI, marketing site, and design system.",
+        "Designed and built agentic AI product experiences for a browser-native automation platform — extension UI, marketing site, and design system.",
       highlights: [
         "Redesigned the Chromium extension with shadcn/ui and semantic design tokens",
         "Managed and collaborated with 2 junior developers to ship features faster",
-        "Website revamp with MCP & Cursor — code-based handoff from initial Figma design",
+        "Revamped website with MCP & Cursor — code-based handoff from initial Figma design",
         "Built design system on shadcn/ui with AI-native components",
-        "Multiple code-based prototypes for sales team and feature development",
+        "Built multiple code-based prototypes for the sales team and feature development",
       ],
     },
     {
