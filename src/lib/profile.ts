@@ -106,7 +106,7 @@ const experience = [
     company: "Wallzy",
     logoSrc: "/companies/wallzy.png",
     websiteUrl: "https://play.google.com/store/apps/details?id=com.wallzy.app",
-    role: "Graphic Designer & Founder",
+    role: "Graphic Designer & Co-founder",
     period: "Jan 2017 – Dec 2018",
     location: "Hisar, Haryana",
     description:

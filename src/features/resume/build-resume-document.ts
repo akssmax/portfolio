@@ -1,6 +1,16 @@
 import { profile } from "@/lib/profile"
 
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
+import {
+  OFFICIAL_CAPABILITIES,
+  OFFICIAL_CERTIFICATIONS,
+  OFFICIAL_CORE_STRENGTHS,
+  OFFICIAL_HEADER_TAGLINE,
+  OFFICIAL_HIGHLIGHT_METRICS,
+  OFFICIAL_PROFILE_TEXT,
+  OFFICIAL_PROJECTS,
+  OFFICIAL_PROFESSIONAL_EXPERIENCE_COUNT,
+} from "./official-resume-content"
 import type { ResumeDocument, ResumeSectionConfig } from "./types"
 
 function buildSkillsList(): string[] {
@@ -42,11 +52,11 @@ export function buildResumeDocument(
   }
 
   if (sections.summary) {
-    document.summary = [profile.tagline, profile.bio].filter(Boolean).join("\n\n")
+    document.summary = [OFFICIAL_HEADER_TAGLINE, OFFICIAL_PROFILE_TEXT].join("\n\n")
   }
 
   if (sections.experience) {
-    document.experience = profile.experience.map((item) => ({
+    document.experience = profile.experience.map((item, index) => ({
       company: item.company,
       role: item.role,
       period: item.period,
@@ -54,8 +64,15 @@ export function buildResumeDocument(
       description: item.description,
       highlights: item.highlights,
       logoSrc: item.logoSrc,
+      experienceGroup:
+        index < OFFICIAL_PROFESSIONAL_EXPERIENCE_COUNT ? "professional" : "earlier",
     }))
   }
+
+  document.highlightMetrics = OFFICIAL_HIGHLIGHT_METRICS
+  document.projects = OFFICIAL_PROJECTS
+  document.coreStrengths = OFFICIAL_CORE_STRENGTHS
+  document.capabilities = OFFICIAL_CAPABILITIES
 
   if (sections.education) {
     document.education = {
@@ -81,12 +98,7 @@ export function buildResumeDocument(
   }
 
   if (sections.certifications) {
-    document.certifications = profile.certifications.map((item) => ({
-      title: item.title,
-      issuer: item.issuer,
-      date: item.date,
-      credentialId: item.credentialId,
-    }))
+    document.certifications = OFFICIAL_CERTIFICATIONS
   }
 
   if (sections.languages) {
@@ -117,6 +129,10 @@ export function filterDocumentBySections(
     certifications: sections.certifications ? document.certifications : undefined,
     languages: sections.languages ? document.languages : undefined,
     interests: sections.interests ? document.interests : undefined,
+    highlightMetrics: document.highlightMetrics,
+    projects: document.projects,
+    coreStrengths: document.coreStrengths,
+    capabilities: document.capabilities,
   }
 }
 

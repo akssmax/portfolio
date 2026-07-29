@@ -15,6 +15,11 @@ import {
   type ResumeDisplayPreferences,
 } from "./resume-display-preferences"
 import { RESUME_SECTION_OPTIONS } from "./resume-section-options"
+import {
+  formatSectionSpacingLabel,
+  getSectionSpacingIndex,
+  RESUME_SECTION_SPACING_TOKENS,
+} from "./section-spacing-utils"
 import type {ResumeBrandColorSelection} from "./resume-brand-color-picker";
 import type { ResumeLayoutId, ResumeSectionConfig, ResumeSectionId } from "./types"
 import { Button } from "@/components/ui/button"
@@ -23,6 +28,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
+import { Slider } from "@/components/ui/slider"
+import { Switch } from "@/components/ui/switch"
 import { useBrandColors } from "@/hooks/use-brand-colors"
 import { cn } from "@/lib/utils"
 
@@ -131,6 +138,23 @@ function LayoutPreview({
           <div className="h-px w-full bg-border" />
           <div className="h-1 w-14 rounded-full bg-foreground/25" />
           <div className="h-1 w-10 rounded-full bg-foreground/15" />
+        </div>
+      </div>
+    )
+  }
+
+  if (layout === "official") {
+    return (
+      <div className="h-16 overflow-hidden rounded-md border border-border bg-background">
+        <div className="bg-[#101828] px-3 py-2">
+          <div className="h-1.5 w-14 rounded-full bg-white/90" />
+          <div className="mt-1 h-1 w-12 rounded-full" style={{ backgroundColor: brandColor }} />
+          <div className="mt-1 h-1 w-full rounded-full bg-white/25" />
+        </div>
+        <div className="mt-1.5 grid grid-cols-4 gap-1 px-3">
+          {[0, 1, 2, 3].map((item) => (
+            <div key={item} className="h-2 rounded bg-foreground/10" />
+          ))}
         </div>
       </div>
     )
@@ -407,6 +431,53 @@ export function ResumeBuilderControls({
               Include only what fits the role or company.
             </p>
           </div>
+          <div className="space-y-3 rounded-lg border border-border bg-muted/20 px-3 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="resume-section-spacing">Section spacing</Label>
+              <span className="text-xs tabular-nums text-muted-foreground">
+                {formatSectionSpacingLabel(display.sectionSpacing)}
+              </span>
+            </div>
+            <Slider
+              id="resume-section-spacing"
+              min={0}
+              max={RESUME_SECTION_SPACING_TOKENS.length - 1}
+              step={1}
+              value={[getSectionSpacingIndex(display.sectionSpacing)]}
+              onValueChange={(value) => {
+                const index = Math.min(
+                  Math.max(value[0] ?? 0, 0),
+                  RESUME_SECTION_SPACING_TOKENS.length - 1,
+                )
+                onDisplayChange({
+                  ...display,
+                  sectionSpacing: RESUME_SECTION_SPACING_TOKENS[index],
+                })
+              }}
+              aria-label="Section spacing"
+            />
+            <p className="text-xs text-muted-foreground">
+              Vertical gap between resume sections on the Tailwind spacing scale.
+            </p>
+          </div>
+          {layout === "official" ? (
+            <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-muted/20 px-3 py-3">
+              <div className="min-w-0 space-y-1">
+                <Label htmlFor="resume-experience-grid">Experience grid</Label>
+                <p className="text-xs text-muted-foreground">
+                  Show roles in a two-column card grid instead of a stacked list.
+                </p>
+              </div>
+              <Switch
+                id="resume-experience-grid"
+                checked={display.experienceGridLayout}
+                onCheckedChange={(checked) =>
+                  onDisplayChange({ ...display, experienceGridLayout: checked })
+                }
+                aria-label="Experience grid layout"
+              />
+            </div>
+          ) : null}
           <div className="grid gap-3">
             {RESUME_SECTION_OPTIONS.map((section) => (
               <label

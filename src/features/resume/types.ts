@@ -16,6 +16,7 @@ export type ResumeLayoutId =
   | "modern"
   | "minimal"
   | "executive"
+  | "official"
 
 export type ResumeExperienceItem = {
   company: string
@@ -25,6 +26,26 @@ export type ResumeExperienceItem = {
   description: string
   highlights?: Array<string>
   logoSrc?: string
+  /** Used by the Official layout to split professional vs earlier roles. */
+  experienceGroup?: "professional" | "earlier"
+}
+
+export type ResumeHighlightMetric = {
+  value: string
+  label: string
+}
+
+export type ResumeProjectItem = {
+  title: string
+  meta: string
+  description: string
+  stack: string
+  url?: string
+}
+
+export type ResumeCapabilityGroup = {
+  label: string
+  values: string
 }
 
 export type ResumeCertificationItem = {
@@ -70,6 +91,14 @@ export type ResumeDocument = {
   certifications?: Array<ResumeCertificationItem>
   languages?: Array<ResumeLanguageItem>
   interests?: Array<string>
+  /** Official layout — stat highlights below the profile. */
+  highlightMetrics?: Array<ResumeHighlightMetric>
+  /** Official layout — featured project cards in a grid. */
+  projects?: Array<ResumeProjectItem>
+  /** Official layout — core strength rows (space-separated chips). */
+  coreStrengths?: string[][]
+  /** Official layout — capabilities columns near the footer. */
+  capabilities?: Array<ResumeCapabilityGroup>
 }
 
 export type CoverLetterDocument = {

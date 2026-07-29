@@ -8,7 +8,9 @@ import { CoverLetterPdfDocument } from "./layouts/cover-letter-pdf-document"
 import { resolveDocumentImages, resolveResumeImageSrc } from "./pdf-image-utils"
 import type { CoverLetterDocument, ResumeDocument, ResumeLayoutId } from "./types"
 import type { ResumeDisplayPreferences } from "./resume-display-preferences"
-import { DEFAULT_RESUME_DISPLAY_PREFERENCES } from "./resume-display-preferences"
+import {
+  normalizeResumeDisplayPreferences,
+} from "./resume-display-preferences"
 import type { FontPresetId } from "@/lib/themes/types"
 
 const PDF_GENERATION_TIMEOUT_MS = 30_000
@@ -42,7 +44,7 @@ export async function generateResumePdf(
   const fontFamily = await registerResumePdfFont(resolveResumeFontPreset(fontPresetId))
 
   const documentWithImages = await resolveDocumentImages(document)
-  const resolvedDisplay = display ?? DEFAULT_RESUME_DISPLAY_PREFERENCES
+  const resolvedDisplay = normalizeResumeDisplayPreferences(display)
   const accentImageSrc =
     layout === "minimal" && resolvedDisplay.showMinimalAccentImage
       ? await resolveResumeImageSrc(
@@ -57,7 +59,7 @@ export async function generateResumePdf(
         brandColor={pdfBrandColor}
         layout={layout}
         fontFamily={fontFamily}
-        display={display ?? DEFAULT_RESUME_DISPLAY_PREFERENCES}
+        display={resolvedDisplay}
         accentImageSrc={accentImageSrc}
       />,
     ).toBlob(),

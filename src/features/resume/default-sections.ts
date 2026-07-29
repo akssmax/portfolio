@@ -6,7 +6,7 @@ export const DEFAULT_RESUME_SECTIONS: ResumeSectionConfig = {
   education: true,
   skills: true,
   contact: true,
-  certifications: false,
-  languages: false,
+  certifications: true,
+  languages: true,
   interests: false,
 }

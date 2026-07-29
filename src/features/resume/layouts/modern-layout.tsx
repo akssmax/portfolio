@@ -13,6 +13,7 @@ import { PdfCompanyLogo } from "./pdf-company-logo"
 import { PdfResumeIcon } from "./pdf/pdf-resume-icons"
 import { PdfResumeSectionTitle } from "./pdf/pdf-resume-section"
 import { RESUME_SPACING } from "./spacing-tokens"
+import { getPdfSectionMarginBottom } from "../section-spacing-utils"
 import {
   DEFAULT_PDF_LAYOUT_PROPS,
   type ResumePdfLayoutProps,
@@ -241,8 +242,15 @@ function Section({
   display?: ResumeDisplayPreferences
   children: ReactNode
 }) {
+  const resolvedDisplay = display ?? DEFAULT_PDF_LAYOUT_PROPS.display
+
   return (
-    <View style={styles.section}>
+    <View
+      style={[
+        styles.section,
+        { marginBottom: getPdfSectionMarginBottom(resolvedDisplay) },
+      ]}
+    >
       {display && sectionId ? (
         <PdfResumeSectionTitle
           sectionId={sectionId}

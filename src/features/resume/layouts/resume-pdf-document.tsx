@@ -7,6 +7,7 @@ import { DesignerResumeLayout } from "./designer-layout"
 import { ExecutiveResumeLayout } from "./executive-layout"
 import { MinimalResumeLayout } from "./minimal-layout"
 import { ModernResumeLayout } from "./modern-layout"
+import { OfficialResumeLayout } from "./official-layout"
 
 export function ResumePdfDocument({
   document,
@@ -35,6 +36,8 @@ export function ResumePdfDocument({
         <MinimalResumeLayout {...layoutProps} accentImageSrc={accentImageSrc} />
       ) : layout === "executive" ? (
         <ExecutiveResumeLayout {...layoutProps} />
+      ) : layout === "official" ? (
+        <OfficialResumeLayout {...layoutProps} />
       ) : (
         <ClassicResumeLayout {...layoutProps} />
       )}

@@ -219,6 +219,49 @@ export function CoverLetterHtmlDocument({
       )
     }
 
+    if (layout === "official") {
+      return (
+        <header
+          className="mb-6 border-b-[1.5px] pb-2.5"
+          style={{ borderBottomColor: brandColor }}
+        >
+          <EditableText
+            value={document.senderName}
+            onChange={(val) => handleFieldChange("senderName", val)}
+            tagName="h1"
+            className="text-[20px] font-bold uppercase tracking-[0.08em] text-[#0F1923] leading-tight"
+            placeholder="Your Name"
+          />
+          <EditableText
+            value={document.senderTitle}
+            onChange={(val) => handleFieldChange("senderTitle", val)}
+            tagName="p"
+            className="mt-1 text-[10px] font-bold uppercase tracking-[0.06em] text-neutral-800"
+            placeholder="Professional Title"
+          />
+          <div className="mt-1.5 flex flex-wrap items-center gap-1 text-[8.5px] text-neutral-600">
+            <EditableText
+              value={document.senderLocation}
+              onChange={(val) => handleFieldChange("senderLocation", val)}
+              placeholder="Location"
+            />
+            {document.senderContact?.email && (
+              <>
+                <span className="text-neutral-400">|</span>
+                <span>{document.senderContact.email}</span>
+              </>
+            )}
+            {document.senderContact?.phone && (
+              <>
+                <span className="text-neutral-400">|</span>
+                <span>{document.senderContact.phone}</span>
+              </>
+            )}
+          </div>
+        </header>
+      )
+    }
+
     // Classic Header
     return (
       <header
@@ -375,6 +418,15 @@ export function CoverLetterHtmlDocument({
   if (layout === "executive") {
     return (
       <div className="px-11 pt-8 pb-14 bg-white min-h-full text-[10px]">
+        {renderHeader()}
+        <main className="mt-4">{renderLetterBody()}</main>
+      </div>
+    )
+  }
+
+  if (layout === "official") {
+    return (
+      <div className="px-10 pt-7 pb-14 bg-white min-h-full text-[10px]">
         {renderHeader()}
         <main className="mt-4">{renderLetterBody()}</main>
       </div>

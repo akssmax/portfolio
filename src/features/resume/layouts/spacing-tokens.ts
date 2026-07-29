@@ -14,6 +14,8 @@ export type ResumeLayoutSpacing = {
   lineHeight: number
   fontSize: number
   sectionGap: number
+  sectionTitleGap?: number
+  profileClusterGap?: number
   headerGap: number
   jobGap: number
   /** Space reserved for fixed footer chrome (modern/designer/executive). */
@@ -102,6 +104,23 @@ export const RESUME_SPACING: Record<ResumeLayoutId, ResumeLayoutSpacing> = {
     footerReserve: 40,
     footerBottom: 18,
   },
+  official: {
+    page: {
+      paddingTop: 26,
+      paddingBottom: 36,
+      paddingLeft: 38,
+      paddingRight: 38,
+    },
+    lineHeight: 1.45,
+    fontSize: 10,
+    sectionGap: 14,
+    sectionTitleGap: 4,
+    headerGap: 16,
+    jobGap: 10,
+    profileClusterGap: 6,
+    footerReserve: 36,
+    footerBottom: 16,
+  },
 }
 
 /** Tailwind-friendly page padding classes derived from tokens (approx px ≈ pt). */
@@ -113,5 +132,6 @@ export function getHtmlPagePaddingClass(layout: ResumeLayoutId): string {
   if (layout === "designer") return "pt-[34px] pr-10 pb-14 pl-[52px]"
   if (layout === "minimal") return "px-12 py-9"
   if (layout === "executive") return "px-11 pt-8 pb-14"
+  if (layout === "official") return "px-10 pb-14"
   return `px-[${page.paddingLeft}px] pt-[${page.paddingTop}px] pb-[${page.paddingBottom}px]`
 }

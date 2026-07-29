@@ -4,6 +4,7 @@ import { DesignerHtmlResume } from "./designer-html-resume"
 import { ExecutiveHtmlResume } from "./executive-html-resume"
 import { MinimalHtmlResume } from "./minimal-html-resume"
 import { ModernHtmlResume } from "./modern-html-resume"
+import { OfficialHtmlResume } from "./official-html-resume"
 import type { ResumeHtmlLayoutProps } from "./resume-html-props"
 
 type ResumeHtmlDocumentProps = ResumeHtmlLayoutProps & {
@@ -24,5 +25,6 @@ export function ResumeHtmlDocument({
   if (layout === "modern") return <ModernHtmlResume {...layoutProps} />
   if (layout === "minimal") return <MinimalHtmlResume {...layoutProps} />
   if (layout === "executive") return <ExecutiveHtmlResume {...layoutProps} />
+  if (layout === "official") return <OfficialHtmlResume {...layoutProps} />
   return <ClassicHtmlResume {...layoutProps} />
 }

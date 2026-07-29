@@ -4,6 +4,7 @@ import {
   DEFAULT_SECTION_ICONS,
   type ResumeDisplayPreferences,
 } from "../../resume-display-preferences"
+import { getSectionSpacingMbClass } from "../../section-spacing-utils"
 import type { ResumeSectionId } from "../../types"
 import { ResumeIcon } from "./resume-icon"
 import { cn } from "@/lib/utils"
@@ -35,7 +36,7 @@ export function HtmlResumeSection({
       : undefined
 
   return (
-    <section className={cn("mb-3.5", className)}>
+    <section className={cn(getSectionSpacingMbClass(display.sectionSpacing), className)}>
       <div
         className={cn(
           "mb-2 flex items-center gap-2",

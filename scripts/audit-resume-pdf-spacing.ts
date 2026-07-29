@@ -22,6 +22,7 @@ const LAYOUTS: ResumeLayoutId[] = [
   "modern",
   "designer",
   "executive",
+  "official",
 ]
 
 const BRAND_COLOR = "#0F766E"

@@ -8,6 +8,7 @@ const designer = RESUME_SPACING.designer
 const modern = RESUME_SPACING.modern
 const minimal = RESUME_SPACING.minimal
 const executive = RESUME_SPACING.executive
+const official = RESUME_SPACING.official
 
 const styles = StyleSheet.create({
   pageClassic: {
@@ -61,6 +62,16 @@ const styles = StyleSheet.create({
     paddingLeft: executive.page.paddingLeft,
     paddingRight: executive.page.paddingRight,
   },
+  pageOfficial: {
+    fontFamily: "Helvetica",
+    fontSize: official.fontSize,
+    lineHeight: official.lineHeight,
+    color: "#171717",
+    paddingTop: official.page.paddingTop,
+    paddingBottom: official.page.paddingBottom,
+    paddingLeft: official.page.paddingLeft,
+    paddingRight: official.page.paddingRight,
+  },
   sidebarStripe: {
     position: "absolute",
     top: 0,
@@ -91,6 +102,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 4,
   },
+  headerOfficial: {
+    marginBottom: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 1.5,
+  },
   nameClassic: {
     fontSize: 22,
     fontWeight: 700,
@@ -118,6 +134,14 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     paddingBottom: 4,
   },
+  nameOfficial: {
+    fontSize: 20,
+    fontWeight: 700,
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+    color: "#0F1923",
+    paddingBottom: 4,
+  },
   titleClassic: {
     fontSize: 12,
     paddingBottom: 4,
@@ -142,6 +166,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     paddingBottom: 4,
   },
+  titleOfficial: {
+    fontSize: 10,
+    fontWeight: 700,
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
+    paddingBottom: 4,
+  },
   metaClassic: {
     fontSize: 9,
     color: "#525252",
@@ -162,6 +193,10 @@ const styles = StyleSheet.create({
   metaExecutive: {
     fontSize: 9,
     color: "rgba(255,255,255,0.85)",
+  },
+  metaOfficial: {
+    fontSize: 8.5,
+    color: "#525252",
   },
   letterContent: {
     flex: 1,
@@ -281,6 +316,18 @@ export function CoverLetterPdfDocument({
     </View>
   )
 
+  const renderOfficialHeader = () => (
+    <View style={[styles.headerOfficial, { borderBottomColor: brandColor }]}>
+      <Text style={styles.nameOfficial}>{document.senderName}</Text>
+      <Text style={styles.titleOfficial}>{document.senderTitle.toUpperCase()}</Text>
+      <Text style={styles.metaOfficial}>
+        {document.senderLocation}
+        {document.senderContact?.email ? `  |  ${document.senderContact.email}` : ""}
+        {document.senderContact?.phone ? `  |  ${document.senderContact.phone}` : ""}
+      </Text>
+    </View>
+  )
+
   const renderLetterBody = () => (
     <View style={styles.letterContent}>
       <Text style={styles.date}>{document.date}</Text>
@@ -340,6 +387,17 @@ export function CoverLetterPdfDocument({
       <Document>
         <Page size="A4" style={styles.pageExecutive}>
           {renderExecutiveHeader()}
+          {renderLetterBody()}
+        </Page>
+      </Document>
+    )
+  }
+
+  if (layout === "official") {
+    return (
+      <Document>
+        <Page size="A4" style={styles.pageOfficial}>
+          {renderOfficialHeader()}
           {renderLetterBody()}
         </Page>
       </Document>

@@ -37,12 +37,14 @@ export async function resolveResumeImageSrc(url: string): Promise<string | undef
 }
 
 export async function resolveDocumentImages(document: ResumeDocument): Promise<ResumeDocument> {
-  const resolvedPortrait = document.portrait
-    ? {
-        ...document.portrait,
-        src: (await resolveImageSrc(document.portrait.src)) ?? document.portrait.src,
-      }
-    : undefined
+  let resolvedPortrait: ResumeDocument["portrait"]
+
+  if (document.portrait) {
+    const resolvedSrc = await resolveImageSrc(document.portrait.src)
+    resolvedPortrait = resolvedSrc
+      ? { ...document.portrait, src: resolvedSrc }
+      : undefined
+  }
 
   const resolvedExperience = document.experience
     ? await Promise.all(

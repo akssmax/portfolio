@@ -1,6 +1,6 @@
 import type { ResumeLayoutId } from "./types"
 
-export const DEFAULT_RESUME_LAYOUT: ResumeLayoutId = "classic"
+export const DEFAULT_RESUME_LAYOUT: ResumeLayoutId = "official"
 
 export const RESUME_LAYOUT_OPTIONS: {
   id: ResumeLayoutId
@@ -31,5 +31,11 @@ export const RESUME_LAYOUT_OPTIONS: {
     id: "executive",
     label: "Executive",
     description: "Strong header band and clear section rules for a senior product feel.",
+  },
+  {
+    id: "official",
+    label: "Official",
+    description:
+      "Reference CV structure with metrics row, project grid, earlier experience, and capabilities columns.",
   },
 ]

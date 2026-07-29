@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
 import { DEFAULT_RESUME_LAYOUT } from "./layout-options"
+import { DEFAULT_RESUME_DISPLAY_PREFERENCES } from "./resume-display-preferences"
 import { RESUME_DEFAULT_FONT } from "./resume-font-utils"
 import { useDownloadResume } from "./use-download-resume"
 
@@ -47,6 +48,7 @@ export function DownloadResumeButton({
           brandColor: primary,
           layout: DEFAULT_RESUME_LAYOUT,
           fontPresetId: RESUME_DEFAULT_FONT,
+          display: DEFAULT_RESUME_DISPLAY_PREFERENCES,
         }).catch((cause) => {
           toast.error(
             cause instanceof Error

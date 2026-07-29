@@ -3,6 +3,8 @@ import { Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import type { ResumeDocument } from "../types"
 import { RESUME_SPACING } from "./spacing-tokens"
+import { getPdfSectionMarginBottom } from "../section-spacing-utils"
+import type { ResumeDisplayPreferences } from "../resume-display-preferences"
 import { ResumeLogomark } from "./resume-logomark"
 import {
   DEFAULT_PDF_LAYOUT_PROPS,
@@ -132,13 +134,15 @@ function Section({
   title,
   brandColor,
   children,
+  display,
 }: {
   title: string
   brandColor: string
   children: ReactNode
+  display: ResumeDisplayPreferences
 }) {
   return (
-    <View style={styles.section}>
+    <View style={[styles.section, { marginBottom: getPdfSectionMarginBottom(display) }]}>
       <View {...PDF_SECTION_HEADING_PROPS} style={styles.sectionTitleWrap}>
         <Text style={[styles.sectionTitle, { color: brandColor }]}>{title}</Text>
       </View>
@@ -175,6 +179,7 @@ export function ExecutiveResumeLayout({
   document,
   brandColor,
   fontFamily = DEFAULT_PDF_LAYOUT_PROPS.fontFamily,
+  display = DEFAULT_PDF_LAYOUT_PROPS.display,
 }: ResumePdfLayoutProps) {
   return (
     <Page size="A4" style={[styles.page, { fontFamily }]}>
@@ -197,7 +202,7 @@ export function ExecutiveResumeLayout({
       </View>
 
       {document.summary ? (
-        <Section title="Summary" brandColor={brandColor}>
+        <Section display={display} title="Summary" brandColor={brandColor}>
           {document.summary.split("\n\n").map((paragraph) => (
             <Text key={paragraph.slice(0, 24)} style={styles.paragraph}>
               {paragraph}
@@ -207,7 +212,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.experience?.length ? (
-        <Section title="Experience" brandColor={brandColor}>
+        <Section display={display} title="Experience" brandColor={brandColor}>
           {document.experience.map((job) => (
             <View key={`${job.company}-${job.period}`} style={styles.job}>
               <View {...PDF_JOB_HEADER_PROPS} style={styles.jobHeader}>
@@ -233,7 +238,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.education ? (
-        <Section title="Education" brandColor={brandColor}>
+        <Section display={display} title="Education" brandColor={brandColor}>
           <Text style={styles.paragraph}>
             {document.education.degree}
             {"\n"}
@@ -245,7 +250,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.skills?.length ? (
-        <Section title="Skills" brandColor={brandColor}>
+        <Section display={display} title="Skills" brandColor={brandColor}>
           {document.skills.map((skill) => (
             <Text key={skill} style={styles.skillLine}>
               {skill}
@@ -256,7 +261,7 @@ export function ExecutiveResumeLayout({
           ) : null}
         </Section>
       ) : document.contact ? (
-        <Section title="Contact" brandColor={brandColor}>
+        <Section display={display} title="Contact" brandColor={brandColor}>
           <PdfContactLines
             contact={document.contact}
             brandColor={brandColor}
@@ -266,7 +271,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.certifications?.length ? (
-        <Section title="Certifications" brandColor={brandColor}>
+        <Section display={display} title="Certifications" brandColor={brandColor}>
           {document.certifications.map((certification) => (
             <Text
               key={`${certification.title}-${certification.date}`}
@@ -282,7 +287,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.languages?.length ? (
-        <Section title="Languages" brandColor={brandColor}>
+        <Section display={display} title="Languages" brandColor={brandColor}>
           {document.languages.map((language) => (
             <Text key={language.name} style={styles.paragraph}>
               {language.name}  - {language.level}
@@ -292,7 +297,7 @@ export function ExecutiveResumeLayout({
       ) : null}
 
       {document.interests?.length ? (
-        <Section title="Interests" brandColor={brandColor}>
+        <Section display={display} title="Interests" brandColor={brandColor}>
           <Text style={styles.paragraph}>{document.interests.join(" · ")}</Text>
         </Section>
       ) : null}

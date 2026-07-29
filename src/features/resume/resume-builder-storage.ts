@@ -41,6 +41,7 @@ const VALID_LAYOUTS: Array<ResumeLayoutId> = [
   "modern",
   "minimal",
   "executive",
+  "official",
 ]
 
 const VALID_PRESET_IDS = new Set<BrandPresetId>([
