@@ -202,8 +202,8 @@ export function buildPostforgeDeck(
         "Shuffle beats blank canvas for exploration — especially for non-designers",
         "Chat beside the canvas keeps AI useful without breaking the visual system",
         "One export flow for social + decks simplified the product story",
-        "Landing hero as live product demo converted better than static screenshots",
-        "Solo design-engineering loop: design intent → React → Vercel without handoff gaps",
+        "Small teams get real value — contrast checker and design critique help non-designers learn design as they ship",
+        "On-canvas editing is easier than Claude Design for refining layouts and individual elements",
       ],
     },
     gaps: {
