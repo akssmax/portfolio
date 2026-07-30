@@ -186,10 +186,9 @@ export function buildPostforgeDeck(
         "PNG & PDF export",
       ],
       screenshot: {
-        src: "https://postforge-kohl.vercel.app/opengraph-image",
-        alt: editorImage?.alt ?? "Postforge design tool with brand kit and canvas",
+        src: visual.heroImageSrc ?? "/projects/postforge/hero.webp",
+        alt: visual.heroImageAlt ?? "Postforge design tool with brand kit and canvas",
       },
-      previewUrl: `${POSTFORGE_APP}/tool`,
       liveUrl: editorImage?.href ?? `${POSTFORGE_APP}/tool`,
       ctaLabel: "Open live editor",
       secondaryLiveUrl: "https://postforge-1g5t25oxq-akssmaxs-projects.vercel.app/tool",
