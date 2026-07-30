@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
+import { Route as IntroRouteImport } from './routes/intro'
 import { Route as Home2RouteImport } from './routes/home-2'
 import { Route as ExperienceRouteImport } from './routes/experience'
 import { Route as AboutRouteImport } from './routes/about'
@@ -39,6 +40,11 @@ import { Route as LandingChatThreadIdRouteImport } from './routes/_landing.chat.
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
   path: '/resume',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntroRoute = IntroRouteImport.update({
+  id: '/intro',
+  path: '/intro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Home2Route = Home2RouteImport.update({
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
+  '/intro': typeof IntroRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
+  '/intro': typeof IntroRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
+  '/intro': typeof IntroRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -259,6 +268,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/experience'
     | '/home-2'
+    | '/intro'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -284,6 +294,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/experience'
     | '/home-2'
+    | '/intro'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -312,6 +323,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/experience'
     | '/home-2'
+    | '/intro'
     | '/resume'
     | '/api/chat'
     | '/blog/$slug'
@@ -341,6 +353,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ExperienceRoute: typeof ExperienceRoute
   Home2Route: typeof Home2Route
+  IntroRoute: typeof IntroRoute
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/resume'
       fullPath: '/resume'
       preLoaderRoute: typeof ResumeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intro': {
+      id: '/intro'
+      path: '/intro'
+      fullPath: '/intro'
+      preLoaderRoute: typeof IntroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home-2': {
@@ -583,6 +603,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ExperienceRoute: ExperienceRoute,
   Home2Route: Home2Route,
+  IntroRoute: IntroRoute,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
   BlogSlugRoute: BlogSlugRoute,
