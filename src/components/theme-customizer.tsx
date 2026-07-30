@@ -29,7 +29,11 @@ const subscribe = () => () => {}
 const getClientSnapshot = () => true
 const getServerSnapshot = () => false
 
-export function ThemeCustomizer() {
+type ThemeCustomizerProps = {
+  triggerSize?: "icon" | "icon-sm"
+}
+
+export function ThemeCustomizer({ triggerSize = "icon" }: ThemeCustomizerProps) {
   const isClient = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
   const {
     appearance,
@@ -48,7 +52,7 @@ export function ThemeCustomizer() {
     return (
       <Button
         variant="outline"
-        size="icon"
+        size={triggerSize}
         aria-label="Customize theme"
         className="pointer-events-none opacity-60"
         tabIndex={-1}
@@ -61,7 +65,7 @@ export function ThemeCustomizer() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" aria-label="Customize theme">
+        <Button variant="outline" size={triggerSize} aria-label="Customize theme">
           <Palette className="size-4" />
         </Button>
       </PopoverTrigger>

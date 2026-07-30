@@ -1,14 +1,15 @@
 "use client"
 
 import { motion } from "motion/react"
-import { History, Sparkles } from "lucide-react"
+import { ArrowUpRight, History, Sparkles } from "lucide-react"
+import { Link } from "@tanstack/react-router"
 
 import { Badge } from "@/components/ui/badge"
 import { DeckMediaGlow } from "@/components/intro/deck-slide-background"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { getBuildBadgeLabel } from "@/lib/projects/build-badge"
 import { EASE_OUT_SMOOTH } from "@/lib/motion-easing"
-import type { DeckData } from "@/lib/intro/types"
+import type { DeckCaseStudyCard, DeckData } from "@/lib/intro/types"
 import { cn } from "@/lib/utils"
 
 type ProjectIntroSlideProps = {
@@ -28,6 +29,81 @@ const itemVariants = {
   }),
 }
 
+function CaseStudyCard({
+  card,
+  index,
+}: {
+  card: DeckCaseStudyCard
+  index: number
+}) {
+  const buildBadgeLabel = getBuildBadgeLabel(card.buildBadge)
+
+  return (
+    <motion.div
+      custom={5 + index}
+      initial="hidden"
+      animate="visible"
+      variants={itemVariants}
+    >
+      <Link
+        to="/projects/$slug"
+        params={{ slug: card.slug }}
+        search={{ from: "intro" }}
+        onPointerDown={(event) => event.stopPropagation()}
+        className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/70 bg-muted/15 transition-colors hover:border-border hover:bg-muted/25"
+      >
+        <div className="relative aspect-[16/10] overflow-hidden bg-muted/30">
+          {card.coverImageUrl ? (
+            <img
+              src={card.coverImageUrl}
+              alt=""
+              className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : null}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+        </div>
+
+        <div className="flex flex-1 flex-col gap-2 p-3 sm:p-3.5">
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0 space-y-1">
+              <p className="truncate font-medium tracking-tight text-foreground">
+                {card.title}
+              </p>
+              <p className="text-[11px] text-muted-foreground">{card.tag}</p>
+            </div>
+            <ArrowUpRight
+              className="mt-0.5 size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+              aria-hidden
+            />
+          </div>
+
+          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+            {card.description}
+          </p>
+
+          <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
+            {buildBadgeLabel ? (
+              <Badge
+                variant="outline"
+                className={cn(
+                  "h-5 rounded-full px-2 text-[10px] font-normal",
+                  card.buildBadge === "built-with-ai" &&
+                    "border-amber-500/30 text-amber-600 dark:text-amber-400",
+                )}
+              >
+                {buildBadgeLabel}
+              </Badge>
+            ) : null}
+            {card.year ? (
+              <span className="text-[10px] text-muted-foreground">{card.year}</span>
+            ) : null}
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  )
+}
+
 export function ProjectIntroSlide({ data }: ProjectIntroSlideProps) {
   const { fullMotion } = useAnimationProfile()
   const buildBadgeLabel = getBuildBadgeLabel(data.buildBadge)
@@ -44,12 +120,18 @@ export function ProjectIntroSlide({ data }: ProjectIntroSlideProps) {
         >
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-              Case study
+              Case studies
             </span>
             <span className="hidden h-px w-12 bg-border sm:block" aria-hidden />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            <Badge
+              variant="outline"
+              className="rounded-full border-primary/30 bg-primary/5 px-3 py-1 text-xs text-primary"
+            >
+              Presenting today
+            </Badge>
             <Badge variant="outline" className="rounded-full px-3 py-1 text-xs">
               <Sparkles className="mr-1 size-3" aria-hidden />
               {data.tag}
@@ -171,6 +253,29 @@ export function ProjectIntroSlide({ data }: ProjectIntroSlideProps) {
             ) : null}
           </motion.div>
         </div>
+
+        {data.otherCaseStudies.length > 0 ? (
+          <div className="space-y-4 border-t border-border/60 pt-6">
+            <motion.div
+              custom={5}
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              className="flex items-center justify-between gap-3"
+            >
+              <p className="text-sm font-medium text-foreground">More in portfolio</p>
+              <p className="text-xs text-muted-foreground">
+                {data.otherCaseStudies.length} other case studies
+              </p>
+            </motion.div>
+
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {data.otherCaseStudies.map((card, index) => (
+                <CaseStudyCard key={card.slug} card={card} index={index} />
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   )

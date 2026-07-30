@@ -95,11 +95,18 @@ export function useDeckNavigation({
   }, [goNext, goPrev, goTo, totalSlides])
 
   const handlePointerDown = React.useCallback((event: React.PointerEvent) => {
+    if (event.target instanceof Element && event.target.closest("[data-deck-nested-nav]")) {
+      return
+    }
     touchStartX.current = event.clientX
   }, [])
 
   const handlePointerUp = React.useCallback(
     (event: React.PointerEvent) => {
+      if (event.target instanceof Element && event.target.closest("[data-deck-nested-nav]")) {
+        touchStartX.current = null
+        return
+      }
       if (touchStartX.current === null) return
 
       const deltaX = event.clientX - touchStartX.current

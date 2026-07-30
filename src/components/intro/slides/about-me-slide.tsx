@@ -27,15 +27,16 @@ type RotatingRolePhraseProps = {
 
 function RotatingRolePhrase({ activeRole, fullMotion }: RotatingRolePhraseProps) {
   return (
-    <p className="flex flex-wrap items-baseline text-2xl font-medium tracking-tight sm:text-3xl">
+    <p className="inline-flex flex-wrap items-end gap-x-[0.28em] text-2xl font-medium leading-none tracking-tight sm:text-3xl">
       <span className="text-muted-foreground">I</span>
-      <motion.span
-        layout
+      <span
         aria-live="polite"
-        transition={{ layout: { duration: 0.28, ease: EASE_OUT_SMOOTH } }}
-        className="relative mx-[0.28em] inline-block h-[1.05em] overflow-hidden align-baseline"
+        className="relative inline-grid h-[1em] overflow-hidden align-bottom leading-none"
       >
-        <span className="invisible inline-block whitespace-nowrap capitalize leading-none" aria-hidden>
+        <span
+          className="invisible col-start-1 row-start-1 whitespace-nowrap capitalize"
+          aria-hidden
+        >
           {activeRole}
         </span>
         <AnimatePresence initial={false} mode="popLayout">
@@ -45,19 +46,13 @@ function RotatingRolePhrase({ activeRole, fullMotion }: RotatingRolePhraseProps)
             animate={{ y: 0, opacity: 1 }}
             exit={fullMotion ? { y: "-100%", opacity: 0 } : { opacity: 0 }}
             transition={{ duration: 0.34, ease: EASE_OUT_SMOOTH }}
-            className="absolute bottom-0 left-0 whitespace-nowrap capitalize leading-none text-primary"
+            className="col-start-1 row-start-1 self-end whitespace-nowrap capitalize text-primary"
           >
             {activeRole}
           </motion.span>
         </AnimatePresence>
-      </motion.span>
-      <motion.span
-        layout
-        transition={{ layout: { duration: 0.28, ease: EASE_OUT_SMOOTH } }}
-        className="text-foreground"
-      >
-        product UI
-      </motion.span>
+      </span>
+      <span className="text-foreground">product UI</span>
     </p>
   )
 }

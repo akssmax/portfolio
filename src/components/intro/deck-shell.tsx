@@ -9,17 +9,19 @@ import { DeckNavHint } from "@/components/intro/deck-nav-hint"
 import { DeckProgress } from "@/components/intro/deck-progress"
 import { DeckSlide } from "@/components/intro/deck-slide"
 import { AboutMeSlide } from "@/components/intro/slides/about-me-slide"
-import { ContextSlide } from "@/components/intro/slides/context-slide"
-import { DesignDecisionsSlide } from "@/components/intro/slides/design-decisions-slide"
+import { ArchitectureSlide } from "@/components/intro/slides/architecture-slide"
+import { AssumptionsSlide } from "@/components/intro/slides/assumptions-slide"
 import { ExperienceSlide } from "@/components/intro/slides/experience-slide"
-import { OutcomeSlide } from "@/components/intro/slides/outcome-slide"
+import { GapsSlide } from "@/components/intro/slides/gaps-slide"
+import { LearningsSlide } from "@/components/intro/slides/learnings-slide"
+import { LiveDemoSlide } from "@/components/intro/slides/live-demo-slide"
 import { ProblemSlide } from "@/components/intro/slides/problem-slide"
-import { ProductEditorSlide } from "@/components/intro/slides/product-editor-slide"
-import { ProductLibrarySlide } from "@/components/intro/slides/product-library-slide"
 import { ProjectIntroSlide } from "@/components/intro/slides/project-intro-slide"
-import { SkillsSlide } from "@/components/intro/slides/skills-slide"
-import { SolutionSlide } from "@/components/intro/slides/solution-slide"
+import { RoadmapSlide } from "@/components/intro/slides/roadmap-slide"
+import { ThankYouSlide } from "@/components/intro/slides/thank-you-slide"
+// import { SkillsSlide } from "@/components/intro/slides/skills-slide"
 import { Button } from "@/components/ui/button"
+import { ThemeCustomizer } from "@/components/theme-customizer"
 import { useDeckNavigation } from "@/hooks/use-deck-navigation"
 import { DECK_SLIDE_IDS } from "@/lib/intro/types"
 import type { DeckData } from "@/lib/intro/types"
@@ -94,24 +96,31 @@ export function DeckShell({ deck, initialIndex = 0, onSlideChange }: DeckShellPr
         return <AboutMeSlide data={deck.aboutMe} />
       case "experience":
         return <ExperienceSlide data={deck.experience} />
-      case "skills":
-        return <SkillsSlide data={deck.skills} />
+      // case "skills":
+      //   return <SkillsSlide data={deck.skills} />
       case "project-intro":
         return <ProjectIntroSlide data={deck.projectIntro} />
-      case "context":
-        return <ContextSlide data={deck.context} />
       case "problem":
         return <ProblemSlide data={deck.problem} />
-      case "solution":
-        return <SolutionSlide data={deck.solution} />
-      case "product-editor":
-        return <ProductEditorSlide data={deck.productEditor} />
-      case "product-library":
-        return <ProductLibrarySlide data={deck.productLibrary} />
-      case "design-decisions":
-        return <DesignDecisionsSlide decisions={deck.designDecisions} />
-      case "outcome":
-        return <OutcomeSlide data={deck.outcome} />
+      case "assumptions":
+        return <AssumptionsSlide data={deck.assumptions} />
+      case "architecture":
+        return <ArchitectureSlide data={deck.architecture} />
+      case "live-demo":
+        return <LiveDemoSlide data={deck.liveDemo} />
+      case "learnings":
+        return <LearningsSlide data={deck.learnings} />
+      case "gaps":
+        return <GapsSlide data={deck.gaps} />
+      case "roadmap":
+        return (
+          <RoadmapSlide
+            data={deck.roadmap}
+            onEndPresentation={() => goTo(DECK_SLIDE_IDS.indexOf("thank-you"))}
+          />
+        )
+      case "thank-you":
+        return <ThankYouSlide data={deck.thankYou} />
       default:
         return null
     }
@@ -129,6 +138,8 @@ export function DeckShell({ deck, initialIndex = 0, onSlideChange }: DeckShellPr
         <span className="rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
           {index + 1} / {totalSlides}
         </span>
+
+        <ThemeCustomizer triggerSize="icon-sm" />
 
         <Button
           type="button"

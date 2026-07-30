@@ -26,6 +26,44 @@ export type DeckExperienceItem = {
   isCurrent?: boolean
 }
 
+export type DeckAssumption = {
+  title: string
+  detail: string
+}
+
+export type DeckBuildTool = {
+  name: string
+  role: string
+  href?: string
+  logoSrc?: string | string[]
+}
+
+export type DeckArchitectureLayer = {
+  label: string
+  items: string[]
+}
+
+export type DeckGap = {
+  gap: string
+  impact: string
+}
+
+export type DeckRoadmapHorizon = {
+  label: string
+  items: string[]
+}
+
+export type DeckCaseStudyCard = {
+  slug: string
+  title: string
+  description: string
+  tag: string
+  coverImageUrl: string
+  year?: string | null
+  metrics?: string | null
+  buildBadge?: "built-with-ai" | "pre-llm" | null
+}
+
 export type DeckData = {
   aboutMe: {
     name: string
@@ -66,37 +104,67 @@ export type DeckData = {
     metrics?: string | null
     stats: DeckStat[]
     buildBadge?: "built-with-ai" | "pre-llm" | null
-  }
-  context: {
-    subtitle: string
-    paragraphs: string[]
-    stats: DeckStat[]
+    otherCaseStudies: DeckCaseStudyCard[]
   }
   problem: {
     statement: string
+    audience: string[]
+    insight: {
+      lead: string
+      painPoints: string[]
+      closing: string
+    }
   }
-  solution: {
+  assumptions: {
+    heading: string
+    description: string
+    items: DeckAssumption[]
+  }
+  architecture: {
+    heading: string
     summary: string
-    highlights: string[]
+    layers: DeckArchitectureLayer[]
+    flow: string[]
+    stack: string[]
+    tools: DeckBuildTool[]
   }
-  productEditor: {
-    title: string
+  liveDemo: {
+    heading: string
     description: string
-    image: DeckImage
-    callouts: string[]
-  }
-  productLibrary: {
-    title: string
-    description: string
-    images: DeckImage[]
-  }
-  designDecisions: string[]
-  outcome: {
-    statement: string
+    features: string[]
+    screenshot: {
+      src: string
+      alt: string
+    }
+    previewUrl?: string
     liveUrl: string
     ctaLabel: string
-    stats: DeckStat[]
-    stack: string[]
+    secondaryLiveUrl?: string
+    secondaryCtaLabel?: string
+  }
+  learnings: {
+    heading: string
+    description: string
+    items: string[]
+  }
+  gaps: {
+    heading: string
+    description: string
+    items: DeckGap[]
+  }
+  roadmap: {
+    heading: string
+    description: string
+    horizons: DeckRoadmapHorizon[]
+    liveUrl: string
+    ctaLabel: string
+  }
+  thankYou: {
+    heading: string
+    message: string
+    name: string
+    email: string
+    linkedinUrl: string
   }
 }
 
@@ -105,26 +173,28 @@ export type DeckSlideId =
   | "experience"
   | "skills"
   | "project-intro"
-  | "context"
   | "problem"
-  | "solution"
-  | "product-editor"
-  | "product-library"
-  | "design-decisions"
-  | "outcome"
+  | "assumptions"
+  | "architecture"
+  | "live-demo"
+  | "learnings"
+  | "gaps"
+  | "roadmap"
+  | "thank-you"
 
 export const DECK_SLIDE_IDS: DeckSlideId[] = [
   "about-me",
   "experience",
-  "skills",
+  // "skills",
   "project-intro",
-  "context",
   "problem",
-  "solution",
-  "product-editor",
-  "product-library",
-  "design-decisions",
-  "outcome",
+  "assumptions",
+  "architecture",
+  "live-demo",
+  "learnings",
+  "gaps",
+  "roadmap",
+  "thank-you",
 ]
 
 export type DeckGallery = VisualCaseStudyGallery

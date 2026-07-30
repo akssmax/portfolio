@@ -15,7 +15,10 @@ import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 
 export const Route = createFileRoute("/projects/$slug")({
   validateSearch: (search: Record<string, unknown>): { from?: CaseStudyFrom } => ({
-    from: search.from === "home" || search.from === "projects" ? search.from : undefined,
+    from:
+      search.from === "home" || search.from === "projects" || search.from === "intro"
+        ? search.from
+        : undefined,
   }),
   loader: async ({ params }) => {
     const [project, sections] = await Promise.all([
