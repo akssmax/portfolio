@@ -13,6 +13,7 @@ import { ArchitectureSlide } from "@/components/intro/slides/architecture-slide"
 import { AssumptionsSlide } from "@/components/intro/slides/assumptions-slide"
 import { ExperienceSlide } from "@/components/intro/slides/experience-slide"
 import { GapsSlide } from "@/components/intro/slides/gaps-slide"
+import { IntentDetectionSlide } from "@/components/intro/slides/intent-detection-slide"
 import { LearningsSlide } from "@/components/intro/slides/learnings-slide"
 import { LiveDemoSlide } from "@/components/intro/slides/live-demo-slide"
 import { ProblemSlide } from "@/components/intro/slides/problem-slide"
@@ -106,6 +107,8 @@ export function DeckShell({ deck, initialIndex = 0, onSlideChange }: DeckShellPr
         return <AssumptionsSlide data={deck.assumptions} />
       case "architecture":
         return <ArchitectureSlide data={deck.architecture} />
+      case "intent-detection":
+        return <IntentDetectionSlide data={deck.intentDetection} />
       case "live-demo":
         return <LiveDemoSlide data={deck.liveDemo} />
       case "learnings":

@@ -173,6 +173,67 @@ export function buildPostforgeDeck(
         },
       ],
     },
+    intentDetection: {
+      heading: "How Postforge reads a brief",
+      description:
+        "Design intent is not a single LLM call — it's a layered classifier: cheap deterministic signals first, then a structured Campaign Plan (Mistral or heuristics), then downstream compilers for layout, copy, and visuals.",
+      stages: [
+        {
+          label: "Input",
+          items: ["User brief text", "Platform (e.g. instagram-square)", "Optional theme angle"],
+        },
+        {
+          label: "Pre-process",
+          subtitle: "Deterministic",
+          items: [
+            "Normalize + tokenize",
+            "Detect ad vs post format",
+            "Extract multi-variant themes",
+            "Resolve artifact ID",
+          ],
+        },
+        {
+          label: "Intent engine",
+          subtitle: "Hybrid",
+          badge: "Mistral + fallback",
+          items: [
+            "planCampaign → CampaignPlan",
+            "campaignPlanFromBrief on timeout",
+            "campaignPlanToIntent adapter",
+          ],
+        },
+        {
+          label: "Compilers",
+          subtitle: "Downstream",
+          items: [
+            "Design rules + copy budgets",
+            "Layout retrieve + rank",
+            "Visual strategy + copy slots",
+            "assembleDesignPlan → canvas",
+          ],
+        },
+      ],
+      flowNotes: [
+        "runDesignPipeline()",
+        "creativePlanner.ts",
+        "campaignPlanFromBrief.ts",
+      ],
+      detectedDimensions: [
+        { label: "Campaign type", detail: "launch, promo, hiring, case study…" },
+        { label: "Objective", detail: "awareness, signup, book demo, conversion" },
+        { label: "Audience", detail: "developers, enterprise, founders" },
+        { label: "Pattern", detail: "offer, comparison, statistic, problem-solution" },
+        { label: "Visual focus", detail: "UI mockup, illustration, metric, brand" },
+        { label: "Tone & density", detail: "enterprise / bold / minimal + copy depth" },
+      ],
+      designChoice:
+        "Intent stops at strategy. Layout IDs, spacing, and type scale are chosen later by retrieval and ranking — the Creative Planner never outputs pixel geometry.",
+      modes: [
+        { label: "Production", detail: "Mistral planCampaign() via /api/brief/chat" },
+        { label: "Fallback", detail: "campaignPlanFromBrief() heuristics on LLM error" },
+        { label: "Offline", detail: "Same heuristics for tests and golden briefs" },
+      ],
+    },
     liveDemo: {
       heading: "The editor in action",
       description:

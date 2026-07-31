@@ -29,12 +29,14 @@ export function DeckSlide({ children, className, slideKey }: DeckSlideProps) {
           : { duration: 0.01 }
       }
       className={cn(
-        "relative isolate flex min-h-dvh w-full flex-col justify-center overflow-y-auto overflow-x-hidden px-6 py-20 sm:px-12 lg:px-20",
+        "relative isolate h-dvh w-full overflow-y-auto overflow-x-hidden overscroll-y-contain",
         className,
       )}
     >
       <DeckSlideBackground className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" />
-      <div className="relative mx-auto w-full max-w-6xl">{children}</div>
+      <div className="relative mx-auto flex min-h-full w-full max-w-6xl flex-col justify-center px-6 py-20 sm:px-12 lg:px-20">
+        {children}
+      </div>
     </motion.section>
   )
 }

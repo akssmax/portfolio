@@ -128,6 +128,26 @@ export type DeckData = {
     stack: string[]
     tools: DeckBuildTool[]
   }
+  intentDetection: {
+    heading: string
+    description: string
+    stages: {
+      label: string
+      subtitle?: string
+      badge?: string
+      items: string[]
+    }[]
+    flowNotes: string[]
+    detectedDimensions: {
+      label: string
+      detail: string
+    }[]
+    designChoice: string
+    modes: {
+      label: string
+      detail: string
+    }[]
+  }
   liveDemo: {
     heading: string
     description: string
@@ -176,6 +196,7 @@ export type DeckSlideId =
   | "problem"
   | "assumptions"
   | "architecture"
+  | "intent-detection"
   | "live-demo"
   | "learnings"
   | "gaps"
@@ -190,6 +211,7 @@ export const DECK_SLIDE_IDS: DeckSlideId[] = [
   "problem",
   "assumptions",
   "architecture",
+  "intent-detection",
   "live-demo",
   "learnings",
   "gaps",
