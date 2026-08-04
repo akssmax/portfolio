@@ -1,6 +1,14 @@
+# https://www.akshaysaini.xyz
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
 Allow: /
-Disallow: /intro
 
-Sitemap: https://www.akshaysaini.xyz/sitemap.xml
+# Noindex / internal routes — excluded from sitemap-v2.xml
+Disallow: /intro
+Disallow: /resume
+Disallow: /home-2
+Disallow: /design-system
+Disallow: /chat
+
+Sitemap: https://www.akshaysaini.xyz/sitemap-v2.xml
