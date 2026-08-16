@@ -1,0 +1,69 @@
+@media print {
+  html,
+  body {
+    background: var(--background) !important;
+    color: var(--foreground) !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  [data-slot="popover-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="dialog-overlay"],
+  [data-slot="dialog-content"] {
+    display: none !important;
+  }
+}
+
+.deck-print-page {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  break-after: page;
+  break-inside: avoid;
+  page-break-after: always;
+  page-break-inside: avoid;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.deck-print-page:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.deck-print-page-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 2.25rem 2.75rem;
+}
+
+.deck-print-page-index {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+}
+
+@media print {
+  .deck-print-page [style*="opacity"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
