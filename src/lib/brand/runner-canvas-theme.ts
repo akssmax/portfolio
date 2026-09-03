@@ -29,6 +29,53 @@ function resolveThemeColor(
   return resolved || "rgb(255, 255, 255)"
 }
 
+export type ThemeRgb = readonly [number, number, number]
+
+let colorConvertCtx: CanvasRenderingContext2D | null = null
+
+export function parseCssRgb(color: string): ThemeRgb {
+  const match = color.match(
+    /rgba?\(\s*([\d.]+)(?:\s*,\s*|\s+)([\d.]+)(?:\s*,\s*|\s+)([\d.]+)/,
+  )
+  if (match) {
+    return [
+      clamp01(Number(match[1]) / 255),
+      clamp01(Number(match[2]) / 255),
+      clamp01(Number(match[3]) / 255),
+    ]
+  }
+
+  if (typeof document === "undefined") return [0, 0, 0]
+  if (!colorConvertCtx) {
+    const probe = document.createElement("canvas")
+    probe.width = 1
+    probe.height = 1
+    colorConvertCtx = probe.getContext("2d", { willReadFrequently: true })
+  }
+  if (!colorConvertCtx) return [0, 0, 0]
+  colorConvertCtx.fillStyle = "#000"
+  colorConvertCtx.fillStyle = color
+  colorConvertCtx.fillRect(0, 0, 1, 1)
+  const [r, g, b] = colorConvertCtx.getImageData(0, 0, 1, 1).data
+  return [r / 255, g / 255, b / 255]
+}
+
+export function readThemeRgb(
+  container: HTMLElement,
+  cssVar: "--foreground" | "--background" | "--muted-foreground" | "--primary",
+): ThemeRgb {
+  return parseCssRgb(resolveThemeColor(container, cssVar))
+}
+
+export function themeLuminance(rgb: ThemeRgb): number {
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]
+}
+
+function clamp01(value: number) {
+  if (!Number.isFinite(value)) return 0
+  return Math.min(1, Math.max(0, value))
+}
+
 export function readCanvasThemeColors(container: HTMLElement): CanvasThemeColors {
   return {
     foreground: resolveThemeColor(container, "--foreground"),

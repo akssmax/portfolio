@@ -18,6 +18,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { designSystemNav } from "@/lib/design-system-registry"
 import { cn } from "@/lib/utils"
@@ -30,6 +31,7 @@ function NavLink({
   title: string
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const { setOpenMobile } = useSidebar()
   const isActive = pathname === href
 
   return (
@@ -44,6 +46,7 @@ function NavLink({
           {...(href.startsWith("/design-system/components/")
             ? { params: { slug: href.replace("/design-system/components/", "") } }
             : {})}
+          onClick={() => setOpenMobile(false)}
         >
           {title}
         </Link>
@@ -99,20 +102,20 @@ export function DesignSystemLayout({ children }: { children: React.ReactNode }) 
       </Sidebar>
 
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-sm sm:px-6">
-          <SidebarTrigger />
+        <header className="sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-3 backdrop-blur-sm sm:gap-3 sm:px-6">
+          <SidebarTrigger className="shrink-0" />
           <Link
             to="/"
-            className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            <ArrowLeft className="size-4" />
-            Back to portfolio
+            <ArrowLeft className="size-4 shrink-0" />
+            <span className="truncate">Back to portfolio</span>
           </Link>
-          <div className="ms-auto">
-            <ThemeCustomizer />
+          <div className="ms-auto shrink-0">
+            <ThemeCustomizer triggerSize="icon-sm" />
           </div>
         </header>
-        <main className={cn("mx-auto w-full max-w-4xl flex-1 p-6 sm:p-10")}>
+        <main className={cn("mx-auto w-full max-w-4xl flex-1 p-4 sm:p-6 md:p-10")}>
           <ErrorBoundary title="This page failed to render" showHeader={false}>
             {children}
           </ErrorBoundary>

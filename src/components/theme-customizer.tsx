@@ -8,7 +8,6 @@ import { FontPicker } from "./theme-customizer/font-picker"
 import { FontScalePicker } from "./theme-customizer/font-scale-picker"
 import { ModePicker } from "./theme-customizer/mode-picker"
 import { RadiusPicker } from "./theme-customizer/radius-picker"
-import { FooterGradientPicker } from "./theme-customizer/footer-gradient-picker"
 import { Separator } from "@/components/ui/separator"
 import { CustomScrollbar } from "@/components/ui/custom-scrollbar"
 import {
@@ -43,8 +42,6 @@ export function ThemeCustomizer({ triggerSize = "icon" }: ThemeCustomizerProps) 
     setRadius,
     setColorVision,
     setFontScale,
-    footerGradient,
-    setFooterGradient,
     mounted,
   } = useAppearance()
 
@@ -110,15 +107,6 @@ export function ThemeCustomizer({ triggerSize = "icon" }: ThemeCustomizerProps) 
             </AccordionTrigger>
             <AccordionContent className="pb-2">
               <RadiusPicker activeRadius={appearance.radius} onSelect={setRadius} />
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="footer-gradient" className="border-none">
-            <AccordionTrigger className="py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
-              Footer Glow
-            </AccordionTrigger>
-            <AccordionContent className="pb-2">
-              <FooterGradientPicker activeGradient={footerGradient} onSelect={setFooterGradient} />
             </AccordionContent>
           </AccordionItem>
 

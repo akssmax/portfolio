@@ -84,8 +84,12 @@ const noopChatActions: PortfolioChatContextValue = {
   openChatWithMessage: () => {},
 }
 
+export function useOptionalPortfolioChat() {
+  return useContext(PortfolioChatContext)
+}
+
 export function usePortfolioChat() {
-  const context = useContext(PortfolioChatContext)
+  const context = useOptionalPortfolioChat()
   if (!context) {
     if (typeof window === "undefined") {
       return noopChatActions

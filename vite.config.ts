@@ -9,6 +9,7 @@ import viteTsConfigPaths from "vite-tsconfig-paths"
 import tailwindcss from "@tailwindcss/vite"
 import { nitro } from "nitro/vite"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
+import { wgslVitePlugin } from "@vgpu/wgsl/loader-vite"
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const isDev = process.env.NODE_ENV !== "production"
@@ -27,6 +28,7 @@ const config = defineConfig({
     noExternal: ["flubber"],
   },
   plugins: [
+    wgslVitePlugin(),
     // @react-pdf/renderer needs Buffer in the browser (pdfkit file IDs, etc.)
     nodePolyfills({
       include: ["buffer"],

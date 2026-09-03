@@ -5,7 +5,7 @@ import { Link, useLocation } from "@tanstack/react-router"
 import { ArrowLeft, Menu, Sparkles } from "lucide-react"
 
 import { Logo } from "@/components/brand/logo"
-import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
+import { useOptionalPortfolioChat } from "@/components/landing/portfolio-chat-provider"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { Button } from "@/components/ui/button"
 import {
@@ -160,7 +160,7 @@ export function SiteHeader({
   const { fullMotion } = useAnimationProfile()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [elevated, setElevated] = useState(false)
-  const { openChat } = usePortfolioChat()
+  const chat = useOptionalPortfolioChat()
   const location = useLocation()
   const isChatRoute = location.pathname.startsWith("/chat")
   const onMedia = tone === "on-media"
@@ -185,7 +185,7 @@ export function SiteHeader({
 
   const handleAskAi = () => {
     closeMobileMenu()
-    openChat()
+    chat?.openChat()
   }
 
   return (

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, type ReactNode } from "react"
 import {
   motion,
   useReducedMotion,
@@ -8,6 +8,7 @@ import {
   type Variants,
 } from "motion/react"
 
+import { MonogramFlare } from "@/components/brand/monogram-flare/monogram-flare"
 import { MonogramRunnerGame } from "@/components/brand/monogram-runner-game"
 import {
   Tooltip,
@@ -60,6 +61,12 @@ export const MONOGRAM_ANIMATIONS = [
     description: "Continuous stroke loop for loading or decorative states.",
   },
   {
+    id: "flare",
+    label: "Flare",
+    description:
+      "WebGPU volumetric flare — rim-lit monogram with a 48-step ray walk and pointer-driven light.",
+  },
+  {
     id: "none",
     label: "None",
     description: "Static watermark with no motion.",
@@ -83,6 +90,9 @@ const sizeClasses: Record<MonogramSize, string> = {
   footer:
     "h-32 w-full max-w-4xl sm:h-40 md:h-48 lg:h-56 xl:max-w-5xl",
 }
+
+const flareFooterStage =
+  "h-auto w-full max-w-none min-h-[20rem] sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[32rem]"
 
 const fillToneClasses = {
   muted: "text-muted-foreground/20",
@@ -241,6 +251,7 @@ function getAnimationConfig(animation: MonogramAnimation): AnimationConfig {
         showStroke: true,
       }
 
+    case "flare":
     case "none":
     default:
       return { showStroke: false }
@@ -397,10 +408,12 @@ export function FooterMonogram({
     },
     [isRunnerControlled, onRunnerActiveChange],
   )
-  const useMotion = !shouldReduceMotion && animation !== "none"
+  const useMotion = !shouldReduceMotion && animation !== "none" && animation !== "flare"
+  const isFlare = animation === "flare" && !shouldReduceMotion
   const isLoop = animation === "loop" && useMotion
   const canPlayRunner =
     enableRunnerGame && size === "footer" && !shouldReduceMotion
+  const runnerExpanded = canPlayRunner && runnerActive
 
   const containerMotionProps = useMotion
     ? isLoop
@@ -427,46 +440,99 @@ export function FooterMonogram({
     />
   )
 
+  const flareVisual = (
+    <MonogramFlare className="h-full w-full" fallback={monogramSvg} />
+  )
+
+  const startRunner = () => setRunnerActive(true)
+
+  const runnerTrigger = (visual: ReactNode, fill: boolean) => {
+    const triggerClassName = cn(
+      "cursor-pointer border-0 bg-transparent p-0 outline-none",
+      fill && "h-full w-full",
+      !fill &&
+        "origin-bottom transition-transform duration-300 ease-out motion-reduce:transition-none",
+      !fill && !shouldReduceMotion && "hover:scale-[1.05]",
+      "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    )
+    const triggerContent = (
+      <>
+        <span className="sr-only">
+          Easter egg: click to play a mini runner game
+        </span>
+        {visual}
+      </>
+    )
+
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {fill ? (
+            <div
+              role="button"
+              tabIndex={0}
+              className={triggerClassName}
+              onClick={startRunner}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  startRunner()
+                }
+              }}
+              aria-label="Start monogram runner game"
+            >
+              {triggerContent}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={triggerClassName}
+              onClick={startRunner}
+              aria-label="Start monogram runner game"
+            >
+              {triggerContent}
+            </button>
+          )}
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={10}>
+          Psst… click to play a mini runner game
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
   return (
     <motion.div
       className={cn(
         "group/monogram flex w-full overflow-hidden",
-        size === "footer" && !(canPlayRunner && runnerActive) && "pt-4 pb-10 sm:pt-6 sm:pb-12",
-        canPlayRunner && runnerActive &&
-          "relative min-h-[256px] w-full sm:min-h-[320px] md:min-h-[360px] lg:min-h-[400px]",
-        !(canPlayRunner && runnerActive) && "justify-center",
+        isFlare && "bg-background",
+        isFlare && size !== "footer" && sizeClasses[size],
+        isFlare && size === "footer" && !runnerExpanded && flareFooterStage,
+        size === "footer" && !isFlare && !runnerExpanded && "pt-4 pb-10 sm:pt-6 sm:pb-12",
+        runnerExpanded &&
+          cn(
+            "relative w-full",
+            isFlare
+              ? flareFooterStage
+              : "min-h-[256px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[400px]",
+          ),
+        !runnerExpanded && "justify-center",
         wrapperClassName,
       )}
       variants={useMotion ? containerVariants : undefined}
       {...containerMotionProps}
     >
-      {canPlayRunner && runnerActive ? (
+      {runnerExpanded ? (
         <MonogramRunnerGame
           onExit={() => setRunnerActive(false)}
           className="absolute inset-0 max-w-none rounded-none border-0"
         />
+      ) : isFlare && canPlayRunner ? (
+        runnerTrigger(flareVisual, true)
+      ) : isFlare ? (
+        flareVisual
       ) : canPlayRunner ? (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              type="button"
-              className={cn(
-                "cursor-pointer border-0 bg-transparent p-0 outline-none",
-                "origin-bottom transition-transform duration-300 ease-out motion-reduce:transition-none",
-                !shouldReduceMotion && "hover:scale-[1.05]",
-                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-              )}
-              onClick={() => setRunnerActive(true)}
-              aria-label="Start monogram runner game"
-            >
-              <span className="sr-only">Easter egg: click to play a mini runner game</span>
-              {monogramSvg}
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={10}>
-            Psst… click to play a mini runner game
-          </TooltipContent>
-        </Tooltip>
+        runnerTrigger(monogramSvg, false)
       ) : (
         monogramSvg
       )}

@@ -7,6 +7,7 @@ import { FeatureCardVisual } from "@/components/marketing/feature-card-visual"
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
 import { CtaSection, type CtaSectionVariant, type CtaSectionPosition } from "@/components/landing/contact-section"
 import { HeroSection } from "@/components/landing/hero-section"
+import { PortfolioChatProvider } from "@/components/landing/portfolio-chat-provider"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
 import { WorkSection } from "@/components/landing/work-section"
@@ -24,9 +25,11 @@ export function ThemeCustomizerDemo() {
 
 export function SiteHeaderDemo() {
   return (
-    <div className="relative w-full rounded-lg border border-border bg-background p-4">
-      <SiteHeader />
-    </div>
+    <PortfolioChatProvider>
+      <div className="relative w-full rounded-lg border border-border bg-background p-4">
+        <SiteHeader />
+      </div>
+    </PortfolioChatProvider>
   )
 }
 

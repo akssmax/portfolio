@@ -36,7 +36,11 @@ function VariantCard({
         />
       </div>
       <p className="border-t border-border px-4 py-2 text-center text-[11px] text-muted-foreground">
-        {animation === "loop" ? "Plays continuously" : "Hover to preview"}
+        {animation === "flare"
+          ? "WebGPU · move the pointer to steer the light"
+          : animation === "loop"
+            ? "Plays continuously"
+            : "Hover to preview"}
       </p>
     </div>
   )
@@ -47,10 +51,29 @@ export function FooterMonogramDemo() {
     <div className="space-y-12">
       <section className="space-y-4">
         <div>
+          <h3 className="text-lg font-medium">WebGPU flare</h3>
+          <p className="text-sm text-muted-foreground">
+            Rim-lit triangular monogram with a 48-step volumetric ray walk,
+            blue-noise jitter, and a separable Gaussian blur chain. The light
+            breathes on its own until the pointer takes over. Requires WebGPU.
+          </p>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-border bg-background">
+          <FooterMonogram
+            animation="flare"
+            size="footer"
+            wrapperClassName="max-w-none pt-0 pb-0 min-h-[28rem] sm:min-h-[32rem]"
+          />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
           <h3 className="text-lg font-medium">Animation variants</h3>
           <p className="text-sm text-muted-foreground">
-            Large footer watermark with Framer Motion presets. Hover each card to
-            compare draw, trace, glow, pulse, shift, reveal, and loop styles.
+            Large footer watermark with Framer Motion presets plus a WebGPU flare
+            adapted from the vgpu Next.js Flare example. Hover each card to
+            compare draw, trace, glow, pulse, shift, reveal, loop, and flare.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -121,7 +144,7 @@ export function FooterMonogramDemo() {
               <tr>
                 <td className="px-4 py-3 font-mono text-xs">animation</td>
                 <td className="px-4 py-3 text-muted-foreground">
-                  draw | trace | glow | pulse | shift | reveal | loop | none
+                  draw | trace | glow | pulse | shift | reveal | loop | flare | none
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">draw</td>
               </tr>
@@ -158,6 +181,7 @@ export function FooterMonogramDemo() {
 
 <FooterMonogram animation="trace" size="footer" />
 <FooterMonogram animation="glow" fillTone="subtle" strokeTone="primary" />
+<FooterMonogram animation="flare" size="footer" />
 <FooterMonogram animation="loop" size="md" />`}
         </pre>
       </section>

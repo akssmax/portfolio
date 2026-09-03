@@ -130,7 +130,7 @@ export const customEntries: Array<DocEntry> = [
   ),
   entry(
     "footer-monogram",
-    "Large footer watermark monogram with Framer Motion animation variants.",
+    "Large footer watermark monogram with Framer Motion variants and a WebGPU volumetric flare.",
     "custom"
   ),
   entry(

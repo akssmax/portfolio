@@ -16,7 +16,8 @@ import type {
 } from "./types"
 import { DEFAULT_APPEARANCE } from "./types"
 
-export const DEFAULT_THEME_LIGHT_SWATCH = "oklch(0.696 0.17 162.48)"
+export const DEFAULT_LIGHT_THEME_ID = "vercel" as const
+export const DEFAULT_THEME_LIGHT_SWATCH = "oklch(0.205 0 0)"
 export const DEFAULT_THEME_DARK_SWATCH = "oklch(0.653 0.234 21.609)"
 
 export const DEFAULT_THEME_PRESET: ThemePreset = {
@@ -24,7 +25,7 @@ export const DEFAULT_THEME_PRESET: ThemePreset = {
   label: "Default",
   swatch: DEFAULT_THEME_LIGHT_SWATCH,
   category: "brand",
-  description: "Emerald in light mode, brand accent in dark mode",
+  description: "Vercel in light mode, brand accent in dark mode",
   isBrand: true,
 }
 
