@@ -13,6 +13,11 @@ import {
   type ResolvedLlmConfig,
 } from "@/lib/llm/provider"
 import { runToolLoop, streamCompletion } from "@/lib/llm/tool-loop"
+import {
+  getPortfolioScopeRedirect,
+  isLikelyOffTopicQuery,
+  OFF_TOPIC_SUGGESTIONS,
+} from "@/lib/rag/portfolio-scope"
 import { buildRetrievedContext, PORTFOLIO_SYSTEM_PROMPT } from "@/lib/rag/system-prompt"
 import { retrieveForQuery } from "@/lib/rag/search"
 import {
@@ -147,6 +152,7 @@ async function generateSuggestions(
 
   const prompt = [
     "Generate 3 short follow-up suggestions for a portfolio visitor chatting about a design engineer.",
+    "Suggestions must be about Akshay's portfolio, projects, experience, or hiring — never off-topic.",
     "Return strict JSON array only (no markdown). Each suggestion <= 8 words.",
     `User prompt: ${userPrompt}`,
     `Assistant answer: ${assistantResponse.slice(0, 1200)}`,
@@ -220,7 +226,7 @@ function validateRequest(body: ChatRequestBody, config: ResolvedLlmConfig) {
   }
 
   const maxTokens = body.maxTokens ?? DEFAULT_MAX_TOKENS
-  const temperature = body.temperature ?? 0.5
+  const temperature = body.temperature ?? 0.35
 
   return { ok: true as const, model, maxTokens, temperature }
 }
@@ -325,6 +331,22 @@ export const Route = createFileRoute("/api/chat")({
         const stream = new ReadableStream({
           async start(streamController) {
             try {
+              if (!useGenUi && isLikelyOffTopicQuery(lastUserMessage)) {
+                const redirect = getPortfolioScopeRedirect(lastUserMessage)
+                writeSse(streamController, "token", { text: redirect })
+                writeSse(streamController, "suggestions", {
+                  suggestions: [...OFF_TOPIC_SUGGESTIONS],
+                })
+                writeSse(streamController, "done", {
+                  ok: true,
+                  finishReason: "stop",
+                  maxTokens: validation.maxTokens,
+                  status: "completed",
+                })
+                streamController.close()
+                return
+              }
+
               if (useGenUi) {
                 try {
                   const genUiResult = await completeGenUiToolCalls({

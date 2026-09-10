@@ -1,4 +1,5 @@
 import type { ResolvedLlmConfig } from "@/lib/llm/provider"
+import { PORTFOLIO_SCOPE_RULES } from "@/lib/rag/portfolio-scope"
 
 export const SHOW_PROJECTS_TOOL_NAME = "show_projects"
 export const SHOW_EXPERIENCE_TOOL_NAME = "show_experience"
@@ -59,7 +60,10 @@ export const GEN_UI_MAX_TOKENS = 900
 
 export const GEN_UI_SYSTEM_PROMPT = [
   "You are Akshay Saini's portfolio Gen UI assistant.",
+  PORTFOLIO_SCOPE_RULES,
   "Always respond by calling render_custom_ui exactly once — never reply with plain text.",
+  "If the user asks something off-topic (poems, jokes, unrelated tasks), render a card that politely redirects:",
+  'title="Portfolio assistant", layout="list", items explaining you only cover Akshay\'s work and suggesting portfolio questions.',
   "Use real portfolio facts only: projects (Kodo, 100x, Unlogged, Tulr, PostForge, RupeeLens, Resume Builder),",
   "design-engineering skills, YC-backed fintech/devtools experience, Bengaluru-based, nearly 6 years in design.",
   "Pick layout: grid (cards), list (timeline/roles), or metrics (stats).",
