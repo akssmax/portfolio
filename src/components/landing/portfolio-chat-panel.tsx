@@ -43,14 +43,15 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import type { ChatItem } from "@/lib/llm/chat-types"
+import {
+  EMPTY_RESPONSE_ERROR,
+  formatChatError,
+} from "@/lib/llm/chat-errors"
 import { streamChat } from "@/lib/llm/llm-service"
-import type { MistralModel } from "@/lib/llm/llm-types"
 import {
   getRandomHeroPromptSuggestions,
   type HeroPromptSuggestion,
 } from "@/lib/hero-prompt-suggestions"
-
-const CHAT_MODEL: MistralModel = "mistral-small-latest"
 
 type PortfolioChatPanelProps = {
   open: boolean
@@ -196,7 +197,6 @@ export function PortfolioChatPanel({
 
       try {
         await streamChat({
-          model: CHAT_MODEL,
           messages: toApiMessages(nextItems.slice(0, -1)),
           signal: controller.signal,
           onToken: (token) => {
@@ -256,6 +256,26 @@ export function PortfolioChatPanel({
           },
           onComplete: () => {
             flushTokens(assistantId)
+            setItems((prev) =>
+              prev.map((item) => {
+                if (item.id !== assistantId) return item
+                const text = getMessageText(item.message)
+                if (!text.trim()) {
+                  return {
+                    ...item,
+                    meta: {
+                      ...item.meta,
+                      searching: false,
+                      error: EMPTY_RESPONSE_ERROR,
+                    },
+                  }
+                }
+                return {
+                  ...item,
+                  meta: { ...item.meta, searching: false, error: undefined },
+                }
+              }),
+            )
             setStatus("ready")
           },
         })
@@ -265,11 +285,18 @@ export function PortfolioChatPanel({
           setStatus("ready")
           return
         }
-        const message = error instanceof Error ? error.message : "Something went wrong."
-        toast.error(message)
-        setItems((prev) => prev.filter((item) => item.id !== assistantId))
-        setStatus("error")
-        setTimeout(() => setStatus("ready"), 300)
+        const message = formatChatError(error)
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === assistantId
+              ? {
+                  ...item,
+                  meta: { ...item.meta, searching: false, error: message },
+                }
+              : item,
+          ),
+        )
+        setStatus("ready")
       }
     },
     [flushTokens, items, scheduleTokenFlush, status],
@@ -347,7 +374,15 @@ export function PortfolioChatPanel({
               return (
                 <Message key={item.id} from={item.message.role}>
                   <MessageContent>
-                    {isSearching ? (
+                    {item.meta?.error ? (
+                      <div
+                        role="alert"
+                        className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2.5 text-sm text-destructive"
+                      >
+                        <p className="font-medium">Couldn&apos;t get a response</p>
+                        <p className="mt-1 text-destructive/90">{item.meta.error}</p>
+                      </div>
+                    ) : isSearching ? (
                       <Shimmer className="text-sm">
                         {`Searching${item.meta?.searchQuery ? ` “${item.meta.searchQuery.slice(0, 48)}”` : ""}…`}
                       </Shimmer>

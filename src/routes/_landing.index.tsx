@@ -91,19 +91,12 @@ function HeroPromptSuggestions({
     <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1.5">
       {suggestions.map((item, idx) => {
         const IconComponent = idx % 3 === 0 ? Sparkles : idx % 3 === 1 ? Star : ClipboardList
-        const targetMode =
-          item.query.toLowerCase().includes("project") ||
-          item.query.toLowerCase().includes("experience") ||
-          item.query.toLowerCase().includes("timeline") ||
-          item.query.toLowerCase().includes("history")
-            ? "gen-ui"
-            : "chat"
 
         return (
           <button
             key={item.label}
             type="button"
-            onClick={() => onSelect(item.query, targetMode)}
+            onClick={() => onSelect(item.query, "chat")}
             className={cn(
               "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer text-xs",
               "border-border/80 bg-background text-foreground shadow-sm ring-1 ring-black/[0.06]",

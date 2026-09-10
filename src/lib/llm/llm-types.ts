@@ -1,12 +1,12 @@
 import type { FileUIPart } from "ai"
 
-export const MISTRAL_MODELS = [
-  "mistral-small-latest",
-  "mistral-medium-latest",
-  "mistral-large-latest",
-] as const
-
-export type MistralModel = (typeof MISTRAL_MODELS)[number]
+export {
+  MISTRAL_MODELS,
+  type MistralModel,
+  getDefaultChatModel,
+  getDefaultEmbedModel,
+  isValidChatModel,
+} from "@/lib/llm/provider"
 
 export type ChatCompletionStatus =
   | "completed"
@@ -27,18 +27,10 @@ export type LlmChatMessage =
   | { role: "tool"; content: string; name: string; tool_call_id: string }
 
 export interface LlmChatRequest {
-  model: MistralModel
+  model?: string
   messages: LlmChatMessage[]
   attachments?: FileUIPart[]
   temperature?: number
   maxTokens?: number
   mode?: "gen-ui" | "chat"
-}
-
-export function getDefaultChatModel(): MistralModel {
-  const envModel = process.env.MISTRAL_CHAT_MODEL
-  if (envModel && MISTRAL_MODELS.includes(envModel as MistralModel)) {
-    return envModel as MistralModel
-  }
-  return "mistral-small-latest"
 }

@@ -160,7 +160,7 @@ export function SiteHeader({
   const { fullMotion } = useAnimationProfile()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [elevated, setElevated] = useState(false)
-  const { openChat } = usePortfolioChat()
+  const { openChat, isAvailable: chatAvailable } = usePortfolioChat()
   const location = useLocation()
   const isChatRoute = location.pathname.startsWith("/chat")
   const onMedia = tone === "on-media"
@@ -238,7 +238,7 @@ export function SiteHeader({
                 }
               />
             ))}
-            {!isChatRoute ? (
+            {!isChatRoute && chatAvailable ? (
               <Button size="sm" className="ml-1 gap-1.5" onClick={handleAskAi}>
                 <Sparkles className="size-3.5" aria-hidden />
                 Ask AI
@@ -248,7 +248,7 @@ export function SiteHeader({
           </nav>
 
           <div className="flex items-center gap-2 md:hidden">
-            {!isChatRoute ? (
+            {!isChatRoute && chatAvailable ? (
               <Button size="sm" className="gap-1.5" onClick={handleAskAi}>
                 <Sparkles className="size-3.5" aria-hidden />
                 Ask AI
@@ -303,7 +303,7 @@ export function SiteHeader({
                   ))}
                 </nav>
 
-                {!isChatRoute ? (
+                {!isChatRoute && chatAvailable ? (
                   <div className="mt-auto border-t border-border p-4">
                     <Button className="w-full gap-1.5" onClick={handleAskAi}>
                       <Sparkles className="size-3.5" aria-hidden />

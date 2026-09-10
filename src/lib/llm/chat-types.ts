@@ -9,6 +9,7 @@ export type AssistantMeta = {
   feedback?: "up" | "down"
   searching?: boolean
   searchQuery?: string
+  error?: string
 }
 
 export type ChatItem = {

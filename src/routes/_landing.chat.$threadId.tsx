@@ -11,7 +11,13 @@ import { Suggestions, Suggestion } from "@/components/ai-elements/suggestion"
 import { MessageFeedbackBar } from "@/components/ai-elements/message-feedback-bar"
 import { Source } from "@/components/ai-elements/sources"
 import { GenUiRenderer } from "@/components/ui/gen-ui-renderer"
+import {
+  EMPTY_RESPONSE_ERROR,
+  formatChatError,
+  hasAssistantPayload,
+} from "@/lib/llm/chat-errors"
 import { streamChat } from "@/lib/llm/llm-service"
+import { mergeToolCallDeltas } from "@/lib/llm/tool-call-utils"
 import { toast } from "sonner"
 import { M3AnimatingAvatar } from "@/components/m3-shapes/m3-animating-avatar"
 import { ChainOfThought } from "@/components/ai-elements/chain-of-thought"
@@ -32,6 +38,7 @@ type ThreadMessage = {
   searchQuery?: string
   suggestions?: string[]
   feedback?: "up" | "down" | null
+  error?: string
 }
 
 type ThreadStore = {
@@ -172,6 +179,7 @@ function ChatThreadPage() {
       id: assistantId,
       role: "assistant",
       content: "",
+      mode: selectedMode,
     }
 
     const nextMessages = options?.skipUserMessage
@@ -206,8 +214,16 @@ function ChatThreadPage() {
     try {
       let buffer = ""
       let finalSuggestions: string[] = []
+      let accumulatedToolCalls: Array<{ name: string; arguments: string }> = []
+
+      const applyToolCalls = (toolCalls: Array<{ name: string; arguments: string }>) => {
+        accumulatedToolCalls = toolCalls
+        setMessages((prev) =>
+          prev.map((m) => (m.id === assistantId ? { ...m, toolCalls } : m)),
+        )
+      }
+
       await streamChat({
-        model: "mistral-small-latest",
         messages: apiMessages,
         mode: selectedMode,
         signal: controller.signal,
@@ -217,29 +233,19 @@ function ChatThreadPage() {
             prev.map((m) => (m.id === assistantId ? { ...m, content: buffer } : m))
           )
         },
+        onGenUi: (toolCall) => {
+          applyToolCalls([{ name: toolCall.name, arguments: toolCall.arguments }])
+        },
         onToolDelta: (deltas) => {
-          setMessages((prev) =>
-            prev.map((m) => {
-              if (m.id !== assistantId) return m
-              const existingCalls = m.toolCalls ? [...m.toolCalls] : []
-              for (const delta of deltas) {
-                const idx = delta.index ?? 0
-                if (!existingCalls[idx]) {
-                  existingCalls[idx] = {
-                    name: delta.function?.name || "",
-                    arguments: "",
-                  }
-                }
-                if (delta.function?.name) {
-                  existingCalls[idx].name = delta.function.name
-                }
-                if (delta.function?.arguments) {
-                  existingCalls[idx].arguments += delta.function.arguments
-                }
-              }
-              return { ...m, toolCalls: existingCalls }
-            })
-          )
+          const merged = mergeToolCallDeltas(
+            accumulatedToolCalls.map((call, index) => ({
+              id: `call_${index}`,
+              name: call.name,
+              arguments: call.arguments,
+            })),
+            deltas,
+          ).map((call) => ({ name: call.name, arguments: call.arguments }))
+          applyToolCalls(merged)
         },
         onSuggestions: (next) => {
           finalSuggestions = next
@@ -294,9 +300,31 @@ function ChatThreadPage() {
         onComplete: () => {
           setStatus("ready")
           setMessages((prev) => {
-            const final = prev.map((m) =>
-              m.id === assistantId ? { ...m, content: buffer, suggestions: finalSuggestions } : m
-            )
+            const final = prev.map((m) => {
+              if (m.id !== assistantId) return m
+              const toolCalls =
+                accumulatedToolCalls.length > 0 ? accumulatedToolCalls : m.toolCalls
+              const payload = {
+                content: buffer,
+                toolCalls,
+              }
+              if (!hasAssistantPayload(payload)) {
+                return {
+                  ...m,
+                  searching: false,
+                  content: "",
+                  toolCalls,
+                  error: EMPTY_RESPONSE_ERROR,
+                }
+              }
+              return {
+                ...m,
+                searching: false,
+                content: buffer,
+                toolCalls,
+                suggestions: finalSuggestions,
+              }
+            })
             saveThread(final)
             return final
           })
@@ -307,10 +335,17 @@ function ChatThreadPage() {
         setStatus("ready")
         return
       }
-      toast.error(err instanceof Error ? err.message : "Response stream failed.")
-      setStatus("error")
-      setMessages((prev) => prev.filter((m) => m.id !== assistantId))
-      setTimeout(() => setStatus("ready"), 500)
+      const errorMessage = formatChatError(err)
+      setStatus("ready")
+      setMessages((prev) => {
+        const final = prev.map((m) =>
+          m.id === assistantId
+            ? { ...m, searching: false, error: errorMessage, content: m.content || "" }
+            : m,
+        )
+        saveThread(final)
+        return final
+      })
     }
   }, [messages, status, saveThread])
 
@@ -349,7 +384,13 @@ function ChatThreadPage() {
                         <M3AnimatingAvatar className="size-8.5 shrink-0 max-md:hidden" />
                         <div className="flex-1 space-y-3 min-w-0">
                           {/* Chain of Thought accordion */}
-                          {(message.searching || (message.toolCalls && message.toolCalls.length > 0) || !message.content) && (
+                          {message.mode !== "gen-ui" &&
+                            !message.error &&
+                            (message.searching ||
+                              (message.toolCalls && message.toolCalls.length > 0) ||
+                              (!message.content &&
+                                status === "streaming" &&
+                                msgIdx === messages.length - 1)) && (
                             <ChainOfThought
                               state={
                                 status === "streaming" && msgIdx === messages.length - 1
@@ -359,6 +400,28 @@ function ChatThreadPage() {
                               searchQuery={message.searching ? message.searchQuery : undefined}
                               toolCalls={message.toolCalls}
                             />
+                          )}
+
+                          {message.error && (
+                            <div
+                              role="alert"
+                              className="rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive"
+                            >
+                              <p className="font-medium">Couldn&apos;t get a response</p>
+                              <p className="mt-1 text-destructive/90">{message.error}</p>
+                            </div>
+                          )}
+
+                          {message.mode === "gen-ui" &&
+                            status === "streaming" &&
+                            msgIdx === messages.length - 1 &&
+                            !message.error &&
+                            !(message.toolCalls?.some(
+                              (tc) => tc.name && (tc.arguments?.trim().length ?? 0) > 2,
+                            )) && (
+                            <p className="text-sm text-muted-foreground animate-pulse">
+                              Generating interface…
+                            </p>
                           )}
 
                           {message.content && (
@@ -372,7 +435,9 @@ function ChatThreadPage() {
                           {/* Render custom Gen UI components if tools completed */}
                           {message.toolCalls && message.toolCalls.length > 0 && (
                             <div className="space-y-3 pt-2">
-                              {message.toolCalls.map((tc, idx) => (
+                              {message.toolCalls
+                                .filter((tc) => Boolean(tc.name))
+                                .map((tc, idx) => (
                                 <GenUiRenderer
                                   key={idx}
                                   name={tc.name}

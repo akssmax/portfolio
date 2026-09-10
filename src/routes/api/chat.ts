@@ -1,10 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router"
 
+import { formatChatError } from "@/lib/llm/chat-errors"
+import { completeGenUiToolCalls } from "@/lib/llm/gen-ui-completion"
+import { createChatCompletion } from "@/lib/llm/openai-compatible-client"
+import { extractToolCallDeltas } from "@/lib/llm/tool-call-utils"
+import type { LlmChatMessage } from "@/lib/llm/llm-types"
 import {
   getDefaultChatModel,
-  MISTRAL_MODELS,
-  type LlmChatMessage,
-} from "@/lib/llm/llm-types"
+  isValidChatModel,
+  LlmConfigError,
+  resolveLlmConfig,
+  type ResolvedLlmConfig,
+} from "@/lib/llm/provider"
+import { runToolLoop, streamCompletion } from "@/lib/llm/tool-loop"
 import { buildRetrievedContext, PORTFOLIO_SYSTEM_PROMPT } from "@/lib/rag/system-prompt"
 import { retrieveForQuery } from "@/lib/rag/search"
 import {
@@ -14,13 +22,10 @@ import {
   CHAT_RATE_LIMIT,
   WEB_SEARCH_RATE_LIMIT,
 } from "@/lib/rag/rate-limit"
-import {
-  runMistralToolLoop,
-  streamMistralCompletion,
-} from "@/lib/llm/mistral-tool-loop"
 import { WEB_SEARCH_TOOL_DEFINITION } from "@/lib/llm/tools/web-search-tool"
 import {
-  RENDER_CUSTOM_UI_TOOL_DEFINITION,
+  GEN_UI_SYSTEM_PROMPT,
+  getGenUiStreamOptions,
 } from "@/lib/llm/tools/gen-ui-tools"
 
 type ChatRequestBody = {
@@ -132,7 +137,7 @@ function parseSuggestions(raw: string): string[] {
 }
 
 async function generateSuggestions(
-  key: string,
+  config: ResolvedLlmConfig,
   model: string,
   userPrompt: string,
   assistantResponse: string,
@@ -147,32 +152,28 @@ async function generateSuggestions(
     `Assistant answer: ${assistantResponse.slice(0, 1200)}`,
   ].join("\n")
 
-  const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 120,
-      temperature: 0.3,
-      stream: false,
-    }),
-    signal,
-  })
-
-  if (!response.ok) return []
-  const json = await response.json()
-  const content = json?.choices?.[0]?.message?.content
-  if (typeof content !== "string") return []
-  return parseSuggestions(content)
+  try {
+    const json = await createChatCompletion(
+      config,
+      {
+        model,
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 120,
+        temperature: 0.3,
+      },
+      signal,
+    )
+    const content = json?.choices?.[0]?.message?.content
+    if (typeof content !== "string") return []
+    return parseSuggestions(content)
+  } catch {
+    return []
+  }
 }
 
-function validateRequest(body: ChatRequestBody) {
-  const model = body.model ?? getDefaultChatModel()
-  if (!model || !MISTRAL_MODELS.includes(model as (typeof MISTRAL_MODELS)[number])) {
+function validateRequest(body: ChatRequestBody, config: ResolvedLlmConfig) {
+  const model = body.model ?? getDefaultChatModel(config)
+  if (!model || !isValidChatModel(model, config)) {
     return { ok: false as const, status: 400, code: "invalid_model", message: "Invalid model." }
   }
 
@@ -228,9 +229,14 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = process.env.MISTRAL_API_KEY
-        if (!apiKey) {
-          return jsonError(500, "missing_api_key", "MISTRAL_API_KEY is not configured.")
+        let llmConfig: ResolvedLlmConfig
+        try {
+          llmConfig = resolveLlmConfig()
+        } catch (error) {
+          if (error instanceof LlmConfigError) {
+            return jsonError(500, error.code, error.message)
+          }
+          throw error
         }
 
         const clientIp = getClientIp(request)
@@ -250,7 +256,7 @@ export const Route = createFileRoute("/api/chat")({
           return jsonError(400, "invalid_json", "Request body must be JSON.")
         }
 
-        const validation = validateRequest(body)
+        const validation = validateRequest(body, llmConfig)
         console.log("[api/chat] Validation result:", JSON.stringify(validation))
         if (!validation.ok) {
           return jsonError(validation.status, validation.code, validation.message)
@@ -259,8 +265,10 @@ export const Route = createFileRoute("/api/chat")({
         const messages = body.messages ?? []
         const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content ?? ""
 
+        const useGenUi = body.mode === "gen-ui"
+
         let retrievedContext = ""
-        if (lastUserMessage.trim()) {
+        if (!useGenUi && lastUserMessage.trim()) {
           try {
             const results = await retrieveForQuery(lastUserMessage)
             retrievedContext = buildRetrievedContext(
@@ -300,22 +308,15 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
-        const finalMessages: LlmChatMessage[] = [
-          { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
-          ...(retrievedContext
-            ? [{ role: "system" as const, content: `Retrieved context:\n${retrievedContext}` }]
-            : []),
-          ...(body.mode === "gen-ui"
-            ? [
-                {
-                  role: "system" as const,
-                  content:
-                    "You are in Generative UI mode. You MUST call the 'render_custom_ui' tool to display structured cards, list layout widgets, timelines, stats, or projects on the page dynamically. Generate the custom layout (grid, list, or metrics) and custom items dynamically on the fly based on the user's specific request. Never write general text replies; always call the tool to render UI.",
-                },
-              ]
-            : []),
-          ...processedHistory,
-        ]
+        const finalMessages: LlmChatMessage[] = useGenUi
+          ? [{ role: "system", content: GEN_UI_SYSTEM_PROMPT }, ...processedHistory]
+          : [
+              { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
+              ...(retrievedContext
+                ? [{ role: "system" as const, content: `Retrieved context:\n${retrievedContext}` }]
+                : []),
+              ...processedHistory,
+            ]
 
         const controller = new AbortController()
         const timeoutMs = Number(process.env.VERCEL_CHAT_TIMEOUT_MS) || 55_000
@@ -324,24 +325,54 @@ export const Route = createFileRoute("/api/chat")({
         const stream = new ReadableStream({
           async start(streamController) {
             try {
-              const useGenUi = body.mode === "gen-ui"
+              if (useGenUi) {
+                try {
+                  const genUiResult = await completeGenUiToolCalls({
+                    config: llmConfig,
+                    model: validation.model,
+                    messages: finalMessages,
+                    signal: controller.signal,
+                  })
+
+                  if (genUiResult.toolCalls.length === 0) {
+                    writeSse(streamController, "error", {
+                      message:
+                        "The model did not return a UI layout. Please try again or switch to Chat mode.",
+                    })
+                  } else {
+                    const call = genUiResult.toolCalls[0]
+                    writeSse(streamController, "gen_ui", {
+                      toolCall: {
+                        name: call.name,
+                        arguments: call.arguments,
+                      },
+                    })
+                  }
+
+                  writeSse(streamController, "done", {
+                    ok: genUiResult.toolCalls.length > 0,
+                    finishReason: genUiResult.finishReason ?? "tool_calls",
+                    maxTokens: getGenUiStreamOptions(llmConfig).maxTokens,
+                    status: genUiResult.toolCalls.length > 0 ? "completed" : "upstream_error",
+                  })
+                } catch (error) {
+                  writeSse(streamController, "error", {
+                    message: formatChatError(error),
+                  })
+                  writeSse(streamController, "done", {
+                    ok: false,
+                    status: "upstream_error",
+                  })
+                }
+                streamController.close()
+                return
+              }
+
               let response: Response
 
-              if (useGenUi) {
-                // Stream custom UI tool directly from the start
-                response = await streamMistralCompletion({
-                  apiKey,
-                  model: validation.model,
-                  messages: finalMessages,
-                  temperature: validation.temperature,
-                  maxTokens: validation.maxTokens,
-                  signal: controller.signal,
-                  tools: [RENDER_CUSTOM_UI_TOOL_DEFINITION],
-                  toolChoice: { type: "function", function: { name: "render_custom_ui" } },
-                })
-              } else {
-                const { messages: toolAwareMessages } = await runMistralToolLoop({
-                  apiKey,
+              {
+                const { messages: toolAwareMessages } = await runToolLoop({
+                  config: llmConfig,
                   model: validation.model,
                   messages: finalMessages,
                   maxRounds: 2,
@@ -372,8 +403,8 @@ export const Route = createFileRoute("/api/chat")({
                   },
                 })
 
-                response = await streamMistralCompletion({
-                  apiKey,
+                response = await streamCompletion({
+                  config: llmConfig,
                   model: validation.model,
                   messages: toolAwareMessages,
                   temperature: validation.temperature,
@@ -384,9 +415,11 @@ export const Route = createFileRoute("/api/chat")({
 
               if (!response.ok || !response.body) {
                 const text = await response.text().catch(() => "")
-                console.error("Mistral request failed:", response.status, text)
+                console.error("LLM request failed:", response.status, text)
                 writeSse(streamController, "error", {
-                  message: "The AI service is temporarily unavailable. Please try again.",
+                  message: formatChatError(
+                    text ? new Error(`${response.status}: ${text}`) : new Error(String(response.status)),
+                  ),
                 })
                 streamController.close()
                 return
@@ -419,9 +452,8 @@ export const Route = createFileRoute("/api/chat")({
                       writeSse(streamController, "token", { text: token })
                     }
 
-                    // Forward tool call delta streaming to client
-                    const toolCalls = choice?.delta?.tool_calls || choice?.message?.tool_calls
-                    if (toolCalls && toolCalls.length > 0) {
+                    const toolCalls = extractToolCallDeltas(choice)
+                    if (toolCalls.length > 0) {
                       writeSse(streamController, "tool_delta", { toolCalls })
                       for (const tc of toolCalls) {
                         if (tc.function?.arguments) {
@@ -451,43 +483,45 @@ export const Route = createFileRoute("/api/chat")({
                 }
               }
 
-              try {
-                const responseForSuggestions =
-                  assistantText.trim() ||
-                  (accumulatedToolCallsText.trim()
-                    ? `[Rendered UI with arguments: ${accumulatedToolCallsText.trim()}]`
-                    : "")
+              if (!useGenUi) {
+                try {
+                  const responseForSuggestions =
+                    assistantText.trim() ||
+                    (accumulatedToolCallsText.trim()
+                      ? `[Rendered UI with arguments: ${accumulatedToolCallsText.trim()}]`
+                      : "")
 
-                const suggestions = await Promise.race([
-                  generateSuggestions(
-                    apiKey,
-                    validation.model,
-                    lastUserMessage,
-                    responseForSuggestions,
-                    controller.signal,
-                  ),
-                  new Promise<string[]>((resolve) =>
-                    setTimeout(() => resolve([]), SUGGESTIONS_BUDGET_MS),
-                  ),
-                ])
-                if (suggestions.length > 0) {
-                  writeSse(streamController, "suggestions", { suggestions })
+                  const suggestions = await Promise.race([
+                    generateSuggestions(
+                      llmConfig,
+                      validation.model,
+                      lastUserMessage,
+                      responseForSuggestions,
+                      controller.signal,
+                    ),
+                    new Promise<string[]>((resolve) =>
+                      setTimeout(() => resolve([]), SUGGESTIONS_BUDGET_MS),
+                    ),
+                  ])
+                  if (suggestions.length > 0) {
+                    writeSse(streamController, "suggestions", { suggestions })
+                  }
+                } catch {
+                  // optional
                 }
-              } catch {
-                // optional
-              }
 
-              const ragSources = retrieveRagSources(retrievedContext)
-              const groundedSources = [
-                ...ragSources,
-                ...extractGroundedLinks(assistantText),
-              ].slice(0, 6)
+                const ragSources = retrieveRagSources(retrievedContext)
+                const groundedSources = [
+                  ...ragSources,
+                  ...extractGroundedLinks(assistantText),
+                ].slice(0, 6)
 
-              if (groundedSources.length > 0) {
-                writeSse(streamController, "sources", { sources: groundedSources })
-                writeSse(streamController, "citations", {
-                  citations: toGroundedCitations(groundedSources),
-                })
+                if (groundedSources.length > 0) {
+                  writeSse(streamController, "sources", { sources: groundedSources })
+                  writeSse(streamController, "citations", {
+                    citations: toGroundedCitations(groundedSources),
+                  })
+                }
               }
 
               writeSse(streamController, "done", {
@@ -499,8 +533,7 @@ export const Route = createFileRoute("/api/chat")({
               streamController.close()
             } catch (error) {
               console.error("[api/chat] Stream processing error:", error)
-              const message = error instanceof Error ? error.message : "Chat request failed"
-              writeSse(streamController, "error", { message })
+              writeSse(streamController, "error", { message: formatChatError(error) })
               streamController.close()
             } finally {
               clearTimeout(timeout)

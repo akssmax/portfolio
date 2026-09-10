@@ -5,8 +5,12 @@ import {
   formatResumeValidationError,
   parseResumeDocumentJson,
 } from "@/features/resume/validate-resume-document"
-import { getDefaultChatModel } from "@/lib/llm/llm-types"
-import { runMistralToolLoop } from "@/lib/llm/mistral-tool-loop"
+import {
+  getDefaultChatModel,
+  LlmConfigError,
+  resolveLlmConfig,
+} from "@/lib/llm/provider"
+import { runToolLoop } from "@/lib/llm/tool-loop"
 import {
   buildLinkedInSearchQueries,
   parseLinkedInProfileUrl,
@@ -61,9 +65,14 @@ export const Route = createFileRoute("/api/resume/generate")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = process.env.MISTRAL_API_KEY
-        if (!apiKey) {
-          return jsonError(500, "missing_api_key", "MISTRAL_API_KEY is not configured.")
+        let llmConfig
+        try {
+          llmConfig = resolveLlmConfig()
+        } catch (error) {
+          if (error instanceof LlmConfigError) {
+            return jsonError(500, error.code, error.message)
+          }
+          throw error
         }
 
         const clientIp = getClientIp(request)
@@ -123,9 +132,10 @@ export const Route = createFileRoute("/api/resume/generate")({
                 "Research this person for resume generation.",
               ].join("\n\n")
 
-              const { messages: researchMessages } = await runMistralToolLoop({
-                apiKey,
-                model: getDefaultChatModel(),
+              const chatModel = getDefaultChatModel(llmConfig)
+              const { messages: researchMessages } = await runToolLoop({
+                config: llmConfig,
+                model: chatModel,
                 messages: [
                   { role: "system", content: RESUME_RESEARCH_PROMPT },
                   { role: "user", content: userPrompt },
@@ -159,8 +169,8 @@ export const Route = createFileRoute("/api/resume/generate")({
               })
 
               const content = await structureResumeDocumentJson({
-                apiKey,
-                model: getDefaultChatModel(),
+                config: llmConfig,
+                model: chatModel,
                 messages: researchMessages,
                 temperature: 0.2,
                 maxTokens: 4096,

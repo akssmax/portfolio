@@ -14,6 +14,13 @@ import { PortfolioChatSheet } from "@/components/landing/portfolio-chat-sheet"
 type PortfolioChatContextValue = {
   openChat: () => void
   openChatWithMessage: (message: string) => void
+  isAvailable: true
+}
+
+type PortfolioChatActions = {
+  openChat: () => void
+  openChatWithMessage: (message: string) => void
+  isAvailable: boolean
 }
 
 const PortfolioChatContext = createContext<PortfolioChatContextValue | null>(null)
@@ -53,10 +60,11 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
     }
   }, [])
 
-  const value = useMemo(
+  const value = useMemo<PortfolioChatContextValue>(
     () => ({
       openChat,
       openChatWithMessage,
+      isAvailable: true,
     }),
     [openChat, openChatWithMessage],
   )
@@ -79,18 +87,19 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
   )
 }
 
-const noopChatActions: PortfolioChatContextValue = {
+const noopChatActions: PortfolioChatActions = {
   openChat: () => {},
   openChatWithMessage: () => {},
+  isAvailable: false,
 }
 
-export function usePortfolioChat() {
+export function usePortfolioChat(): PortfolioChatActions {
   const context = useContext(PortfolioChatContext)
   if (!context) {
-    if (typeof window === "undefined") {
-      return noopChatActions
+    if (import.meta.env.DEV && typeof window !== "undefined") {
+      console.warn("usePortfolioChat called outside PortfolioChatProvider — chat actions are disabled.")
     }
-    throw new Error("usePortfolioChat must be used within PortfolioChatProvider")
+    return noopChatActions
   }
   return context
 }

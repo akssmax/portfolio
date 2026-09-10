@@ -25,6 +25,7 @@ export interface StreamChatOptions extends LlmChatRequest {
   onToolStart?: (payload: { name: string; query?: string }) => void
   onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void
   onToolDelta?: (toolCalls: any[]) => void
+  onGenUi?: (toolCall: { name: string; arguments: string }) => void
   onComplete?: (result: StreamChatResult) => void
   signal?: AbortSignal
   chatApiPath?: string
@@ -73,6 +74,7 @@ async function streamSseResponse(
   onToolStart?: (payload: { name: string; query?: string }) => void,
   onToolEnd?: (payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void,
   onToolDelta?: (toolCalls: any[]) => void,
+  onGenUi?: (toolCall: { name: string; arguments: string }) => void,
 ): Promise<StreamDonePayload | null> {
   if (!response.body) {
     throw new Error("Missing response body from /api/chat")
@@ -196,6 +198,17 @@ async function streamSseResponse(
       } catch {
         // ignore
       }
+    } else if (parsed.event === "gen_ui") {
+      try {
+        const payload = JSON.parse(parsed.data) as {
+          toolCall?: { name?: string; arguments?: string }
+        }
+        if (payload.toolCall?.name && typeof payload.toolCall.arguments === "string") {
+          onGenUi?.({ name: payload.toolCall.name, arguments: payload.toolCall.arguments })
+        }
+      } catch {
+        // ignore
+      }
     } else if (parsed.event === "done") {
       try {
         donePayload = JSON.parse(parsed.data) as StreamDonePayload
@@ -236,6 +249,7 @@ async function requestChat(
   onToolStart: ((payload: { name: string; query?: string }) => void) | undefined,
   onToolEnd: ((payload: { name: string; query?: string; resultCount?: number; error?: string; result?: string }) => void) | undefined,
   onToolDelta: ((toolCalls: any[]) => void) | undefined,
+  onGenUi: ((toolCall: { name: string; arguments: string }) => void) | undefined,
   chatApiPath: string,
 ): Promise<StreamChatResult> {
   const response = await fetch(chatApiPath, {
@@ -266,6 +280,7 @@ async function requestChat(
     onToolStart,
     onToolEnd,
     onToolDelta,
+    onGenUi,
   )
 
   return {
@@ -286,6 +301,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
     onToolStart,
     onToolEnd,
     onToolDelta,
+    onGenUi,
     onComplete,
     signal,
     chatApiPath = "/api/chat",
@@ -304,6 +320,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onToolStart,
       onToolEnd,
       onToolDelta,
+      onGenUi,
       chatApiPath,
     )
     onComplete?.(result)
@@ -330,6 +347,7 @@ export async function streamChat(options: StreamChatOptions): Promise<StreamChat
       onToolStart,
       onToolEnd,
       onToolDelta,
+      onGenUi,
       chatApiPath,
     )
     onComplete?.(result)

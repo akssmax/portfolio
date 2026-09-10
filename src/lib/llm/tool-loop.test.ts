@@ -1,8 +1,18 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { runMistralToolLoop } from "@/lib/llm/mistral-tool-loop"
+import { runToolLoop } from "@/lib/llm/tool-loop"
+import type { ResolvedLlmConfig } from "@/lib/llm/provider"
 
-describe("runMistralToolLoop", () => {
+const testConfig: ResolvedLlmConfig = {
+  provider: "mistral",
+  apiKey: "test-key",
+  chatBaseUrl: "https://api.mistral.ai/v1",
+  embedBaseUrl: "https://api.mistral.ai/v1",
+  chatModel: "mistral-small-latest",
+  embedModel: "mistral-embed",
+}
+
+describe("runToolLoop", () => {
   afterEach(() => {
     vi.unstubAllGlobals()
     vi.unstubAllEnvs()
@@ -11,13 +21,13 @@ describe("runMistralToolLoop", () => {
   it("executes tool calls then returns assistant content", async () => {
     vi.stubEnv("BRAVE_SEARCH_API_KEY", "BSAI_test_key_12345678901234567890")
 
-    let mistralCalls = 0
+    let chatCalls = 0
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input)
 
-      if (url.includes("mistral.ai")) {
-        mistralCalls += 1
-        if (mistralCalls === 1) {
+      if (url.includes("/chat/completions")) {
+        chatCalls += 1
+        if (chatCalls === 1) {
           return new Response(
             JSON.stringify({
               choices: [
@@ -62,15 +72,15 @@ describe("runMistralToolLoop", () => {
 
     vi.stubGlobal("fetch", fetchMock)
 
-    const result = await runMistralToolLoop({
-      apiKey: "test-key",
+    const result = await runToolLoop({
+      config: testConfig,
       model: "mistral-small-latest",
       messages: [{ role: "user", content: "Hello" }],
       maxRounds: 2,
     })
 
     expect(result.content).toBe("Final answer")
-    expect(mistralCalls).toBe(2)
+    expect(chatCalls).toBe(2)
   })
 
   it("can defer appending the final assistant message for streaming", async () => {
@@ -90,8 +100,8 @@ describe("runMistralToolLoop", () => {
 
     vi.stubGlobal("fetch", fetchMock)
 
-    const result = await runMistralToolLoop({
-      apiKey: "test-key",
+    const result = await runToolLoop({
+      config: testConfig,
       model: "mistral-small-latest",
       messages: [{ role: "user", content: "Hello" }],
       appendFinalAssistant: false,

@@ -4,6 +4,7 @@ import { ErrorBoundary } from "@/components/error-boundary"
 import { PostHogProvider } from "@/components/posthog-provider"
 import { RouteError } from "@/components/route-error"
 import { NotFoundPage } from "@/components/shared/not-found-page"
+import { PortfolioChatProvider } from "@/components/landing/portfolio-chat-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -86,13 +87,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <DirectionProvider dir="ltr">
-            <TooltipProvider>
-              <PostHogProvider>
-                <ErrorBoundary>{children}</ErrorBoundary>
-              </PostHogProvider>
-            </TooltipProvider>
-          </DirectionProvider>
+          <PortfolioChatProvider>
+            <DirectionProvider dir="ltr">
+              <TooltipProvider>
+                <PostHogProvider>
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                </PostHogProvider>
+              </TooltipProvider>
+            </DirectionProvider>
+          </PortfolioChatProvider>
         </ThemeProvider>
         <Scripts />
       </body>

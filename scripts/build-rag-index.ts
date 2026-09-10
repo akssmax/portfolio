@@ -2,6 +2,8 @@ import { writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { createEmbeddings } from "../src/lib/llm/openai-compatible-client"
+import { resolveLlmConfig } from "../src/lib/llm/provider"
 import {
   buildCorpusDocuments,
   chunkDocuments,
@@ -10,52 +12,24 @@ import type { CorpusIndex, IndexedChunk } from "../src/lib/rag/types"
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const outputPath = path.resolve(rootDir, "../src/lib/rag/corpus-index.json")
-
-const EMBED_MODEL = process.env.MISTRAL_EMBED_MODEL ?? "mistral-embed"
 const BATCH_SIZE = 32
 
-async function embedBatch(texts: string[], apiKey: string): Promise<number[][]> {
-  const response = await fetch("https://api.mistral.ai/v1/embeddings", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: EMBED_MODEL,
-      input: texts,
-    }),
-  })
-
-  if (!response.ok) {
-    const text = await response.text().catch(() => "")
-    throw new Error(`Mistral embeddings failed (${response.status}): ${text}`)
-  }
-
-  const json = (await response.json()) as {
-    data?: Array<{ embedding?: number[]; index?: number }>
-  }
-
-  const rows = json.data ?? []
-  const sorted = [...rows].sort((a, b) => (a.index ?? 0) - (b.index ?? 0))
-  return sorted.map((row) => {
-    if (!Array.isArray(row.embedding)) {
-      throw new Error("Missing embedding in Mistral response")
-    }
-    return row.embedding
+async function embedBatch(texts: string[], config: ReturnType<typeof resolveLlmConfig>): Promise<number[][]> {
+  return createEmbeddings(config, {
+    model: config.embedModel,
+    input: texts,
   })
 }
 
 async function main() {
-  const apiKey = process.env.MISTRAL_API_KEY
-  if (!apiKey) {
-    throw new Error("MISTRAL_API_KEY is required. Set it in .env.local")
-  }
+  const config = resolveLlmConfig()
 
   const documents = buildCorpusDocuments()
   const chunks = chunkDocuments(documents)
 
-  console.log(`Building RAG index: ${documents.length} documents → ${chunks.length} chunks`)
+  console.log(
+    `Building RAG index with ${config.provider} (${config.embedModel}): ${documents.length} documents → ${chunks.length} chunks`,
+  )
 
   const indexed: IndexedChunk[] = []
 
@@ -63,7 +37,7 @@ async function main() {
     const batch = chunks.slice(i, i + BATCH_SIZE)
     const embeddings = await embedBatch(
       batch.map((chunk) => chunk.text),
-      apiKey,
+      config,
     )
 
     for (const [index, chunk] of batch.entries()) {
@@ -78,7 +52,7 @@ async function main() {
 
   const index: CorpusIndex = {
     version: 1,
-    model: EMBED_MODEL,
+    model: config.embedModel,
     createdAt: new Date().toISOString(),
     chunks: indexed,
   }

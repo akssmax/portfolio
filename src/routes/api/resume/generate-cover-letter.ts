@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { getDefaultChatModel } from "@/lib/llm/llm-types"
+import { createChatCompletion } from "@/lib/llm/openai-compatible-client"
+import {
+  getDefaultChatModel,
+  LlmConfigError,
+  resolveLlmConfig,
+} from "@/lib/llm/provider"
 import {
   RESUME_GEN_RATE_LIMIT,
   checkRateLimit,
@@ -22,9 +27,14 @@ export const Route = createFileRoute("/api/resume/generate-cover-letter")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = process.env.MISTRAL_API_KEY
-        if (!apiKey) {
-          return jsonError(500, "missing_api_key", "MISTRAL_API_KEY is not configured.")
+        let llmConfig
+        try {
+          llmConfig = resolveLlmConfig()
+        } catch (error) {
+          if (error instanceof LlmConfigError) {
+            return jsonError(500, error.code, error.message)
+          }
+          throw error
         }
 
         const clientIp = getClientIp(request)
@@ -89,39 +99,22 @@ export const Route = createFileRoute("/api/resume/generate-cover-letter")({
         ].join("\n\n")
 
         try {
-          const model = getDefaultChatModel()
-          const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model,
-              messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userPrompt }
-              ],
-              response_format: { type: "json_object" },
-              temperature: 0.7,
-              max_tokens: 2048,
-            }),
+          const model = getDefaultChatModel(llmConfig)
+          const payload = await createChatCompletion(llmConfig, {
+            model,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.7,
+            max_tokens: 2048,
           })
 
-          if (!response.ok) {
-            const errorText = await response.text()
-            throw new Error(`Mistral API error (${response.status}): ${errorText}`)
-          }
-
-          const payload = (await response.json()) as {
-            choices?: Array<{ message?: { content?: string | null } }>
-          }
-
           const content = payload.choices?.[0]?.message?.content?.trim() ?? ""
-          
-          // Parse the content to make sure it matches the structure and inject sender details
+
           const parsed = JSON.parse(content)
-          
+
           const coverLetter = {
             senderName: resumeDocument.name || "",
             senderTitle: resumeDocument.title || "",

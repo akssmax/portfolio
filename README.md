@@ -43,19 +43,23 @@ npm run capture:kodo
 
 Captures homepage and marketing section screenshots from [kodo.com](https://www.kodo.com/) into `public/projects/kodo/`.
 
-## Ask AI (Mistral + RAG)
+## Ask AI (OpenRouter / Mistral + RAG)
 
-The hero section includes an **Ask AI** prompt that opens a sheet chat grounded in portfolio content (profile, projects, case studies).
+The hero section includes an **Ask AI** prompt that opens a sheet chat grounded in portfolio content (profile, projects, case studies). LLM calls go through a switchable provider layer — **OpenRouter** (free models) or **Mistral**.
 
 ### Setup
 
 1. Copy `.env.example` to `.env.local`
-2. Set `MISTRAL_API_KEY` (server-only — never use a `VITE_` prefix)
-3. Optional: `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`
+2. Set `OPENROUTER_API_KEY` from [openrouter.ai/keys](https://openrouter.ai/keys) (recommended)
+3. Set `LLM_PROVIDER=openrouter` for production (or leave `auto` to prefer OpenRouter when its key is set)
+4. Optional: `OPENROUTER_CHAT_MODEL` (default `openrouter/free`), `OPENROUTER_EMBED_MODEL` (default `nvidia/nemotron-3-embed-1b:free`)
+5. To switch back to Mistral later: `LLM_PROVIDER=mistral`, set `MISTRAL_API_KEY`, re-run `npm run build:rag`
+
+All keys are server-only — never use a `VITE_` prefix.
 
 ### Build the RAG index
 
-After changing profile or case study content, regenerate vector embeddings:
+After changing profile/case study content **or switching LLM provider**, regenerate vector embeddings (embeddings are provider-specific):
 
 ```bash
 npm run build:rag
@@ -68,6 +72,12 @@ For local development without an API key, generate a keyword-search stub:
 ```bash
 npm run build:rag:stub
 ```
+
+### Free-model notes
+
+- `openrouter/free` auto-selects a free model that supports tools and structured output where needed.
+- Free tiers have rate limits and variable latency; pin a specific `:free` model if you need consistency.
+- If the RAG index model does not match your configured embed model, chat falls back to keyword search until you re-index.
 
 ### Manual test checklist
 

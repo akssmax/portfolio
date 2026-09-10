@@ -1,47 +1,37 @@
+import { createEmbeddings } from "@/lib/llm/openai-compatible-client"
+import { resolveLlmConfig } from "@/lib/llm/provider"
+
 import corpusIndex from "./corpus-index.json"
 import type { CorpusIndex, IndexedChunk } from "./types"
 import { MIN_SCORE, TOP_K } from "./types"
 
 const index = corpusIndex as CorpusIndex
 
-function getMistralApiKey(): string {
-  const key = process.env.MISTRAL_API_KEY
-  if (!key) {
-    throw new Error("MISTRAL_API_KEY is not configured.")
+export class RagModelMismatchError extends Error {
+  constructor(indexModel: string, configuredModel: string) {
+    super(
+      `RAG index model (${indexModel}) does not match configured embed model (${configuredModel}). Re-run npm run build:rag after switching LLM_PROVIDER.`,
+    )
+    this.name = "RagModelMismatchError"
   }
-  return key
-}
-
-function getEmbedModel(): string {
-  return process.env.MISTRAL_EMBED_MODEL ?? index.model ?? "mistral-embed"
 }
 
 export async function embedQuery(text: string): Promise<number[]> {
-  const apiKey = getMistralApiKey()
-  const response = await fetch("https://api.mistral.ai/v1/embeddings", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: getEmbedModel(),
-      input: [text],
-    }),
+  const config = resolveLlmConfig()
+  const embedModel = config.embedModel
+
+  if (index.model !== embedModel) {
+    throw new RagModelMismatchError(index.model, embedModel)
+  }
+
+  const embeddings = await createEmbeddings(config, {
+    model: embedModel,
+    input: [text],
   })
 
-  if (!response.ok) {
-    const body = await response.text().catch(() => "")
-    throw new Error(`Embedding request failed (${response.status}): ${body}`)
-  }
-
-  const json = (await response.json()) as {
-    data?: Array<{ embedding?: number[] }>
-  }
-
-  const embedding = json.data?.[0]?.embedding
+  const embedding = embeddings[0]
   if (!Array.isArray(embedding)) {
-    throw new Error("Missing embedding vector in Mistral response")
+    throw new Error("Missing embedding vector in LLM response")
   }
 
   return embedding
@@ -120,8 +110,16 @@ export async function retrieveForQuery(query: string): Promise<SearchResult[]> {
     return keywordSearch(trimmed)
   }
 
-  const queryEmbedding = await embedQuery(trimmed)
-  return searchCorpus(queryEmbedding)
+  try {
+    const queryEmbedding = await embedQuery(trimmed)
+    return searchCorpus(queryEmbedding)
+  } catch (error) {
+    if (error instanceof RagModelMismatchError) {
+      console.warn(error.message)
+      return keywordSearch(trimmed)
+    }
+    throw error
+  }
 }
 
 export function getCorpusChunkCount(): number {

@@ -197,9 +197,8 @@ export function GenUiRenderer({ name, argumentsJson, isStreaming = false }: GenU
   // 3. Dynamic Custom Generative UI
   if (name === "render_custom_ui") {
     const parsed = parsePartialJson(argumentsJson)
-    
-    // Skeleton loader if we have no parsed items yet or it's empty
-    if (!parsed || !parsed.title) {
+
+    if (isStreaming && (!parsed || !parsed.title)) {
       return (
         <div className="w-full space-y-4 my-2 animate-pulse bg-muted/10 p-5 rounded-2xl border border-border/60">
           <div className="flex items-center gap-2">
@@ -214,6 +213,20 @@ export function GenUiRenderer({ name, argumentsJson, isStreaming = false }: GenU
               </div>
             ))}
           </div>
+        </div>
+      )
+    }
+
+    if (!parsed || !parsed.title) {
+      return (
+        <div
+          role="alert"
+          className="w-full my-2 rounded-2xl border border-destructive/40 bg-destructive/5 p-5 text-sm text-destructive"
+        >
+          <p className="font-medium">Couldn&apos;t render the interface</p>
+          <p className="mt-1 text-destructive/90">
+            The layout data was incomplete. Try again or switch to Chat mode.
+          </p>
         </div>
       )
     }

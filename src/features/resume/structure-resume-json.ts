@@ -1,5 +1,7 @@
+import { createChatCompletion } from "@/lib/llm/openai-compatible-client"
+import { toApiMessages } from "@/lib/llm/tool-loop"
 import type { LlmChatMessage } from "@/lib/llm/llm-types"
-import { toMistralApiMessages } from "@/lib/llm/mistral-tool-loop"
+import type { ResolvedLlmConfig } from "@/lib/llm/provider"
 
 const STRUCTURE_USER_PROMPT = [
   "Using the research above, output ONLY a valid ResumeDocument JSON object with this exact shape:",
@@ -14,38 +16,22 @@ const STRUCTURE_USER_PROMPT = [
 ].join(" ")
 
 export async function structureResumeDocumentJson(options: {
-  apiKey: string
+  config: ResolvedLlmConfig
   model: string
   messages: LlmChatMessage[]
   temperature?: number
   maxTokens?: number
 }): Promise<string> {
-  const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${options.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: options.model,
-      messages: [
-        ...toMistralApiMessages(options.messages),
-        { role: "user", content: STRUCTURE_USER_PROMPT },
-      ],
-      response_format: { type: "json_object" },
-      temperature: options.temperature ?? 0.2,
-      max_tokens: options.maxTokens ?? 4096,
-    }),
+  const payload = await createChatCompletion(options.config, {
+    model: options.model,
+    messages: [
+      ...toApiMessages(options.messages),
+      { role: "user", content: STRUCTURE_USER_PROMPT },
+    ],
+    response_format: { type: "json_object" },
+    temperature: options.temperature ?? 0.2,
+    max_tokens: options.maxTokens ?? 4096,
   })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`Mistral API error (${response.status}): ${errorText}`)
-  }
-
-  const payload = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string | null } }>
-  }
 
   return payload.choices?.[0]?.message?.content?.trim() ?? ""
 }

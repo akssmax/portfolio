@@ -26,4 +26,4 @@ const index: CorpusIndex = {
 
 writeFileSync(outputPath, JSON.stringify(index))
 console.log(`Wrote stub index to ${outputPath} (${chunks.length} chunks, no embeddings)`)
-console.log("Run npm run build:rag with MISTRAL_API_KEY in .env.local to generate embeddings.")
+console.log("Run npm run build:rag with OPENROUTER_API_KEY or MISTRAL_API_KEY in .env.local to generate embeddings.")

@@ -248,6 +248,25 @@ function buildHiringDocuments(): CorpusDocument[] {
   ]
 }
 
+function buildAiAssistantDocuments(): CorpusDocument[] {
+  return [
+    {
+      id: "portfolio-ai-stack",
+      source: "portfolio",
+      sourceLabel: "Portfolio AI assistant",
+      text: joinLines([
+        "The portfolio Ask AI feature uses a switchable LLM provider layer (OpenRouter or Mistral).",
+        "Production default: OpenRouter with nex-agi/nex-n2.5-mini:free for chat and nvidia/nemotron-3-embed-1b:free for RAG embeddings.",
+        "Chat mode: RAG retrieval from corpus-index.json (profile, projects, case studies, hiring FAQ) + optional Brave web search tool loop + streaming text.",
+        "Gen UI mode: single render_custom_ui tool call streaming structured JSON (grid, list, or metrics layouts) — optimized for fast tool-only responses.",
+        "Recent projects to reference: PostForge, RupeeLens, 100x Chat Shell, 100x Agent, Resume Builder, Kodo, Unlogged, Tulr.",
+        "Akshay is a Design Engineer at 100x.bot in Bengaluru, ~6 years experience, YC-backed fintech and devtools background.",
+      ]),
+      href: "/chat",
+    },
+  ]
+}
+
 function buildPortfolioSiteDocuments(): CorpusDocument[] {
   const recentProjects = fallbackProjects.filter(
     (project) => project.workSection === "recentProject",
@@ -283,9 +302,10 @@ function buildPortfolioSiteDocuments(): CorpusDocument[] {
       sourceLabel: "Portfolio tools",
       text: joinLines([
         "Interactive tools built into the portfolio:",
-        "- /tools/resume — public AI Resume Builder. Paste a LinkedIn, GitHub, Peerlist, or portfolio URL; Brave Search + Mistral structure a resume; customize layout and download PDF. Free, 3 generations per IP per day.",
+        "- /tools/resume — public AI Resume Builder. Paste a LinkedIn, GitHub, Peerlist, or portfolio URL; Brave Search + LLM (OpenRouter or Mistral) structure a resume; customize layout and download PDF. Free, 3 generations per IP per day.",
         "- /resume — password-protected owner workspace for tailoring Akshay's resume PDF from seeded profile data.",
-        "- Portfolio chat — RAG-grounded answers about Akshay's work, plus Brave web search for external facts.",
+        "- Portfolio chat — RAG-grounded answers about Akshay's work, plus Brave web search for external facts. Chat mode streams text; Gen UI mode renders interactive cards via the render_custom_ui tool.",
+        "- /chat — full-screen chat thread with Chat and Gen UI modes.",
         "Featured recent projects with live demos:",
         "- RupeeLens (rupeelens) — https://rupeelens-coral.vercel.app/ — local-first Indian bank statement finance with AI categorization",
         "- Design with AI (100x-chat-shell) — https://llm-daisyui-shell.vercel.app/",
@@ -305,6 +325,7 @@ export function buildCorpusDocuments(): CorpusDocument[] {
     ...buildProjectDocuments(),
     ...buildVisualCaseStudyDocuments(),
     ...buildPortfolioSiteDocuments(),
+    ...buildAiAssistantDocuments(),
     ...buildHeadlineDocuments(),
   ]
 }
