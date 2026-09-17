@@ -1,0 +1,211 @@
+/**
+ * Classic OS tokens for /landing-2 only.
+ * Re-declared under `.dark .landing-2-root` so html.dark cannot leak.
+ * Not registered in the theme customizer.
+ */
+.landing-2-root,
+.dark .landing-2-root {
+  color-scheme: light;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --section: oklch(0.97 0 0);
+  --section-foreground: oklch(0.145 0 0);
+  --card: oklch(0.905 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(0.905 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.145 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.84 0 0);
+  --secondary-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --accent: oklch(0.78 0.145 350);
+  --accent-foreground: oklch(0.2 0.04 350);
+  --destructive: oklch(0.42 0.16 25);
+  --border: oklch(0.145 0 0);
+  --input: oklch(0.145 0 0);
+  --ring: oklch(0.145 0 0);
+  --chart-1: oklch(0.145 0 0);
+  --chart-2: oklch(0.4 0 0);
+  --chart-3: oklch(0.78 0.145 350);
+  --chart-4: oklch(0.84 0 0);
+  --chart-5: oklch(0.905 0 0);
+  --sidebar: oklch(0.905 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.145 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.84 0 0);
+  --sidebar-accent-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0.145 0 0);
+  --sidebar-ring: oklch(0.145 0 0);
+  --radius-base: 0px;
+  --radius: 0px;
+  --font-family-sans: "Geist Pixel Square", ui-monospace, monospace;
+  --font-family-headline: "Outfit Variable", "Geist Variable", ui-sans-serif, sans-serif;
+  --os-titlebar: oklch(0.12 0 0);
+  --os-titlebar-foreground: oklch(1 0 0);
+  --os-window: oklch(0.905 0 0);
+  --os-desktop: oklch(0.76 0.14 350);
+  --os-desktop-dot: oklch(0.28 0.08 350 / 0.42);
+  --os-shadow: 3px 3px 0 0 oklch(0.12 0 0);
+  --os-border-width: 2px;
+  --os-pink: oklch(0.74 0.2 350);
+  --os-cyan: oklch(0.76 0.15 210);
+  --os-yellow: oklch(0.86 0.19 98);
+  --os-lime: oklch(0.82 0.21 135);
+  --os-orange: oklch(0.78 0.19 55);
+  --os-violet: oklch(0.76 0.16 300);
+}
+
+.landing-2-root {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-family-sans);
+  overflow-x: clip;
+}
+
+.landing-2-root section[id] {
+  scroll-margin-top: 3.25rem;
+}
+
+.landing-2-headline {
+  font-family: var(--font-family-headline);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.landing-2-text-link {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+
+.landing-2-root .os-window {
+  background: var(--os-window);
+  border: var(--os-border-width) solid var(--os-titlebar);
+  box-shadow: var(--os-shadow);
+  border-radius: 0;
+  color: var(--foreground);
+}
+
+.landing-2-root .os-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--os-titlebar);
+  color: var(--os-titlebar-foreground);
+  padding: 0.22rem 0.4rem;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.landing-2-root .os-titlebar-close {
+  width: 0.625rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  border: 1px solid var(--os-titlebar-foreground);
+  background: transparent;
+}
+
+.landing-2-root .os-window-body {
+  background: var(--os-window);
+}
+
+.landing-2-root .os-window[data-tone="pink"] {
+  --os-window: oklch(0.93 0.05 350);
+}
+.landing-2-root .os-window[data-tone="cyan"] {
+  --os-window: oklch(0.93 0.04 210);
+}
+.landing-2-root .os-window[data-tone="yellow"] {
+  --os-window: oklch(0.95 0.06 98);
+}
+.landing-2-root .os-window[data-tone="lime"] {
+  --os-window: oklch(0.94 0.07 135);
+}
+.landing-2-root .os-window[data-tone="orange"] {
+  --os-window: oklch(0.93 0.06 55);
+}
+.landing-2-root .os-window[data-tone="violet"] {
+  --os-window: oklch(0.93 0.05 300);
+}
+
+.landing-2-dither[data-color="pink"] {
+  --os-desktop: var(--os-pink);
+  --os-desktop-dot: oklch(0.28 0.1 350 / 0.42);
+}
+.landing-2-dither[data-color="cyan"] {
+  --os-desktop: var(--os-cyan);
+  --os-desktop-dot: oklch(0.3 0.1 210 / 0.4);
+}
+.landing-2-dither[data-color="yellow"] {
+  --os-desktop: var(--os-yellow);
+  --os-desktop-dot: oklch(0.38 0.12 90 / 0.38);
+}
+.landing-2-dither[data-color="lime"] {
+  --os-desktop: var(--os-lime);
+  --os-desktop-dot: oklch(0.32 0.12 135 / 0.4);
+}
+.landing-2-dither[data-color="orange"] {
+  --os-desktop: var(--os-orange);
+  --os-desktop-dot: oklch(0.35 0.12 50 / 0.4);
+}
+.landing-2-dither[data-color="violet"] {
+  --os-desktop: var(--os-violet);
+  --os-desktop-dot: oklch(0.3 0.1 300 / 0.4);
+}
+
+.landing-2-brand-mark {
+  display: block;
+  width: 24px;
+  height: 18px;
+  flex-shrink: 0;
+  shape-rendering: crispEdges;
+  image-rendering: pixelated;
+}
+
+.landing-2-ornament {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--muted-foreground);
+}
+
+.landing-2-root .os-field {
+  border: 1px solid var(--os-titlebar);
+  background: var(--background);
+  box-shadow: inset 1px 1px 0 oklch(0.12 0 0 / 0.2);
+  border-radius: 0;
+}
+
+.landing-2-root .os-progress {
+  border: 2px solid var(--os-titlebar);
+  background: var(--background);
+  height: 0.875rem;
+}
+
+.landing-2-root .os-progress-bar {
+  height: 100%;
+  background: var(--os-titlebar);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-2-root .os-progress-bar {
+    transform: none;
+    width: 100%;
+  }
+}
+
+@keyframes landing2Boot {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

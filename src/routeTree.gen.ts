@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as Landing2RouteImport } from './routes/landing-2'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as IntroRouteImport } from './routes/intro'
 import { Route as Home2RouteImport } from './routes/home-2'
@@ -47,6 +48,11 @@ const ResumeRoute = ResumeRouteImport.update({
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Landing2Route = Landing2RouteImport.update({
+  id: '/landing-2',
+  path: '/landing-2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JourneyRoute = JourneyRouteImport.update({
@@ -195,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
   '/journey': typeof JourneyRoute
+  '/landing-2': typeof Landing2Route
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
   '/journey': typeof JourneyRoute
+  '/landing-2': typeof Landing2Route
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -255,6 +263,7 @@ export interface FileRoutesById {
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
   '/journey': typeof JourneyRoute
+  '/landing-2': typeof Landing2Route
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
     | '/home-2'
     | '/intro'
     | '/journey'
+    | '/landing-2'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -316,6 +326,7 @@ export interface FileRouteTypes {
     | '/home-2'
     | '/intro'
     | '/journey'
+    | '/landing-2'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/home-2'
     | '/intro'
     | '/journey'
+    | '/landing-2'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -379,6 +391,7 @@ export interface RootRouteChildren {
   Home2Route: typeof Home2Route
   IntroRoute: typeof IntroRoute
   JourneyRoute: typeof JourneyRoute
+  Landing2Route: typeof Landing2Route
   QuoteRoute: typeof QuoteRoute
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -409,6 +422,13 @@ declare module '@tanstack/react-router' {
       path: '/quote'
       fullPath: '/quote'
       preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landing-2': {
+      id: '/landing-2'
+      path: '/landing-2'
+      fullPath: '/landing-2'
+      preLoaderRoute: typeof Landing2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journey': {
@@ -645,6 +665,7 @@ const rootRouteChildren: RootRouteChildren = {
   Home2Route: Home2Route,
   IntroRoute: IntroRoute,
   JourneyRoute: JourneyRoute,
+  Landing2Route: Landing2Route,
   QuoteRoute: QuoteRoute,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,
