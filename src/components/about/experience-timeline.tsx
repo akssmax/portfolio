@@ -1,6 +1,9 @@
+import { Link } from "@tanstack/react-router"
+import { ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { CompanyLogo } from "@/components/shared/company-logo"
+import { Button } from "@/components/ui/button"
 import { getExperienceDuration, getExperienceSectionSubtitle } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
 
@@ -16,13 +19,19 @@ export function ExperienceTimeline() {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mb-12 max-w-2xl">
+        <div className="mb-12 max-w-2xl space-y-4">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Experience
           </h2>
-          <p className="mt-3 text-base text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             {getExperienceSectionSubtitle(profile.experience.map((item) => item.period))}
           </p>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/journey">
+              Explore full journey
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </Button>
         </div>
 
         <div className="flex flex-col gap-10">

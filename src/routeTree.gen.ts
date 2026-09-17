@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as IntroRouteImport } from './routes/intro'
 import { Route as Home2RouteImport } from './routes/home-2'
 import { Route as ExperienceRouteImport } from './routes/experience'
@@ -46,6 +47,11 @@ const ResumeRoute = ResumeRouteImport.update({
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JourneyRoute = JourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntroRoute = IntroRouteImport.update({
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
+  '/journey': typeof JourneyRoute
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -215,6 +222,7 @@ export interface FileRoutesByTo {
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
+  '/journey': typeof JourneyRoute
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/experience': typeof ExperienceRoute
   '/home-2': typeof Home2Route
   '/intro': typeof IntroRoute
+  '/journey': typeof JourneyRoute
   '/quote': typeof QuoteRoute
   '/resume': typeof ResumeRoute
   '/api/chat': typeof ApiChatRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/experience'
     | '/home-2'
     | '/intro'
+    | '/journey'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/experience'
     | '/home-2'
     | '/intro'
+    | '/journey'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/experience'
     | '/home-2'
     | '/intro'
+    | '/journey'
     | '/quote'
     | '/resume'
     | '/api/chat'
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   ExperienceRoute: typeof ExperienceRoute
   Home2Route: typeof Home2Route
   IntroRoute: typeof IntroRoute
+  JourneyRoute: typeof JourneyRoute
   QuoteRoute: typeof QuoteRoute
   ResumeRoute: typeof ResumeRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -396,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/quote'
       fullPath: '/quote'
       preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journey': {
+      id: '/journey'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intro': {
@@ -624,6 +644,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienceRoute: ExperienceRoute,
   Home2Route: Home2Route,
   IntroRoute: IntroRoute,
+  JourneyRoute: JourneyRoute,
   QuoteRoute: QuoteRoute,
   ResumeRoute: ResumeRoute,
   ApiChatRoute: ApiChatRoute,

@@ -1,11 +1,13 @@
 "use client"
 
 import * as React from "react"
+import { Link } from "@tanstack/react-router"
 import { motion } from "motion/react"
-import { ExternalLink } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 
 import { SectionIntro } from "@/components/marketing/section-intro"
 import { CompanyLogo } from "@/components/shared/company-logo"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -383,6 +385,13 @@ export function ExperienceSlide({ data }: ExperienceSlideProps) {
           heading={data.heading}
           description={data.subtitle}
         />
+
+        <Button asChild variant="outline" size="sm" className="w-fit">
+          <Link to="/journey">
+            Explore full journey
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </Button>
 
         <JourneyStepper
           items={data.items}

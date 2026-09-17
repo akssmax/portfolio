@@ -4,10 +4,10 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export type CaseStudyFrom = "home" | "projects" | "intro"
+export type CaseStudyFrom = "home" | "projects" | "intro" | "journey"
 
 export type CaseStudyBackTarget = {
-  to: "/" | "/projects" | "/intro"
+  to: "/" | "/projects" | "/intro" | "/journey"
   label: string
 }
 
@@ -18,6 +18,10 @@ export function getCaseStudyBack(from?: CaseStudyFrom): CaseStudyBackTarget {
 
   if (from === "intro") {
     return { to: "/intro", label: "Back to deck" }
+  }
+
+  if (from === "journey") {
+    return { to: "/journey", label: "Back to journey" }
   }
 
   return { to: "/projects", label: "All projects" }

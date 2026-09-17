@@ -94,6 +94,7 @@ describe("resolveLlmConfig", () => {
     expect(isValidChatModel("google/gemma-2-9b-it:free", openRouterConfig)).toBe(true)
     expect(isValidChatModel("mistral-small-latest", openRouterConfig)).toBe(false)
 
+    expect(isValidChatModel("ministral-8b-latest", mistralConfig)).toBe(true)
     expect(isValidChatModel("mistral-small-latest", mistralConfig)).toBe(true)
     expect(isValidChatModel("openrouter/free", mistralConfig)).toBe(false)
     expect(getDefaultChatModel(mistralConfig)).toBe("mistral-small-latest")

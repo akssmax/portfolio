@@ -36,12 +36,13 @@ const DEFAULT_OPENROUTER_CHAT_FALLBACKS = [
   "google/gemma-3-12b-it:free",
   "meta-llama/llama-3.2-3b-instruct:free",
 ] as const
-const DEFAULT_MISTRAL_CHAT_MODEL = "mistral-small-latest"
+const DEFAULT_MISTRAL_CHAT_MODEL = "ministral-8b-latest"
 const DEFAULT_MISTRAL_EMBED_MODEL = "mistral-embed"
 
 const OPENROUTER_MODEL_PATTERN = /^[\w.-]+\/[\w.-]+(:free)?$/
 
 export const MISTRAL_MODELS = [
+  "ministral-8b-latest",
   "mistral-small-latest",
   "mistral-medium-latest",
   "mistral-large-latest",
