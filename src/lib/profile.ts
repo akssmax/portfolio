@@ -23,7 +23,7 @@ const experience = [
     company: "Kodo",
     logoSrc: "/companies/kodo.svg",
     websiteUrl: "https://www.kodo.com/",
-    role: "Senior Product Designer",
+    role: "Lead Product Designer",
     period: "Feb 2024 – Nov 2025",
     location: "Pune, India · YC W21",
     description:
@@ -43,17 +43,18 @@ const experience = [
     company: "Unlogged",
     logoSrc: "/companies/unlogged.svg",
     websiteUrl: "https://www.unlogged.io/",
-    role: "Product Designer",
+    role: "Founding Designer",
     period: "Dec 2021 – Jan 2024",
     location: "Remote · YC S22",
     description:
-      "Designed developer tooling experiences for a YC S22 open-source Java debugging platform — from onboarding to real-time performance monitoring.",
+      "Led branding and product design as Videobug evolved into Unlogged, a YC S22 developer tool for debugging, testing, and replaying Java code.",
     highlights: [
       "Designed IntelliJ IDEA plugin",
       "Designed and built website from scratch in Webflow",
       "Designed web dashboard app",
       "UX research, user testing, and prototyping",
       "Branding and investor presentations",
+      "Led the product and visual identity across both Videobug and Unlogged",
       "Custom design system (modified Chakra UI)",
       "Video editing for YouTube and LinkedIn",
       "UI animations for marketing website",
@@ -63,7 +64,7 @@ const experience = [
     company: "Tulr",
     logoSrc: "/companies/tulr.svg",
     websiteUrl: "https://www.producthunt.com/products/tulr-io",
-    role: "UX Designer",
+    role: "Founding Designer",
     period: "May 2020 – Dec 2021",
     location: "Gurgaon, India · AuthMe Id Services",
     description:
@@ -72,6 +73,7 @@ const experience = [
       "Mobile and web product design for the no-code builder",
       "Built 700+ custom component library",
       "Branding, animation, social media, and Product Hunt launch",
+      "Owned founding product design and visual identity across web and mobile",
       "Collaborated with a team of 7 developers",
     ],
   },
@@ -105,7 +107,7 @@ const experience = [
   {
     company: "Wallzy",
     logoSrc: "/companies/wallzy.png",
-    websiteUrl: "https://play.google.com/store/apps/details?id=com.wallzy.app",
+    websiteUrl: "https://chrome-stats.com/d/com.phpmalik.wallzyPro",
     role: "Graphic Designer & Co-founder",
     period: "Jan 2017 – Dec 2018",
     location: "Hisar, Haryana",
@@ -119,7 +121,6 @@ const experience = [
     ],
   },
 ]
-
 
 function createProfileBio(periods: string[]) {
   const span = getDesignCareerSpanLabel(periods)
@@ -350,6 +351,6 @@ export function getEmployerLogos(): EmployerLogo[] {
             role: item.role,
           },
         ]
-      : [],
+      : []
   )
 }
