@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 
 import {
   getDefaultChatModel,
+  getGenUiEngine,
+  getGenUiModel,
   getOpenRouterChatFallbackModels,
   isValidChatModel,
   LlmConfigError,
@@ -87,6 +89,25 @@ describe("resolveLlmConfig", () => {
       "openrouter/free",
       "google/gemma-3-12b-it:free",
     ])
+  })
+
+  it("resolves Gen UI engine from GENUI_ENGINE", () => {
+    vi.stubEnv("GENUI_ENGINE", "openui")
+    expect(getGenUiEngine()).toBe("openui")
+
+    vi.stubEnv("GENUI_ENGINE", "legacy")
+    expect(getGenUiEngine()).toBe("legacy")
+
+    vi.stubEnv("GENUI_ENGINE", "")
+    expect(getGenUiEngine()).toBe("legacy")
+  })
+
+  it("resolves Gen UI model from chat model with optional override", () => {
+    expect(getGenUiModel(mistralConfig)).toBe("mistral-small-latest")
+    expect(getGenUiModel(openRouterConfig)).toBe(openRouterConfig.chatModel)
+
+    vi.stubEnv("MISTRAL_GENUI_MODEL", "mistral-medium-latest")
+    expect(getGenUiModel(mistralConfig)).toBe("mistral-medium-latest")
   })
 
   it("validates chat models per provider", () => {

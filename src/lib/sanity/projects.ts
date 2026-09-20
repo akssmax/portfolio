@@ -13,6 +13,16 @@ import {
 } from "./queries"
 import type { Project, ProjectCard } from "./types"
 
+const localPortfolioProjectSlugs = new Set(["indus-best-mega-food-park", "ion-workspace"])
+
+function withLocalPortfolioProjects(projects: Array<ProjectCard>): Array<ProjectCard> {
+  const existingSlugs = new Set(projects.map((project) => project.slug))
+  const localProjects = getFallbackProjectCards().filter(
+    (project) => localPortfolioProjectSlugs.has(project.slug) && !existingSlugs.has(project.slug),
+  )
+  return [...projects, ...localProjects]
+}
+
 export async function getAllProjects(): Promise<ProjectCard[]> {
   if (!isSanityConfigured()) {
     return getFallbackProjectCards()
@@ -20,7 +30,7 @@ export async function getAllProjects(): Promise<ProjectCard[]> {
 
   try {
     const projects = await getSanityClient().fetch<ProjectCard[]>(allProjectsQuery)
-    return projects.length > 0 ? projects : getFallbackProjectCards()
+    return projects.length > 0 ? withLocalPortfolioProjects(projects) : getFallbackProjectCards()
   } catch {
     return getFallbackProjectCards()
   }
@@ -33,7 +43,7 @@ export async function getFeaturedProjects(): Promise<ProjectCard[]> {
 
   try {
     const projects = await getSanityClient().fetch<ProjectCard[]>(featuredProjectsQuery)
-    return projects.length > 0 ? projects : getFallbackFeaturedProjects()
+    return projects.length > 0 ? withLocalPortfolioProjects(projects) : getFallbackFeaturedProjects()
   } catch {
     return getFallbackFeaturedProjects()
   }
@@ -55,7 +65,7 @@ export async function getHomeWorkSections(): Promise<HomeWorkSections> {
       return getFallbackHomeWorkSections()
     }
 
-    const { recentProjects, caseStudies } = partitionProjectsByWorkSection(projects)
+    const { recentProjects, caseStudies } = partitionProjectsByWorkSection(withLocalPortfolioProjects(projects))
     return { recentProjects, caseStudies }
   } catch {
     return getFallbackHomeWorkSections()
@@ -79,7 +89,7 @@ export async function getAllWorkSections(): Promise<AllWorkSections> {
       return partitionProjectsByWorkSection(all)
     }
 
-    return partitionProjectsByWorkSection(projects)
+    return partitionProjectsByWorkSection(withLocalPortfolioProjects(projects))
   } catch {
     const all = getFallbackProjectCards()
     return partitionProjectsByWorkSection(all)

@@ -1,6 +1,8 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
+import appCss from "../styles.css?url"
 
 import { ErrorBoundary } from "@/components/error-boundary"
+import { MotionPreferences } from "@/components/motion-preferences"
 import { PostHogProvider } from "@/components/posthog-provider"
 import { RouteError } from "@/components/route-error"
 import { NotFoundPage } from "@/components/shared/not-found-page"
@@ -11,8 +13,6 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { APPEARANCE_INIT_SCRIPT } from "@/lib/themes/apply-appearance"
 import { getDesignCareerSpanLabel } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
-
-import appCss from "../styles.css?url"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -91,7 +91,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <DirectionProvider dir="ltr">
               <TooltipProvider>
                 <PostHogProvider>
-                  <ErrorBoundary>{children}</ErrorBoundary>
+                  <MotionPreferences>
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                  </MotionPreferences>
                 </PostHogProvider>
               </TooltipProvider>
             </DirectionProvider>

@@ -109,6 +109,199 @@ const POSTFORGE_TECH_STACK_ITEMS = [
 
 export const fallbackProjects: Project[] = [
   {
+    _id: "fallback-ion-workspace",
+    title: "Ion Workspace",
+    slug: "ion-workspace",
+    description:
+      "Ongoing · A connected business workspace for email, calendars, contacts, and files, with a public sample-data demo.",
+    tag: "Product UI · Ongoing",
+    featured: true,
+    workSection: "recentProject",
+    coverImageUrl: "/projects/ion/mail.webp",
+    year: "2026 – Present",
+    role: "Product Design & Engineering",
+    client: "Ion",
+    tools: ["TanStack Start", "React", "TypeScript", "JMAP"],
+    publishedAt: "2026-09-20T12:00:00.000Z",
+    seo: {
+      metaTitle: "Ion Workspace — Ongoing Product Project",
+      metaDescription:
+        "An ongoing business workspace project connecting mail, calendars, contacts, and files. Explore the public demo with sample data.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "ion-context-heading",
+        title: "The project",
+        subtitle: "An ongoing build for a more connected working day.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "ion-context",
+        body: [
+          textBlock(
+            "ion-context-1",
+            "Ion brings business email, calendar, contacts, and files into a single workspace. The product is still in development and is currently presented as a private pilot, with a public interactive demo that uses sample data.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "ion-work-heading",
+        title: "What is taking shape",
+        subtitle: "One navigation model for everyday business tools.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "ion-work",
+        body: bulletList("ion-work-item", [
+          "A mail workspace with conversations, folders, labels, search, and keyboard shortcuts",
+          "Calendar views and event creation alongside the inbox",
+          "Contacts and files available within the same application shell",
+          "A public product site and interactive sample-data demo for exploring the experience",
+          "A JMAP-based foundation for connecting to compatible mail infrastructure",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "ion-screens-heading",
+        title: "Selected screens",
+        subtitle: "Captured from the deployed sample-data demo; the product remains ongoing.",
+      },
+      {
+        _type: "staticImage",
+        _key: "ion-calendar-screen",
+        src: "/projects/ion/calendar.webp",
+        alt: "Ion demo calendar showing the monthly view and connected workspace navigation",
+        caption: "Calendar in the same workspace as mail.",
+      },
+      {
+        _type: "staticImage",
+        _key: "ion-files-screen",
+        src: "/projects/ion/files.webp",
+        alt: "Ion demo file manager showing folders and documents",
+        caption: "Files within the shared application shell.",
+      },
+      {
+        _type: "embed",
+        _key: "ion-live-site",
+        url: "https://ion-workspace.vercel.app/",
+        label: "Explore Ion",
+        embedType: "link",
+      },
+    ],
+  },
+  {
+    _id: "fallback-indus-best-mega-food-park",
+    title: "Indus Best Mega Food Park",
+    slug: "indus-best-mega-food-park",
+    description:
+      "Freelance redesign and custom build for a food-processing campus — clearer facilities, investor journeys, and enquiries.",
+    tag: "Client website",
+    featured: true,
+    workSection: "recentProject",
+    coverImageUrl: "/projects/indus/hero.webp",
+    year: "2026",
+    role: "Freelance Design Engineer",
+    client: "Indus Best Mega Food Park",
+    tools: ["TanStack Start", "React", "TypeScript", "Tailwind CSS"],
+    publishedAt: "2026-09-20T00:00:00.000Z",
+    seo: {
+      metaTitle: "Indus Best Mega Food Park — Freelance Website Project",
+      metaDescription:
+        "A freelance redesign and custom-coded website for Indus Best Mega Food Park, bringing its campus, facilities, investor information, and enquiry flows into one coherent experience.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "indus-context-heading",
+        title: "Context",
+        subtitle: "A freelance website project for an operating food-processing campus near Raipur.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "indus-context",
+        body: [
+          textBlock(
+            "indus-context-1",
+            "Indus Best Mega Food Park needed a site that could explain a complex physical campus to food manufacturers, growing businesses, and potential partners. The existing information spanned plots, sheds, shared processing, cold chain, warehousing, and utilities; the redesign organizes these into clearer routes from exploration to enquiry.",
+          ),
+          textBlock(
+            "indus-context-2",
+            "This was a freelance redesign and custom-coded rebuild, covering the public website and a private content and enquiry workspace for the client team.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "indus-scope-heading",
+        title: "What I built",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "indus-scope",
+        body: [
+          textBlock(
+            "indus-scope-intro",
+            "The responsive site gives each audience a path into the campus, its facilities, and the next action to take.",
+          ),
+          ...bulletList("indus-scope-item", [
+            "Public pages for the campus, facilities, products, investor information, gallery, virtual tour, and contact",
+            "Enquiry forms organized around plots, MSME sheds, shared capacity, and partnership interest",
+            "A private CMS workspace for home-page sections, site settings, blog posts, and enquiry management",
+            "Page metadata, sitemap, and responsive layouts for the public site",
+          ]),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "indus-design-heading",
+        title: "Design approach",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "indus-design",
+        body: [
+          textBlock(
+            "indus-design-1",
+            "The interface uses a forest-and-cream palette, campus photography, and a direct proposition — build a plant without first building the estate. Facilities are grouped by the decisions prospective tenants make, while enquiry calls to action stay close to the relevant information.",
+          ),
+          textBlock(
+            "indus-design-2",
+            "Built with TanStack Start, React, TypeScript, Tailwind CSS, and shadcn/ui. The client workspace uses Drizzle and a Postgres-backed content model, with image uploads for blog content.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "indus-screens-heading",
+        title: "Selected screens",
+        subtitle: "Captured from the deployed website.",
+      },
+      {
+        _type: "staticImage",
+        _key: "indus-why-screen",
+        src: "/projects/indus/why.webp",
+        alt: "Indus Best website showing campus photography, shared processing, and collection facilities",
+        caption: "Campus and processing facilities on the homepage.",
+      },
+      {
+        _type: "staticImage",
+        _key: "indus-ecosystem-screen",
+        src: "/projects/indus/ecosystem.webp",
+        alt: "Indus Best website showing the interactive farm-to-market ecosystem section",
+        caption: "The farm-to-market ecosystem connects sourcing, the campus, manufacturing, and dispatch.",
+      },
+      {
+        _type: "embed",
+        _key: "indus-live-site",
+        url: "https://indus-best-mega-food.vercel.app/",
+        label: "View deployed site",
+        embedType: "link",
+      },
+    ],
+  },
+  {
     _id: "fallback-postforge",
     title: "Postforge",
     slug: "postforge",
@@ -1411,25 +1604,25 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-kodo",
-    title: "Kodo — Intake-to-Pay Platform",
+    title: "Kodo — Website, Cards & P2P Workspace",
     slug: "kodo",
     description:
-      "YC W21 enterprise fintech marketing site and product UI for procure-to-pay — designed in Figma, built in Framer, and shipped across AP, payments, cards, and reimbursements.",
+      "Designing Kodo's public website, Corporate Cards, and new procure-to-pay workspace across 21 months, connected by a shared design system.",
     tag: "Enterprise Fintech",
     featured: true,
     workSection: "caseStudy",
     buildBadge: "pre-llm",
     coverImageUrl: "/projects/kodo/hero.webp",
     year: "Feb 2024 – Nov 2025",
-    role: "Senior Product Designer",
+    role: "Lead Product Designer",
     client: "Kodo",
     tools: ["Figma", "Framer"],
     publishedAt: "2025-11-01T00:00:00.000Z",
-    metrics: "Led design solo · 4 enterprise modules shipped · 1 yr 9 months",
+    metrics: "Website · Corporate Cards · Procure-to-pay workspace",
     seo: {
-      metaTitle: "Kodo — Intake-to-Pay Platform — Case Study",
+      metaTitle: "Kodo — Website, Corporate Cards & P2P Workspace — Case Study",
       metaDescription:
-        "How a YC W21 enterprise procure-to-pay fintech got a full marketing site in Framer and end-to-end product design across AP automation, vendor payouts, corporate cards, and reimbursements.",
+        "Akshay Saini's Lead Product Designer work across Kodo's website, Corporate Cards, and new procure-to-pay workspace, connected through a shared design system.",
     },
     content: [
       {
@@ -1489,12 +1682,22 @@ export const fallbackProjects: Project[] = [
       {
         _type: "collaborators",
         _key: "k-collab",
-        subtitle: "Solo design lead — product UI and marketing site end to end.",
+        subtitle: "Lead product design in close collaboration with product and engineering partners.",
         items: [
           {
             name: "Akshay Saini",
-            role: "Senior Product Designer",
+            role: "Lead Product Designer",
             initials: "AS",
+          },
+          {
+            name: "Gaurav Thapa",
+            role: "Collaborator",
+            initials: "GT",
+          },
+          {
+            name: "Tumul Roy",
+            role: "Collaborator",
+            initials: "TR",
           },
         ],
       },
@@ -1715,7 +1918,7 @@ export const fallbackProjects: Project[] = [
         body: [
           textBlock(
             "k-rt-outcome-1",
-            "Over 21 months at Kodo, a YC W21 company, I led design across the full intake-to-pay platform and shipped the marketing site at kodo.com — from Figma exploration through Framer production. The site is live and converting enterprise fintech buyers while the product serves 2,000+ companies with AP automation, payments, cards, and reimbursements.",
+            "Over 21 months at Kodo, I designed and built the public website in Framer, worked on Corporate Cards, and led design for the first release of a new procure-to-pay workspace with enterprise customers. A shared design system connected the work. Kodo's company-wide customer figures are separate from outcomes of these projects.",
           ),
         ],
       },

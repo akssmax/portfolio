@@ -1,12 +1,8 @@
 "use client"
 
 import { useCallback, useState } from "react"
-import {
-  motion,
-  useReducedMotion,
-  type Transition,
-  type Variants,
-} from "motion/react"
+import { motion } from "motion/react"
+import type { Transition, Variants } from "motion/react"
 
 import { MonogramRunnerGame } from "@/components/brand/monogram-runner-game"
 import {
@@ -14,6 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useCanAnimate } from "@/hooks/use-can-animate"
 import { cn } from "@/lib/utils"
 import {
   MONOGRAM_ACCENT,
@@ -381,7 +378,7 @@ export function FooterMonogram({
   runnerActive: runnerActiveProp,
   onRunnerActiveChange,
 }: FooterMonogramProps) {
-  const shouldReduceMotion = useReducedMotion()
+  const canAnimate = useCanAnimate()
   const [internalRunnerActive, setInternalRunnerActive] = useState(false)
   const isRunnerControlled = runnerActiveProp !== undefined
   const runnerActive = isRunnerControlled ? runnerActiveProp : internalRunnerActive
@@ -397,10 +394,9 @@ export function FooterMonogram({
     },
     [isRunnerControlled, onRunnerActiveChange],
   )
-  const useMotion = !shouldReduceMotion && animation !== "none"
+  const useMotion = canAnimate && animation !== "none"
   const isLoop = animation === "loop" && useMotion
-  const canPlayRunner =
-    enableRunnerGame && size === "footer" && !shouldReduceMotion
+  const canPlayRunner = enableRunnerGame && size === "footer"
 
   const containerMotionProps = useMotion
     ? isLoop
@@ -453,7 +449,7 @@ export function FooterMonogram({
               className={cn(
                 "cursor-pointer border-0 bg-transparent p-0 outline-none",
                 "origin-bottom transition-transform duration-300 ease-out motion-reduce:transition-none",
-                !shouldReduceMotion && "hover:scale-[1.05]",
+                canAnimate && "hover:scale-[1.05]",
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               )}
               onClick={() => setRunnerActive(true)}

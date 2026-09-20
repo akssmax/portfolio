@@ -1,4 +1,4 @@
-import { useRef, lazy, Suspense } from "react"
+import { Suspense, lazy, useRef } from "react"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { motion, useReducedMotion } from "motion/react"
 import { useTheme } from "next-themes"
@@ -13,6 +13,7 @@ import { getAllWorkSections } from "@/lib/sanity/projects"
 import { siteUrl } from "@/lib/site-url"
 
 const DotField = lazy(() => import("@/components/DotField"))
+const hiddenRecentProjectSlugs = new Set(["100x-chat-shell", "v1-100x-proto"])
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -79,6 +80,9 @@ export const Route = createFileRoute("/projects/")({
 
 function ProjectsIndexPage() {
   const { recentProjects, caseStudies, other } = Route.useLoaderData()
+  const visibleRecentProjects = recentProjects.filter(
+    (project) => !hiddenRecentProjectSlugs.has(project.slug),
+  )
   const shouldReduceMotion = useReducedMotion()
   const mainRef = useRef<HTMLElement>(null)
   const brandColors = useBrandColors()
@@ -134,7 +138,7 @@ function ProjectsIndexPage() {
               Projects
             </h1>
             <p className="mt-3 text-base text-muted-foreground">
-              Recent AI-assisted builds and deeper case studies from pre-LLM product design.
+              Recent independent builds, freelance client work, and deeper case studies from pre-LLM product design.
             </p>
             <Link
               to="/"
@@ -146,8 +150,8 @@ function ProjectsIndexPage() {
 
           <WorkProjectGroup
             title="Recent projects"
-            description="Agentic AI products designed and shipped with AI-assisted workflows."
-            projects={recentProjects}
+            description="Independent builds and freelance client work, from design to production."
+            projects={visibleRecentProjects}
             animated={false}
           />
 
@@ -156,6 +160,7 @@ function ProjectsIndexPage() {
             title="Case studies"
             description="Deep dives from pre-LLM product design — Figma to shipped UI without AI codegen."
             projects={caseStudies}
+            layout="case-study"
             animated={false}
           />
 

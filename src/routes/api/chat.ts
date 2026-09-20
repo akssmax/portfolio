@@ -6,7 +6,13 @@ import { createChatCompletion } from "@/lib/llm/openai-compatible-client"
 import { extractToolCallDeltas } from "@/lib/llm/tool-call-utils"
 import type { LlmChatMessage } from "@/lib/llm/llm-types"
 import {
+  buildOpenUiMessages,
+  buildOpenUiScopeRedirectLang,
+  getOpenUiStreamOptions,
+} from "@/lib/llm/openui-completion"
+import {
   getDefaultChatModel,
+  getGenUiEngine,
   isValidChatModel,
   LlmConfigError,
   resolveLlmConfig,
@@ -272,9 +278,11 @@ export const Route = createFileRoute("/api/chat")({
         const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content ?? ""
 
         const useGenUi = body.mode === "gen-ui"
+        const useOpenUiEngine = useGenUi && getGenUiEngine() === "openui"
+        const useLegacyGenUi = useGenUi && !useOpenUiEngine
 
         let retrievedContext = ""
-        if (!useGenUi && lastUserMessage.trim()) {
+        if ((!useGenUi || useOpenUiEngine) && lastUserMessage.trim()) {
           try {
             const results = await retrieveForQuery(lastUserMessage)
             retrievedContext = buildRetrievedContext(
@@ -314,15 +322,22 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
-        const finalMessages: LlmChatMessage[] = useGenUi
-          ? [{ role: "system", content: GEN_UI_SYSTEM_PROMPT }, ...processedHistory]
-          : [
-              { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
-              ...(retrievedContext
-                ? [{ role: "system" as const, content: `Retrieved context:\n${retrievedContext}` }]
-                : []),
-              ...processedHistory,
-            ]
+        const finalMessages: LlmChatMessage[] = useOpenUiEngine
+          ? buildOpenUiMessages({ history: processedHistory, ragContext: retrievedContext })
+          : useLegacyGenUi
+            ? [{ role: "system", content: GEN_UI_SYSTEM_PROMPT }, ...processedHistory]
+            : [
+                { role: "system", content: PORTFOLIO_SYSTEM_PROMPT },
+                ...(retrievedContext
+                  ? [{ role: "system" as const, content: `Retrieved context:\n${retrievedContext}` }]
+                  : []),
+                ...processedHistory,
+              ]
+
+        const openUiStreamOptions = useOpenUiEngine ? getOpenUiStreamOptions(llmConfig) : null
+        const streamModel = openUiStreamOptions?.model ?? validation.model
+        const streamMaxTokens = openUiStreamOptions?.maxTokens ?? validation.maxTokens
+        const streamTemperature = openUiStreamOptions?.temperature ?? validation.temperature
 
         const controller = new AbortController()
         const timeoutMs = Number(process.env.VERCEL_CHAT_TIMEOUT_MS) || 55_000
@@ -347,7 +362,24 @@ export const Route = createFileRoute("/api/chat")({
                 return
               }
 
-              if (useGenUi) {
+              if (useOpenUiEngine && isLikelyOffTopicQuery(lastUserMessage)) {
+                const redirectLang = buildOpenUiScopeRedirectLang(lastUserMessage)
+                writeSse(streamController, "token", { text: redirectLang })
+                writeSse(streamController, "suggestions", {
+                  suggestions: [...OFF_TOPIC_SUGGESTIONS],
+                })
+                writeSse(streamController, "done", {
+                  ok: true,
+                  finishReason: "stop",
+                  maxTokens: streamMaxTokens,
+                  status: "completed",
+                  engine: "openui",
+                })
+                streamController.close()
+                return
+              }
+
+              if (useLegacyGenUi) {
                 try {
                   const genUiResult = await completeGenUiToolCalls({
                     config: llmConfig,
@@ -376,6 +408,7 @@ export const Route = createFileRoute("/api/chat")({
                     finishReason: genUiResult.finishReason ?? "tool_calls",
                     maxTokens: getGenUiStreamOptions(llmConfig).maxTokens,
                     status: genUiResult.toolCalls.length > 0 ? "completed" : "upstream_error",
+                    engine: "legacy",
                   })
                 } catch (error) {
                   writeSse(streamController, "error", {
@@ -392,16 +425,25 @@ export const Route = createFileRoute("/api/chat")({
 
               let response: Response
 
-              {
+              if (useOpenUiEngine) {
+                response = await streamCompletion({
+                  config: llmConfig,
+                  model: streamModel,
+                  messages: finalMessages,
+                  temperature: streamTemperature,
+                  maxTokens: streamMaxTokens,
+                  signal: controller.signal,
+                })
+              } else {
                 const { messages: toolAwareMessages } = await runToolLoop({
                   config: llmConfig,
-                  model: validation.model,
+                  model: streamModel,
                   messages: finalMessages,
                   maxRounds: 2,
                   maxSearches: 3,
                   appendFinalAssistant: false,
-                  temperature: validation.temperature,
-                  maxTokens: validation.maxTokens,
+                  temperature: streamTemperature,
+                  maxTokens: streamMaxTokens,
                   tools: [WEB_SEARCH_TOOL_DEFINITION],
                   toolContext: {
                     beforeSearch: () => {
@@ -427,10 +469,10 @@ export const Route = createFileRoute("/api/chat")({
 
                 response = await streamCompletion({
                   config: llmConfig,
-                  model: validation.model,
+                  model: streamModel,
                   messages: toolAwareMessages,
-                  temperature: validation.temperature,
-                  maxTokens: validation.maxTokens,
+                  temperature: streamTemperature,
+                  maxTokens: streamMaxTokens,
                   signal: controller.signal,
                 })
               }
@@ -505,7 +547,7 @@ export const Route = createFileRoute("/api/chat")({
                 }
               }
 
-              if (!useGenUi) {
+              if (!useLegacyGenUi) {
                 try {
                   const responseForSuggestions =
                     assistantText.trim() ||
@@ -516,7 +558,7 @@ export const Route = createFileRoute("/api/chat")({
                   const suggestions = await Promise.race([
                     generateSuggestions(
                       llmConfig,
-                      validation.model,
+                      streamModel,
                       lastUserMessage,
                       responseForSuggestions,
                       controller.signal,
@@ -549,8 +591,9 @@ export const Route = createFileRoute("/api/chat")({
               writeSse(streamController, "done", {
                 ok: true,
                 finishReason: finishReason ?? "stop",
-                maxTokens: validation.maxTokens,
+                maxTokens: streamMaxTokens,
                 status: finishReason === "length" ? "max_tokens_reached" : "completed",
+                ...(useOpenUiEngine ? { engine: "openui" as const } : {}),
               })
               streamController.close()
             } catch (error) {

@@ -1,15 +1,16 @@
+import type { BentoSize } from "@/lib/projects/bento-placements"
+import type { ProjectCard } from "@/lib/sanity/types"
 import { getImageUrl } from "@/lib/sanity/image"
 import {
-  hasProjectFeatureVisual,
   ProjectFeatureVisual,
+  hasProjectFeatureVisual,
 } from "@/components/marketing/feature-card-visuals/project-feature-visual"
 import { getFeatureVisualConfig } from "@/lib/projects/project-feature-visuals"
 import { getProjectVisualTheme } from "@/lib/projects/project-visual-themes"
-import type { BentoSize } from "@/lib/projects/bento-placements"
-import type { ProjectCard } from "@/lib/sanity/types"
 import { cardVisualSlowTransition } from "@/lib/motion-easing"
 import { useFullMotion } from "@/hooks/use-can-animate"
 import { cn } from "@/lib/utils"
+import { CaseStudyFeatureVisual } from "@/components/marketing/case-study-feature-visual"
 
 const visualAspect: Record<BentoSize, string> = {
   compact: "aspect-[4/5] min-h-[240px] sm:min-h-[280px]",
@@ -23,14 +24,26 @@ type FeatureCardVisualProps = {
   project: ProjectCard
   size?: BentoSize
   className?: string
+  caseStudy?: boolean
 }
 
 export function FeatureCardVisual({
   project,
   size = "default",
   className,
+  caseStudy = false,
 }: FeatureCardVisualProps) {
   const fullMotion = useFullMotion()
+  if (caseStudy) {
+    return (
+      <CaseStudyFeatureVisual
+        project={project}
+        size={size}
+        className={className}
+      />
+    )
+  }
+
   const theme = getProjectVisualTheme(project.slug)
   const { Icon } = theme
 
@@ -51,20 +64,20 @@ export function FeatureCardVisual({
       className={cn(
         "group/visual relative w-full overflow-hidden rounded-xl border border-border/50 contain-paint",
         aspectClass,
-        className,
+        className
       )}
     >
       <div
         className={cn(
           "absolute inset-0 bg-gradient-to-br dark:hidden",
-          theme.gradientLight,
+          theme.gradientLight
         )}
         aria-hidden
       />
       <div
         className={cn(
           "absolute inset-0 hidden bg-gradient-to-br dark:block",
-          theme.gradientDark,
+          theme.gradientDark
         )}
         aria-hidden
       />
@@ -77,13 +90,13 @@ export function FeatureCardVisual({
       {useShellVisual ? (
         <ProjectFeatureVisual slug={project.slug} size={size} />
       ) : coverUrl ? (
-        <div className="absolute inset-x-3 bottom-0 top-4 sm:inset-x-4 sm:top-5">
+        <div className="absolute inset-x-3 top-4 bottom-0 sm:inset-x-4 sm:top-5">
           <div
             className={cn(
               "feature-card-screenshot h-full w-full overflow-hidden rounded-t-xl border border-b-0 border-white/25 bg-card shadow-[0_-10px_40px_rgba(15,23,42,0.12)] dark:border-white/10",
               cardVisualSlowTransition,
               fullMotion &&
-                "will-change-transform group-hover/visual:-translate-y-1 group-hover/visual:scale-[1.008]",
+                "will-change-transform group-hover/visual:-translate-y-1 group-hover/visual:scale-[1.008]"
             )}
           >
             <img
@@ -96,16 +109,19 @@ export function FeatureCardVisual({
           </div>
         </div>
       ) : (
-        <div className="absolute inset-x-3 bottom-0 top-4 sm:inset-x-4 sm:top-5">
+        <div className="absolute inset-x-3 top-4 bottom-0 sm:inset-x-4 sm:top-5">
           <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-t-xl border border-b-0 border-white/25 bg-card/95 shadow-[0_-10px_40px_rgba(15,23,42,0.12)]">
             <div
               className={cn(
                 "flex size-20 items-center justify-center rounded-3xl border bg-background shadow-lg sm:size-24",
                 theme.borderColor,
-                theme.glowColor,
+                theme.glowColor
               )}
             >
-              <Icon className={cn("size-9 sm:size-10", theme.iconColor)} aria-hidden />
+              <Icon
+                className={cn("size-9 sm:size-10", theme.iconColor)}
+                aria-hidden
+              />
             </div>
           </div>
         </div>

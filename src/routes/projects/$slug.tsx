@@ -1,20 +1,24 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { ArrowRight } from "lucide-react"
 
+import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
-import { FeaturedProjectLayout } from "@/components/projects/featured-project-layout"
+import { KodoCaseStudyLayout } from "@/components/projects/kodo-case-study-layout"
+import { FeaturedProjectPage } from "@/components/projects/featured-project-page"
 import { SiteHeader } from "@/components/landing/site-header"
 import { ContactSection } from "@/components/landing/contact-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
-import { getProjectBySlug, getAllWorkSections } from "@/lib/sanity/projects"
+import { getAllWorkSections, getProjectBySlug } from "@/lib/sanity/projects"
+import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
 import { siteUrl } from "@/lib/site-url"
 
-import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 
 export const Route = createFileRoute("/projects/$slug")({
-  validateSearch: (search: Record<string, unknown>): { from?: CaseStudyFrom } => ({
+  validateSearch: (
+    search: Record<string, unknown>
+  ): { from?: CaseStudyFrom } => ({
     from:
       search.from === "home" ||
       search.from === "projects" ||
@@ -32,11 +36,22 @@ export const Route = createFileRoute("/projects/$slug")({
   },
   head: ({ loaderData }) => {
     const project = loaderData?.project
+    const isKodo = project?.slug === "kodo"
+    const isFeaturedProject = project?.workSection === "recentProject"
+    const projectMetaTitle = project?.seo?.metaTitle
     const title =
-      project?.seo?.metaTitle ??
-      (project ? `${project.title} — Case Study by Akshay Saini` : "Project not found")
+      (isKodo
+        ? "Kodo — Website, Corporate Cards & P2P Workspace | Akshay Saini"
+        : isFeaturedProject && (!projectMetaTitle || /case study/i.test(projectMetaTitle))
+          ? `${project.title} — Featured Project | Akshay Saini`
+          : projectMetaTitle) ??
+      (project
+        ? `${project.title} — ${project.workSection === "recentProject" ? "Featured Project" : "Case Study"} by Akshay Saini`
+        : "Project not found")
     const description =
-      project?.seo?.metaDescription ?? project?.description ?? undefined
+      (isKodo ? kodoCaseStudy.description : project?.seo?.metaDescription) ??
+      project?.description ??
+      undefined
     const slug = project?.slug ?? ""
     const canonicalUrl = siteUrl(`/projects/${slug}`)
     const imageUrl = project?.coverImageUrl
@@ -51,16 +66,20 @@ export const Route = createFileRoute("/projects/$slug")({
         ...(description ? [{ name: "description", content: description }] : []),
         {
           name: "keywords",
-          content: `${project?.title ?? ""}, case study, design engineering, product design, akshay saini, bangalore, developer tools, fintech`,
+          content: `${project?.title ?? ""}, ${project?.workSection === "recentProject" ? "featured project" : "case study"}, design engineering, product design, akshay saini, bangalore, developer tools, fintech`,
         },
         { property: "og:title", content: title },
-        ...(description ? [{ property: "og:description", content: description }] : []),
+        ...(description
+          ? [{ property: "og:description", content: description }]
+          : []),
         { property: "og:type", content: "article" },
         { property: "og:url", content: canonicalUrl },
         { property: "og:image", content: imageUrl },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
-        ...(description ? [{ name: "twitter:description", content: description }] : []),
+        ...(description
+          ? [{ name: "twitter:description", content: description }]
+          : []),
         { name: "twitter:image", content: imageUrl },
       ],
       links: [
@@ -86,7 +105,8 @@ function ProjectDetailPage() {
         <main className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-semibold">Project not found</h1>
           <p className="mt-2 text-muted-foreground">
-            This case study doesn&apos;t exist or hasn&apos;t been published yet.
+            This project doesn&apos;t exist or hasn&apos;t been published
+            yet.
           </p>
           <Button asChild variant="outline" className="mt-6">
             <Link to="/projects">Back to projects</Link>
@@ -102,9 +122,9 @@ function ProjectDetailPage() {
   // 2. caseStudies
   // 3. other
   const orderedProjects = [
-    ...(sections?.recentProjects ?? []),
-    ...(sections?.caseStudies ?? []),
-    ...(sections?.other ?? []),
+    ...sections.recentProjects,
+    ...sections.caseStudies,
+    ...sections.other,
   ]
 
   const currentIndex = orderedProjects.findIndex((p) => p.slug === project.slug)
@@ -117,8 +137,10 @@ function ProjectDetailPage() {
     <div className="min-h-svh bg-background text-foreground">
       <SiteHeader />
       <main className="border-t border-border">
-        {project.workSection === "recentProject" ? (
-          <FeaturedProjectLayout project={project} />
+        {project.slug === "kodo" ? (
+          <KodoCaseStudyLayout />
+        ) : project.workSection === "recentProject" ? (
+          <FeaturedProjectPage project={project} />
         ) : (
           <CaseStudyLayout project={project} />
         )}
@@ -131,21 +153,21 @@ function ProjectDetailPage() {
                 to="/projects/$slug"
                 params={{ slug: nextProject.slug }}
                 search={from ? { from } : undefined}
-                className="group block rounded-2xl border border-border bg-card p-6 sm:p-8 transition-all hover:border-primary/30 hover:shadow-lg"
+                className="group block rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-lg sm:p-8"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="space-y-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+                    <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase transition-colors group-hover:text-primary">
                       Next Project
                     </span>
                     <h3 className="text-2xl font-bold tracking-tight text-foreground">
                       {nextProject.title}
                     </h3>
-                    <p className="max-w-xl text-sm text-muted-foreground line-clamp-2">
+                    <p className="line-clamp-2 max-w-xl text-sm text-muted-foreground">
                       {nextProject.description}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm font-medium text-primary shrink-0 self-start sm:self-center">
+                  <div className="flex shrink-0 items-center gap-2 self-start text-sm font-medium text-primary sm:self-center">
                     <span>View project</span>
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </div>

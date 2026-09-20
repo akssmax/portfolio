@@ -7,6 +7,7 @@ type StreamDonePayload = {
   status?: ChatCompletionStatus
   finishReason?: string
   maxTokens?: number
+  engine?: "legacy" | "openui"
 }
 
 export type StreamChatResult = {
@@ -14,6 +15,7 @@ export type StreamChatResult = {
   emittedTokens: number
   finishReason?: string
   maxTokens?: number
+  engine?: "legacy" | "openui"
 }
 
 export interface StreamChatOptions extends LlmChatRequest {
@@ -288,6 +290,7 @@ async function requestChat(
     emittedTokens: tokenCount,
     finishReason: donePayload?.finishReason,
     maxTokens: donePayload?.maxTokens,
+    engine: donePayload?.engine,
   }
 }
 

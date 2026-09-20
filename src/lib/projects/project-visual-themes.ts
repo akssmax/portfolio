@@ -1,5 +1,5 @@
-import type { LucideIcon } from "lucide-react"
 import { Cpu, FileUser, IndianRupee, Layout, Palette, Sparkles, Terminal } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 
 import type {
   MonogramPatternTone,
@@ -8,9 +8,12 @@ import type {
 
 export type ProjectVisualTheme = {
   Icon: LucideIcon
+  iconSrc?: string
+  iconInverseSrc?: string
   gradientLight: string
   gradientDark: string
   iconColor: string
+  iconHoverBackground: string
   borderColor: string
   glowColor: string
   patternVariant: MonogramPatternVariant
@@ -24,6 +27,7 @@ const DEFAULT_THEME: ProjectVisualTheme = {
   gradientDark:
     "from-primary/25 via-primary/10 to-background",
   iconColor: "text-primary",
+  iconHoverBackground: "#0b7657",
   borderColor: "border-primary/20",
   glowColor: "shadow-primary/10 dark:shadow-primary/5",
   patternVariant: "dots",
@@ -31,6 +35,32 @@ const DEFAULT_THEME: ProjectVisualTheme = {
 }
 
 export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
+  "ion-workspace": {
+    Icon: Sparkles,
+    iconSrc: "/projects/ion/mark.svg",
+    iconInverseSrc: "/projects/ion/mark-inverse.svg",
+    gradientLight: "from-[#e9edda]/70 via-[#f5f7e9]/45 to-[#fafbf4]/55",
+    gradientDark: "from-[#222717]/65 via-[#768d2b]/20 to-[#10120d]/60",
+    iconColor: "text-[#111111]",
+    iconHoverBackground: "#111111",
+    borderColor: "border-[#111111]/15",
+    glowColor: "shadow-[#111111]/10 dark:shadow-[#d6ff3d]/10",
+    patternVariant: "grid",
+    patternTone: "muted",
+  },
+  "indus-best-mega-food-park": {
+    Icon: Sparkles,
+    iconSrc: "/projects/indus/mark.svg",
+    iconInverseSrc: "/projects/indus/mark-inverse.svg",
+    gradientLight: "from-[#e6efdb]/65 via-[#d6e8d9]/40 to-[#f8f6e8]/45",
+    gradientDark: "from-[#164b35]/45 via-[#78af45]/15 to-[#102d23]/50",
+    iconColor: "text-[#164b35]",
+    iconHoverBackground: "#164b35",
+    borderColor: "border-[#164b35]/20",
+    glowColor: "shadow-[#164b35]/10 dark:shadow-[#164b35]/10",
+    patternVariant: "grid",
+    patternTone: "primary",
+  },
   postforge: {
     Icon: Palette,
     gradientLight:
@@ -38,6 +68,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#FA3D1D]/22 via-[#FD02F5]/14 to-[#340B05]/35",
     iconColor: "text-accent-foreground",
+    iconHoverBackground: "#b93623",
     borderColor: "border-accent/20",
     glowColor: "shadow-accent/10 dark:shadow-accent/5",
     patternVariant: "concentric",
@@ -50,6 +81,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#0F766E]/25 via-[#14B8A6]/12 to-[#021018]/40",
     iconColor: "text-primary",
+    iconHoverBackground: "#087b65",
     borderColor: "border-primary/20",
     glowColor: "shadow-primary/10 dark:shadow-primary/5",
     patternVariant: "grid",
@@ -62,6 +94,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#FD02F5]/20 via-[#0358F7]/15 to-[#340B05]/30",
     iconColor: "text-secondary-foreground",
+    iconHoverBackground: "#6544a7",
     borderColor: "border-secondary/20",
     glowColor: "shadow-secondary/10 dark:shadow-secondary/5",
     patternVariant: "offset",
@@ -74,6 +107,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#0358F7]/25 via-[#5092C7]/15 to-[#021018]/40",
     iconColor: "text-primary",
+    iconHoverBackground: "#315eae",
     borderColor: "border-primary/20",
     glowColor: "shadow-primary/10 dark:shadow-primary/5",
     patternVariant: "diagonal",
@@ -86,6 +120,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#0B6E4F]/20 via-[#1FD18E]/10 to-[#021018]/35",
     iconColor: "text-primary",
+    iconHoverBackground: "#087b65",
     borderColor: "border-primary/20",
     glowColor: "shadow-primary/10 dark:shadow-primary/5",
     patternVariant: "grid",
@@ -98,6 +133,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#FA3D1D]/20 via-[#FD02F5]/15 to-[#340B05]/35",
     iconColor: "text-accent-foreground",
+    iconHoverBackground: "#a43b27",
     borderColor: "border-accent/20",
     glowColor: "shadow-accent/10 dark:shadow-accent/5",
     patternVariant: "concentric",
@@ -110,6 +146,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#FD02F5]/18 via-[#0358F7]/12 to-[#340B05]/30",
     iconColor: "text-primary",
+    iconHoverBackground: "#a74c7d",
     borderColor: "border-primary/20",
     glowColor: "shadow-primary/10 dark:shadow-primary/5",
     patternVariant: "dots",
@@ -122,6 +159,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#0358F7]/20 via-[#5092C7]/12 to-[#021018]/35",
     iconColor: "text-primary",
+    iconHoverBackground: "#3974aa",
     borderColor: "border-primary/20",
     glowColor: "shadow-primary/10 dark:shadow-primary/5",
     patternVariant: "offset",
@@ -134,6 +172,7 @@ export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
     gradientDark:
       "from-[#FA3D1D]/18 via-[#FD02F5]/12 to-[#340B05]/30",
     iconColor: "text-accent-foreground",
+    iconHoverBackground: "#a43b27",
     borderColor: "border-accent/20",
     glowColor: "shadow-accent/10 dark:shadow-accent/5",
     patternVariant: "grid",

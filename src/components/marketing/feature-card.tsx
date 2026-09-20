@@ -1,24 +1,14 @@
-import * as React from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link } from "@tanstack/react-router"
-import { ArrowUpRight, History, Sparkles } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
+import { motion } from "motion/react"
 
-import { Tag } from "@/components/ui/tag"
 import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
-import { getBuildBadgeLabel } from "@/lib/projects/build-badge"
-import type { BentoSize } from "@/lib/projects/bento-placements"
-import type { BuildBadge } from "@/lib/sanity/types"
-import {
-  cardActionTransition,
-  cardHoverTransition,
-  cardTitleTransition,
-} from "@/lib/motion-easing"
+import { ProjectCardWaveBackground } from "@/components/marketing/project-card-wave-background"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { getProjectVisualTheme } from "@/lib/projects/project-visual-themes"
+import { useCanAnimate } from "@/hooks/use-can-animate"
 import { cn } from "@/lib/utils"
-
-const titleSize: Record<BentoSize, string> = {
-  compact: "text-base sm:text-lg",
-  default: "text-lg sm:text-xl",
-  wide: "text-xl sm:text-2xl lg:text-3xl",
-}
 
 export type FeatureCardPrimaryLink = "live" | "case-study"
 
@@ -27,29 +17,11 @@ type FeatureCardProps = {
   description?: string
   slug: string
   externalHref?: string
-  tag?: string
-  buildBadge?: BuildBadge | null
-  metrics?: string | null
-  size?: BentoSize
-  visual: React.ReactNode
+  previewSrc?: string | null
+  previewAlt?: string
   className?: string
   linkFrom?: CaseStudyFrom
-  /** When "case-study", the card opens the project page; live URL stays on the arrow action. */
   primaryLink?: FeatureCardPrimaryLink
-}
-
-function BuildBadgeTag({ badge }: { badge: BuildBadge }) {
-  const label = getBuildBadgeLabel(badge)
-  if (!label) return null
-
-  const Icon = badge === "built-with-ai" ? Sparkles : History
-
-  return (
-    <Tag variant="outline" className="gap-1 text-[10px] py-0.5 px-2 font-medium">
-      <Icon className="size-3 text-primary/80" aria-hidden />
-      {label}
-    </Tag>
-  )
 }
 
 export function FeatureCard({
@@ -57,218 +29,112 @@ export function FeatureCard({
   description,
   slug,
   externalHref,
-  tag,
-  buildBadge,
-  metrics,
-  size = "default",
-  visual,
+  previewSrc,
+  previewAlt,
   className,
   linkFrom,
   primaryLink = "live",
 }: FeatureCardProps) {
-  const isCompact = size === "compact"
-  const hasExternalLiveUrl = Boolean(externalHref?.startsWith("http"))
-  const useExternalPrimary = hasExternalLiveUrl && primaryLink === "live"
-  const projectSearch = linkFrom ? { from: linkFrom } : undefined
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const reduceMotion = !useCanAnimate()
+  const active = hovered || focused
 
-  const caseStudyLinkProps = {
-    to: "/projects/$slug" as const,
-    params: { slug },
-    search: projectSearch,
+  useEffect(() => () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+  }, [])
+
+  const openPreview = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = null
+    setHovered(true)
   }
 
-  const hoverActionClassName = cn(
-    "translate-y-0.5 opacity-0 pointer-events-none",
-    "group-hover/card:translate-y-0 group-hover/card:opacity-100 group-hover/card:pointer-events-auto",
-    cardActionTransition,
-  )
+  const closePreview = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => {
+      setHovered(false)
+      closeTimer.current = null
+    }, 150)
+  }
 
-  const titleElement = (
-    <h3
-      className={cn(
-        "font-semibold tracking-tight text-foreground group-hover/card:text-primary",
-        cardTitleTransition,
-        titleSize[size],
-      )}
-    >
-      {title}
-    </h3>
+  const theme = getProjectVisualTheme(slug)
+  const Icon = theme.Icon
+  const liveHref = externalHref?.startsWith("http") ? externalHref : undefined
+  const opensLive = primaryLink === "live" && Boolean(liveHref)
+  const caseStudyProps = {
+    to: "/projects/$slug" as const,
+    params: { slug },
+    search: linkFrom ? { from: linkFrom } : undefined,
+  }
+  const mainContent = (
+    <>
+      <motion.span
+        className={cn("relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border bg-background/85 shadow-sm backdrop-blur-xs sm:size-18", theme.borderColor, theme.glowColor)}
+        animate={{ scale: active && !reduceMotion ? 1.06 : 1, y: active && !reduceMotion ? -2 : 0 }}
+        transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 22 }}
+      >
+        <motion.span
+          className="absolute inset-0"
+          animate={{ backgroundColor: active ? theme.iconHoverBackground : "rgba(0, 0, 0, 0)" }}
+          transition={{ duration: reduceMotion ? 0 : 0.22 }}
+        />
+        <motion.span className="relative" animate={{ opacity: active ? 0 : 1 }} transition={{ duration: reduceMotion ? 0 : 0.14 }}>
+          {theme.iconSrc ? (
+            <img src={theme.iconSrc} alt="" className="size-10 sm:size-11" aria-hidden />
+          ) : (
+            <Icon className={cn("size-9 sm:size-10", theme.iconColor)} aria-hidden />
+          )}
+        </motion.span>
+        <motion.span className="absolute" animate={{ opacity: active ? 1 : 0, scale: active && !reduceMotion ? 1 : 0.88 }} transition={{ duration: reduceMotion ? 0 : 0.2 }}>
+          {theme.iconInverseSrc ? (
+            <img src={theme.iconInverseSrc} alt="" className="size-10 sm:size-11" aria-hidden />
+          ) : (
+            <Icon className="size-9 text-white sm:size-10" aria-hidden />
+          )}
+        </motion.span>
+      </motion.span>
+      <span className="min-w-0 flex-1">
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="text-base font-semibold tracking-tight text-foreground transition-colors group-hover/card:text-primary sm:text-lg">{title}</span>
+        </span>
+        {description ? <span className="mt-1 block line-clamp-2 text-sm leading-snug text-muted-foreground">{description}</span> : null}
+      </span>
+      <HoverCardTrigger asChild>
+        <span className="shrink-0">
+          <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover/card:text-primary" aria-hidden />
+        </span>
+      </HoverCardTrigger>
+    </>
   )
 
   return (
-    <article
-      className={cn(
-        "feature-card group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/50 shadow-xs",
-        "hover:-translate-y-0.5 hover:border-border hover:shadow-lg",
-        cardHoverTransition,
-        "cursor-pointer",
-        className,
-      )}
-    >
-      {!useExternalPrimary ? (
-        <Link
-          {...caseStudyLinkProps}
-          className="absolute inset-0 z-[1] rounded-2xl"
-          aria-label={`View ${title} case study`}
-        />
-      ) : (
-        <a
-          href={externalHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 z-[1] rounded-2xl md:hidden"
-          aria-label={`Open ${title} live`}
-        />
-      )}
-
-      <div
-        className={cn(
-          "relative flex flex-1 flex-col",
-          !useExternalPrimary && "pointer-events-none",
-          useExternalPrimary && "max-md:pointer-events-none",
-          isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6",
-        )}
+    <HoverCard open={active}>
+      <motion.article
+        className={cn("group/card relative isolate overflow-hidden rounded-2xl bg-card shadow-sm transition-shadow hover:shadow-md focus-within:shadow-md", className)}
+        onHoverStart={openPreview}
+        onHoverEnd={closePreview}
+        onFocusCapture={() => setFocused(true)}
+        onBlurCapture={() => setFocused(false)}
       >
-        <div className={cn("flex items-start justify-between gap-3", isCompact ? "mb-3" : "mb-4")}>
-          {useExternalPrimary ? (
-            <>
-              <div className="min-w-0 flex-1 text-left md:hidden">{titleElement}</div>
-              <a
-                href={externalHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-[2] hidden min-w-0 flex-1 text-left md:block"
-              >
-                {titleElement}
-              </a>
-            </>
-          ) : (
-            <div className="min-w-0 flex-1 text-left">{titleElement}</div>
-          )}
-
-          <div
-            className={cn(
-              "relative z-[2] flex shrink-0 items-center gap-1.5",
-              !useExternalPrimary && "pointer-events-auto",
-              (useExternalPrimary || hasExternalLiveUrl) && hoverActionClassName,
-            )}
-          >
-            {useExternalPrimary ? (
-              <>
-                <Link
-                  {...caseStudyLinkProps}
-                  className={cn(
-                    "inline-flex items-center rounded-full border border-border/60 bg-background/80 px-2.5 py-1 text-xs font-medium text-muted-foreground",
-                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                  )}
-                >
-                  View details
-                </Link>
-                <a
-                  href={externalHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "inline-flex size-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground",
-                    "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                  )}
-                  aria-label={`Open ${title} live`}
-                >
-                  <ArrowUpRight className="size-4" aria-hidden />
-                </a>
-              </>
-            ) : hasExternalLiveUrl ? (
-              <a
-                href={externalHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "inline-flex size-8 items-center justify-center rounded-full border border-border/60 bg-background/80 text-muted-foreground",
-                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                )}
-                aria-label={`Open ${title} live`}
-              >
-                <ArrowUpRight className="size-4" aria-hidden />
-              </a>
-            ) : externalHref ? (
-              <Link
-                to={externalHref}
-                className={cn(
-                  "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
-                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                  hoverActionClassName,
-                )}
-                aria-label={`Open ${title}`}
-              >
-                <ArrowUpRight className="size-4" />
-              </Link>
-            ) : (
-              <Link
-                {...caseStudyLinkProps}
-                className={cn(
-                  "inline-flex size-8 items-center justify-center rounded-lg border border-border/60 bg-background/80 text-muted-foreground",
-                  "hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
-                  hoverActionClassName,
-                )}
-                aria-label={`View ${title} case study`}
-              >
-                <ArrowUpRight className="size-4" />
-              </Link>
-            )}
-          </div>
-        </div>
-
-        {useExternalPrimary ? (
-          <>
-            <div className="block flex-1 min-h-0 md:hidden">{visual}</div>
-            <a
-              href={externalHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative z-[2] hidden flex-1 min-h-0 md:block"
-            >
-              {visual}
-            </a>
-          </>
+        <ProjectCardWaveBackground slug={slug} />
+        {opensLive ? (
+          <a href={liveHref} target="_blank" rel="noopener noreferrer" className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`Open ${title} live`}>
+            {mainContent}
+          </a>
         ) : (
-          <div className="block flex-1 min-h-0">{visual}</div>
+          <Link {...caseStudyProps} className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`View ${title} case study`}>
+            {mainContent}
+          </Link>
         )}
-
-        {!isCompact ? (
-          <>
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              {tag ? (
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  {tag}
-                </span>
-              ) : null}
-              {buildBadge ? <BuildBadgeTag badge={buildBadge} /> : null}
-            </div>
-
-            {description ? (
-              <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
-                {description}
-              </p>
-            ) : null}
-
-            {metrics ? (
-              <div className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-primary bg-primary/5 dark:bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md w-fit">
-                <Sparkles className="size-3" aria-hidden />
-                <span>{metrics}</span>
-              </div>
-            ) : null}
-          </>
-        ) : (
-          <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            {tag ? (
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {tag}
-              </span>
-            ) : null}
-            {buildBadge ? <BuildBadgeTag badge={buildBadge} /> : null}
-          </div>
-        )}
-      </div>
-    </article>
+      </motion.article>
+      {previewSrc ? (
+        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} onPointerEnter={openPreview} onPointerLeave={closePreview} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
+          <img src={previewSrc} alt={previewAlt ?? `${title} project screenshot`} loading="lazy" className="aspect-[16/10] w-full rounded-lg bg-muted object-cover object-top" />
+          <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{title} · project preview</p>
+        </HoverCardContent>
+      ) : null}
+    </HoverCard>
   )
 }

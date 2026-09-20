@@ -105,6 +105,10 @@ function useChatPromptInput({
 }: ChatPromptInputProps) {
   const [internalMode, setInternalMode] = React.useState<"gen-ui" | "chat">("chat")
   const mode = controlledMode ?? internalMode
+  const modeRef = React.useRef(mode)
+  React.useEffect(() => {
+    modeRef.current = mode
+  }, [mode])
 
   const cyclingPlaceholders = React.useMemo(() => {
     if (placeholders && placeholders.length > 1) return placeholders
@@ -129,6 +133,7 @@ function useChatPromptInput({
   const setMode = React.useCallback(
     (newMode: "gen-ui" | "chat") => {
       if (isModeDisabled) return
+      modeRef.current = newMode
       if (controlledMode !== undefined) {
         onModeChange?.(newMode)
       } else {
@@ -275,10 +280,10 @@ function useChatPromptInput({
         : `Attached Context:\n${contextStr}`
     }
 
-    onSubmit(submissionText, mode)
+    onSubmit(submissionText, modeRef.current)
     setAttachedProjects([])
     stopVoice()
-  }, [attachedProjects, disabled, loading, mode, onSubmit, stopVoice, value])
+  }, [attachedProjects, disabled, loading, onSubmit, stopVoice, value])
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

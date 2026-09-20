@@ -16,13 +16,13 @@ export type VisualCaseStudyConfig = {
   heroImageSrc?: string
   heroImageAlt?: string
   heroImageHref?: string
-  stack: string[]
-  highlights: string[]
-  designNotes: string[]
+  stack: Array<string>
+  highlights: Array<string>
+  designNotes: Array<string>
   builtSummary: string
   footerNote: string
   stats: Array<{ value: string; label: string }>
-  galleries: VisualCaseStudyGallery[]
+  galleries: Array<VisualCaseStudyGallery>
 }
 
 export type VisualCaseStudyLayoutProps = VisualCaseStudyConfig & {
@@ -30,6 +30,101 @@ export type VisualCaseStudyLayoutProps = VisualCaseStudyConfig & {
 }
 
 const DESIGN_WITH_AI_APP = "https://llm-daisyui-shell.vercel.app"
+
+const ION: VisualCaseStudyConfig = {
+  liveUrl: "https://ion-workspace.vercel.app/",
+  ctaLabel: "Explore Ion",
+  secondaryUrl: "https://ion-workspace.vercel.app/demo",
+  secondaryLabel: "Try the sample demo",
+  heroImageSrc: "/projects/ion/mail.webp",
+  heroImageAlt: "Ion demo workspace with mail folders, inbox, and an open conversation",
+  stack: ["TanStack Start", "React", "TypeScript", "JMAP", "Tailwind CSS"],
+  stats: [
+    { value: "4", label: "Connected workspaces" },
+    { value: "1", label: "Public sample-data demo" },
+    { value: "2026", label: "Ongoing build" },
+  ],
+  builtSummary:
+    "An ongoing business workspace that keeps email, calendars, contacts, and files together in one application shell. The public demo uses sample data; the managed service is in private pilot.",
+  footerNote:
+    "Ion is an ongoing product project. The deployed demo is interactive but uses sample data and does not deliver messages.",
+  highlights: [
+    "One connected navigation system across mail, calendar, contacts, and files",
+    "Mail conversations, folders, labels, search, and keyboard shortcuts",
+    "Calendar views, event creation, and file browsing alongside the inbox",
+    "A public product site and no-account demo for exploring the current experience",
+  ],
+  designNotes: [
+    "Keep familiar business tools within reach without making the interface feel crowded.",
+    "Use one consistent application shell so switching surfaces retains context.",
+    "Make the demo transparent about sample data while the managed pilot is still taking shape.",
+  ],
+  galleries: [
+    {
+      title: "A connected working day",
+      description: "The deployed sample-data demo shows how Ion moves between everyday tools.",
+      layout: "row",
+      images: [
+        { src: "/projects/ion/calendar.webp", alt: "Ion monthly calendar in the demo workspace", label: "Calendar", href: "https://ion-workspace.vercel.app/demo?surface=calendar" },
+        { src: "/projects/ion/files.webp", alt: "Ion files and folders in the demo workspace", label: "Files", href: "https://ion-workspace.vercel.app/demo?surface=files" },
+      ],
+    },
+  ],
+}
+
+const INDUS: VisualCaseStudyConfig = {
+  liveUrl: "https://indus-best-mega-food.vercel.app/",
+  ctaLabel: "Explore the website",
+  heroImageSrc: "/projects/indus/hero.webp",
+  heroImageAlt: "Indus Best Mega Food Park website homepage with campus imagery and a facilities overview",
+  stack: ["TanStack Start", "React", "TypeScript", "Tailwind CSS", "Drizzle", "Postgres"],
+  stats: [
+    { value: "1", label: "Public website" },
+    { value: "1", label: "Private content workspace" },
+    { value: "4", label: "Enquiry paths" },
+  ],
+  builtSummary:
+    "A custom website and private workspace that help visitors understand the campus and help the client team manage content and enquiries.",
+  footerNote:
+    "A freelance design and engineering project for a working food-processing campus near Raipur.",
+  highlights: [
+    "Audience paths for manufacturers, growing businesses, investors, and partners",
+    "Dedicated pages for facilities, products, investor information, gallery, and virtual tour",
+    "Enquiry forms for plots, MSME sheds, shared capacity, and partnerships",
+    "Private workspace for site content, blog posts, and enquiry management",
+  ],
+  designNotes: [
+    "Use campus photography and a forest-and-cream palette to make the physical place tangible.",
+    "Group facilities by the decisions prospective tenants make, then keep an enquiry action nearby.",
+    "Connect the public site to a structured content model so the client team can maintain it.",
+  ],
+  galleries: [
+    {
+      title: "The campus story",
+      description: "Photography and facility details make the scale of the park easier to understand.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/indus/why.webp",
+          alt: "Indus Best website showing campus photography, processing facilities, and collection infrastructure",
+          label: "Campus and shared facilities",
+        },
+      ],
+    },
+    {
+      title: "From farm to market",
+      description: "The ecosystem section connects sourcing, processing, manufacturing, and dispatch.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/indus/ecosystem.webp",
+          alt: "Indus Best website showing the farm-to-market ecosystem section",
+          label: "Ecosystem overview",
+        },
+      ],
+    },
+  ],
+}
 
 const DESIGN_WITH_AI: VisualCaseStudyConfig = {
   liveUrl: `${DESIGN_WITH_AI_APP}/`,
@@ -561,6 +656,8 @@ const RESUME_BUILDER: VisualCaseStudyConfig = {
 }
 
 const VISUAL_CASE_STUDY_CONFIGS: Record<string, VisualCaseStudyConfig> = {
+  "ion-workspace": ION,
+  "indus-best-mega-food-park": INDUS,
   postforge: POSTFORGE,
   rupeelens: RUPEELENS,
   "100x-chat-shell": DESIGN_WITH_AI,

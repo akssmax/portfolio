@@ -139,6 +139,19 @@
   }
 }
 
+html[data-site-reduced-motion="true"] *,
+html[data-site-reduced-motion="true"] *::before,
+html[data-site-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+
+html[data-site-reduced-motion="true"] .feature-card:hover {
+  transform: none;
+}
+
 /* Chat inputs use a proportional UI font so caret + placeholder align reliably. */
 .font-input-ui {
   font-family: "Geist Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;

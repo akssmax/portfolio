@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { FeatureCard } from "@/components/marketing/feature-card"
 import { FeatureCardGrid } from "@/components/marketing/feature-card-grid"
-import { FeatureCardVisual } from "@/components/marketing/feature-card-visual"
+import { getProjectPreview } from "@/lib/projects/project-preview"
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
 import { CtaSection, type CtaSectionVariant, type CtaSectionPosition } from "@/components/landing/contact-section"
 import { HeroSection } from "@/components/landing/hero-section"
@@ -60,10 +60,8 @@ export function FeatureCardDemo() {
         title={project.title}
         description={project.description}
         slug={project.slug}
-        tag={project.tag}
-        buildBadge={project.buildBadge}
-        metrics={project.metrics}
-        visual={<FeatureCardVisual project={project} />}
+        previewSrc={getProjectPreview(project).src}
+        previewAlt={getProjectPreview(project).alt}
       />
     </div>
   )

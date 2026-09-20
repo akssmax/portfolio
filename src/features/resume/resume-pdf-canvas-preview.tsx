@@ -74,7 +74,7 @@ export function ResumePdfCanvasPreview({
     setError(null)
     setIsRendering(true)
 
-    async function renderPdf() {
+    async function renderPdf(target: HTMLDivElement) {
       try {
         await waitForLayout()
         if (cancelled) return
@@ -91,7 +91,7 @@ export function ResumePdfCanvasPreview({
         if (cancelled) return
 
         const pixelRatio = window.devicePixelRatio || 1
-        const containerWidth = measureContainerWidth(containerEl)
+        const containerWidth = measureContainerWidth(target)
 
         for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
           if (cancelled) return
@@ -137,13 +137,13 @@ export function ResumePdfCanvasPreview({
               "rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground shadow-sm"
             breakLabel.textContent = "Page break"
             breakShell.appendChild(breakLabel)
-            containerEl.appendChild(pageShell)
-            containerEl.appendChild(breakShell)
+            target.appendChild(pageShell)
+            target.appendChild(breakShell)
           } else {
             if (pageNumber < pdf.numPages) {
               pageShell.style.marginBottom = "24px"
             }
-            containerEl.appendChild(pageShell)
+            target.appendChild(pageShell)
           }
         }
 
@@ -160,7 +160,7 @@ export function ResumePdfCanvasPreview({
       }
     }
 
-    void renderPdf()
+    void renderPdf(containerEl)
 
     return () => {
       cancelled = true

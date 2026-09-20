@@ -3,11 +3,14 @@
 import { useState } from "react"
 
 import { FooterMonogram } from "@/components/brand/footer-monogram"
+import { Switch } from "@/components/ui/switch"
+import { setSiteReducedMotion, useReducedMotionSettings } from "@/hooks/use-can-animate"
 import { profile } from "@/lib/profile"
 import { cn } from "@/lib/utils"
 
 export function FooterRunnerSection() {
   const [runnerActive, setRunnerActive] = useState(false)
+  const { siteReducedMotion, systemReducedMotion } = useReducedMotionSettings()
 
   return (
     <>
@@ -29,6 +32,22 @@ export function FooterRunnerSection() {
             <p>{profile.location}</p>
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-4 border-t border-border/60 py-4 text-sm">
+        <div>
+          <label htmlFor="footer-reduced-motion" className="font-medium text-foreground">Reduce motion</label>
+          <p className="text-xs text-muted-foreground">
+            {systemReducedMotion ? "Enabled by your device settings" : "Pause decorative animations"}
+          </p>
+        </div>
+        <Switch
+          id="footer-reduced-motion"
+          checked={siteReducedMotion || systemReducedMotion}
+          disabled={systemReducedMotion}
+          onCheckedChange={setSiteReducedMotion}
+          aria-label="Reduce motion"
+        />
       </div>
 
       <FooterMonogram

@@ -39,6 +39,8 @@ const DEFAULT_OPENROUTER_CHAT_FALLBACKS = [
 const DEFAULT_MISTRAL_CHAT_MODEL = "ministral-8b-latest"
 const DEFAULT_MISTRAL_EMBED_MODEL = "mistral-embed"
 
+export type GenUiEngine = "legacy" | "openui"
+
 const OPENROUTER_MODEL_PATTERN = /^[\w.-]+\/[\w.-]+(:free)?$/
 
 export const MISTRAL_MODELS = [
@@ -127,6 +129,17 @@ export function getDefaultChatModel(config?: ResolvedLlmConfig): string {
 export function getDefaultEmbedModel(config?: ResolvedLlmConfig): string {
   const resolved = config ?? resolveLlmConfig()
   return resolved.embedModel
+}
+
+export function getGenUiEngine(): GenUiEngine {
+  return process.env.GENUI_ENGINE?.trim().toLowerCase() === "openui" ? "openui" : "legacy"
+}
+
+export function getGenUiModel(config?: ResolvedLlmConfig): string {
+  const resolved = config ?? resolveLlmConfig()
+  const override = process.env.MISTRAL_GENUI_MODEL?.trim()
+  if (override) return override
+  return resolved.chatModel
 }
 
 export function getOpenRouterChatFallbackModels(primaryModel: string): string[] {

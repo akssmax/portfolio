@@ -20,17 +20,6 @@ export type GithubContributionsPayload = {
   fetchedAt: string
 }
 
-type UpstreamContribution = {
-  date: string
-  count: number
-  level: number
-}
-
-type UpstreamResponse = {
-  total: { lastYear?: number } & Record<string, number>
-  contributions: UpstreamContribution[]
-}
-
 const MONTH_NAMES = [
   "January",
   "February",
@@ -65,6 +54,35 @@ function normalizeLevel(level: number): ContributionDay["level"] {
   if (level <= 0) return 0
   if (level >= 4) return 4
   return level as ContributionDay["level"]
+}
+
+/** GitHub's public calendar includes exact counts in the accessible cell tooltips. */
+export function parseGithubContributionCalendar(html: string): Array<ContributionDay> {
+  const days: Array<ContributionDay> = []
+  const cellPattern = /<td\b[^>]*data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="([0-4])"[^>]*><\/td>\s*<tool-tip\b[^>]*>(.*?)<\/tool-tip>/gs
+
+  for (const match of html.matchAll(cellPattern)) {
+    const [, date, rawLevel, tooltip] = match
+    const countMatch = tooltip.match(/^([\d,]+) contributions? on /)
+    const count = tooltip.startsWith("No contributions on ")
+      ? 0
+      : countMatch
+        ? Number(countMatch[1].replaceAll(",", ""))
+        : NaN
+
+    if (!date || !Number.isFinite(count)) {
+      throw new Error("GitHub contribution calendar format changed")
+    }
+
+    days.push({ date, count, level: normalizeLevel(Number(rawLevel)) })
+  }
+
+  // Do not silently show a partial or empty year if GitHub changes its markup.
+  if (days.length < 350 || new Set(days.map((day) => day.date)).size !== days.length) {
+    throw new Error("GitHub contribution calendar is incomplete")
+  }
+
+  return days.sort((a, b) => a.date.localeCompare(b.date))
 }
 
 export function computeContributionStats(
@@ -148,9 +166,9 @@ export async function fetchGithubContributions(
   username: string,
 ): Promise<GithubContributionsPayload> {
   const response = await fetch(
-    `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`,
+    `https://github.com/users/${encodeURIComponent(username)}/contributions`,
     {
-      headers: { Accept: "application/json" },
+      headers: { Accept: "text/html" },
     },
   )
 
@@ -158,19 +176,8 @@ export async function fetchGithubContributions(
     throw new Error(`GitHub contributions upstream failed (${response.status})`)
   }
 
-  const payload = (await response.json()) as UpstreamResponse
-  const contributions: ContributionDay[] = (payload.contributions ?? []).map(
-    (day) => ({
-      date: day.date,
-      count: day.count,
-      level: normalizeLevel(day.level),
-    }),
-  )
-
-  const total =
-    typeof payload.total?.lastYear === "number"
-      ? payload.total.lastYear
-      : contributions.reduce((sum, day) => sum + day.count, 0)
+  const contributions = parseGithubContributionCalendar(await response.text())
+  const total = contributions.reduce((sum, day) => sum + day.count, 0)
 
   return {
     username,

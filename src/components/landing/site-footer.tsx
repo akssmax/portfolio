@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand/logo"
 import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { useInView } from "@/hooks/use-in-view"
 import { profile } from "@/lib/profile"
 
 const siteLinks = [
@@ -28,16 +29,17 @@ export interface SiteFooterProps {
 
 export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
   const { footerGradient } = useAppearance()
-  const { fullMotion } = useAnimationProfile()
+  const { canAnimate, fullMotion } = useAnimationProfile()
+  const { ref: footerRef, inView: footerInView } = useInView({ rootMargin: "300px" })
 
   return (
-    <footer className={`relative overflow-hidden bg-background ${hasTopBorder ? "border-t border-border" : ""}`}>
+    <footer ref={footerRef} className={`relative overflow-hidden bg-background ${hasTopBorder ? "border-t border-border" : ""}`}>
       {/* Glowing Gradient Background */}
-      {footerGradient !== "none" && (
+      {footerGradient !== "none" && footerInView && (
         <div className="absolute inset-x-0 bottom-0 h-[400px] pointer-events-none -z-10 overflow-hidden opacity-50 dark:opacity-75">
           <FooterGradients
             activeVariant={footerGradient}
-            reveal={fullMotion ? "scroll" : "mount"}
+            reveal={canAnimate ? (fullMotion ? "scroll" : "mount") : "none"}
             blur={fullMotion ? 15 : 8}
             bars={fullMotion ? 9 : 7}
           />

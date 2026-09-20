@@ -16,17 +16,23 @@ import {
   formatChatError,
   hasAssistantPayload,
 } from "@/lib/llm/chat-errors"
+import { hasLegacyGenUiToolCalls, resolveGenUiEngine } from "@/lib/openui/gen-ui-engine"
 import { streamChat } from "@/lib/llm/llm-service"
 import { mergeToolCallDeltas } from "@/lib/llm/tool-call-utils"
 import { toast } from "sonner"
 import { M3AnimatingAvatar } from "@/components/m3-shapes/m3-animating-avatar"
 import { ChainOfThought } from "@/components/ai-elements/chain-of-thought"
 
+const OpenUiRenderer = React.lazy(() =>
+  import("@/components/ui/openui-renderer").then((mod) => ({ default: mod.OpenUiRenderer })),
+)
+
 type ThreadMessage = {
   id: string
   role: "user" | "assistant" | "system"
   content: string
   mode?: "gen-ui" | "chat"
+  genUiEngine?: "legacy" | "openui"
   toolCalls?: Array<{
     name: string
     arguments: string
@@ -297,13 +303,14 @@ function ChatThreadPage() {
             )
           )
         },
-        onComplete: () => {
+        onComplete: (result) => {
           setStatus("ready")
           setMessages((prev) => {
             const final = prev.map((m) => {
               if (m.id !== assistantId) return m
               const toolCalls =
                 accumulatedToolCalls.length > 0 ? accumulatedToolCalls : m.toolCalls
+              const genUiEngine = result.engine ?? m.genUiEngine
               const payload = {
                 content: buffer,
                 toolCalls,
@@ -314,6 +321,7 @@ function ChatThreadPage() {
                   searching: false,
                   content: "",
                   toolCalls,
+                  genUiEngine,
                   error: EMPTY_RESPONSE_ERROR,
                 }
               }
@@ -322,6 +330,7 @@ function ChatThreadPage() {
                 searching: false,
                 content: buffer,
                 toolCalls,
+                genUiEngine,
                 suggestions: finalSuggestions,
               }
             })
@@ -362,6 +371,18 @@ function ChatThreadPage() {
     }
   }, [messages, handleSendMessage])
 
+  React.useEffect(() => {
+    const onFollowUp = (event: Event) => {
+      const detail = (event as CustomEvent<{ message?: string }>).detail
+      const message = detail?.message?.trim()
+      if (!message || status === "streaming") return
+      void handleSendMessage(message, mode)
+    }
+
+    window.addEventListener("portfolio-chat-follow-up", onFollowUp)
+    return () => window.removeEventListener("portfolio-chat-follow-up", onFollowUp)
+  }, [handleSendMessage, mode, status])
+
   return (
     <div className="flex-1 flex flex-col w-full min-h-0 bg-transparent">
       {/* Messages Scroll Area using Conversation and StickToBottom */}
@@ -370,6 +391,9 @@ function ChatThreadPage() {
           <ConversationContent className="mx-auto w-full max-w-3xl space-y-8 min-w-0 pb-8">
             {messages.map((message, msgIdx) => {
               const isUser = message.role === "user"
+              const genUiEngine = resolveGenUiEngine(message)
+              const isOpenUiMessage = genUiEngine === "openui"
+              const isLegacyGenUiMessage = genUiEngine === "legacy"
               return (
                 <div key={message.id} className="w-full flex flex-col">
                   <Message from={message.role} className="w-full">
@@ -416,24 +440,43 @@ function ChatThreadPage() {
                             status === "streaming" &&
                             msgIdx === messages.length - 1 &&
                             !message.error &&
-                            !(message.toolCalls?.some(
-                              (tc) => tc.name && (tc.arguments?.trim().length ?? 0) > 2,
-                            )) && (
+                            ((isOpenUiMessage && !message.content?.trim()) ||
+                              (isLegacyGenUiMessage &&
+                                !hasLegacyGenUiToolCalls(message.toolCalls)) ||
+                              (genUiEngine === null &&
+                                !message.content?.trim() &&
+                                !hasLegacyGenUiToolCalls(message.toolCalls))) && (
                             <p className="text-sm text-muted-foreground animate-pulse">
                               Generating interface…
                             </p>
                           )}
 
-                          {message.content && (
+                          {message.content && !isOpenUiMessage && (
                             <MessageContent className="prose dark:prose-invert max-w-none">
                               <MessageResponse>{message.content}</MessageResponse>
                             </MessageContent>
                           )}
 
-                          {/* Sources are now rendered as a floating popover overlay relative to the feedback bar below */}
+                          {isOpenUiMessage && message.content && (
+                            <React.Suspense
+                              fallback={
+                                <p className="text-sm text-muted-foreground animate-pulse">
+                                  Loading interface…
+                                </p>
+                              }
+                            >
+                              <OpenUiRenderer
+                                response={message.content}
+                                isStreaming={
+                                  status === "streaming" && msgIdx === messages.length - 1
+                                }
+                              />
+                            </React.Suspense>
+                          )}
 
-                          {/* Render custom Gen UI components if tools completed */}
-                          {message.toolCalls && message.toolCalls.length > 0 && (
+                          {isLegacyGenUiMessage &&
+                            message.toolCalls &&
+                            message.toolCalls.length > 0 && (
                             <div className="space-y-3 pt-2">
                               {message.toolCalls
                                 .filter((tc) => Boolean(tc.name))
@@ -449,7 +492,7 @@ function ChatThreadPage() {
                           )}
 
                           {/* Feedback Bar & Copy action with absolute-positioned sources popup overlay */}
-                          {message.content && (
+                          {message.content && !isOpenUiMessage && (
                             <div className="pt-2 relative">
                               <MessageFeedbackBar
                                 text={message.content}
@@ -521,7 +564,7 @@ function ChatThreadPage() {
             <ChatPromptInput
               value={input}
               onValueChange={setInput}
-              onSubmit={(text) => handleSendMessage(text, mode)}
+              onSubmit={(text, selectedMode) => handleSendMessage(text, selectedMode)}
               mode={mode}
               onModeChange={setMode}
               isModeDisabled={status === "streaming"}
@@ -535,7 +578,7 @@ function ChatThreadPage() {
             <ChatPromptInput
               value={input}
               onValueChange={setInput}
-              onSubmit={(text) => handleSendMessage(text, mode)}
+              onSubmit={(text, selectedMode) => handleSendMessage(text, selectedMode)}
               mode={mode}
               onModeChange={setMode}
               isModeDisabled={status === "streaming"}

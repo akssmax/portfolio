@@ -195,12 +195,12 @@ export const customEntries: Array<DocEntry> = [
   ),
   entry(
     "feature-card",
-    "Stripe-inspired showcase card with gradient visual, expand link, and hover animations.",
+    "Minimal horizontal project card with an animated wave background and screenshot preview on hover or focus.",
     "custom"
   ),
   entry(
     "feature-card-grid",
-    "Bento grid layout for feature cards with staggered scroll reveal.",
+    "Stacked recent-project cards and visual bento case-study cards.",
     "custom"
   ),
   entry(

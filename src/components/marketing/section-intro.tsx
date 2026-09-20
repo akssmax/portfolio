@@ -19,7 +19,7 @@ export function SectionIntro({
 }: SectionIntroProps) {
   return (
     <div className={cn("max-w-2xl space-y-4", className)}>
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-transparent px-3 py-1 text-xs font-semibold text-primary">
         {EyebrowIcon ? <EyebrowIcon className="size-3" aria-hidden /> : null}
         {eyebrow}
       </span>

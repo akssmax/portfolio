@@ -1,12 +1,13 @@
-import { ProjectGrid } from "@/components/projects/project-grid"
 import type { ProjectCard } from "@/lib/sanity/types"
+import { ProjectGrid } from "@/components/projects/project-grid"
 
 type WorkProjectGroupProps = {
   id?: string
   title: string
   description: string
-  projects: ProjectCard[]
+  projects: Array<ProjectCard>
   animated?: boolean
+  layout?: "compact" | "case-study"
 }
 
 export function WorkProjectGroup({
@@ -15,6 +16,7 @@ export function WorkProjectGroup({
   description,
   projects,
   animated = true,
+  layout = "compact",
 }: WorkProjectGroupProps) {
   if (projects.length === 0) return null
 
@@ -24,7 +26,7 @@ export function WorkProjectGroup({
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h2>
         <p className="mt-2 text-base text-muted-foreground">{description}</p>
       </div>
-      <ProjectGrid projects={projects} animated={animated} />
+      <ProjectGrid projects={projects} animated={animated} layout={layout} />
     </section>
   )
 }

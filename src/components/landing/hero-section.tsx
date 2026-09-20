@@ -1,12 +1,12 @@
 "use client"
 
-import { lazy, Suspense, useCallback, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { useTheme } from "next-themes"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { CompanyLogoBar } from "@/components/landing/company-logo-bar"
 import { AskAiPrompt } from "@/components/landing/ask-ai-prompt"
+import { HeroShapeWavesBackground } from "@/components/landing/hero-shape-waves-background"
 import { HeroRotatingHeadline, HeroRotatingTagline } from "@/components/landing/hero-rotating-headline"
 import {
   M3FeatureImage,
@@ -15,15 +15,12 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useInView } from "@/hooks/use-in-view"
-import { useBrandColors, getDotFieldAppearance } from "@/hooks/use-brand-colors"
 import { HERO_HEADLINES, HERO_TAGLINES } from "@/lib/hero-headlines"
 import {
-  getRandomizedHeroPortraitItems,
   HERO_PORTRAIT_SLOT_COUNT,
+  getRandomizedHeroPortraitItems,
 } from "@/lib/hero-portraits"
 import { profile } from "@/lib/profile"
-
-const DotField = lazy(() => import("@/components/DotField"))
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -32,12 +29,6 @@ export function HeroSection() {
   const [portraitItems] = useState(() => getRandomizedHeroPortraitItems())
   const [headlineIndex, setHeadlineIndex] = useState(() =>
     readStoredHeroPortraitIndex(HERO_PORTRAIT_SLOT_COUNT) % HERO_HEADLINES.length,
-  )
-  const brandColors = useBrandColors()
-  const { resolvedTheme } = useTheme()
-  const dotFieldAppearance = getDotFieldAppearance(
-    brandColors,
-    resolvedTheme === "light" ? "light" : "dark",
   )
 
   const handleMorphStart = useCallback((nextIndex: number) => {
@@ -50,30 +41,7 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative isolate min-h-[94svh] overflow-hidden"
     >
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        {!shouldReduceMotion && isHeroInView ? (
-          <ErrorBoundary title="Background animation failed" showHeader={false}>
-            <Suspense fallback={null}>
-              <DotField
-                className="absolute inset-0"
-                dotRadius={1.8}
-                dotSpacing={14}
-                bulgeStrength={67}
-                glowRadius={160}
-                sparkle={false}
-                waveAmplitude={0}
-                gradientFrom={dotFieldAppearance.gradientFrom}
-                gradientTo={dotFieldAppearance.gradientTo}
-                glowColor={dotFieldAppearance.glowColor}
-              />
-            </Suspense>
-          </ErrorBoundary>
-        ) : null}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
-          aria-hidden
-        />
-      </div>
+      <HeroShapeWavesBackground active={isHeroInView} />
 
       <div className="relative z-10 mx-auto grid min-h-[94svh] w-full max-w-6xl items-center gap-10 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[1fr_auto] lg:gap-12">
         <motion.div

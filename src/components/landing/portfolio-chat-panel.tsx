@@ -5,7 +5,6 @@ import type { UIMessage } from "ai"
 import type { ChatStatus } from "ai"
 import { ArrowLeft, BotIcon, XIcon } from "lucide-react"
 import { nanoid } from "nanoid"
-import { toast } from "sonner"
 
 import {
   Conversation,

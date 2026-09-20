@@ -20,9 +20,58 @@ function getReducedMotionSnapshot() {
 }
 
 function subscribeReducedMotion(onStoreChange: () => void) {
-  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
   mediaQuery.addEventListener("change", onStoreChange)
   return () => mediaQuery.removeEventListener("change", onStoreChange)
+}
+
+const SITE_REDUCED_MOTION_KEY = "portfolio:reduced-motion"
+const SITE_REDUCED_MOTION_EVENT = "portfolio:reduced-motion-change"
+let siteReducedMotionFallback = false
+
+function getSiteReducedMotionSnapshot() {
+  if (typeof window === "undefined") return false
+  try {
+    return window.localStorage.getItem(SITE_REDUCED_MOTION_KEY) === "true"
+  } catch {
+    return siteReducedMotionFallback
+  }
+}
+
+function subscribeSiteReducedMotion(onStoreChange: () => void) {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === SITE_REDUCED_MOTION_KEY) onStoreChange()
+  }
+  window.addEventListener("storage", onStorage)
+  window.addEventListener(SITE_REDUCED_MOTION_EVENT, onStoreChange)
+  return () => {
+    window.removeEventListener("storage", onStorage)
+    window.removeEventListener(SITE_REDUCED_MOTION_EVENT, onStoreChange)
+  }
+}
+
+export function setSiteReducedMotion(enabled: boolean) {
+  siteReducedMotionFallback = enabled
+  try {
+    window.localStorage.setItem(SITE_REDUCED_MOTION_KEY, String(enabled))
+  } catch {
+    // Keep the setting for this tab even when storage is unavailable.
+  }
+  window.dispatchEvent(new Event(SITE_REDUCED_MOTION_EVENT))
+}
+
+export function useReducedMotionSettings() {
+  const systemReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    () => false,
+  )
+  const siteReducedMotion = useSyncExternalStore(
+    subscribeSiteReducedMotion,
+    getSiteReducedMotionSnapshot,
+    () => false,
+  )
+  return { systemReducedMotion, siteReducedMotion, reduceMotion: systemReducedMotion || siteReducedMotion }
 }
 
 function parseFontScale(value: string | null): FontScalePresetId {
@@ -57,7 +106,7 @@ function isWindowsPlatform() {
 function prefersLightMotionEffects() {
   if (typeof navigator === "undefined") return false
 
-  const cores = navigator.hardwareConcurrency ?? 8
+  const cores = navigator.hardwareConcurrency || 8
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
 
   if (cores <= 6) return true
@@ -75,11 +124,7 @@ function subscribeNoop(_onStoreChange: () => void) {
 export function useAnimationProfile(): AnimationProfile {
   const hydrated = useHydrated()
 
-  const prefersReducedMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    () => false,
-  )
+  const { reduceMotion } = useReducedMotionSettings()
 
   const prefersLightMotion = useSyncExternalStore(
     subscribeNoop,
@@ -90,10 +135,10 @@ export function useAnimationProfile(): AnimationProfile {
   const fontScale = useSyncExternalStore(
     subscribeFontScale,
     getFontScaleSnapshot,
-    () => "100" as FontScalePresetId,
+    (): FontScalePresetId => "100",
   )
 
-  if (!hydrated || prefersReducedMotion) {
+  if (!hydrated || reduceMotion) {
     return { tier: "none", canAnimate: false, fullMotion: false, fontScale }
   }
 

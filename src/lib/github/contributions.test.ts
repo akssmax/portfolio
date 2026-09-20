@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest"
 
+import type { ContributionDay } from "./contributions"
 import {
   computeContributionStats,
   getMonthLabels,
   groupContributionsByWeek,
-  type ContributionDay,
+  parseGithubContributionCalendar,
 } from "./contributions"
 
 function day(date: string, count: number, level: ContributionDay["level"] = 1): ContributionDay {
@@ -51,6 +52,27 @@ describe("computeContributionStats", () => {
     ]
 
     expect(computeContributionStats(contributions).currentStreak).toBe(0)
+  })
+})
+
+describe("parseGithubContributionCalendar", () => {
+  it("reads daily counts and levels from GitHub's public calendar", () => {
+    const cells = Array.from({ length: 365 }, (_, index) => {
+      const date = new Date(Date.UTC(2025, 8, 21 + index)).toISOString().slice(0, 10)
+      const count = index === 364 ? 12 : 0
+      return `<td data-date="${date}" id="day-${index}" data-level="${count ? 4 : 0}"></td><tool-tip for="day-${index}">${count ? "12 contributions" : "No contributions"} on September 19th.</tool-tip>`
+    }).join("")
+
+    const days = parseGithubContributionCalendar(cells)
+    expect(days).toHaveLength(365)
+    expect(days[0]?.count).toBe(0)
+    expect(days.at(-1)).toMatchObject({ count: 12, level: 4 })
+  })
+
+  it("rejects a partial calendar instead of displaying misleading data", () => {
+    expect(() => parseGithubContributionCalendar('<td data-date="2026-09-20"></td>')).toThrow(
+      "GitHub contribution calendar is incomplete",
+    )
   })
 })
 

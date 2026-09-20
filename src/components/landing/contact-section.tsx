@@ -2,10 +2,11 @@ import { ArrowUpRight, Mail } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { GithubIcon, LinkedinIcon } from "@/components/icons/social-icons"
+import { GithubActivityCard } from "@/components/landing/github-activity-card"
 import { Button } from "@/components/ui/button"
 import { useFullMotion } from "@/hooks/use-can-animate"
 import { profile } from "@/lib/profile"
-import { MONOGRAM_MAIN, MONOGRAM_ACCENT, MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
+import { MONOGRAM_ACCENT, MONOGRAM_MAIN, MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 import { m3ShapePaths } from "@/lib/m3-shape-paths"
 
 export type CtaSectionVariant =
@@ -25,6 +26,7 @@ export interface CtaSectionProps {
   variant?: CtaSectionVariant
   id?: string
   className?: string
+  showGithubActivity?: boolean
   
   // Cutout configuration
   topCutout?: boolean
@@ -51,6 +53,7 @@ export function CtaSection({
   variant = "dub-notch",
   id = "contact",
   className,
+  showGithubActivity = false,
   topCutout = true,
   bottomCutout = false,
   topCutoutPosition = "center",
@@ -293,6 +296,11 @@ export function CtaSection({
             </div>
           </CardShell>
         </ContentShell>
+        {showGithubActivity && (
+          <div className="mt-8 sm:mt-10">
+            <GithubActivityCard />
+          </div>
+        )}
       </div>
     </section>
   )
@@ -300,6 +308,7 @@ export function CtaSection({
 
 export function ContactSection({
   variant = "dub-notch",
+  showGithubActivity = false,
   topCutout = true,
   bottomCutout = false,
   topCutoutPosition = "center",
@@ -308,6 +317,7 @@ export function ContactSection({
   dubWidth = 320,
 }: {
   variant?: CtaSectionVariant
+  showGithubActivity?: boolean
   topCutout?: boolean
   bottomCutout?: boolean
   topCutoutPosition?: CtaSectionPosition
@@ -318,6 +328,7 @@ export function ContactSection({
   return (
     <CtaSection
       variant={variant}
+      showGithubActivity={showGithubActivity}
       topCutout={topCutout}
       bottomCutout={bottomCutout}
       topCutoutPosition={topCutoutPosition}

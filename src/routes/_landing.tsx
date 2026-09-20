@@ -80,13 +80,13 @@ export const Route = createFileRoute("/_landing")({
 
 function Landing1Layout() {
   const { canAnimate, fullMotion } = useAnimationProfile()
-  const showDotField = useDeferredMount(canAnimate)
+  const location = useLocation()
+  const isHome = location.pathname === "/"
+  const showDotField = useDeferredMount(canAnimate && !isHome)
   const isMobile = useIsMobile()
   const brandColors = useBrandColors()
   const { resolvedTheme } = useTheme()
-  const location = useLocation()
   const isChatRoute = location.pathname.startsWith("/chat")
-  const isHome = location.pathname === "/"
   const isLight = resolvedTheme === "light"
   const dotFieldAppearance = getDotFieldAppearance(
     brandColors,
@@ -98,8 +98,8 @@ function Landing1Layout() {
       "bg-background text-foreground flex flex-col relative",
       isChatRoute ? "h-svh" : "min-h-svh"
     )}>
-      {/* Viewport-fixed dot field only — hero image lives in the hero section */}
-      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+      {/* Other pages keep their existing ambient backdrop. */}
+      {!isHome && <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
         {showDotField ? (
           <React.Suspense fallback={null}>
             <DotField
@@ -120,7 +120,7 @@ function Landing1Layout() {
           className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-background/25 lg:bg-gradient-to-r lg:from-background/92 lg:via-background/60 lg:to-background/15 dark:from-background/85 dark:via-background/60 dark:to-background/30"
           aria-hidden
         />
-      </div>
+      </div>}
 
       <SiteHeader
         tone={

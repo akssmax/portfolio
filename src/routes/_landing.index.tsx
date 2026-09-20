@@ -1,19 +1,16 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router"
 import * as React from "react"
-import { useTheme } from "next-themes"
 import { ClipboardList, Sparkles, Star, Quote } from "lucide-react"
 import { LandingHeroRotatingCopy } from "@/components/landing/landing-hero-rotating-copy"
+import { HeroShapeWavesBackground } from "@/components/landing/hero-shape-waves-background"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { AnimatePresence, motion } from "motion/react"
 import { nanoid } from "nanoid"
 
 import { ChatPromptInput } from "@/components/ui/chat-prompt-input"
 import { M3FeatureImage, M3ShapeImage, readStoredHeroPortraitIndex } from "@/components/m3-shapes"
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
-import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
-import { useAnimationProfile } from "@/hooks/use-can-animate"
-import { useDeferredMount } from "@/hooks/use-deferred-mount"
 import { useInView } from "@/hooks/use-in-view"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { getRandomizedHeroPortraitItems, heroPortraitItems, HERO_PORTRAIT_SLOT_COUNT } from "@/lib/hero-portraits"
 import { testimonials } from "@/lib/testimonials"
 import {
@@ -31,24 +28,6 @@ import {
 import type { Testimonial } from "@/lib/testimonials"
 import { cn } from "@/lib/utils"
 
-const DotField = React.lazy(() => import("@/components/DotField"))
-
-const LIGHT_HERO_BACKGROUND = {
-  id: "valley",
-  label: "Sunny mountain valley",
-  avif: "/images/hero-light-valley.avif",
-  webp: "/images/hero-light-valley.webp",
-  jpg: "/images/hero-light-valley.jpg",
-} as const
-
-const DARK_HERO_BACKGROUND = {
-  id: "monolith",
-  label: "Monolith landscape",
-  avif: "/images/hero-atmosphere.avif",
-  webp: "/images/hero-atmosphere.webp",
-  jpg: "/images/hero-atmosphere.jpg",
-} as const
-
 const LazyContactSection = React.lazy(() =>
   import("@/components/landing/contact-section").then((module) => ({
     default: module.ContactSection,
@@ -57,6 +36,8 @@ const LazyContactSection = React.lazy(() =>
 
 function getProjectLiveUrl(slug: string): string | null {
   switch (slug) {
+    case "ion-workspace":
+      return "https://ion-workspace.vercel.app/"
     case "postforge":
       return "https://postforge-kohl.vercel.app/"
     case "rupeelens":
@@ -83,9 +64,11 @@ function getProjectLiveUrl(slug: string): string | null {
 function HeroPromptSuggestions({
   suggestions,
   onSelect,
+  mode,
 }: {
   suggestions: readonly HeroPromptSuggestion[]
   onSelect: (query: string, mode: "gen-ui" | "chat") => void
+  mode: "gen-ui" | "chat"
 }) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1.5">
@@ -96,13 +79,13 @@ function HeroPromptSuggestions({
           <button
             key={item.label}
             type="button"
-            onClick={() => onSelect(item.query, "chat")}
+            onClick={() => onSelect(item.query, mode)}
             className={cn(
               "rounded-full border px-4 py-2 flex items-center gap-2 cursor-pointer text-xs",
               "border-border/80 bg-background text-foreground shadow-sm ring-1 ring-black/[0.06]",
               "hover:-translate-y-px hover:border-primary/30 hover:bg-background hover:text-foreground hover:shadow-md",
-              "dark:border-border dark:bg-card/45 dark:text-muted-foreground dark:ring-0",
-              "dark:hover:bg-card/85 dark:hover:text-foreground dark:shadow-sm",
+              "dark:border-border dark:bg-card/75 dark:text-foreground dark:ring-0",
+              "dark:hover:bg-card/90 dark:hover:text-foreground dark:shadow-sm",
               chipHoverTransition,
             )}
           >
@@ -161,15 +144,6 @@ export const Route = createFileRoute("/_landing/")({
 
 function Landing1IndexPage() {
   const { canAnimate, fullMotion } = useAnimationProfile()
-  const showHeroDots = useDeferredMount(canAnimate)
-  const isMobile = useIsMobile()
-  const brandColors = useBrandColors()
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
-  const heroDotAppearance = getDotFieldAppearance(
-    brandColors,
-    resolvedTheme === "light" ? "light" : "dark",
-  )
   const { ref: aboutRef, inView: aboutInView } = useInView({ rootMargin: "120px" })
   const { ref: contactRef, inView: contactInView } = useInView({ rootMargin: "240px", once: true })
   // Retrieve loader data from the parent route '/_landing'
@@ -179,6 +153,7 @@ function Landing1IndexPage() {
 
   const navigate = useNavigate()
   const [prompt, setPrompt] = React.useState("")
+  const [heroMode, setHeroMode] = React.useState<"gen-ui" | "chat">("chat")
   const [portraitItems, setPortraitItems] = React.useState(heroPortraitItems)
   const [starterSuggestions, setStarterSuggestions] = React.useState(
     DEFAULT_HERO_PROMPT_SUGGESTIONS,
@@ -227,10 +202,11 @@ function Landing1IndexPage() {
       navigate({
         to: "/chat/$threadId",
         params: { threadId },
-        state: {
+        state: (previous) => ({
+          ...previous,
           initialPrompt: trimmed,
           mode,
-        },
+        }),
       })
     },
     [navigate],
@@ -266,62 +242,8 @@ function Landing1IndexPage() {
 
   return (
     <div className="flex-1 flex flex-col w-full">
-      {/* Hero Section — atmosphere image + dots scoped here only (extends under header) */}
-      <section className="relative -mt-16 flex min-h-[90vh] flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
-        <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          {/*
-            Mount both atmospheres and toggle with the html.dark class.
-            Updating <picture>/<source> srcSet alone often fails to swap in browsers.
-          */}
-          <div className="absolute inset-0 dark:hidden">
-            <picture>
-              <source srcSet={LIGHT_HERO_BACKGROUND.avif} type="image/avif" />
-              <source srcSet={LIGHT_HERO_BACKGROUND.webp} type="image/webp" />
-              <img
-                src={LIGHT_HERO_BACKGROUND.jpg}
-                alt=""
-                width={1600}
-                height={900}
-                decoding="async"
-                fetchPriority={isDark ? "low" : "high"}
-                className="absolute inset-0 size-full object-cover object-center"
-              />
-            </picture>
-          </div>
-          <div className="absolute inset-0 hidden dark:block">
-            <picture>
-              <source srcSet={DARK_HERO_BACKGROUND.avif} type="image/avif" />
-              <source srcSet={DARK_HERO_BACKGROUND.webp} type="image/webp" />
-              <img
-                src={DARK_HERO_BACKGROUND.jpg}
-                alt=""
-                width={1600}
-                height={900}
-                decoding="async"
-                fetchPriority={isDark ? "high" : "low"}
-                className="absolute inset-0 size-full object-cover object-center"
-              />
-            </picture>
-          </div>
-          {/* Soft light-mode wash for copy contrast; dark-mode scrim for the monolith */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/15 to-background/40 dark:from-black/30 dark:via-black/20 dark:to-black/10" />
-          {showHeroDots ? (
-            <React.Suspense fallback={null}>
-              <DotField
-                className="absolute inset-0"
-                dotRadius={fullMotion ? 1.8 : 1.5}
-                dotSpacing={isMobile ? 18 : fullMotion ? 14 : 20}
-                bulgeStrength={isMobile ? 48 : fullMotion ? 67 : 40}
-                glowRadius={isMobile ? 120 : fullMotion ? 160 : 100}
-                sparkle={false}
-                waveAmplitude={0}
-                gradientFrom={heroDotAppearance.gradientFrom}
-                gradientTo={heroDotAppearance.gradientTo}
-                glowColor={heroDotAppearance.glowColor}
-              />
-            </React.Suspense>
-          ) : null}
-        </div>
+      <section className="relative -mt-16 flex min-h-[90vh] w-full flex-1 flex-col items-center justify-center overflow-hidden pt-16 pb-14">
+        <HeroShapeWavesBackground />
 
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center space-y-8 px-4 text-center sm:px-6">
           <LandingHeroRotatingCopy slides={LANDING_HERO_COPY} intervalMs={7500} />
@@ -333,6 +255,8 @@ function Landing1IndexPage() {
                 value={prompt}
                 onValueChange={setPrompt}
                 onSubmit={handleSubmitPrompt}
+                mode={heroMode}
+                onModeChange={setHeroMode}
                 placeholders={HERO_PLACEHOLDER_PROMPTS}
                 tone="on-media"
                 variant="expanded"
@@ -341,6 +265,7 @@ function Landing1IndexPage() {
             <HeroPromptSuggestions
               suggestions={starterSuggestions}
               onSelect={handleSubmitPrompt}
+              mode={heroMode}
             />
           </div>
         </div>
@@ -361,7 +286,7 @@ function Landing1IndexPage() {
             {/* Left Column: Details & Testimonial */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-transparent px-3 py-1 text-xs font-semibold text-primary">
                   <Sparkles className="size-3" />
                   About Akshay Saini
                 </span>
@@ -438,7 +363,7 @@ function Landing1IndexPage() {
       <div ref={contactRef}>
         {contactInView ? (
           <React.Suspense fallback={null}>
-            <LazyContactSection bottomCutout={true} />
+            <LazyContactSection bottomCutout={true} showGithubActivity />
           </React.Suspense>
         ) : null}
       </div>
