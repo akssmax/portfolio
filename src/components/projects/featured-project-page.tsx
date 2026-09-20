@@ -20,7 +20,6 @@ type FeatureTheme = {
   background: string
   accent: string
   accentInk: string
-  motif: string
   format: "split" | "stacked"
   label: string
   overviewHeading: string
@@ -31,7 +30,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#191d16",
     accent: "#d6ff3d",
     accentInk: "#111111",
-    motif: "radial-gradient(circle at 80% 20%, #d6ff3d28, transparent 30%), linear-gradient(90deg, #ffffff12 1px, transparent 1px)",
     format: "split",
     label: "Work, in one place",
     overviewHeading: "The working day, together.",
@@ -40,7 +38,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#173c2c",
     accent: "#dbf4aa",
     accentInk: "#173c2c",
-    motif: "radial-gradient(circle at 78% 38%, #a8d88924, transparent 58%)",
     format: "split",
     label: "A place made legible",
     overviewHeading: "A complex campus, one clear path in.",
@@ -49,7 +46,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#622d28",
     accent: "#ffdd55",
     accentInk: "#472820",
-    motif: "radial-gradient(circle at 70% 25%, #ffdf7633 0 19%, transparent 19.2%), radial-gradient(circle at 15% 78%, #ffb2ae30 0 16%, transparent 16.2%)",
     format: "stacked",
     label: "Make the brand the canvas",
     overviewHeading: "Brand-ready content from one canvas.",
@@ -58,7 +54,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#103c3e",
     accent: "#a3f0d3",
     accentInk: "#123a3c",
-    motif: "repeating-linear-gradient(130deg, transparent 0 29px, #ffffff17 30px 31px, transparent 32px 60px)",
     format: "split",
     label: "Clarity for personal finance",
     overviewHeading: "See where the money goes.",
@@ -67,7 +62,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#30254e",
     accent: "#ffc5df",
     accentInk: "#362348",
-    motif: "radial-gradient(circle at 82% 18%, #f395ef47, transparent 34%), radial-gradient(circle at 8% 92%, #ffcf8740, transparent 35%)",
     format: "stacked",
     label: "A product story in motion",
     overviewHeading: "Make browser automation easier to grasp.",
@@ -76,7 +70,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#1b3d69",
     accent: "#c6e0ff",
     accentInk: "#203e66",
-    motif: "linear-gradient(135deg, transparent 0 47%, #ffffff17 47% 48%, transparent 48% 100%)",
     format: "split",
     label: "A workspace for making",
     overviewHeading: "Turn a prompt into a workspace.",
@@ -85,7 +78,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#254b42",
     accent: "#d7f4d3",
     accentInk: "#21473f",
-    motif: "repeating-linear-gradient(0deg, transparent 0 26px, #ffffff17 27px 28px)",
     format: "stacked",
     label: "From profile to PDF",
     overviewHeading: "One pipeline, two ways to build a resume.",
@@ -94,7 +86,6 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#3a294a",
     accent: "#ffd2aa",
     accentInk: "#3d2947",
-    motif: "radial-gradient(circle at 82% 32%, #ffbb8b38 0 17%, transparent 17.2%), radial-gradient(circle at 3% 80%, #c8a4ff38 0 22%, transparent 22.2%)",
     format: "split",
     label: "An agent in the browser",
     overviewHeading: "A browser agent with room to work.",
@@ -105,7 +96,6 @@ const DEFAULT_THEME: FeatureTheme = {
   background: "#263e63",
   accent: "#d8e8ff",
   accentInk: "#263e63",
-  motif: "radial-gradient(#ffffff29 1px, transparent 1px)",
   format: "split",
   label: "Featured project",
   overviewHeading: "The project at a glance.",
@@ -199,18 +189,11 @@ export function FeaturedProjectPage({ project }: { project: Project }) {
   }
 
   const heroStyle: CSSProperties = { backgroundColor: theme.background }
-  const motifStyle: CSSProperties = {
-    backgroundImage: theme.motif,
-  }
 
   return (
     <article>
       <header className="relative isolate overflow-hidden text-white" style={heroStyle}>
-        {project.slug === "indus-best-mega-food-park" ? (
-          <ProjectCardWaveBackground slug={project.slug} variant="hero" />
-        ) : (
-          <div className="pointer-events-none absolute inset-0 opacity-70" style={motifStyle} aria-hidden="true" />
-        )}
+        <ProjectCardWaveBackground slug={project.slug} variant="hero" />
         <div className="pointer-events-none absolute -right-28 -bottom-52 size-[34rem] rounded-full border border-white/20" aria-hidden="true" />
         <div className="pointer-events-none absolute -right-12 -bottom-36 size-[27rem] rounded-full border border-white/15" aria-hidden="true" />
 

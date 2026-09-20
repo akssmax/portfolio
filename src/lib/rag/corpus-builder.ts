@@ -6,6 +6,7 @@ import { HERO_COPY, LANDING_HERO_COPY } from "@/lib/hero-headlines"
 import { profile } from "@/lib/profile"
 import { fallbackProjects } from "@/lib/sanity/fallback-projects"
 import { listVisualCaseStudyConfigs } from "@/lib/projects/visual-case-study-configs"
+import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
 import type { ContentBlock } from "@/lib/sanity/types"
 
 import type { CorpusChunk, CorpusDocument } from "./types"
@@ -236,6 +237,51 @@ function buildVisualCaseStudyDocuments(): CorpusDocument[] {
   return docs
 }
 
+function buildKodoCaseStudyDocuments(): CorpusDocument[] {
+  const href = "/projects/kodo"
+  return [
+    {
+      id: "project-kodo-detailed-overview",
+      source: "project/kodo",
+      sourceLabel: "Kodo — detailed case study",
+      href,
+      text: joinLines([
+        kodoCaseStudy.title,
+        kodoCaseStudy.description,
+        `${kodoCaseStudy.role} · ${kodoCaseStudy.period}`,
+        kodoCaseStudy.context,
+        kodoCaseStudy.remit,
+        `Design system: ${kodoCaseStudy.system}`,
+        `Direct partners: ${kodoCaseStudy.partners.map((partner) => partner.name).join(", ")}`,
+        `Lessons: ${kodoCaseStudy.lessons.join("; ")}`,
+      ]),
+    },
+    ...kodoCaseStudy.chapters.map((chapter) => ({
+      id: `project-kodo-${chapter.id}`,
+      source: "project/kodo",
+      sourceLabel: `Kodo — ${chapter.label}`,
+      href: `${href}#${chapter.id}`,
+      text: joinLines([
+        chapter.title,
+        chapter.introduction,
+        `Problem: ${chapter.problem}`,
+        `Responsibility: ${chapter.responsibility}`,
+        `Approach: ${chapter.approach}`,
+        `${chapter.decisionLabel ?? "Key decisions"}: ${chapter.decisions.join("; ")}`,
+        `${chapter.shippedLabel ?? "Shipped"}: ${chapter.shipped}`,
+        `Media: ${chapter.media.map((item) => `${item.title} — ${item.caption}`).join("; ")}`,
+      ]),
+    })),
+    ...[kodoCaseStudy.mobilePrototype, kodoCaseStudy.vendorPortalPrototype].map((prototype) => ({
+      id: `project-kodo-${prototype.id}`,
+      source: "project/kodo",
+      sourceLabel: `Kodo — ${prototype.previewTitle}`,
+      href: `${href}#${prototype.id}`,
+      text: joinLines([prototype.title, prototype.description, `Figma prototype: ${prototype.url}`]),
+    })),
+  ]
+}
+
 function buildHiringDocuments(): CorpusDocument[] {
   return [
     {
@@ -325,6 +371,7 @@ export function buildCorpusDocuments(): CorpusDocument[] {
     ...buildHiringDocuments(),
     ...buildProjectDocuments(),
     ...buildVisualCaseStudyDocuments(),
+    ...buildKodoCaseStudyDocuments(),
     ...buildPortfolioSiteDocuments(),
     ...buildAiAssistantDocuments(),
     ...buildHeadlineDocuments(),

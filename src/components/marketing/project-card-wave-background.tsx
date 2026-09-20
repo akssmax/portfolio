@@ -64,11 +64,19 @@ const darkPalette: WavePalette = {
   accent: "rgba(70, 156, 114, 0.16)",
 }
 
-const indusHeroPalette: WavePalette = {
-  background: "#173c2c",
-  wave: "#65946d",
-  hover: "#dbf4aa",
-  accent: "rgba(172, 220, 139, 0.16)",
+const heroPalettes: Record<string, WavePalette> = {
+  "ion-workspace": { background: "#191d16", wave: "#59664a", hover: "#d6ff3d", accent: "rgba(214, 255, 61, 0.14)" },
+  "indus-best-mega-food-park": { background: "#173c2c", wave: "#65946d", hover: "#dbf4aa", accent: "rgba(172, 220, 139, 0.16)" },
+  postforge: { background: "#622d28", wave: "#a86e59", hover: "#ffdd55", accent: "rgba(255, 221, 85, 0.16)" },
+  rupeelens: { background: "#103c3e", wave: "#498d88", hover: "#a3f0d3", accent: "rgba(163, 240, 211, 0.15)" },
+  "100x-landing-page": { background: "#30254e", wave: "#77649b", hover: "#ffc5df", accent: "rgba(255, 197, 223, 0.16)" },
+  "100x-chat-shell": { background: "#1b3d69", wave: "#6486aa", hover: "#c6e0ff", accent: "rgba(198, 224, 255, 0.16)" },
+  "resume-builder": { background: "#254b42", wave: "#649784", hover: "#d7f4d3", accent: "rgba(215, 244, 211, 0.15)" },
+  "v1-100x-proto": { background: "#3a294a", wave: "#836a91", hover: "#ffd2aa", accent: "rgba(255, 210, 170, 0.16)" },
+}
+
+const defaultHeroPalette: WavePalette = {
+  background: "#263e63", wave: "#627d9f", hover: "#d8e8ff", accent: "rgba(216, 232, 255, 0.15)",
 }
 
 /** Same ShapeWaves treatment as the large case-study visuals, sized for a compact card. */
@@ -79,7 +87,7 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
   const palette = variant === "hero"
-    ? indusHeroPalette
+    ? heroPalettes[slug] ?? defaultHeroPalette
     : isDark ? darkPalette : lightPalettes[slug] ?? defaultLightPalette
 
   useEffect(() => {
@@ -134,9 +142,12 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
           </Suspense>
         </div>
       ) : null}
-      <div className={variant === "hero"
-        ? "absolute inset-0 bg-[linear-gradient(90deg,rgba(23,60,44,0.72),rgba(23,60,44,0.32)_70%,rgba(23,60,44,0.08))]"
-        : "absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(17,28,25,0.9)_0%,rgba(17,28,25,0.65)_36%,rgba(17,28,25,0)_100%)]"} />
+      <div
+        className={variant === "hero"
+          ? "absolute inset-0"
+          : "absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(17,28,25,0.9)_0%,rgba(17,28,25,0.65)_36%,rgba(17,28,25,0)_100%)]"}
+        style={variant === "hero" ? { backgroundImage: `linear-gradient(90deg, ${palette.background}d9, ${palette.background}80 70%, ${palette.background}26)` } : undefined}
+      />
       <div className="absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/10" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-black/[0.04] dark:bg-white/5" />
     </div>
