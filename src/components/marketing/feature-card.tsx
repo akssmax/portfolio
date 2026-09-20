@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { Link } from "@tanstack/react-router"
 import { ArrowUpRight } from "lucide-react"
 import { motion } from "motion/react"
@@ -37,27 +37,11 @@ export function FeatureCard({
 }: FeatureCardProps) {
   const [hovered, setHovered] = useState(false)
   const [focused, setFocused] = useState(false)
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const reduceMotion = !useCanAnimate()
   const active = hovered || focused
 
-  useEffect(() => () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-  }, [])
-
-  const openPreview = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    closeTimer.current = null
-    setHovered(true)
-  }
-
-  const closePreview = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    closeTimer.current = setTimeout(() => {
-      setHovered(false)
-      closeTimer.current = null
-    }, 150)
-  }
+  const openPreview = () => setHovered(true)
+  const closePreview = () => setHovered(false)
 
   const theme = getProjectVisualTheme(slug)
   const Icon = theme.Icon
@@ -110,7 +94,7 @@ export function FeatureCard({
   )
 
   return (
-    <HoverCard open={active}>
+    <HoverCard open={active} openDelay={0} closeDelay={0}>
       <motion.article
         className={cn("group/card relative isolate overflow-hidden rounded-2xl bg-card shadow-sm transition-shadow hover:shadow-md focus-within:shadow-md", className)}
         onHoverStart={openPreview}
@@ -130,7 +114,7 @@ export function FeatureCard({
         )}
       </motion.article>
       {previewSrc ? (
-        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} onPointerEnter={openPreview} onPointerLeave={closePreview} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
+        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
           <img src={previewSrc} alt={previewAlt ?? `${title} project screenshot`} loading="lazy" className="aspect-[16/10] w-full rounded-lg bg-muted object-cover object-top" />
           <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{title} · project preview</p>
         </HoverCardContent>

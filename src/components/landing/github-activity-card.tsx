@@ -118,7 +118,7 @@ export function GithubActivityCard() {
   return (
     <div
       ref={rootRef}
-      className="rounded-2xl border border-white/20 bg-background p-5 text-foreground shadow-2xl sm:p-7"
+      className="rounded-2xl bg-background p-5 text-foreground shadow-2xl sm:p-7"
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">

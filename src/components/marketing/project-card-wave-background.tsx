@@ -58,10 +58,10 @@ const defaultLightPalette: WavePalette = {
 }
 
 const darkPalette: WavePalette = {
-  background: "#111c19",
-  wave: "#35574d",
-  hover: "#67c6a0",
-  accent: "rgba(70, 156, 114, 0.16)",
+  background: "#121315",
+  wave: "#4b4d52",
+  hover: "#f5f5f5",
+  accent: "rgba(255, 255, 255, 0.11)",
 }
 
 const heroPalettes: Record<string, WavePalette> = {
@@ -100,6 +100,14 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
     observer.observe(root)
     return () => observer.disconnect()
   }, [])
+
+  if (isDark && variant === "card") {
+    return (
+      <div ref={rootRef} className="pointer-events-none absolute inset-0 rounded-2xl border border-white/10 bg-[#121315]" aria-hidden>
+        <div className="absolute inset-x-0 top-0 h-px bg-white/5" />
+      </div>
+    )
+  }
 
   return (
     <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor: palette.background }} aria-hidden>
@@ -145,7 +153,7 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
       <div
         className={variant === "hero"
           ? "absolute inset-0"
-          : "absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(17,28,25,0.9)_0%,rgba(17,28,25,0.65)_36%,rgba(17,28,25,0)_100%)]"}
+          : "absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(18,19,21,0.9)_0%,rgba(18,19,21,0.65)_36%,rgba(18,19,21,0)_100%)]"}
         style={variant === "hero" ? { backgroundImage: `linear-gradient(90deg, ${palette.background}d9, ${palette.background}80 70%, ${palette.background}26)` } : undefined}
       />
       <div className="absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/10" />

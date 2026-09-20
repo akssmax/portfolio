@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 import { useAppearance } from "@/components/appearance-provider"
 import { FooterGradients } from "@/components/landing/footer-gradients"
 import { Logo } from "@/components/brand/logo"
+import { FooterMonogramWaves } from "@/components/landing/footer-monogram-waves"
 import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
@@ -119,6 +120,7 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
 
         <FooterRunnerSection />
       </div>
+      <FooterMonogramWaves />
     </footer>
   )
 }

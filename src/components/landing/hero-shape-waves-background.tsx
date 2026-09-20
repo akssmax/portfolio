@@ -6,11 +6,17 @@ import { mixBrandColors, tintBrandColor, useBrandColors } from "@/hooks/use-bran
 import { useDeferredMount } from "@/hooks/use-deferred-mount"
 import { useCanAnimate } from "@/hooks/use-can-animate"
 import { useInView } from "@/hooks/use-in-view"
+import { MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 
 const ShapeWaves = lazy(() => import("@/components/marketing/ShapeWaves"))
 
 /** Full-bleed version of the ShapeWaves surface used by project and case-study cards. */
-export function HeroShapeWavesBackground({ active = true }: { active?: boolean }) {
+type ShapeFormation = {
+  paths: Array<string>
+  value: number
+}
+
+export function HeroShapeWavesBackground({ active = true, formation }: { active?: boolean; formation?: ShapeFormation }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const inView = useInView(rootRef, { rootMargin: "160px", initialInView: true })
   const canAnimate = useCanAnimate()
@@ -22,7 +28,7 @@ export function HeroShapeWavesBackground({ active = true }: { active?: boolean }
     ? mixBrandColors(primary, secondary, 0.7)
     : tintBrandColor(mixBrandColors(primary, secondary, 0.55), 0.68)
   const hoverColor = isDark ? primary : tintBrandColor(primary, 0.3)
-  const backgroundColor = isDark ? "#0c1412" : "#fbfdfc"
+  const backgroundColor = isDark ? "#101113" : "#fbfdfc"
 
   return (
     <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor }} aria-hidden>
@@ -52,12 +58,15 @@ export function HeroShapeWavesBackground({ active = true }: { active?: boolean }
                 glow={0}
                 intro
                 introDuration={1.5}
+                maskPaths={formation?.paths as Array<never> | undefined}
+                maskViewBox={MONOGRAM_VIEWBOX.split(" ").map(Number)}
+                formation={formation?.value ?? 0}
               />
             </div>
           </Suspense>
         </ErrorBoundary>
       ) : null}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.76)_38%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(12,20,18,0.9)_0%,rgba(12,20,18,0.65)_38%,rgba(12,20,18,0)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.76)_38%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(16,17,19,0.9)_0%,rgba(16,17,19,0.65)_38%,rgba(16,17,19,0)_100%)]" />
       <div className="absolute inset-0 bg-gradient-to-b from-background/5 via-transparent to-background/65" />
     </div>
   )

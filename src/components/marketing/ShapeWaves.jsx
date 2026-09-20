@@ -120,6 +120,7 @@ struct Params {
   color: vec4f,
   hover: vec4f,
   background: vec4f,
+  formation: vec4f,
 }
 @group(0) @binding(0) var<uniform> params: Params;
 @group(0) @binding(1) var maskTexture: texture_2d<f32>;
@@ -169,7 +170,8 @@ fn hash21(p: vec2f) -> f32 {
   let local = (pixel - center) / (cellPx * 0.5);
   let cellUv = center / resolution;
 
-  if (params.motion.z > 0.5 && textureSampleLevel(maskTexture, maskSampler, cellUv, 0.0).r > 0.5) {
+  let maskValue = textureSampleLevel(maskTexture, maskSampler, cellUv, 0.0).r;
+  if (params.motion.z > 0.5 && maskValue > 0.5) {
     return vec4f(background, select(0.0, 1.0, toSurface));
   }
 
@@ -211,12 +213,23 @@ fn hash21(p: vec2f) -> f32 {
     size = max(size * (1.0 + 2.70158 * back * back * back + 1.70158 * back * back), 0.02);
     front = 1.0 - smoothstep(0.0, 1.0, abs(introProgress - spread) / band);
   }
+  let formation = params.formation.x;
+  let formedCell = smoothstep(0.18, 0.72, maskValue);
+  let radial = length(cellUv - vec2f(0.5)) * 1.41421356;
+  let arrival = smoothstep(0.0, 1.0, clamp(formation * 1.45 - radial * 0.5, 0.0, 1.0));
+  let travel = sin(arrival * 3.14159265) * formation;
+  let travelAngle = hash21(cell + vec2f(41.0, 13.0)) * 6.2831853;
+  let travelledLocal = local - vec2f(cos(travelAngle), sin(travelAngle)) * travel * 0.7;
+  size *= 1.0 + travel * 0.28;
+
   let aa = 2.0 / cellPx;
-  let coverage = smoothstep(aa, -aa, shapeDistance(local, shape, size));
+  let coverage = smoothstep(aa, -aa, shapeDistance(travelledLocal, shape, size));
 
   let tint = mix(params.color.rgb, params.hover.rgb, max(smoothstep(0.15, 0.85, charge), front * 0.35));
 
-  let rgb = mix(background, tint, coverage * level);
+  let formationCoverage = mix(1.0, formedCell, arrival);
+  let formationTint = mix(tint, params.hover.rgb, arrival * formedCell * 0.65);
+  let rgb = mix(background, formationTint, coverage * level * formationCoverage);
   if (toSurface) { return vec4f(rgb, 1.0); }
   let luminance = dot(tint * level, vec3f(0.2126, 0.7152, 0.0722));
   let glow = max(0.0, (luminance - GLOW_THRESHOLD) / (1.0 - GLOW_THRESHOLD)) * coverage;
@@ -293,6 +306,9 @@ export default function ShapeWaves({
   intro = true,
   introDuration = 1.6,
   introKey = 0,
+  maskPaths = [],
+  maskViewBox = [-64, 0, 205, 153],
+  formation = 0,
   paused = false,
   onError = () => {},
   className = ''
@@ -330,6 +346,9 @@ export default function ShapeWaves({
     intro,
     introDuration: Math.max(0.1, introDuration),
     introKey,
+    maskPaths: Array.isArray(maskPaths) ? maskPaths : [],
+    maskViewBox: Array.isArray(maskViewBox) ? maskViewBox : [-64, 0, 205, 153],
+    formation: Math.min(1, Math.max(0, formation)),
     paused
   };
   onErrorRef.current = onError;
@@ -354,9 +373,10 @@ export default function ShapeWaves({
     glow,
     intro,
     introDuration,
+    formation,
     paused
   ].join('|');
-  const maskSignature = [text, fontFamily, fontWeight, textSize].join('|');
+  const maskSignature = [text, fontFamily, fontWeight, textSize, maskPaths.join('|'), maskViewBox.join('|')].join('|');
   const replayRef = useRef(() => {});
 
   useEffect(() => {
@@ -401,6 +421,7 @@ export default function ShapeWaves({
     let introProgress = INTRO_END;
     let introArmed = false;
     let chargesActive = false;
+    let currentFormation = 0;
     let bounds = null;
     let unsubscribeGpuError;
     let resizeObserver;
@@ -497,7 +518,8 @@ export default function ShapeWaves({
           motion: [0, 0, 0, 0.25],
           color: [0.573, 0.573, 0.573, 1],
           hover: [1, 1, 1, 0],
-          background: [0, 0, 0, 1]
+          background: [0, 0, 0, 1],
+          formation: [0, 0, 0, 0]
         });
         const linearSampler = sampler(gpu, {
           minFilter: 'linear',
@@ -634,6 +656,8 @@ export default function ShapeWaves({
           const settings = settingsRef.current;
           const deltaSeconds = lastFrameTime ? Math.min(0.1, (now - lastFrameTime) / 1000) : 0;
           lastFrameTime = now;
+          const formationStep = Math.min(1, deltaSeconds * 4.2);
+          currentFormation += (settings.formation - currentFormation) * formationStep;
           const animating = isAnimating();
           if (animating) {
             time += deltaSeconds * TIME_RATE * settings.speed;
@@ -661,6 +685,7 @@ export default function ShapeWaves({
             ]
           });
           params.set({ motion: [drift[0], drift[1], settings.text.trim() ? 1 : 0, settings.fade] });
+          params.set({ formation: [currentFormation, 0, 0, 0] });
           try {
             frame(gpu, currentFrame => {
               if (!glowEnabled()) {
@@ -680,7 +705,7 @@ export default function ShapeWaves({
             presented = true;
             setReady(true);
           }
-          if (animating || hovering || introPlaying) frameId = requestAnimationFrame(render);
+          if (animating || hovering || introPlaying || Math.abs(settings.formation - currentFormation) > 0.01) frameId = requestAnimationFrame(render);
           else lastFrameTime = 0;
         };
 
@@ -694,9 +719,11 @@ export default function ShapeWaves({
           const content = settings.text.trim();
           const [surfaceWidth, surfaceHeight] = output.size;
           const hasText = content.length > 0;
-          const maskScale = hasText ? Math.min(1, MAX_MASK_SIZE / Math.max(surfaceWidth, surfaceHeight)) : 0;
-          const maskWidth = hasText ? Math.max(1, Math.round(surfaceWidth * maskScale)) : 1;
-          const maskHeight = hasText ? Math.max(1, Math.round(surfaceHeight * maskScale)) : 1;
+          const hasPaths = settings.maskPaths.length > 0;
+          const hasMask = hasText || hasPaths;
+          const maskScale = hasMask ? Math.min(1, MAX_MASK_SIZE / Math.max(surfaceWidth, surfaceHeight)) : 0;
+          const maskWidth = hasMask ? Math.max(1, Math.round(surfaceWidth * maskScale)) : 1;
+          const maskHeight = hasMask ? Math.max(1, Math.round(surfaceHeight * maskScale)) : 1;
 
           maskCanvas.width = maskWidth;
           maskCanvas.height = maskHeight;
@@ -716,6 +743,16 @@ export default function ShapeWaves({
             maskContext.textBaseline = 'middle';
             maskContext.fillStyle = '#fff';
             maskContext.fillText(content, maskWidth / 2, maskHeight / 2);
+          }
+          if (hasPaths) {
+            const [viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight] = settings.maskViewBox;
+            const scale = Math.min(maskWidth / viewBoxWidth, maskHeight / viewBoxHeight) * 0.74;
+            maskContext.save();
+            maskContext.translate(maskWidth / 2 - (viewBoxX + viewBoxWidth / 2) * scale, maskHeight / 2 - (viewBoxY + viewBoxHeight / 2) * scale);
+            maskContext.scale(scale, scale);
+            maskContext.fillStyle = '#fff';
+            settings.maskPaths.forEach(path => maskContext.fill(new Path2D(path)));
+            maskContext.restore();
           }
 
           const nextTexture = createMaskTexture(maskWidth, maskHeight);

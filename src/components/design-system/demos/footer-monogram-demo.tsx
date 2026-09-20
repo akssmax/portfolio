@@ -1,13 +1,16 @@
 "use client"
 
+import type {
+  MonogramAnimation,
+  MonogramSize,
+} from "@/components/brand/footer-monogram"
 import {
   FooterMonogram,
   MONOGRAM_ANIMATIONS,
-  type MonogramAnimation,
-  type MonogramSize,
 } from "@/components/brand/footer-monogram"
+import { FooterMonogramWaves } from "@/components/landing/footer-monogram-waves"
 
-const sizes: { id: MonogramSize; label: string }[] = [
+const sizes: Array<{ id: MonogramSize; label: string }> = [
   { id: "sm", label: "Small" },
   { id: "md", label: "Medium" },
   { id: "lg", label: "Large" },
@@ -90,17 +93,26 @@ export function FooterMonogramDemo() {
 
       <section className="space-y-4">
         <div>
-          <h3 className="text-lg font-medium">Footer usage</h3>
+          <h3 className="text-lg font-medium">Footer variations</h3>
           <p className="text-sm text-muted-foreground">
-            Default configuration used beneath the site copyright bar.
+            The site footer uses the ShapeWaves cutout. The runner stays available here as a playful component preview.
           </p>
         </div>
-        <div className="overflow-hidden rounded-xl border border-border">
-          <div className="flex items-center justify-between border-b border-border px-4 py-4 text-sm text-muted-foreground">
-            <span>© {new Date().getFullYear()} Akshay Saini</span>
-            <span>Bengaluru, India</span>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="overflow-hidden rounded-xl border border-border">
+            <div className="flex items-center justify-between border-b border-border px-4 py-4 text-sm text-muted-foreground">
+              <span>© {new Date().getFullYear()} Akshay Saini</span>
+              <span>ShapeWaves cutout</span>
+            </div>
+            <FooterMonogramWaves />
           </div>
-          <FooterMonogram animation="draw" size="footer" />
+          <div className="overflow-hidden rounded-xl border border-border">
+            <div className="flex items-center justify-between border-b border-border px-4 py-4 text-sm text-muted-foreground">
+              <span>Interactive</span>
+              <span>Click the mark to play</span>
+            </div>
+            <FooterMonogram animation="loop" enableRunnerGame />
+          </div>
         </div>
       </section>
 

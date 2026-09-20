@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react"
+import { useTheme } from "next-themes"
 
 import type { BentoSize } from "@/lib/projects/bento-placements"
 import type { ProjectCard } from "@/lib/sanity/types"
@@ -33,23 +34,32 @@ const palettes: Record<
   },
 }
 
+const darkPalettes: Record<
+  string,
+  { background: string; wave: string; hover: string; accent: string }
+> = {
+  kodo: { background: "#111113", wave: "#4a4650", hover: "#ffffff", accent: "rgba(255, 255, 255, 0.12)" },
+  unlogged: { background: "#101215", wave: "#434a54", hover: "#ffffff", accent: "rgba(255, 255, 255, 0.12)" },
+  tulr: { background: "#121115", wave: "#4d4856", hover: "#ffffff", accent: "rgba(255, 255, 255, 0.12)" },
+}
+
 function ProjectLogo({ project }: { project: ProjectCard }) {
   if (project.slug === "kodo")
-    return <KodoLogo className="w-full text-[#17151c]" />
+    return <KodoLogo className="w-full text-[#17151c] dark:text-white" />
   if (project.slug === "unlogged")
-    return <UnloggedLogo className="w-full text-[#17202b]" />
+    return <UnloggedLogo className="w-full text-[#17202b] dark:text-white" />
   if (project.slug === "tulr") {
     return (
       <img
         src="/companies/tulr.svg"
         alt="Tulr"
-        className="block w-full"
+        className="block w-full dark:brightness-0 dark:invert"
         loading="lazy"
       />
     )
   }
   return (
-    <span className="font-semibold tracking-tight text-[#17151c]">
+    <span className="font-semibold tracking-tight text-[#17151c] dark:text-white">
       {project.title}
     </span>
   )
@@ -67,7 +77,10 @@ export function CaseStudyFeatureVisual({
   const rootRef = useRef<HTMLDivElement>(null)
   const [nearViewport, setNearViewport] = useState(false)
   const canAnimate = useCanAnimate()
-  const palette = palettes[project.slug] ?? palettes.kodo
+  const { resolvedTheme } = useTheme()
+  const palette = resolvedTheme === "dark"
+    ? darkPalettes[project.slug] ?? darkPalettes.kodo
+    : palettes[project.slug] ?? palettes.kodo
 
   useEffect(() => {
     const root = rootRef.current
@@ -84,7 +97,7 @@ export function CaseStudyFeatureVisual({
     <div
       ref={rootRef}
       className={cn(
-        "group/case-visual relative isolate w-full overflow-hidden rounded-xl border border-black/[0.06] contain-paint",
+        "group/case-visual relative isolate w-full overflow-hidden rounded-xl border border-black/[0.06] dark:border-white/10 contain-paint",
         size === "wide"
           ? "h-[290px] sm:h-[340px] lg:h-[390px]"
           : "h-[260px] sm:h-[300px]",
@@ -129,15 +142,15 @@ export function CaseStudyFeatureVisual({
         </div>
       )}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_44%_40%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_44%_40%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_40%_at_50%_50%,rgba(18,19,21,0.92)_0%,rgba(18,19,21,0.7)_36%,rgba(18,19,21,0)_100%)]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/90"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/10"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-black/[0.04]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-black/[0.04] dark:bg-white/5"
         aria-hidden
       />
       <div className="relative z-10 flex h-full items-center justify-center px-8">

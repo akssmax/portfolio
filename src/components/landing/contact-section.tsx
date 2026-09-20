@@ -113,7 +113,7 @@ export function CtaSection({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-primary text-primary-foreground ${className || ""}`}
+      className={`relative overflow-hidden bg-primary text-primary-foreground dark:bg-[#111214] dark:text-white ${className || ""}`}
     >
       {/* --- TOP EDGE DECORATIONS --- */}
       {topCutout && variant === "dub-notch" && (
@@ -178,7 +178,7 @@ export function CtaSection({
 
 
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-white/10 dark:from-black/35 dark:to-white/[0.03]"
         aria-hidden
       />
 
@@ -186,7 +186,7 @@ export function CtaSection({
       {variant !== "minimal" && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.08] dark:opacity-[0.05]" aria-hidden>
           <svg
-            className="absolute -left-20 -top-20 w-[450px] h-[450px] text-primary-foreground fill-current rotate-[12deg]"
+            className="absolute -left-20 -top-20 h-[450px] w-[450px] rotate-[12deg] fill-current text-primary-foreground dark:text-white"
             viewBox={MONOGRAM_VIEWBOX}
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -194,7 +194,7 @@ export function CtaSection({
             <path d={MONOGRAM_ACCENT} />
           </svg>
           <svg
-            className="absolute -right-24 -bottom-24 w-[500px] h-[500px] text-primary-foreground fill-current -rotate-[15deg]"
+            className="absolute -right-24 -bottom-24 h-[500px] w-[500px] -rotate-[15deg] fill-current text-primary-foreground dark:text-white"
             viewBox={MONOGRAM_VIEWBOX}
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -217,20 +217,20 @@ export function CtaSection({
             : {})}
         >
           <div className="flex flex-col justify-center gap-5">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary-foreground/70">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary-foreground/70 dark:text-white/65">
               Contact
             </p>
             <h2 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
               Let&apos;s build something together
             </h2>
-            <p className="max-w-lg text-base leading-relaxed text-primary-foreground/80 sm:text-lg">
+            <p className="max-w-lg text-base leading-relaxed text-primary-foreground/80 dark:text-white/75 sm:text-lg">
               Open to freelance, full-time, and collaboration on product design and
               design-engineering projects. Based in {profile.location}.
             </p>
           </div>
 
           <CardShell
-            className="flex flex-col justify-between gap-6 rounded-2xl border border-white/15 bg-background p-6 text-foreground shadow-2xl sm:p-8"
+            className="flex flex-col justify-between gap-6 rounded-2xl bg-background p-6 text-foreground shadow-2xl sm:p-8"
             {...(enableScrollMotion
               ? {
                   initial: { opacity: 0, y: 16 },
