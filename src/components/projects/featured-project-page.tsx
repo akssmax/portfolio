@@ -9,6 +9,7 @@ import type {
   VisualCaseStudyGallery,
 } from "@/lib/projects/visual-case-study-configs"
 import { usePortfolioChat } from "@/components/landing/portfolio-chat-provider"
+import { ProjectCardWaveBackground } from "@/components/marketing/project-card-wave-background"
 import { CaseStudyBackLink } from "@/components/projects/case-study-back-link"
 import { CaseStudyScreenshot } from "@/components/projects/case-study-screenshot"
 import { Button } from "@/components/ui/button"
@@ -39,7 +40,7 @@ const FEATURE_THEMES: Record<string, FeatureTheme> = {
     background: "#173c2c",
     accent: "#dbf4aa",
     accentInk: "#173c2c",
-    motif: "linear-gradient(90deg, #ffffff1c 1px, transparent 1px), linear-gradient(#ffffff1c 1px, transparent 1px)",
+    motif: "radial-gradient(circle at 78% 38%, #a8d88924, transparent 58%)",
     format: "split",
     label: "A place made legible",
     overviewHeading: "A complex campus, one clear path in.",
@@ -200,13 +201,16 @@ export function FeaturedProjectPage({ project }: { project: Project }) {
   const heroStyle: CSSProperties = { backgroundColor: theme.background }
   const motifStyle: CSSProperties = {
     backgroundImage: theme.motif,
-    backgroundSize: project.slug === "indus-best-mega-food-park" ? "42px 42px" : undefined,
   }
 
   return (
     <article>
       <header className="relative isolate overflow-hidden text-white" style={heroStyle}>
-        <div className="pointer-events-none absolute inset-0 opacity-70" style={motifStyle} aria-hidden="true" />
+        {project.slug === "indus-best-mega-food-park" ? (
+          <ProjectCardWaveBackground slug={project.slug} variant="hero" />
+        ) : (
+          <div className="pointer-events-none absolute inset-0 opacity-70" style={motifStyle} aria-hidden="true" />
+        )}
         <div className="pointer-events-none absolute -right-28 -bottom-52 size-[34rem] rounded-full border border-white/20" aria-hidden="true" />
         <div className="pointer-events-none absolute -right-12 -bottom-36 size-[27rem] rounded-full border border-white/15" aria-hidden="true" />
 

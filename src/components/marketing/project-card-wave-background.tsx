@@ -64,14 +64,23 @@ const darkPalette: WavePalette = {
   accent: "rgba(70, 156, 114, 0.16)",
 }
 
+const indusHeroPalette: WavePalette = {
+  background: "#173c2c",
+  wave: "#65946d",
+  hover: "#dbf4aa",
+  accent: "rgba(172, 220, 139, 0.16)",
+}
+
 /** Same ShapeWaves treatment as the large case-study visuals, sized for a compact card. */
-export function ProjectCardWaveBackground({ slug }: { slug: string }) {
+export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: string; variant?: "card" | "hero" }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [nearViewport, setNearViewport] = useState(false)
   const canAnimate = useCanAnimate()
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
-  const palette = isDark ? darkPalette : lightPalettes[slug] ?? defaultLightPalette
+  const palette = variant === "hero"
+    ? indusHeroPalette
+    : isDark ? darkPalette : lightPalettes[slug] ?? defaultLightPalette
 
   useEffect(() => {
     const root = rootRef.current
@@ -86,15 +95,22 @@ export function ProjectCardWaveBackground({ slug }: { slug: string }) {
 
   return (
     <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor: palette.background }} aria-hidden>
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 50%, ${palette.accent}, transparent 60%), radial-gradient(${palette.wave} 0.5px, transparent 0.5px)`,
-          backgroundSize: "100% 100%, 16px 16px",
-        }}
-      />
+      {variant === "hero" ? (
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: `radial-gradient(circle at 78% 38%, ${palette.accent}, transparent 58%)` }}
+        />
+      ) : (
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage: `radial-gradient(circle at 50% 50%, ${palette.accent}, transparent 60%), radial-gradient(${palette.wave} 0.5px, transparent 0.5px)`,
+            backgroundSize: "100% 100%, 16px 16px",
+          }}
+        />
+      )}
       {nearViewport && canAnimate ? (
-        <div className="absolute inset-0 opacity-75">
+        <div className={variant === "hero" ? "absolute inset-0 opacity-50" : "absolute inset-0 opacity-75"}>
           <Suspense fallback={null}>
             <ShapeWaves
               shapes="mixed"
@@ -118,7 +134,9 @@ export function ProjectCardWaveBackground({ slug }: { slug: string }) {
           </Suspense>
         </div>
       ) : null}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(17,28,25,0.9)_0%,rgba(17,28,25,0.65)_36%,rgba(17,28,25,0)_100%)]" />
+      <div className={variant === "hero"
+        ? "absolute inset-0 bg-[linear-gradient(90deg,rgba(23,60,44,0.72),rgba(23,60,44,0.32)_70%,rgba(23,60,44,0.08))]"
+        : "absolute inset-0 bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.8)_36%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_44%_70%_at_50%_50%,rgba(17,28,25,0.9)_0%,rgba(17,28,25,0.65)_36%,rgba(17,28,25,0)_100%)]"} />
       <div className="absolute inset-x-0 top-0 h-px bg-white/90 dark:bg-white/10" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-black/[0.04] dark:bg-white/5" />
     </div>
