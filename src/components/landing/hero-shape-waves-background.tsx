@@ -1,5 +1,4 @@
-import { Suspense, lazy, useRef } from "react"
-import { useTheme } from "next-themes"
+import { Suspense, lazy, useEffect, useRef, useState } from "react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { mixBrandColors, tintBrandColor, useBrandColors } from "@/hooks/use-brand-colors"
@@ -9,6 +8,48 @@ import { useInView } from "@/hooks/use-in-view"
 import { MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 
 const ShapeWaves = lazy(() => import("@/components/marketing/ShapeWaves"))
+
+type ColorMode = "light" | "dark"
+
+function readDocumentColorMode(): ColorMode {
+  if (typeof window === "undefined") return "light"
+
+  const root = document.documentElement
+  if (root.classList.contains("dark")) return "dark"
+  if (root.classList.contains("light")) return "light"
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light"
+}
+
+/**
+ * next-themes applies the system class after hydration. Reading and observing the
+ * document keeps WebGPU surfaces aligned during that initial handoff as well.
+ */
+function useDocumentColorMode(): ColorMode {
+  const [mode, setMode] = useState<ColorMode>(readDocumentColorMode)
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
+    const sync = () => setMode(readDocumentColorMode())
+    const observer = new MutationObserver(sync)
+
+    sync()
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+    media.addEventListener("change", sync)
+
+    return () => {
+      observer.disconnect()
+      media.removeEventListener("change", sync)
+    }
+  }, [])
+
+  return mode
+}
 
 /** Full-bleed version of the ShapeWaves surface used by project and case-study cards. */
 type ShapeFormation = {
@@ -29,11 +70,8 @@ export function HeroShapeWavesBackground({
   const inView = useInView(rootRef, { rootMargin: "160px", initialInView: true })
   const canAnimate = useCanAnimate()
   const { primary, secondary } = useBrandColors()
-  const { resolvedTheme } = useTheme()
   const mounted = useDeferredMount(active && inView && canAnimate)
-  // AppearanceProvider can update the document class before next-themes publishes
-  // its resolved value. The WebGL canvas must follow the rendered document mode.
-  const isDark = resolvedTheme === "dark" || (typeof document !== "undefined" && document.documentElement.classList.contains("dark"))
+  const isDark = useDocumentColorMode() === "dark"
   const waveColor = isDark
     ? mixBrandColors(primary, secondary, 0.7)
     : tintBrandColor(mixBrandColors(primary, secondary, 0.55), 0.68)
