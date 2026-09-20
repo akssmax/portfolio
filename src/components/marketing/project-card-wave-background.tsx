@@ -57,11 +57,20 @@ const defaultLightPalette: WavePalette = {
   accent: "rgba(100, 174, 140, 0.16)",
 }
 
-const darkPalette: WavePalette = {
-  background: "#121315",
-  wave: "#4b4d52",
-  hover: "#f5f5f5",
-  accent: "rgba(255, 255, 255, 0.11)",
+const darkPalettes: Record<string, WavePalette> = {
+  "ion-workspace": { background: "#151a11", wave: "#60783c", hover: "#c6f33d", accent: "rgba(167, 191, 53, 0.2)" },
+  "indus-best-mega-food-park": { background: "#111b14", wave: "#52834b", hover: "#a9d96c", accent: "rgba(120, 175, 69, 0.2)" },
+  postforge: { background: "#211411", wave: "#905347", hover: "#ff9e86", accent: "rgba(239, 128, 106, 0.2)" },
+  rupeelens: { background: "#101d1d", wave: "#347b70", hover: "#7ae2ca", accent: "rgba(57, 180, 154, 0.2)" },
+  "100x-landing-page": { background: "#1a1422", wave: "#75528c", hover: "#d9adff", accent: "rgba(165, 121, 206, 0.2)" },
+  "resume-builder": { background: "#101a14", wave: "#3d846b", hover: "#8be0b7", accent: "rgba(83, 180, 137, 0.2)" },
+}
+
+const defaultDarkPalette: WavePalette = {
+  background: "#141817",
+  wave: "#477463",
+  hover: "#9ed7c1",
+  accent: "rgba(101, 174, 140, 0.18)",
 }
 
 const heroPalettes: Record<string, WavePalette> = {
@@ -88,7 +97,7 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
   const isDark = resolvedTheme === "dark"
   const palette = variant === "hero"
     ? heroPalettes[slug] ?? defaultHeroPalette
-    : isDark ? darkPalette : lightPalettes[slug] ?? defaultLightPalette
+    : isDark ? darkPalettes[slug] ?? defaultDarkPalette : lightPalettes[slug] ?? defaultLightPalette
 
   useEffect(() => {
     const root = rootRef.current
@@ -100,14 +109,6 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
     observer.observe(root)
     return () => observer.disconnect()
   }, [])
-
-  if (isDark && variant === "card") {
-    return (
-      <div ref={rootRef} className="pointer-events-none absolute inset-0 rounded-2xl border border-white/10 bg-[#121315]" aria-hidden>
-        <div className="absolute inset-x-0 top-0 h-px bg-white/5" />
-      </div>
-    )
-  }
 
   return (
     <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor: palette.background }} aria-hidden>

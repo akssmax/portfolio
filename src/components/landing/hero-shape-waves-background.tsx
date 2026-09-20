@@ -16,19 +16,30 @@ type ShapeFormation = {
   value: number
 }
 
-export function HeroShapeWavesBackground({ active = true, formation }: { active?: boolean; formation?: ShapeFormation }) {
+export function HeroShapeWavesBackground({
+  active = true,
+  formation,
+  surface = "hero",
+}: {
+  active?: boolean
+  formation?: ShapeFormation
+  surface?: "hero" | "footer"
+}) {
   const rootRef = useRef<HTMLDivElement>(null)
   const inView = useInView(rootRef, { rootMargin: "160px", initialInView: true })
   const canAnimate = useCanAnimate()
   const { primary, secondary } = useBrandColors()
   const { resolvedTheme } = useTheme()
   const mounted = useDeferredMount(active && inView && canAnimate)
-  const isDark = resolvedTheme === "dark"
+  // AppearanceProvider can update the document class before next-themes publishes
+  // its resolved value. The WebGL canvas must follow the rendered document mode.
+  const isDark = resolvedTheme === "dark" || (typeof document !== "undefined" && document.documentElement.classList.contains("dark"))
   const waveColor = isDark
     ? mixBrandColors(primary, secondary, 0.7)
     : tintBrandColor(mixBrandColors(primary, secondary, 0.55), 0.68)
   const hoverColor = isDark ? primary : tintBrandColor(primary, 0.3)
-  const backgroundColor = isDark ? "#101113" : "#fbfdfc"
+  const backgroundColor = surface === "footer" ? (isDark ? "#000000" : "#ffffff") : isDark ? "#101113" : "#fbfdfc"
+  const overlayColor = surface === "footer" ? (isDark ? "0,0,0" : "255,255,255") : isDark ? "16,17,19" : "255,255,255"
 
   return (
     <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor }} aria-hidden>
@@ -66,8 +77,11 @@ export function HeroShapeWavesBackground({ active = true, formation }: { active?
           </Suspense>
         </ErrorBoundary>
       ) : null}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.76)_38%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,rgba(16,17,19,0.9)_0%,rgba(16,17,19,0.65)_38%,rgba(16,17,19,0)_100%)]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/5 via-transparent to-background/65" />
+      <div
+        className="absolute inset-0"
+        style={{ backgroundImage: `radial-gradient(ellipse 45% 60% at 50% 50%, rgba(${overlayColor}, 0.94) 0%, rgba(${overlayColor}, 0.76) 38%, rgba(${overlayColor}, 0) 100%)` }}
+      />
+      <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(to bottom, rgba(${overlayColor}, 0.05), transparent, rgba(${overlayColor}, 0.65))` }} />
     </div>
   )
 }

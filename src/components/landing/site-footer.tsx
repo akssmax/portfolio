@@ -34,7 +34,7 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
   const { ref: footerRef, inView: footerInView } = useInView({ rootMargin: "300px" })
 
   return (
-    <footer ref={footerRef} className={`relative overflow-hidden bg-background ${hasTopBorder ? "border-t border-border" : ""}`}>
+    <footer ref={footerRef} className={`relative overflow-hidden bg-white dark:bg-black ${hasTopBorder ? "border-t border-border" : ""}`}>
       {/* Glowing Gradient Background */}
       {footerGradient !== "none" && footerInView && (
         <div className="absolute inset-x-0 bottom-0 h-[400px] pointer-events-none -z-10 overflow-hidden opacity-50 dark:opacity-75">
