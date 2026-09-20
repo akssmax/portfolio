@@ -27,8 +27,8 @@ function readDocumentColorMode(): ColorMode {
  * next-themes applies the system class after hydration. Reading and observing the
  * document keeps WebGPU surfaces aligned during that initial handoff as well.
  */
-function useDocumentColorMode(): ColorMode {
-  const [mode, setMode] = useState<ColorMode>(readDocumentColorMode)
+function useDocumentColorMode(): ColorMode | null {
+  const [mode, setMode] = useState<ColorMode | null>(null)
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)")
@@ -71,7 +71,8 @@ export function HeroShapeWavesBackground({
   const canAnimate = useCanAnimate()
   const { primary, secondary } = useBrandColors()
   const mounted = useDeferredMount(active && inView && canAnimate)
-  const isDark = useDocumentColorMode() === "dark"
+  const colorMode = useDocumentColorMode()
+  const isDark = colorMode === "dark"
   const waveColor = isDark
     ? mixBrandColors(primary, secondary, 0.7)
     : tintBrandColor(mixBrandColors(primary, secondary, 0.55), 0.68)
@@ -80,16 +81,24 @@ export function HeroShapeWavesBackground({
   const overlayColor = surface === "footer" ? (isDark ? "0,0,0" : "255,255,255") : isDark ? "16,17,19" : "255,255,255"
 
   return (
-    <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor }} aria-hidden>
-      <div
-        className="absolute inset-0 opacity-35"
-        style={{ backgroundImage: `radial-gradient(${waveColor} 0.6px, transparent 0.6px)`, backgroundSize: "16px 16px" }}
-      />
-      {mounted ? (
+    <div
+      ref={rootRef}
+      className="pointer-events-none absolute inset-0 overflow-hidden bg-[#fbfdfc] dark:bg-[#101113]"
+      style={colorMode ? { backgroundColor } : undefined}
+      aria-hidden
+    >
+      {colorMode ? (
+        <div
+          className="absolute inset-0 opacity-35"
+          style={{ backgroundImage: `radial-gradient(${waveColor} 0.6px, transparent 0.6px)`, backgroundSize: "16px 16px" }}
+        />
+      ) : null}
+      {mounted && colorMode ? (
         <ErrorBoundary title="Background animation failed" showHeader={false}>
           <Suspense fallback={null}>
             <div className="absolute inset-0 opacity-75">
               <ShapeWaves
+                key={`${surface}-${colorMode}`}
                 shapes="mixed"
                 cellSize={16}
                 dotSize={0.66}
@@ -115,11 +124,15 @@ export function HeroShapeWavesBackground({
           </Suspense>
         </ErrorBoundary>
       ) : null}
-      <div
-        className="absolute inset-0"
-        style={{ backgroundImage: `radial-gradient(ellipse 45% 60% at 50% 50%, rgba(${overlayColor}, 0.94) 0%, rgba(${overlayColor}, 0.76) 38%, rgba(${overlayColor}, 0) 100%)` }}
-      />
-      <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(to bottom, rgba(${overlayColor}, 0.05), transparent, rgba(${overlayColor}, 0.65))` }} />
+      {colorMode ? (
+        <>
+          <div
+            className="absolute inset-0"
+            style={{ backgroundImage: `radial-gradient(ellipse 45% 60% at 50% 50%, rgba(${overlayColor}, 0.94) 0%, rgba(${overlayColor}, 0.76) 38%, rgba(${overlayColor}, 0) 100%)` }}
+          />
+          <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(to bottom, rgba(${overlayColor}, 0.05), transparent, rgba(${overlayColor}, 0.65))` }} />
+        </>
+      ) : null}
     </div>
   )
 }
