@@ -38,7 +38,7 @@ function ProjectsShowcaseGroup({
         "relative z-10 pb-20 sm:pb-24 [content-visibility:auto] [contain-intrinsic-size:auto_900px]",
         compactTop ? "pt-8 sm:pt-10" : "pt-20 sm:pt-24",
         variant === "section"
-          ? "border-t border-border/80 bg-section text-section-foreground"
+          ? "border-t border-border/80 bg-section text-section-foreground dark:bg-background"
           : "bg-muted/30"
       )}
     >

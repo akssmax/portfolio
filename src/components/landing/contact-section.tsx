@@ -34,6 +34,9 @@ export interface CtaSectionProps {
   topCutoutPosition?: CtaSectionPosition
   bottomCutoutPosition?: CtaSectionPosition
 
+  /** Show the decorative top/bottom edge lines and cutouts. */
+  showBorders?: boolean
+
   // Size configuration
   m3Size?: number
   dubWidth?: number
@@ -60,6 +63,7 @@ export function CtaSection({
   bottomCutoutPosition = "center",
   m3Size = 72,
   dubWidth = 320,
+  showBorders = true,
 }: CtaSectionProps) {
   const shouldReduceMotion = useReducedMotion()
   const fullMotion = useFullMotion()
@@ -116,7 +120,7 @@ export function CtaSection({
       className={`relative overflow-hidden bg-primary text-primary-foreground dark:bg-[#111214] dark:text-white ${className || ""}`}
     >
       {/* --- TOP EDGE DECORATIONS --- */}
-      {topCutout && variant === "dub-notch" && (
+      {showBorders && topCutout && variant === "dub-notch" && (
         <div className="absolute top-0 left-0 right-0 flex items-start pointer-events-none z-10" aria-hidden>
           <div className={`h-px bg-primary/30 ${
             topCutoutPosition === "left" ? "w-8 sm:w-16" : "flex-1"
@@ -131,7 +135,7 @@ export function CtaSection({
         </div>
       )}
 
-      {topCutout && isM3Shape && (
+      {showBorders && topCutout && isM3Shape && (
         <>
           {/* Straight line spanning the entire width */}
           <div className="absolute top-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
@@ -141,13 +145,13 @@ export function CtaSection({
       )}
 
       {/* Fallback/straight top border when top cutout is disabled or variant is minimal */}
-      {(variant === "minimal" || (!topCutout && !isM3Shape)) && (
+      {showBorders && (variant === "minimal" || (!topCutout && !isM3Shape)) && (
         <div className="absolute top-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
       )}
 
 
       {/* --- BOTTOM EDGE DECORATIONS --- */}
-      {bottomCutout && variant === "dub-notch" && (
+      {showBorders && bottomCutout && variant === "dub-notch" && (
         <div className="absolute bottom-0 left-0 right-0 flex items-start pointer-events-none z-10 transform scale-y-[-1]" aria-hidden>
           <div className={`h-px bg-primary/30 ${
             bottomCutoutPosition === "left" ? "w-8 sm:w-16" : "flex-1"
@@ -162,7 +166,7 @@ export function CtaSection({
         </div>
       )}
 
-      {bottomCutout && isM3Shape && (
+      {showBorders && bottomCutout && isM3Shape && (
         <>
           {/* Straight line spanning the entire width */}
           <div className="absolute bottom-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
@@ -172,7 +176,7 @@ export function CtaSection({
       )}
 
       {/* Fallback/straight bottom border when bottom cutout is disabled or variant is minimal */}
-      {(variant === "minimal" || (!bottomCutout && !isM3Shape)) && (
+      {showBorders && (variant === "minimal" || (!bottomCutout && !isM3Shape)) && (
         <div className="absolute bottom-0 left-0 right-0 h-px bg-primary/30 z-10 pointer-events-none" aria-hidden />
       )}
 
@@ -315,6 +319,7 @@ export function ContactSection({
   bottomCutoutPosition = "center",
   m3Size = 72,
   dubWidth = 320,
+  showBorders = true,
 }: {
   variant?: CtaSectionVariant
   showGithubActivity?: boolean
@@ -324,6 +329,7 @@ export function ContactSection({
   bottomCutoutPosition?: CtaSectionPosition
   m3Size?: number
   dubWidth?: number
+  showBorders?: boolean
 }) {
   return (
     <CtaSection
@@ -335,6 +341,7 @@ export function ContactSection({
       bottomCutoutPosition={bottomCutoutPosition}
       m3Size={m3Size}
       dubWidth={dubWidth}
+      showBorders={showBorders}
     />
   )
 }

@@ -363,7 +363,7 @@ function Landing1IndexPage() {
       <div ref={contactRef}>
         {contactInView ? (
           <React.Suspense fallback={null}>
-            <LazyContactSection bottomCutout={true} showGithubActivity />
+            <LazyContactSection bottomCutout={true} showBorders={false} showGithubActivity />
           </React.Suspense>
         ) : null}
       </div>

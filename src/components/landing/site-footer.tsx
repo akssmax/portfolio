@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand/logo"
 import { FooterMonogramWaves } from "@/components/landing/footer-monogram-waves"
 import { FooterRunnerSection } from "@/components/landing/footer-runner-section"
 import { PrideFlag } from "@/components/landing/pride-flag"
+import { ReduceMotionToggle } from "@/components/landing/reduce-motion-toggle"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { useInView } from "@/hooks/use-in-view"
 import { profile } from "@/lib/profile"
@@ -115,6 +116,7 @@ export function SiteFooter({ hasTopBorder = true }: SiteFooterProps) {
                 </a>
               ))}
             </nav>
+            <ReduceMotionToggle />
           </div>
         </div>
 

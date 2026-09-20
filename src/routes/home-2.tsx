@@ -148,7 +148,7 @@ function HomePage() {
           <SkillsSection />
         </ErrorBoundary>
         <ErrorBoundary title="Contact section failed" showHeader={false}>
-          <ContactSection bottomCutout={true} />
+          <ContactSection bottomCutout={true} showBorders={false} />
         </ErrorBoundary>
       </main>
       <SiteFooter hasTopBorder={false} />

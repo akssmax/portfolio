@@ -1,5 +1,4 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react"
-import { useTheme } from "next-themes"
 
 import type { BentoSize } from "@/lib/projects/bento-placements"
 import type { ProjectCard } from "@/lib/sanity/types"
@@ -7,6 +6,7 @@ import { KodoLogo } from "@/components/logos/kodo-logo"
 import { UnloggedLogo } from "@/components/logos/unlogged-logo"
 import { cn } from "@/lib/utils"
 import { useCanAnimate } from "@/hooks/use-can-animate"
+import { useDocumentColorMode } from "@/hooks/use-document-color-mode"
 
 const ShapeWaves = lazy(() => import("./ShapeWaves"))
 
@@ -77,8 +77,8 @@ export function CaseStudyFeatureVisual({
   const rootRef = useRef<HTMLDivElement>(null)
   const [nearViewport, setNearViewport] = useState(false)
   const canAnimate = useCanAnimate()
-  const { resolvedTheme } = useTheme()
-  const palette = resolvedTheme === "dark"
+  const colorMode = useDocumentColorMode()
+  const palette = colorMode === "dark"
     ? darkPalettes[project.slug] ?? darkPalettes.kodo
     : palettes[project.slug] ?? palettes.kodo
 
@@ -97,23 +97,25 @@ export function CaseStudyFeatureVisual({
     <div
       ref={rootRef}
       className={cn(
-        "group/case-visual relative isolate w-full overflow-hidden rounded-xl border border-black/[0.06] dark:border-white/10 contain-paint",
+        "group/case-visual relative isolate w-full overflow-hidden rounded-xl border border-black/[0.06] bg-[#faf5fa] contain-paint dark:border-white/10 dark:bg-[#111113]",
         size === "wide"
           ? "h-[290px] sm:h-[340px] lg:h-[390px]"
           : "h-[260px] sm:h-[300px]",
         className
       )}
-      style={{ backgroundColor: palette.background }}
+      style={colorMode ? { backgroundColor: palette.background } : undefined}
     >
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 50%, ${palette.accent}, transparent 60%), radial-gradient(${palette.wave} 0.5px, transparent 0.5px)`,
-          backgroundSize: "100% 100%, 16px 16px",
-        }}
-        aria-hidden
-      />
-      {nearViewport && canAnimate && (
+      {colorMode ? (
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage: `radial-gradient(circle at 50% 50%, ${palette.accent}, transparent 60%), radial-gradient(${palette.wave} 0.5px, transparent 0.5px)`,
+            backgroundSize: "100% 100%, 16px 16px",
+          }}
+          aria-hidden
+        />
+      ) : null}
+      {colorMode && nearViewport && canAnimate && (
         <div
           className="pointer-events-none absolute inset-0 opacity-75"
           aria-hidden

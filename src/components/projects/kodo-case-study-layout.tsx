@@ -1,10 +1,5 @@
-import { Fragment, Suspense, lazy, useState } from "react"
-import {
-  ArrowDown,
-  ArrowUpRight,
-  ImagePlus,
-} from "lucide-react"
-import { useTheme } from "next-themes"
+import { Fragment } from "react"
+import { ArrowDown, ArrowUpRight, ImagePlus } from "lucide-react"
 
 import type {
   KodoChapter,
@@ -13,10 +8,8 @@ import type {
 } from "@/lib/projects/kodo-case-study"
 import { KodoLogo } from "@/components/logos/kodo-logo"
 import { CaseStudyBackLink } from "@/components/projects/case-study-back-link"
-import { useAnimationProfile } from "@/hooks/use-can-animate"
+import { ProjectCardWaveBackground } from "@/components/marketing/project-card-wave-background"
 import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
-
-const ShapeWaves = lazy(() => import("@/components/marketing/ShapeWaves"))
 
 const sectionClass = "mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10"
 
@@ -215,47 +208,9 @@ function KodoPrototypeSection({ prototype }: { prototype: KodoPrototype }) {
 }
 
 function KodoHero() {
-  const { fullMotion } = useAnimationProfile()
-  const { resolvedTheme } = useTheme()
-  const [gpuFailed, setGpuFailed] = useState(false)
-  const dark = resolvedTheme === "dark"
-
   return (
     <header className="relative isolate overflow-hidden bg-[#faf5fa] text-[#211c22] dark:bg-[#1c1920] dark:text-[#f5edf3]">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-25 dark:opacity-15"
-        style={{
-          backgroundImage: "radial-gradient(#d7c6d3 0.8px, transparent 0.8px)",
-          backgroundSize: "17px 17px",
-        }}
-        aria-hidden="true"
-      />
-      {fullMotion && !gpuFailed ? (
-        <div
-          className="pointer-events-none absolute inset-0 opacity-15 sm:opacity-20 dark:opacity-15"
-          aria-hidden="true"
-        >
-          <Suspense fallback={null}>
-            <ShapeWaves
-              color={dark ? "#826c80" : "#bca5b8"}
-              hoverColor={dark ? "#b983a5" : "#d486ac"}
-              backgroundColor={dark ? "#1c1920" : "#faf5fa"}
-              shapes="mixed"
-              cellSize={15}
-              dotSize={0.65}
-              speed={0.28}
-              scale={1.25}
-              contrast={0.85}
-              brightness={0.4}
-              fade={0.65}
-              interactive={false}
-              glow={0}
-              intro={false}
-              onError={() => setGpuFailed(true)}
-            />
-          </Suspense>
-        </div>
-      ) : null}
+      <ProjectCardWaveBackground slug="kodo" variant="hero" />
       <div
         className={`relative ${sectionClass} pt-8 pb-18 sm:pt-12 sm:pb-24 lg:pb-32`}
       >
@@ -275,7 +230,7 @@ function KodoHero() {
             Feb 2024 — Nov 2025
           </span>
         </div>
-        <h1 className="mt-10 max-w-5xl font-heading text-[clamp(3.3rem,7vw,7rem)] leading-[0.98] font-semibold tracking-[-0.06em]">
+        <h1 className="mt-10 max-w-5xl font-heading text-[clamp(2.5rem,4.5vw,4.5rem)] leading-[1.04] font-semibold tracking-[-0.04em]">
           {kodoCaseStudy.title}
         </h1>
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[#574b56] sm:text-2xl dark:text-[#e0d2dc]">

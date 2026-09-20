@@ -4,16 +4,23 @@ import { ArrowRight } from "lucide-react"
 import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
+import { CaseStudyStoryLayout } from "@/components/projects/case-study-story-layout"
 import { KodoCaseStudyLayout } from "@/components/projects/kodo-case-study-layout"
 import { FeaturedProjectPage } from "@/components/projects/featured-project-page"
+import { UnloggedLogo } from "@/components/logos/unlogged-logo"
 import { SiteHeader } from "@/components/landing/site-header"
 import { ContactSection } from "@/components/landing/contact-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
 import { getAllWorkSections, getProjectBySlug } from "@/lib/sanity/projects"
 import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
+import {
+  TULR_PALETTE,
+  UNLOGGED_PALETTE,
+  tulrCaseStudy,
+  unloggedCaseStudy,
+} from "@/lib/projects/case-study-story"
 import { siteUrl } from "@/lib/site-url"
-
 
 export const Route = createFileRoute("/projects/$slug")({
   validateSearch: (
@@ -42,7 +49,8 @@ export const Route = createFileRoute("/projects/$slug")({
     const title =
       (isKodo
         ? "Kodo — Website, Corporate Cards & P2P Workspace | Akshay Saini"
-        : isFeaturedProject && (!projectMetaTitle || /case study/i.test(projectMetaTitle))
+        : isFeaturedProject &&
+            (!projectMetaTitle || /case study/i.test(projectMetaTitle))
           ? `${project.title} — Featured Project | Akshay Saini`
           : projectMetaTitle) ??
       (project
@@ -105,8 +113,7 @@ function ProjectDetailPage() {
         <main className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-semibold">Project not found</h1>
           <p className="mt-2 text-muted-foreground">
-            This project doesn&apos;t exist or hasn&apos;t been published
-            yet.
+            This project doesn&apos;t exist or hasn&apos;t been published yet.
           </p>
           <Button asChild variant="outline" className="mt-6">
             <Link to="/projects">Back to projects</Link>
@@ -139,6 +146,28 @@ function ProjectDetailPage() {
       <main className="border-t border-border">
         {project.slug === "kodo" ? (
           <KodoCaseStudyLayout />
+        ) : project.slug === "unlogged" ? (
+          <CaseStudyStoryLayout
+            study={unloggedCaseStudy}
+            palette={UNLOGGED_PALETTE}
+            waveSlug="unlogged"
+            logo={
+              <UnloggedLogo className="h-7 w-auto text-[#17202b] dark:text-white" />
+            }
+          />
+        ) : project.slug === "tulr" ? (
+          <CaseStudyStoryLayout
+            study={tulrCaseStudy}
+            palette={TULR_PALETTE}
+            waveSlug="tulr"
+            logo={
+              <img
+                src="/companies/tulr.svg"
+                alt="Tulr"
+                className="block h-8 w-auto dark:brightness-0 dark:invert"
+              />
+            }
+          />
         ) : project.workSection === "recentProject" ? (
           <FeaturedProjectPage project={project} />
         ) : (
@@ -178,7 +207,7 @@ function ProjectDetailPage() {
         ) : null}
       </main>
 
-      <ContactSection bottomCutout={true} />
+      <ContactSection bottomCutout={true} showBorders={false} />
       <SiteFooter hasTopBorder={false} />
     </div>
   )
