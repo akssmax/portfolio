@@ -73,7 +73,6 @@ export function ProjectsShowcase({
           description="Independent builds and freelance client work, from design to production."
           projects={recentProjects}
           compactTop
-          primaryLink="case-study"
         />
         <ProjectsShowcaseGroup
           id="case-studies"

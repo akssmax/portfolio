@@ -109,7 +109,7 @@ export function FeatureCard({
         </motion.article>
       </HoverCardTrigger>
       {previewSrc ? (
-        <HoverCardContent side="bottom" align="end" sideOffset={12} style={{ animation: "none" }} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
+        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
           <img src={previewSrc} alt={previewAlt ?? `${title} project screenshot`} loading="lazy" className="aspect-[16/10] w-full rounded-lg bg-muted object-cover object-top" />
           <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{title} · project preview</p>
         </HoverCardContent>

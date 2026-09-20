@@ -65,7 +65,7 @@ export function FooterMonogramWaves() {
 
   return (
     <div
-      className="relative h-52 overflow-hidden bg-white dark:bg-black sm:h-72"
+      className="relative h-52 cursor-pointer overflow-hidden bg-white dark:bg-black sm:h-72"
       aria-hidden="true"
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={handlePointerLeave}
