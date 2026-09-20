@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react"
-import { useTheme } from "next-themes"
 import { useCanAnimate } from "@/hooks/use-can-animate"
+import { useDocumentColorMode } from "@/hooks/use-document-color-mode"
 
 const ShapeWaves = lazy(() => import("./ShapeWaves"))
 
@@ -93,8 +93,8 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
   const rootRef = useRef<HTMLDivElement>(null)
   const [nearViewport, setNearViewport] = useState(false)
   const canAnimate = useCanAnimate()
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const colorMode = useDocumentColorMode()
+  const isDark = colorMode === "dark"
   const palette = variant === "hero"
     ? heroPalettes[slug] ?? defaultHeroPalette
     : isDark ? darkPalettes[slug] ?? defaultDarkPalette : lightPalettes[slug] ?? defaultLightPalette
@@ -111,13 +111,18 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
   }, [])
 
   return (
-    <div ref={rootRef} className="pointer-events-none absolute inset-0 overflow-hidden" style={{ backgroundColor: palette.background }} aria-hidden>
-      {variant === "hero" ? (
+    <div
+      ref={rootRef}
+      className="pointer-events-none absolute inset-0 overflow-hidden bg-[#f8faf9] dark:bg-[#141817]"
+      style={colorMode ? { backgroundColor: palette.background } : undefined}
+      aria-hidden
+    >
+      {colorMode && variant === "hero" ? (
         <div
           className="absolute inset-0"
           style={{ backgroundImage: `radial-gradient(circle at 78% 38%, ${palette.accent}, transparent 58%)` }}
         />
-      ) : (
+      ) : colorMode ? (
         <div
           className="absolute inset-0 opacity-40"
           style={{
@@ -125,8 +130,8 @@ export function ProjectCardWaveBackground({ slug, variant = "card" }: { slug: st
             backgroundSize: "100% 100%, 16px 16px",
           }}
         />
-      )}
-      {nearViewport && canAnimate ? (
+      ) : null}
+      {nearViewport && canAnimate && colorMode ? (
         <div className={variant === "hero" ? "absolute inset-0 opacity-50" : "absolute inset-0 opacity-75"}>
           <Suspense fallback={null}>
             <ShapeWaves

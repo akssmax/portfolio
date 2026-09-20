@@ -1,55 +1,14 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react"
+import { Suspense, lazy, useRef } from "react"
 
 import { ErrorBoundary } from "@/components/error-boundary"
 import { mixBrandColors, tintBrandColor, useBrandColors } from "@/hooks/use-brand-colors"
 import { useDeferredMount } from "@/hooks/use-deferred-mount"
+import { useDocumentColorMode } from "@/hooks/use-document-color-mode"
 import { useCanAnimate } from "@/hooks/use-can-animate"
 import { useInView } from "@/hooks/use-in-view"
 import { MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 
 const ShapeWaves = lazy(() => import("@/components/marketing/ShapeWaves"))
-
-type ColorMode = "light" | "dark"
-
-function readDocumentColorMode(): ColorMode {
-  if (typeof window === "undefined") return "light"
-
-  const root = document.documentElement
-  if (root.classList.contains("dark")) return "dark"
-  if (root.classList.contains("light")) return "light"
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light"
-}
-
-/**
- * next-themes applies the system class after hydration. Reading and observing the
- * document keeps WebGPU surfaces aligned during that initial handoff as well.
- */
-function useDocumentColorMode(): ColorMode | null {
-  const [mode, setMode] = useState<ColorMode | null>(null)
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)")
-    const sync = () => setMode(readDocumentColorMode())
-    const observer = new MutationObserver(sync)
-
-    sync()
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-    media.addEventListener("change", sync)
-
-    return () => {
-      observer.disconnect()
-      media.removeEventListener("change", sync)
-    }
-  }, [])
-
-  return mode
-}
 
 /** Full-bleed version of the ShapeWaves surface used by project and case-study cards. */
 type ShapeFormation = {
