@@ -35,13 +35,10 @@ export function FeatureCard({
   linkFrom,
   primaryLink = "live",
 }: FeatureCardProps) {
-  const [hovered, setHovered] = useState(false)
+  const [previewOpen, setPreviewOpen] = useState(false)
   const [focused, setFocused] = useState(false)
   const reduceMotion = !useCanAnimate()
-  const active = hovered || focused
-
-  const openPreview = () => setHovered(true)
-  const closePreview = () => setHovered(false)
+  const active = previewOpen || focused
 
   const theme = getProjectVisualTheme(slug)
   const Icon = theme.Icon
@@ -85,36 +82,34 @@ export function FeatureCard({
         </span>
         {description ? <span className="mt-1 block line-clamp-2 text-sm leading-snug text-muted-foreground">{description}</span> : null}
       </span>
-      <HoverCardTrigger asChild>
-        <span className="shrink-0">
-          <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover/card:text-primary" aria-hidden />
-        </span>
-      </HoverCardTrigger>
+      <span className="shrink-0">
+        <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover/card:text-primary" aria-hidden />
+      </span>
     </>
   )
 
   return (
-    <HoverCard open={active} openDelay={0} closeDelay={0}>
-      <motion.article
-        className={cn("group/card relative isolate overflow-hidden rounded-2xl bg-card shadow-sm transition-shadow hover:shadow-md focus-within:shadow-md", className)}
-        onHoverStart={openPreview}
-        onHoverEnd={closePreview}
-        onFocusCapture={() => setFocused(true)}
-        onBlurCapture={() => setFocused(false)}
-      >
-        <ProjectCardWaveBackground slug={slug} />
-        {opensLive ? (
-          <a href={liveHref} target="_blank" rel="noopener noreferrer" className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`Open ${title} live`}>
-            {mainContent}
-          </a>
-        ) : (
-          <Link {...caseStudyProps} className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`View ${title} case study`}>
-            {mainContent}
-          </Link>
-        )}
-      </motion.article>
+    <HoverCard openDelay={0} closeDelay={0} onOpenChange={setPreviewOpen}>
+      <HoverCardTrigger asChild>
+        <motion.article
+          className={cn("group/card relative isolate overflow-hidden rounded-2xl bg-card shadow-sm transition-shadow hover:shadow-md focus-within:shadow-md", className)}
+          onFocusCapture={() => setFocused(true)}
+          onBlurCapture={() => setFocused(false)}
+        >
+          <ProjectCardWaveBackground slug={slug} />
+          {opensLive ? (
+            <a href={liveHref} target="_blank" rel="noopener noreferrer" className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`Open ${title} live`}>
+              {mainContent}
+            </a>
+          ) : (
+            <Link {...caseStudyProps} className="relative flex min-h-28 items-center gap-4 rounded-2xl p-4 pr-5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:gap-5 sm:p-5" aria-label={`View ${title} case study`}>
+              {mainContent}
+            </Link>
+          )}
+        </motion.article>
+      </HoverCardTrigger>
       {previewSrc ? (
-        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} className="pointer-events-none hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
+        <HoverCardContent side="right" align="center" sideOffset={18} style={{ animation: "none" }} className="hidden w-[min(440px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-xl sm:block">
           <img src={previewSrc} alt={previewAlt ?? `${title} project screenshot`} loading="lazy" className="aspect-[16/10] w-full rounded-lg bg-muted object-cover object-top" />
           <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{title} · project preview</p>
         </HoverCardContent>
