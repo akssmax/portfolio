@@ -111,8 +111,10 @@ export function GithubActivityCard() {
   )
 
   useEffect(() => {
-    if (!data || !scrollRef.current) return
-    scrollRef.current.scrollLeft = scrollRef.current.scrollWidth
+    const el = scrollRef.current
+    if (!data || !el) return
+    const next = el.scrollWidth
+    if (el.scrollLeft !== next) el.scrollLeft = next
   }, [data])
 
   return (

@@ -4,33 +4,34 @@ import "@fontsource-variable/geist"
 import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import {
-  Sparkles,
+  ArrowUp,
+  Cpu,
+  FileUser,
+  IndianRupee,
+  Layout,
   MessageSquare,
-  Plus,
   Mic,
   MicOff,
-  ArrowUp,
-  X,
+  Plus,
   Search,
-  Layout,
+  Sparkles,
   Terminal,
-  FileUser,
-  Cpu,
-  IndianRupee,
+  X,
 } from "lucide-react"
+import { toast } from "sonner"
+import type { ProjectCard } from "@/lib/sanity/types"
 import { cn } from "@/lib/utils"
+import { BorderBeam } from "@/components/ui/border-beam"
 import {
   PROMPT_LAYOUT_TRANSITION,
   promptHeightTransition,
 } from "@/lib/motion-easing"
-
-export const CHAT_PROMPT_SHARED_LAYOUT_ID = "chat-prompt-input-container"
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition"
-import type { ProjectCard } from "@/lib/sanity/types"
 import { getFallbackProjectCards } from "@/lib/sanity/fallback-projects"
 import { getImageUrl } from "@/lib/sanity/image"
 import { usesAvatarCardCover } from "@/lib/projects/project-card-placeholder"
-import { toast } from "sonner"
+
+export const CHAT_PROMPT_SHARED_LAYOUT_ID = "chat-prompt-input-container"
 
 const PLACEHOLDER_CYCLE_MS = 3000
 
@@ -75,16 +76,20 @@ export type ChatPromptInputProps = Omit<React.ComponentProps<"div">, "onSubmit">
   onValueChange: (value: string) => void
   onSubmit: (value: string, mode: "gen-ui" | "chat") => void
   placeholder?: string
-  placeholders?: readonly string[]
+  placeholders?: ReadonlyArray<string>
   disabled?: boolean
   loading?: boolean
   mode?: "gen-ui" | "chat"
   onModeChange?: (mode: "gen-ui" | "chat") => void
   isModeDisabled?: boolean
-  projects?: ProjectCard[]
+  projects?: Array<ProjectCard>
   tone?: "default" | "on-media"
   /** adaptive: ChatGPT-style pill when idle, full panel when active. */
   variant?: "adaptive" | "expanded" | "minimal"
+  /** Hide the Chat / Gen UI switcher (submissions stay on the controlled mode). */
+  showModeToggle?: boolean
+  /** Magic UI border beam traveling along the input border. */
+  showBorderBeam?: boolean
 }
 
 type ChatPromptController = ReturnType<typeof useChatPromptInput>
@@ -102,6 +107,8 @@ function useChatPromptInput({
   isModeDisabled = false,
   projects,
   variant = "adaptive",
+  showModeToggle = true,
+  showBorderBeam = false,
 }: ChatPromptInputProps) {
   const [internalMode, setInternalMode] = React.useState<"gen-ui" | "chat">("chat")
   const mode = controlledMode ?? internalMode
@@ -192,7 +199,7 @@ function useChatPromptInput({
     }
   }, [disabled, isListening, loading, stopVoice])
 
-  const [attachedProjects, setAttachedProjects] = React.useState<ProjectCard[]>([])
+  const [attachedProjects, setAttachedProjects] = React.useState<Array<ProjectCard>>([])
   const [showOverlay, setShowOverlay] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [selectedIndex, setSelectedIndex] = React.useState(0)
@@ -405,6 +412,8 @@ function useChatPromptInput({
     disabled,
     loading,
     isModeDisabled,
+    showModeToggle,
+    showBorderBeam,
     isFocused,
     isVoiceSupported,
     isListening,
@@ -866,16 +875,18 @@ export function ChatPromptInputMinimal({
 }) {
   return (
     <div className={cn("relative", className)}>
-      <ModeToggleShell className="absolute bottom-full left-3 z-20 mb-2">
-        <ModeToggle
-          mode={controller.mode}
-          setMode={controller.setMode}
-          disabled={controller.disabled}
-          loading={controller.loading}
-          isModeDisabled={controller.isModeDisabled}
-          compact
-        />
-      </ModeToggleShell>
+      {controller.showModeToggle ? (
+        <ModeToggleShell className="absolute bottom-full left-3 z-20 mb-2">
+          <ModeToggle
+            mode={controller.mode}
+            setMode={controller.setMode}
+            disabled={controller.disabled}
+            loading={controller.loading}
+            isModeDisabled={controller.isModeDisabled}
+            compact
+          />
+        </ModeToggleShell>
+      ) : null}
 
       {controller.attachedProjects.length > 0 ? (
         <div className="mb-2 rounded-2xl border border-border/60 bg-background/90 p-1.5 shadow-sm backdrop-blur-sm">
@@ -886,7 +897,7 @@ export function ChatPromptInputMinimal({
       <PromptLayoutSurface
         sharedLayout
         className={cn(
-          "flex gap-1 rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "relative flex gap-1 overflow-hidden rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
           controller.isMultiline ? "items-end" : "items-center",
           onMedia
             ? "border-border/70 bg-background/90 backdrop-blur-md dark:bg-card/70"
@@ -918,6 +929,18 @@ export function ChatPromptInputMinimal({
           <SubmitButton controller={controller} />
         </div>
       </PromptLayoutSurface>
+
+      {controller.showBorderBeam ? (
+        <BorderBeam
+          duration={6}
+          size={64}
+          borderWidth={1.5}
+          colorFrom="#ffaa40"
+          colorTo="#9c40ff"
+          radius="1.75rem"
+          className="z-10"
+        />
+      ) : null}
     </div>
   )
 }
@@ -934,20 +957,23 @@ export function ChatPromptInputExpanded({
 }) {
   return (
     <div className={cn("relative w-full", className)}>
-      <ModeToggleShell className="absolute left-4 top-3 z-10">
-        <ModeToggle
-          mode={controller.mode}
-          setMode={controller.setMode}
-          disabled={controller.disabled}
-          loading={controller.loading}
-          isModeDisabled={controller.isModeDisabled}
-        />
-      </ModeToggleShell>
+      {controller.showModeToggle ? (
+        <ModeToggleShell className="absolute left-4 top-3 z-10">
+          <ModeToggle
+            mode={controller.mode}
+            setMode={controller.setMode}
+            disabled={controller.disabled}
+            loading={controller.loading}
+            isModeDisabled={controller.isModeDisabled}
+          />
+        </ModeToggleShell>
+      ) : null}
 
       <PromptLayoutSurface
         sharedLayout
         className={cn(
-          "w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 pt-12 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "relative w-full flex flex-col gap-3 overflow-hidden rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          controller.showModeToggle ? "pt-12" : "pt-2",
           onMedia &&
             "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
           controller.isFocused && "border-primary dark:border-primary bg-card/85",
@@ -977,6 +1003,18 @@ export function ChatPromptInputExpanded({
         </div>
       </div>
       </PromptLayoutSurface>
+
+      {controller.showBorderBeam ? (
+        <BorderBeam
+          duration={7}
+          size={120}
+          borderWidth={1.5}
+          colorFrom="#ffaa40"
+          colorTo="#9c40ff"
+          radius="var(--radius-2xl)"
+          className="z-10"
+        />
+      ) : null}
     </div>
   )
 }
@@ -984,12 +1022,20 @@ export function ChatPromptInputExpanded({
 export function ChatPromptInput({
   tone = "default",
   variant = "adaptive",
+  showModeToggle = true,
+  showBorderBeam = false,
   className,
   ...props
 }: ChatPromptInputProps) {
   const onMedia = tone === "on-media"
   const shouldReduceMotion = useReducedMotion()
-  const controller = useChatPromptInput({ ...props, tone, variant })
+  const controller = useChatPromptInput({
+    ...props,
+    tone,
+    variant,
+    showModeToggle,
+    showBorderBeam,
+  })
 
   const showMinimal =
     variant === "minimal" || (variant === "adaptive" && !controller.showExpanded)

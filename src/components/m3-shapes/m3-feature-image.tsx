@@ -24,6 +24,8 @@ type M3FeatureImageProps = {
   className?: string
   imageClassName?: string
   onMorphStart?: (nextIndex: number) => void
+  /** Fires once a morph has fully settled on `nextIndex` (also on reduced-motion swaps). */
+  onMorphEnd?: (nextIndex: number) => void
   /** When false, pauses auto-cycle and in-flight morph animations. */
   active?: boolean
 }
@@ -57,6 +59,7 @@ export function M3FeatureImage({
   className,
   imageClassName,
   onMorphStart,
+  onMorphEnd,
   active,
 }: M3FeatureImageProps) {
   const shouldReduceMotion = useReducedMotion()
@@ -137,8 +140,9 @@ export function M3FeatureImage({
       setImageMix(0)
       shapeProgress.set(0)
       imageProgress.set(0)
+      onMorphEnd?.(nextIndex)
     },
-    [imageProgress, items, shapeProgress],
+    [imageProgress, items, onMorphEnd, shapeProgress],
   )
 
   const cycle = useCallback(async () => {

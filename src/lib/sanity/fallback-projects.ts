@@ -1604,7 +1604,7 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-kodo",
-    title: "Kodo — Website, Cards & P2P Workspace",
+    title: "Kodo — Website, Cards & P2P",
     slug: "kodo",
     description:
       "Designing Kodo's public website, Corporate Cards, and new procure-to-pay workspace across 21 months, connected by a shared design system.",

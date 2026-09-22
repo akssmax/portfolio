@@ -165,7 +165,7 @@ export const customEntries: Array<DocEntry> = [
   ),
   entry(
     "hero-section",
-    "Landing page hero with headline and CTAs.",
+    "Landing page hero with rotating headline and ask-the-portfolio prompt.",
     "custom"
   ),
   entry(

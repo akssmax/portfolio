@@ -6,7 +6,7 @@ import { FeatureCardGrid } from "@/components/marketing/feature-card-grid"
 import { getProjectPreview } from "@/lib/projects/project-preview"
 import { ProjectsShowcase } from "@/components/marketing/projects-showcase"
 import { CtaSection, type CtaSectionVariant, type CtaSectionPosition } from "@/components/landing/contact-section"
-import { HeroSection } from "@/components/landing/hero-section"
+import { HeroRotatingCopy } from "@/components/landing/hero-variations"
 import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
 import { WorkSection } from "@/components/landing/work-section"
@@ -33,7 +33,7 @@ export function SiteHeaderDemo() {
 export function HeroSectionDemo() {
   return (
     <div className="w-full overflow-hidden rounded-lg border border-border">
-      <HeroSection />
+      <HeroRotatingCopy />
     </div>
   )
 }
