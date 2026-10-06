@@ -55,7 +55,7 @@ const chapterStarts = Object.fromEntries(
 
 function indexFor(stop?: string, scene?: string) {
   if (!stop) return 0
-  if (stop === "100x-bot" && scene === "finish") return deckSlides.length - 1
+  if ((stop === "freelancing" || stop === "100x-bot") && scene === "finish") return deckSlides.length - 1
   const match = deckSlides.findIndex(
     (slide) => slide.chapter?.id === stop && slide.kind === (scene || "intro")
   )
@@ -65,7 +65,7 @@ function indexFor(stop?: string, scene?: string) {
 function searchFor(index: number) {
   const slide = deckSlides[index]
   if (slide.kind === "opening") return {}
-  if (slide.kind === "finish") return { stop: "100x-bot", scene: "finish" }
+  if (slide.kind === "finish") return { stop: "freelancing", scene: "finish" }
   if (slide.kind === "intro") return { stop: slide.chapter?.id }
   return { stop: slide.chapter?.id, scene: slide.kind }
 }
@@ -95,7 +95,7 @@ export const Route = createFileRoute("/journey")({
     if (
       (scene === "work" && findStoryChapter(stop)?.features?.length) ||
       (scene === "people" && findStoryChapter(stop)?.collaborators?.length) ||
-      (scene === "finish" && stop === "100x-bot")
+      (scene === "finish" && (stop === "freelancing" || stop === "100x-bot"))
     ) {
       return { stop, scene }
     }

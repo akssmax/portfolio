@@ -693,6 +693,12 @@ export function OfficialHtmlResume({
         </OfficialSection>
       ) : null}
 
+      {document.interests?.length ? (
+        <OfficialSection title="Interests / Hobbies" sectionId="interests" brandColor={brandColor} display={display}>
+          <p className="text-[9.5px] text-neutral-800">{document.interests.join(" · ")}</p>
+        </OfficialSection>
+      ) : null}
+
       {document.languages?.length || linkParts.length ? (
         <div className={cn(sectionSpacingClass, "space-y-3")}>
           {document.languages?.length ? (

@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: S.sectionGap,
   },
   metaItem: {
-    marginBottom: 12,
+    marginBottom: 6,
   },
   metaItemLast: {
     marginBottom: 0,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
     color: "#525252",
     textAlign: "right",
-    maxWidth: 72,
+    maxWidth: 105,
     lineHeight: 1.3,
   },
   jobMeta: {
@@ -274,10 +274,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   bulletItem: {
-    marginBottom: 1.5,
+    marginBottom: 0.8,
     color: "#262626",
     fontSize: 9.5,
-    lineHeight: 1.38,
+    lineHeight: 1.25,
   },
   gridRow: {
     flexDirection: "row",
@@ -406,7 +406,7 @@ function Section({
     <View
       style={[
         styles.section,
-        { marginBottom: getPdfSectionMarginBottom(display) },
+        { marginBottom: getPdfSectionMarginBottom(display) * 0.5 },
         ...(style ? [style] : []),
       ]}
     >
@@ -562,7 +562,7 @@ function ExperienceListSection({
     <View
       style={[
         styles.section,
-        { marginBottom: getPdfSectionMarginBottom(display) },
+        { marginBottom: getPdfSectionMarginBottom(display) * 0.5 },
       ]}
     >
       {firstJob ? (
@@ -753,7 +753,7 @@ export function OfficialResumeLayout({
   const education = getOfficialEducation(document)
   const certifications = getOfficialCertifications(document)
   const linkParts = buildOfficialLinkParts(document)
-  const sectionGap = getPdfSectionMarginBottom(display)
+  const sectionGap = getPdfSectionMarginBottom(display) * 0.5
 
   return (
     <Page size="A4" style={[styles.page, { fontFamily }]}>
@@ -896,12 +896,19 @@ export function OfficialResumeLayout({
         </Section>
       ) : null}
 
+      {document.interests?.length ? (
+        <View wrap={false} style={{ marginBottom: sectionGap }}>
+          <Text style={[styles.sectionTitle, { color: brandColor }]}>Interests / Hobbies</Text>
+          <Text style={styles.inlineText}>{document.interests.join(" · ")}</Text>
+        </View>
+      ) : null}
+
       {document.languages?.length || linkParts.length ? (
-        <View style={[styles.metaCluster, { marginBottom: sectionGap }]}>
+        <View wrap={false} style={[styles.metaCluster, { marginBottom: sectionGap }]}>
           {document.languages?.length ? (
             <View style={linkParts.length ? styles.metaItem : styles.metaItemLast}>
               <Text>
-                <Text style={styles.inlineLabel}>Languages{"\n"}</Text>
+                <Text style={styles.inlineLabel}>Languages: </Text>
                 <Text style={styles.inlineText}>{formatLanguageLine(document.languages)}</Text>
               </Text>
             </View>
@@ -910,7 +917,7 @@ export function OfficialResumeLayout({
           {linkParts.length ? (
             <View style={styles.metaItemLast}>
               <Text style={styles.linksRow}>
-                <Text style={styles.inlineLabel}>Links{"\n"}</Text>
+                <Text style={styles.inlineLabel}>Links: </Text>
                 {linkParts.map((part, index) => (
                   <Text key={`${part.label}-link-${index}`}>
                     {index > 0 ? " | " : ""}

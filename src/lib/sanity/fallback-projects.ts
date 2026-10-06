@@ -196,7 +196,7 @@ export const fallbackProjects: Project[] = [
     title: "Indus Best Mega Food Park",
     slug: "indus-best-mega-food-park",
     description:
-      "Freelance redesign and custom build for a food-processing campus — clearer facilities, investor journeys, and enquiries.",
+      "Live in production · Freelance redesign and custom build for a food-processing campus — clearer facilities, investor journeys, and enquiries.",
     tag: "Client website",
     featured: true,
     workSection: "recentProject",
@@ -228,7 +228,7 @@ export const fallbackProjects: Project[] = [
           ),
           textBlock(
             "indus-context-2",
-            "This was a freelance redesign and custom-coded rebuild, covering the public website and a private content and enquiry workspace for the client team.",
+            "This was a freelance redesign and custom-coded rebuild, covering the public website and a private content and enquiry workspace for the client team. The website is live in production at https://www.indusbestmegafoodpark.com/.",
           ),
         ],
       },
@@ -295,8 +295,8 @@ export const fallbackProjects: Project[] = [
       {
         _type: "embed",
         _key: "indus-live-site",
-        url: "https://indus-best-mega-food.vercel.app/",
-        label: "View deployed site",
+        url: "https://www.indusbestmegafoodpark.com/",
+        label: "View production website",
         embedType: "link",
       },
     ],

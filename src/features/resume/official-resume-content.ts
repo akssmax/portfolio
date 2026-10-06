@@ -13,7 +13,7 @@ export const OFFICIAL_PROFILE_TEXT =
 
 export const OFFICIAL_HIGHLIGHT_METRICS: ResumeHighlightMetric[] = [
   { value: "6 Years", label: "Design experience" },
-  { value: "2,000+", label: "Companies served by Kodo" },
+  { value: "700+", label: "Design system components" },
   { value: "100K+", label: "Wallzy installs" },
   { value: "799", label: "100x.bot integrations" },
 ]
@@ -25,6 +25,30 @@ export const OFFICIAL_CORE_STRENGTHS: string[][] = [
 
 export const OFFICIAL_PROJECTS: ResumeProjectItem[] = [
   {
+    title: "Postforge - Social Media Post Design Tool",
+    url: "https://postforge-kohl.vercel.app/",
+    meta: "Freelance | Design Engineer | Jul 2026",
+    description:
+      "Designed and built a social media post design tool with brand kits, 20+ layouts, AI-assisted briefs, and a canvas for creating and exporting branded posts and slide decks.",
+    stack: "Next.js, Mistral, Cursor",
+  },
+  {
+    title: "Ion Workspace",
+    url: "https://ion-workspace.vercel.app/",
+    meta: "Freelance | Product Design & Engineering | Ongoing",
+    description:
+      "Designing and building a connected business workspace for email, calendars, contacts, and files, with mail search, keyboard shortcuts, event creation, and a public sample-data demo.",
+    stack: "TanStack Start, React, TypeScript, JMAP",
+  },
+  {
+    title: "Indus Best Mega Food Park",
+    url: "https://www.indusbestmegafoodpark.com/",
+    meta: "Freelance | Design Engineer | Live in production",
+    description:
+      "Redesigned and shipped a responsive food-processing campus website with facilities information, investor journeys, enquiry flows, and a private CMS for content and enquiry management.",
+    stack: "TanStack Start, React, TypeScript, Tailwind CSS, shadcn/ui, Drizzle, Postgres",
+  },
+  {
     title: "RupeeLens - Personal Finance",
     url: "https://rupeelens-coral.vercel.app/",
     meta: "Personal project | Design Engineer | Jul 2026",
@@ -33,32 +57,9 @@ export const OFFICIAL_PROJECTS: ResumeProjectItem[] = [
     stack:
       "React, TypeScript, TanStack Start, Tailwind, shadcn/ui, IndexedDB, Mistral, Neon",
   },
-  {
-    title: "Design with AI",
-    url: "https://llm-daisyui-shell.vercel.app/",
-    meta: "Personal project | Shipped in 10 days | May 2026",
-    description:
-      "Designed and deployed five connected AI surfaces — streaming chat, persistent memory, knowledge grounding, a conversational design canvas, and a live UI playground — using 35 catalogued layout patterns.",
-    stack: "React, TypeScript, Tailwind, Konva, Zustand, Mistral, Vite",
-  },
-  {
-    title: "100x.Bot Marketing Site",
-    url: "https://100x.bot/",
-    meta: "100x.bot | Design Engineer | Jan-Mar 2026",
-    description:
-      "Designed and built a YC-backed browser-automation marketing system with a scripted product demo, WebGL background, repeatable product storytelling, an integrations catalogue, and comparison funnels.",
-    stack:
-      "React, TypeScript, Tailwind, Framer Motion, Three.js, shadcn/ui, TipTap",
-  },
-  {
-    title: "AI Resume Builder",
-    url: "https://www.akshaysaini.xyz/tools/resume",
-    meta: "Portfolio tool | Design Engineer | 2026",
-    description:
-      "Created a profile-to-PDF tool with AI-assisted public data import, structured resume JSON, live customization, and a shared PDF pipeline for public generation and a private owner workspace.",
-    stack:
-      "React, TypeScript, TanStack Start, Mistral, Brave Search, React PDF, Tailwind",
-  },
+
+
+
 ]
 
 export const OFFICIAL_EDUCATION = {
@@ -86,7 +87,7 @@ export const OFFICIAL_CAPABILITIES: ResumeCapabilityGroup[] = [
   {
     label: "Build and AI",
     values:
-      "React UI, TypeScript workflows, Cursor, Antigravity, v0, shadcn/ui, Framer, Webflow, code-based prototyping and AI-assisted product development",
+      "React UI, TypeScript workflows, Three.js, Codex, Claude, Cursor, Antigravity, v0, shadcn/ui, Framer, Webflow, code-based prototyping and AI-assisted product development",
   },
   {
     label: "Research and Analytics",
@@ -96,12 +97,12 @@ export const OFFICIAL_CAPABILITIES: ResumeCapabilityGroup[] = [
   {
     label: "Creative and Operations",
     values:
-      "Adobe Creative Suite, Jitter, video editing, UI animation, branding, investor presentations, Notion and cross-functional collaboration",
+      "Adobe Creative Suite, Blender, Jitter, video editing, UI animation, branding, investor presentations, Notion and cross-functional collaboration",
   },
 ]
 
 /** First N roles are treated as professional experience; remainder as earlier experience. */
-export const OFFICIAL_PROFESSIONAL_EXPERIENCE_COUNT = 4
+export const OFFICIAL_PROFESSIONAL_EXPERIENCE_COUNT = 5
 
 /** Reference CV palette — header band and strengths grid surfaces. */
 export const OFFICIAL_HEADER_BG = "#101828"

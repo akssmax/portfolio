@@ -73,7 +73,7 @@ const ION: VisualCaseStudyConfig = {
 }
 
 const INDUS: VisualCaseStudyConfig = {
-  liveUrl: "https://indus-best-mega-food.vercel.app/",
+  liveUrl: "https://www.indusbestmegafoodpark.com/",
   ctaLabel: "Explore the website",
   heroImageSrc: "/projects/indus/hero.webp",
   heroImageAlt: "Indus Best Mega Food Park website homepage with campus imagery and a facilities overview",
@@ -86,7 +86,7 @@ const INDUS: VisualCaseStudyConfig = {
   builtSummary:
     "A custom website and private workspace that help visitors understand the campus and help the client team manage content and enquiries.",
   footerNote:
-    "A freelance design and engineering project for a working food-processing campus near Raipur.",
+    "A freelance design and engineering project, live in production, for a working food-processing campus near Raipur.",
   highlights: [
     "Audience paths for manufacturers, growing businesses, investors, and partners",
     "Dedicated pages for facilities, products, investor information, gallery, and virtual tour",

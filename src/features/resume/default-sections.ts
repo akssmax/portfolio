@@ -8,5 +8,5 @@ export const DEFAULT_RESUME_SECTIONS: ResumeSectionConfig = {
   contact: true,
   certifications: true,
   languages: true,
-  interests: false,
+  interests: true,
 }

@@ -22,6 +22,8 @@ const LazyContactSection = React.lazy(() =>
 
 function getProjectLiveUrl(slug: string): string | null {
   switch (slug) {
+    case "indus-best-mega-food-park":
+      return "https://www.indusbestmegafoodpark.com/"
     case "ion-workspace":
       return "https://ion-workspace.vercel.app/"
     case "postforge":

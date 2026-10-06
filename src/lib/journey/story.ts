@@ -57,7 +57,8 @@ const freelance = experience("Freelance")
 const tulr = experience("Tulr")
 const unlogged = experience("Unlogged")
 const kodo = experience("Kodo")
-const current = experience("100x.bot")
+const agentWork = experience("100x.bot")
+const current = experience("Freelancing")
 
 export const storyChapters: Array<StoryChapter> = [
   {
@@ -412,16 +413,16 @@ export const storyChapters: Array<StoryChapter> = [
   {
     id: "100x-bot",
     number: "09",
-    year: "Now",
-    period: current.period,
-    company: current.company,
-    role: current.role,
-    eyebrow: "The next chapter",
-    title: "Now I design the work AI can do with us.",
-    story: current.description,
+    year: "2025–2026",
+    period: agentWork.period,
+    company: agentWork.company,
+    role: agentWork.role,
+    eyebrow: "Agentic AI",
+    title: "I designed the work AI can do with us.",
+    story: agentWork.description,
     contribution:
-      "I design and build the extension, marketing experiences, prototypes, and an AI-native design system.",
-    details: current.highlights,
+      "I designed and built the extension, marketing experiences, prototypes, and an AI-native design system.",
+    details: agentWork.highlights,
     interaction: "agent",
     accent: "color-mix(in srgb, #76c94d 12%, var(--background))",
     ink: "var(--foreground)",
@@ -437,7 +438,29 @@ export const storyChapters: Array<StoryChapter> = [
       { name: "Samarth RS", role: "Designer" },
     ],
     teamNote:
-      "The current chapter is shaped with founders, designers, and engineers around me.",
+      "This chapter was shaped with founders, designers, and engineers.",
+  },
+  {
+    id: "freelancing",
+    number: "10",
+    year: "Now",
+    period: current.period,
+    company: current.company,
+    role: current.role,
+    eyebrow: "Independent design and engineering",
+    title: "Designing products and shipping websites independently.",
+    story: current.description,
+    contribution:
+      "My freelance work includes Postforge, Ion Workspace, and the Indus Best Mega Food Park website, live in production.",
+    details: current.highlights,
+    interaction: "studio",
+    accent: "color-mix(in srgb, #0f766e 12%, var(--background))",
+    ink: "var(--foreground)",
+    image: "/projects/indus/hero.webp",
+    imageAlt: "Indus Best Mega Food Park production website",
+    caseStudy: "indus-best-mega-food-park",
+    source: { label: "Indus Best Mega Food Park", href: "https://www.indusbestmegafoodpark.com/" },
+    brand: "#0f766e",
   },
 ]
 

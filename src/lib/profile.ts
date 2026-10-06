@@ -3,11 +3,24 @@ import { siteUrl } from "./site-url"
 
 const experience = [
   {
+    company: "Freelancing",
+    role: "Product Designer / Design Engineer",
+    period: "Jul 2026 – Present",
+    location: "Bengaluru, India",
+    description:
+      "Independent product design and design engineering for apps and production websites.",
+    highlights: [
+      "Designed and built Postforge, a social media post design tool with brand kits, 20+ layouts, AI-assisted briefs, and export-ready posts and slide decks",
+      "Designing and building Ion Workspace, a connected app for business email, calendars, contacts, and files, with a public sample-data demo",
+      "Redesigned and built the Indus Best Mega Food Park website, now live in production, with campus and facilities information, investor journeys, enquiry flows, and a private content management workspace",
+    ],
+  },
+  {
     company: "100x.bot",
     logoSrc: "/companies/100x-bot.svg",
     websiteUrl: "https://100x.bot/",
     role: "Design Engineer",
-    period: "Dec 2025 – Present",
+    period: "Dec 2025 – Jun 2026",
     location: "Bengaluru, India",
     description:
       "Designed and built agentic AI product experiences for a browser-native automation platform — extension UI, marketing site, and design system.",
@@ -124,14 +137,14 @@ const experience = [
 
 function createProfileBio(periods: string[]) {
   const span = getDesignCareerSpanLabel(periods)
-  return `As a self-taught Product Designer and Design Engineer with ${span.toLowerCase()} in design based in Bangalore (Bengaluru), India, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform to YC-backed fintech at Kodo (W21) and devtools at Unlogged (S22), I partner closely with product and engineering — and now design agentic AI experiences at 100x.bot.`
+  return `As a self-taught Product Designer and Design Engineer with ${span.toLowerCase()} in design based in Bangalore (Bengaluru), India, I turn ambiguous, high-stakes problems into clear, trustworthy product flows. From Tulr's no-code platform to YC-backed fintech at Kodo (W21) and devtools at Unlogged (S22), I partner closely with product and engineering — with agentic AI experience at 100x.bot. Since July 2026, I work independently as a freelance Product Designer and Design Engineer.`
 }
 
 export const profile = {
   name: "Akshay Saini",
   title: "Product Designer / Design Engineer",
-  role: "Design Engineer",
-  company: "100x.bot",
+  role: "Product Designer / Design Engineer",
+  company: "Freelancing",
   location: "Bengaluru (Bangalore), India",
   portrait: {
     src: "/images/portraits/02.png",
@@ -170,23 +183,8 @@ export const profile = {
     { name: "Hindi", level: "Native" },
     { name: "English", level: "Professional working" },
   ],
-  interests: [
-    "Gaming",
-    "AI Tools",
-    "Open Source Tools",
-    "Android",
-    "Photography",
-    "Motion Graphics",
-    "UI Animation",
-    "Music Theory",
-    "DJing",
-    "Movies",
-    "Mentoring",
-    "Human Psychology",
-    "Interior Design",
-    "Ethical UX",
-    "Cinematography",
-  ],
+  interests: ["Photography", "Interior Design", "Architecture", "DJing", "Gaming"],
+
   designCapabilities: [
     "Design Systems with Tokens",
     "Figma Variables & Auto Layout",
@@ -203,6 +201,10 @@ export const profile = {
     "UI Animations",
   ],
   tools: [
+    { name: "Codex", logoSrc: "/tools/openai.svg", category: "Coding tools", note: "AI-assisted development" },
+    { name: "Claude", logoSrc: "/tools/anthropic.svg", category: "Coding tools", note: "AI-assisted workflows" },
+    { name: "Blender", logoSrc: "/tools/blender.svg", category: "Design", note: "3D modeling and rendering" },
+    { name: "Three.js", logoSrc: "/tools/threejs.svg", category: "Build", note: "Interactive 3D experiences" },
     {
       name: "Figma",
       category: "Design",

@@ -43,7 +43,7 @@ export const HERO_PROMPT_SUGGESTION_POOL: HeroPromptSuggestion[] = [
   },
   {
     label: "What's his impact at 100x.bot?",
-    query: "What is Akshay building at 100x.bot and what impact has he had there?",
+    query: "What did Akshay build at 100x.bot and what impact did he have there?",
   },
   {
     label: "What agentic AI has he shipped?",

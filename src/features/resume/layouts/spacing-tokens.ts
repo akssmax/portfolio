@@ -108,7 +108,7 @@ export const RESUME_SPACING: Record<ResumeLayoutId, ResumeLayoutSpacing> = {
     page: {
       /** Applied on every page; page-1 header cancels this with a negative top margin. */
       paddingTop: 26,
-      paddingBottom: 36,
+      paddingBottom: 24,
       paddingLeft: 38,
       paddingRight: 38,
     },
@@ -117,9 +117,9 @@ export const RESUME_SPACING: Record<ResumeLayoutId, ResumeLayoutSpacing> = {
     sectionGap: 14,
     sectionTitleGap: 4,
     headerGap: 16,
-    jobGap: 10,
+    jobGap: 8,
     profileClusterGap: 6,
-    footerReserve: 36,
+    footerReserve: 10,
     footerBottom: 16,
   },
 }

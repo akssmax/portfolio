@@ -9,6 +9,7 @@ const JOURNEY_START = "2014"
 
 const ROLE_PROJECT_SLUG: Record<string, string | undefined> = {
   "100x.bot": "100x-chat-shell",
+  Freelancing: "indus-best-mega-food-park",
   Kodo: "kodo",
   Unlogged: "unlogged",
   Tulr: "tulr",
@@ -22,6 +23,7 @@ const ROLE_ERA: Record<string, MilestoneEra> = {
   Unlogged: "design",
   Kodo: "ship",
   "100x.bot": "ship",
+  Freelancing: "ship",
 }
 
 const ROLE_EYEBROW: Record<string, string> = {
@@ -119,9 +121,9 @@ export function buildJourneyRoles(): JourneyRoleStop[] {
 
 export function getJourneyMeta() {
   return {
-    heading: "From college tools to agentic AI",
+    heading: "From college tools to independent product design",
     subtitle:
-      "A scroll through design — from After Effects in a dorm room to design systems, YC startups, and agentic AI at 100x.bot.",
+      "A scroll through design — from After Effects in a dorm room to design systems, YC startups, agentic AI at 100x.bot, and independent product design and engineering.",
     journeyStart: JOURNEY_START,
   }
 }
