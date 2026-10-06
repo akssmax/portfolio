@@ -28,6 +28,12 @@ export function CompanyLogo({
           title={name}
           className="h-3.5 w-auto max-w-full text-foreground"
         />
+      ) : name === "Freelancing" || name === "Freelance" ? (
+        <PenTool
+          className="size-5 text-foreground"
+          role="img"
+          aria-label="Freelance design"
+        />
       ) : src ? (
         <img
           src={src}
@@ -43,3 +49,4 @@ export function CompanyLogo({
     </div>
   )
 }
+import { PenTool } from "lucide-react"

@@ -42,7 +42,7 @@ const experience = [
     description:
       "Led design on procure-to-pay flows for a YC W21 enterprise fintech product — translating complex finance and compliance requirements into intuitive workflows.",
     highlights: [
-      "Built unified Kodo design system (native light/dark mode) — Tamagui and MD3 versions",
+      "Built two Kodo design systems with native light/dark mode — Tamagui and MD3",
       "Built new website in Framer with Framer Motion and custom React components",
       "Launched Kodo ERP P2P (Procure-to-Pay) v1 with enterprise customers",
       "Designed UPI app demo for NPCI",
@@ -68,7 +68,7 @@ const experience = [
       "UX research, user testing, and prototyping",
       "Branding and investor presentations",
       "Led the product and visual identity across both Videobug and Unlogged",
-      "Custom design system (modified Chakra UI)",
+      "Built separate design systems for Videobug and Unlogged, including a modified Chakra UI system",
       "Video editing for YouTube and LinkedIn",
       "UI animations for marketing website",
     ],
@@ -84,7 +84,7 @@ const experience = [
       "Designed Tulr — a no-code platform combining videos, tables, forms, and calendars with automation. One-shot replacement for Airtable, Typeform, Calendly, and Loom.",
     highlights: [
       "Mobile and web product design for the no-code builder",
-      "Built 700+ custom component library",
+      "Built Tulr design system with a 700+ custom component library",
       "Branding, animation, social media, and Product Hunt launch",
       "Owned founding product design and visual identity across web and mobile",
       "Collaborated with a team of 7 developers",

@@ -30,7 +30,7 @@ export const hiringProfile = {
   ],
   leadershipHighlights: [
     "Led end-to-end product design on Kodo ERP P2P launch, Unlogged product, and 100x extension + website",
-    "Built design systems at Kodo (700+ components) and 100x (shadcn/ui tokens)",
+    "Built six design systems: Videobug, Unlogged, Tulr, two at Kodo (Tamagui and MD3), and one at 100x (shadcn/ui tokens)",
     "Managed and collaborated with 2 junior developers at 100x.bot; no formal Design Manager title",
   ],
   openToGurugramRelocation:

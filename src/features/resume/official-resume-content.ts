@@ -13,9 +13,12 @@ export const OFFICIAL_PROFILE_TEXT =
 
 export const OFFICIAL_HIGHLIGHT_METRICS: ResumeHighlightMetric[] = [
   { value: "6 Years", label: "Design experience" },
-  { value: "700+", label: "Design system components" },
-  { value: "100K+", label: "Wallzy installs" },
-  { value: "799", label: "100x.bot integrations" },
+  // Videobug, Unlogged, Tulr, two at Kodo, and one at 100x.bot.
+  { value: "6", label: "Design systems built" },
+  // Ten completed portfolio projects; Ion Workspace remains ongoing.
+  { value: "10+", label: "Projects completed" },
+  // Fintech, developer tools, no-code, AI, creative tools, and food processing.
+  { value: "6", label: "Industries worked in" },
 ]
 
 export const OFFICIAL_CORE_STRENGTHS: string[][] = [
