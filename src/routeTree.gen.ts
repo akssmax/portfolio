@@ -9,64 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResumeRouteImport } from './routes/resume'
-import { Route as QuoteRouteImport } from './routes/quote'
-import { Route as JourneyRouteImport } from './routes/journey'
-import { Route as IntroRouteImport } from './routes/intro'
-import { Route as Home2RouteImport } from './routes/home-2'
-import { Route as ExperienceRouteImport } from './routes/experience'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as LandingRouteImport } from './routes/_landing'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as DesignSystemRouteRouteImport } from './routes/design-system/route'
-import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
-import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as ExperienceRouteImport } from './routes/experience'
+import { Route as Home2RouteImport } from './routes/home-2'
+import { Route as IntroRouteImport } from './routes/intro'
+import { Route as JourneyRouteImport } from './routes/journey'
+import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as LandingIndexRouteImport } from './routes/_landing.index'
-import { Route as ToolsResumeRouteImport } from './routes/tools/resume'
-import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
-import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
-import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
-import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
-import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
-import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
-import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
-import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
-import { Route as ApiResumeGeneratePdfRouteImport } from './routes/api/resume/generate-pdf'
-import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
-import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
-import { Route as ApiGithubContributionsRouteImport } from './routes/api/github/contributions'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
+import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
+import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
+import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
+import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
+import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
+import { Route as ToolsResumeRouteImport } from './routes/tools/resume'
 import { Route as LandingChatThreadIdRouteImport } from './routes/_landing.chat.$threadId'
+import { Route as ApiGithubContributionsRouteImport } from './routes/api/github/contributions'
+import { Route as ApiResumeGenerateRouteImport } from './routes/api/resume/generate'
+import { Route as ApiResumeGenerateCoverLetterRouteImport } from './routes/api/resume/generate-cover-letter'
+import { Route as ApiResumeGeneratePdfRouteImport } from './routes/api/resume/generate-pdf'
+import { Route as ApiResumeSessionRouteImport } from './routes/api/resume/session'
+import { Route as ApiResumeUnlockRouteImport } from './routes/api/resume/unlock'
+import { Route as DesignSystemComponentsSlugRouteImport } from './routes/design-system/components/$slug'
 
-const ResumeRoute = ResumeRouteImport.update({
-  id: '/resume',
-  path: '/resume',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuoteRoute = QuoteRouteImport.update({
-  id: '/quote',
-  path: '/quote',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JourneyRoute = JourneyRouteImport.update({
-  id: '/journey',
-  path: '/journey',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IntroRoute = IntroRouteImport.update({
-  id: '/intro',
-  path: '/intro',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Home2Route = Home2RouteImport.update({
-  id: '/home-2',
-  path: '/home-2',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperienceRoute = ExperienceRouteImport.update({
-  id: '/experience',
-  path: '/experience',
+const LandingRoute = LandingRouteImport.update({
+  id: '/_landing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -74,28 +48,39 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingRoute = LandingRouteImport.update({
-  id: '/_landing',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DesignSystemRouteRoute = DesignSystemRouteRouteImport.update({
   id: '/design-system',
   path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
+const ExperienceRoute = ExperienceRouteImport.update({
+  id: '/experience',
+  path: '/experience',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DesignSystemRouteRoute,
+const Home2Route = Home2RouteImport.update({
+  id: '/home-2',
+  path: '/home-2',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
+const IntroRoute = IntroRouteImport.update({
+  id: '/intro',
+  path: '/intro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JourneyRoute = JourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteRoute = QuoteRouteImport.update({
+  id: '/quote',
+  path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResumeRoute = ResumeRouteImport.update({
+  id: '/resume',
+  path: '/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingIndexRoute = LandingIndexRouteImport.update({
@@ -103,29 +88,24 @@ const LandingIndexRoute = LandingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LandingRoute,
 } as any)
-const ToolsResumeRoute = ToolsResumeRouteImport.update({
-  id: '/tools/resume',
-  path: '/tools/resume',
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
-  id: '/projects/$slug',
-  path: '/projects/$slug',
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DesignSystemTypographyRoute = DesignSystemTypographyRouteImport.update({
-  id: '/typography',
-  path: '/typography',
-  getParentRoute: () => DesignSystemRouteRoute,
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DesignSystemScrollbarsRoute = DesignSystemScrollbarsRouteImport.update({
-  id: '/scrollbars',
-  path: '/scrollbars',
-  getParentRoute: () => DesignSystemRouteRoute,
-} as any)
-const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
-  id: '/colors',
-  path: '/colors',
+const DesignSystemIndexRoute = DesignSystemIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
 const DesignSystemAccessibilityRoute =
@@ -134,35 +114,49 @@ const DesignSystemAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => DesignSystemRouteRoute,
   } as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
+const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
+  id: '/colors',
+  path: '/colors',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const DesignSystemScrollbarsRoute = DesignSystemScrollbarsRouteImport.update({
+  id: '/scrollbars',
+  path: '/scrollbars',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const DesignSystemTypographyRoute = DesignSystemTypographyRouteImport.update({
+  id: '/typography',
+  path: '/typography',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DesignSystemComponentsSlugRoute =
-  DesignSystemComponentsSlugRouteImport.update({
-    id: '/components/$slug',
-    path: '/components/$slug',
-    getParentRoute: () => DesignSystemRouteRoute,
-  } as any)
-const ApiResumeUnlockRoute = ApiResumeUnlockRouteImport.update({
-  id: '/api/resume/unlock',
-  path: '/api/resume/unlock',
+const ToolsResumeRoute = ToolsResumeRouteImport.update({
+  id: '/tools/resume',
+  path: '/tools/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
-  id: '/api/resume/session',
-  path: '/api/resume/session',
+const LandingChatThreadIdRoute = LandingChatThreadIdRouteImport.update({
+  id: '/chat/$threadId',
+  path: '/chat/$threadId',
+  getParentRoute: () => LandingRoute,
+} as any)
+const ApiGithubContributionsRoute = ApiGithubContributionsRouteImport.update({
+  id: '/api/github/contributions',
+  path: '/api/github/contributions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiResumeGeneratePdfRoute = ApiResumeGeneratePdfRouteImport.update({
-  id: '/api/resume/generate-pdf',
-  path: '/api/resume/generate-pdf',
+const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
+  id: '/api/resume/generate',
+  path: '/api/resume/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiResumeGenerateCoverLetterRoute =
@@ -171,21 +165,27 @@ const ApiResumeGenerateCoverLetterRoute =
     path: '/api/resume/generate-cover-letter',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiResumeGenerateRoute = ApiResumeGenerateRouteImport.update({
-  id: '/api/resume/generate',
-  path: '/api/resume/generate',
+const ApiResumeGeneratePdfRoute = ApiResumeGeneratePdfRouteImport.update({
+  id: '/api/resume/generate-pdf',
+  path: '/api/resume/generate-pdf',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiGithubContributionsRoute = ApiGithubContributionsRouteImport.update({
-  id: '/api/github/contributions',
-  path: '/api/github/contributions',
+const ApiResumeSessionRoute = ApiResumeSessionRouteImport.update({
+  id: '/api/resume/session',
+  path: '/api/resume/session',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingChatThreadIdRoute = LandingChatThreadIdRouteImport.update({
-  id: '/chat/$threadId',
-  path: '/chat/$threadId',
-  getParentRoute: () => LandingRoute,
+const ApiResumeUnlockRoute = ApiResumeUnlockRouteImport.update({
+  id: '/api/resume/unlock',
+  path: '/api/resume/unlock',
+  getParentRoute: () => rootRouteImport,
 } as any)
+const DesignSystemComponentsSlugRoute =
+  DesignSystemComponentsSlugRouteImport.update({
+    id: '/components/$slug',
+    path: '/components/$slug',
+    getParentRoute: () => DesignSystemRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/design-system': typeof DesignSystemRouteRouteWithChildren
@@ -397,46 +397,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/resume': {
-      id: '/resume'
-      path: '/resume'
-      fullPath: '/resume'
-      preLoaderRoute: typeof ResumeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quote': {
-      id: '/quote'
-      path: '/quote'
-      fullPath: '/quote'
-      preLoaderRoute: typeof QuoteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/journey': {
-      id: '/journey'
-      path: '/journey'
-      fullPath: '/journey'
-      preLoaderRoute: typeof JourneyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/intro': {
-      id: '/intro'
-      path: '/intro'
-      fullPath: '/intro'
-      preLoaderRoute: typeof IntroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home-2': {
-      id: '/home-2'
-      path: '/home-2'
-      fullPath: '/home-2'
-      preLoaderRoute: typeof Home2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experience': {
-      id: '/experience'
-      path: '/experience'
-      fullPath: '/experience'
-      preLoaderRoute: typeof ExperienceRouteImport
+    '/_landing': {
+      id: '/_landing'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LandingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -446,13 +411,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_landing': {
-      id: '/_landing'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof LandingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/design-system': {
       id: '/design-system'
       path: '/design-system'
@@ -460,25 +418,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/': {
-      id: '/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectsIndexRouteImport
+    '/experience': {
+      id: '/experience'
+      path: '/experience'
+      fullPath: '/experience'
+      preLoaderRoute: typeof ExperienceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/design-system/': {
-      id: '/design-system/'
-      path: '/'
-      fullPath: '/design-system/'
-      preLoaderRoute: typeof DesignSystemIndexRouteImport
-      parentRoute: typeof DesignSystemRouteRoute
+    '/home-2': {
+      id: '/home-2'
+      path: '/home-2'
+      fullPath: '/home-2'
+      preLoaderRoute: typeof Home2RouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
+    '/intro': {
+      id: '/intro'
+      path: '/intro'
+      fullPath: '/intro'
+      preLoaderRoute: typeof IntroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journey': {
+      id: '/journey'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote': {
+      id: '/quote'
+      path: '/quote'
+      fullPath: '/quote'
+      preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resume': {
+      id: '/resume'
+      path: '/resume'
+      fullPath: '/resume'
+      preLoaderRoute: typeof ResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_landing/': {
@@ -488,39 +467,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingIndexRouteImport
       parentRoute: typeof LandingRoute
     }
-    '/tools/resume': {
-      id: '/tools/resume'
-      path: '/tools/resume'
-      fullPath: '/tools/resume'
-      preLoaderRoute: typeof ToolsResumeRouteImport
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/$slug': {
-      id: '/projects/$slug'
-      path: '/projects/$slug'
-      fullPath: '/projects/$slug'
-      preLoaderRoute: typeof ProjectsSlugRouteImport
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/design-system/typography': {
-      id: '/design-system/typography'
-      path: '/typography'
-      fullPath: '/design-system/typography'
-      preLoaderRoute: typeof DesignSystemTypographyRouteImport
-      parentRoute: typeof DesignSystemRouteRoute
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/design-system/scrollbars': {
-      id: '/design-system/scrollbars'
-      path: '/scrollbars'
-      fullPath: '/design-system/scrollbars'
-      preLoaderRoute: typeof DesignSystemScrollbarsRouteImport
-      parentRoute: typeof DesignSystemRouteRoute
-    }
-    '/design-system/colors': {
-      id: '/design-system/colors'
-      path: '/colors'
-      fullPath: '/design-system/colors'
-      preLoaderRoute: typeof DesignSystemColorsRouteImport
+    '/design-system/': {
+      id: '/design-system/'
+      path: '/'
+      fullPath: '/design-system/'
+      preLoaderRoute: typeof DesignSystemIndexRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
     '/design-system/accessibility': {
@@ -530,53 +502,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemAccessibilityRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/design-system/components/$slug': {
-      id: '/design-system/components/$slug'
-      path: '/components/$slug'
-      fullPath: '/design-system/components/$slug'
-      preLoaderRoute: typeof DesignSystemComponentsSlugRouteImport
+    '/design-system/colors': {
+      id: '/design-system/colors'
+      path: '/colors'
+      fullPath: '/design-system/colors'
+      preLoaderRoute: typeof DesignSystemColorsRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
-    '/api/resume/unlock': {
-      id: '/api/resume/unlock'
-      path: '/api/resume/unlock'
-      fullPath: '/api/resume/unlock'
-      preLoaderRoute: typeof ApiResumeUnlockRouteImport
+    '/design-system/scrollbars': {
+      id: '/design-system/scrollbars'
+      path: '/scrollbars'
+      fullPath: '/design-system/scrollbars'
+      preLoaderRoute: typeof DesignSystemScrollbarsRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/design-system/typography': {
+      id: '/design-system/typography'
+      path: '/typography'
+      fullPath: '/design-system/typography'
+      preLoaderRoute: typeof DesignSystemTypographyRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/resume/session': {
-      id: '/api/resume/session'
-      path: '/api/resume/session'
-      fullPath: '/api/resume/session'
-      preLoaderRoute: typeof ApiResumeSessionRouteImport
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/resume/generate-pdf': {
-      id: '/api/resume/generate-pdf'
-      path: '/api/resume/generate-pdf'
-      fullPath: '/api/resume/generate-pdf'
-      preLoaderRoute: typeof ApiResumeGeneratePdfRouteImport
+    '/tools/resume': {
+      id: '/tools/resume'
+      path: '/tools/resume'
+      fullPath: '/tools/resume'
+      preLoaderRoute: typeof ToolsResumeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/resume/generate-cover-letter': {
-      id: '/api/resume/generate-cover-letter'
-      path: '/api/resume/generate-cover-letter'
-      fullPath: '/api/resume/generate-cover-letter'
-      preLoaderRoute: typeof ApiResumeGenerateCoverLetterRouteImport
+    '/_landing/chat/$threadId': {
+      id: '/_landing/chat/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/chat/$threadId'
+      preLoaderRoute: typeof LandingChatThreadIdRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/api/github/contributions': {
+      id: '/api/github/contributions'
+      path: '/api/github/contributions'
+      fullPath: '/api/github/contributions'
+      preLoaderRoute: typeof ApiGithubContributionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/resume/generate': {
@@ -586,19 +565,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResumeGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/github/contributions': {
-      id: '/api/github/contributions'
-      path: '/api/github/contributions'
-      fullPath: '/api/github/contributions'
-      preLoaderRoute: typeof ApiGithubContributionsRouteImport
+    '/api/resume/generate-cover-letter': {
+      id: '/api/resume/generate-cover-letter'
+      path: '/api/resume/generate-cover-letter'
+      fullPath: '/api/resume/generate-cover-letter'
+      preLoaderRoute: typeof ApiResumeGenerateCoverLetterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_landing/chat/$threadId': {
-      id: '/_landing/chat/$threadId'
-      path: '/chat/$threadId'
-      fullPath: '/chat/$threadId'
-      preLoaderRoute: typeof LandingChatThreadIdRouteImport
-      parentRoute: typeof LandingRoute
+    '/api/resume/generate-pdf': {
+      id: '/api/resume/generate-pdf'
+      path: '/api/resume/generate-pdf'
+      fullPath: '/api/resume/generate-pdf'
+      preLoaderRoute: typeof ApiResumeGeneratePdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resume/session': {
+      id: '/api/resume/session'
+      path: '/api/resume/session'
+      fullPath: '/api/resume/session'
+      preLoaderRoute: typeof ApiResumeSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resume/unlock': {
+      id: '/api/resume/unlock'
+      path: '/api/resume/unlock'
+      fullPath: '/api/resume/unlock'
+      preLoaderRoute: typeof ApiResumeUnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system/components/$slug': {
+      id: '/design-system/components/$slug'
+      path: '/components/$slug'
+      fullPath: '/design-system/components/$slug'
+      preLoaderRoute: typeof DesignSystemComponentsSlugRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
     }
   }
 }
