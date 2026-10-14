@@ -1,0 +1,210 @@
+{
+  "sourcePath": "src/components/ui/button-group.tsx",
+  "importPath": "@/components/ui/button-group",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "exports": [
+    "ButtonGroup",
+    "ButtonGroupSeparator",
+    "ButtonGroupText"
+  ],
+  "parts": [
+    {
+      "name": "ButtonGroup",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof buttonGroupVariants>",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\" | null",
+          "required": false,
+          "defaultValue": "\"horizontal\"",
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ButtonGroupSeparator",
+      "contract": "React.ComponentProps<typeof Separator>",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": "\"vertical\"",
+          "description": "Either `vertical` or `horizontal`. Defaults to `horizontal`.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether or not the component is purely decorative. When true, accessibility-related attributes\nare updated so that that the rendered element is removed from the accessibility tree.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ButtonGroupText",
+      "contract": "React.ComponentProps<\"div\"> & {\n  asChild?: boolean\n}",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "button-group",
+    "button-group-separator"
+  ],
+  "tokens": [
+    "--muted",
+    "--input"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { ButtonGroup } from \"@/components/ui/button-group\";\n\nexport function ButtonGroupDemo() {\n  return (\n    <ButtonGroup>\n      <Button variant=\"outline\">Left</Button>\n      <Button variant=\"outline\">Center</Button>\n      <Button variant=\"outline\">Right</Button>\n    </ButtonGroup>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "ButtonGroupDemo"
+  },
+  "playground": {
+    "parts": [
+      "ButtonGroup"
+    ],
+    "templates": {
+      "ButtonGroup": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { ButtonGroup } from \"@/components/ui/button-group\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ButtonGroup>> = /*__DS_PROPS__*/ {}\n\n\nexport function ButtonGroupDemo() {\n  return (\n    <ButtonGroup>{playgroundProps.children ?? <>\n      <Button variant=\"outline\">Left</Button>\n      <Button variant=\"outline\">Center</Button>\n      <Button variant=\"outline\">Right</Button>\n    </>}</ButtonGroup>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { ButtonGroup } from \"@/components/ui/button-group\";\n\nexport function ButtonGroupDemo() {\n  return (\n    <ButtonGroup>\n      <Button variant=\"outline\">Left</Button>\n      <Button variant=\"outline\">Center</Button>\n      <Button variant=\"outline\">Right</Button>\n    </ButtonGroup>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "ButtonGroupDemo"
+    }
+  }
+}

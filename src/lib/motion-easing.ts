@@ -4,6 +4,13 @@ export const EASE_OUT_SMOOTH = [0.22, 1, 0.36, 1] as const
 export const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const
 export const EASE_IN_OUT_SOFT = [0.45, 0.05, 0.25, 1] as const
 
+/** Navigation panels resize without spring overshoot. Motion durations use seconds. */
+export const SIDEBAR_TRANSITION = {
+  type: "tween",
+  duration: 0.24,
+  ease: EASE_OUT_SMOOTH,
+} as const
+
 /** Tailwind arbitrary easing — smooth deceleration for hovers */
 export const easeSmooth = "ease-[cubic-bezier(0.22,1,0.36,1)]"
 

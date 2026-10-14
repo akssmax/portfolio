@@ -1,0 +1,260 @@
+{
+  "sourcePath": "src/components/ui/sonner.tsx",
+  "importPath": "@/components/ui/sonner",
+  "primitive": "Local component",
+  "dependencies": [
+    "next-themes",
+    "sonner",
+    "lucide-react"
+  ],
+  "exports": [
+    "Toaster"
+  ],
+  "parts": [
+    {
+      "name": "Toaster",
+      "contract": "ToasterProps",
+      "props": [
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "closeButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "containerAriaLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "dir",
+          "type": "\"auto\" | \"ltr\" | \"rtl\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "auto",
+              "ltr",
+              "rtl"
+            ]
+          }
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "expand",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "hotkey",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "icons",
+          "type": "ToastIcons",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "invert",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "mobileOffset",
+          "type": "(string | number | { top?: string | number; right?: string | number; bottom?: string | number; left?: string | number; })",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "offset",
+          "type": "(string | number | { top?: string | number; right?: string | number; bottom?: string | number; left?: string | number; })",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "position",
+          "type": "(\"top-left\" | \"top-right\" | \"bottom-left\" | \"bottom-right\" | \"top-center\" | \"bottom-center\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "top-left",
+              "top-right",
+              "bottom-left",
+              "bottom-right",
+              "top-center",
+              "bottom-center"
+            ]
+          }
+        },
+        {
+          "name": "richColors",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "swipeDirections",
+          "type": "(\"left\" | \"right\" | \"top\" | \"bottom\")[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "theme",
+          "type": "\"light\" | \"dark\" | \"system\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "light",
+              "dark",
+              "system"
+            ]
+          }
+        },
+        {
+          "name": "toastOptions",
+          "type": "ToastOptions",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "visibleToasts",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Toaster } from \"@/components/ui/sonner\";\n\nimport { toast } from \"sonner\";\n\nexport function SonnerDemo() {\n  return (\n    <>\n      <Button variant=\"outline\" onClick={() => toast(\"Event has been created\")}>\n        Show toast\n      </Button>\n      <Toaster />\n    </>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-3-demos.tsx",
+    "name": "SonnerDemo"
+  },
+  "playground": {
+    "parts": [
+      "Toaster"
+    ],
+    "templates": {
+      "Toaster": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Toaster } from \"@/components/ui/sonner\";\n\nimport { toast } from \"sonner\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Toaster>> = /*__DS_PROPS__*/ {}\n\n\nexport function SonnerDemo() {\n  return (\n    <>\n      <Button variant=\"outline\" onClick={() => toast(\"Event has been created\")}>\n        Show toast\n      </Button>\n      <Toaster {...playgroundProps} />\n    </>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Toaster } from \"@/components/ui/sonner\";\n\nimport { toast } from \"sonner\";\n\nexport function SonnerDemo() {\n  return (\n    <>\n      <Button variant=\"outline\" onClick={() => toast(\"Event has been created\")}>\n        Show toast\n      </Button>\n      <Toaster />\n    </>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-3-demos.tsx",
+      "name": "SonnerDemo"
+    }
+  }
+}

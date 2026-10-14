@@ -1,0 +1,322 @@
+{
+  "sourcePath": "src/components/ui/card.tsx",
+  "importPath": "@/components/ui/card",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "Card",
+    "CardHeader",
+    "CardFooter",
+    "CardTitle",
+    "CardAction",
+    "CardDescription",
+    "CardContent"
+  ],
+  "parts": [
+    {
+      "name": "Card",
+      "contract": "React.ComponentProps<\"div\"> & { size?: \"default\" | \"sm\" }",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "sm"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardFooter",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardTitle",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardAction",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardDescription",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CardContent",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "card",
+    "card-header",
+    "card-title",
+    "card-description",
+    "card-action",
+    "card-content",
+    "card-footer"
+  ],
+  "tokens": [
+    "--card",
+    "--card-foreground",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>\n        <CardTitle>Card title</CardTitle>\n        <CardDescription>Card description for preview.</CardDescription>\n      </CardHeader>\n    </Card>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "CardDemo"
+  },
+  "playground": {
+    "parts": [
+      "Card",
+      "CardDescription",
+      "CardHeader",
+      "CardTitle"
+    ],
+    "templates": {
+      "Card": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Card>> = /*__DS_PROPS__*/ {}\n\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">{playgroundProps.children ?? <>\n      <CardHeader>\n        <CardTitle>Card title</CardTitle>\n        <CardDescription>Card description for preview.</CardDescription>\n      </CardHeader>\n    </>}</Card>\n  )\n}",
+      "CardDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CardDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>\n        <CardTitle>Card title</CardTitle>\n        <CardDescription>{playgroundProps.children ?? <>Card description for preview.</>}</CardDescription>\n      </CardHeader>\n    </Card>\n  )\n}",
+      "CardHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CardHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>{playgroundProps.children ?? <>\n        <CardTitle>Card title</CardTitle>\n        <CardDescription>Card description for preview.</CardDescription>\n      </>}</CardHeader>\n    </Card>\n  )\n}",
+      "CardTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CardTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>\n        <CardTitle>{playgroundProps.children ?? <>Card title</>}</CardTitle>\n        <CardDescription>Card description for preview.</CardDescription>\n      </CardHeader>\n    </Card>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Card, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nexport function CardDemo() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>\n        <CardTitle>Card title</CardTitle>\n        <CardDescription>Card description for preview.</CardDescription>\n      </CardHeader>\n    </Card>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "CardDemo"
+    }
+  }
+}

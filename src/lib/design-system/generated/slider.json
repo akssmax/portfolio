@@ -1,0 +1,239 @@
+{
+  "sourcePath": "src/components/ui/slider.tsx",
+  "importPath": "@/components/ui/slider",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Slider"
+  ],
+  "parts": [
+    {
+      "name": "Slider",
+      "contract": "React.ComponentProps<typeof SliderPrimitive.Root>",
+      "props": [
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "defaultValue": "100",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "number[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "dir",
+          "type": "(\"ltr\" | \"rtl\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "ltr",
+              "rtl"
+            ]
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "inverted",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "minStepsBetweenThumbs",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: number[]) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onValueCommit",
+          "type": "((value: number[]) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "number[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "slider",
+    "slider-track",
+    "slider-range",
+    "slider-thumb"
+  ],
+  "tokens": [
+    "--muted",
+    "--primary",
+    "--ring"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Slider } from \"@/components/ui/slider\";\n\nexport function SliderDemo() {\n  return <Slider defaultValue={[50]} max={100} step={1} className=\"w-full max-w-sm\" />\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "SliderDemo"
+  },
+  "playground": {
+    "parts": [
+      "Slider"
+    ],
+    "templates": {
+      "Slider": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Slider } from \"@/components/ui/slider\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Slider>> = /*__DS_PROPS__*/ {}\n\n\nexport function SliderDemo() {\n  return <Slider defaultValue={[50]} max={100} step={1} className=\"w-full max-w-sm\" {...playgroundProps} />\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Slider } from \"@/components/ui/slider\";\n\nexport function SliderDemo() {\n  return <Slider defaultValue={[50]} max={100} step={1} className=\"w-full max-w-sm\" />\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "SliderDemo"
+    }
+  }
+}

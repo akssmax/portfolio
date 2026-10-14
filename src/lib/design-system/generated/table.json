@@ -1,0 +1,350 @@
+{
+  "sourcePath": "src/components/ui/table.tsx",
+  "importPath": "@/components/ui/table",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "Table",
+    "TableHeader",
+    "TableBody",
+    "TableFooter",
+    "TableHead",
+    "TableRow",
+    "TableCell",
+    "TableCaption"
+  ],
+  "parts": [
+    {
+      "name": "Table",
+      "contract": "React.ComponentProps<\"table\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableHeader",
+      "contract": "React.ComponentProps<\"thead\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableBody",
+      "contract": "React.ComponentProps<\"tbody\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableFooter",
+      "contract": "React.ComponentProps<\"tfoot\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableHead",
+      "contract": "React.ComponentProps<\"th\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableRow",
+      "contract": "React.ComponentProps<\"tr\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableCell",
+      "contract": "React.ComponentProps<\"td\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TableCaption",
+      "contract": "React.ComponentProps<\"caption\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "table-container",
+    "table",
+    "table-header",
+    "table-body",
+    "table-footer",
+    "table-row",
+    "table-head",
+    "table-cell",
+    "table-caption"
+  ],
+  "tokens": [
+    "--muted",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </TableBody>\n    </Table>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "TableDemo"
+  },
+  "playground": {
+    "parts": [
+      "Table",
+      "TableBody",
+      "TableCell",
+      "TableHead",
+      "TableHeader",
+      "TableRow"
+    ],
+    "templates": {
+      "Table": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Table>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">{playgroundProps.children ?? <>\n      <TableHeader>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </TableBody>\n    </>}</Table>\n  )\n}",
+      "TableBody": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof TableBody>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>{playgroundProps.children ?? <>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </>}</TableBody>\n    </Table>\n  )\n}",
+      "TableCell": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof TableCell>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>{playgroundProps.children ?? <>Alice</>}</TableCell>\n          <TableCell>{playgroundProps.children ?? <>Active</>}</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>{playgroundProps.children ?? <>Bob</>}</TableCell>\n          <TableCell>{playgroundProps.children ?? <>Pending</>}</TableCell>\n        </TableRow>\n      </TableBody>\n    </Table>\n  )\n}",
+      "TableHead": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof TableHead>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>\n          <TableHead>{playgroundProps.children ?? <>Name</>}</TableHead>\n          <TableHead>{playgroundProps.children ?? <>Status</>}</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </TableBody>\n    </Table>\n  )\n}",
+      "TableHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof TableHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>{playgroundProps.children ?? <>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </>}</TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </TableBody>\n    </Table>\n  )\n}",
+      "TableRow": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof TableRow>> = /*__DS_PROPS__*/ {}\n\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>{playgroundProps.children ?? <>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </>}</TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>{playgroundProps.children ?? <>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </>}</TableRow>\n        <TableRow>{playgroundProps.children ?? <>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </>}</TableRow>\n      </TableBody>\n    </Table>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from \"@/components/ui/table\";\n\nexport function TableDemo() {\n  return (\n    <Table className=\"max-w-md\">\n      <TableHeader>\n        <TableRow>\n          <TableHead>Name</TableHead>\n          <TableHead>Status</TableHead>\n        </TableRow>\n      </TableHeader>\n      <TableBody>\n        <TableRow>\n          <TableCell>Alice</TableCell>\n          <TableCell>Active</TableCell>\n        </TableRow>\n        <TableRow>\n          <TableCell>Bob</TableCell>\n          <TableCell>Pending</TableCell>\n        </TableRow>\n      </TableBody>\n    </Table>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "TableDemo"
+    }
+  }
+}

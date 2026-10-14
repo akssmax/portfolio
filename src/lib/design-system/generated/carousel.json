@@ -1,0 +1,445 @@
+{
+  "sourcePath": "src/components/ui/carousel.tsx",
+  "importPath": "@/components/ui/carousel",
+  "primitive": "Local component",
+  "dependencies": [
+    "embla-carousel-react",
+    "lucide-react"
+  ],
+  "exports": [
+    "Carousel",
+    "CarouselContent",
+    "CarouselItem",
+    "CarouselPrevious",
+    "CarouselNext"
+  ],
+  "parts": [
+    {
+      "name": "Carousel",
+      "contract": "React.ComponentProps<\"div\"> & CarouselProps",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": "\"horizontal\"",
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "opts",
+          "type": "Partial<OptionsType>",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "plugins",
+          "type": "CreatePluginType<LoosePluginType, {}>[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "setApi",
+          "type": "((api: CarouselApi) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CarouselContent",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CarouselItem",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CarouselPrevious",
+      "contract": "React.ComponentProps<typeof Button>",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "defaultValue": "\"icon-sm\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "xs",
+              "sm",
+              "lg",
+              "icon",
+              "icon-xs",
+              "icon-sm",
+              "icon-lg"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": "\"outline\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "link",
+              "default",
+              "destructive",
+              "outline",
+              "secondary",
+              "ghost"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CarouselNext",
+      "contract": "React.ComponentProps<typeof Button>",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "defaultValue": "\"icon-sm\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "xs",
+              "sm",
+              "lg",
+              "icon",
+              "icon-xs",
+              "icon-sm",
+              "icon-lg"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": "\"outline\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "link",
+              "default",
+              "destructive",
+              "outline",
+              "secondary",
+              "ghost"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "carousel",
+    "carousel-content",
+    "carousel-item",
+    "carousel-previous",
+    "carousel-next"
+  ],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" />\n      </Carousel>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "CarouselDemo"
+  },
+  "playground": {
+    "parts": [
+      "Carousel",
+      "CarouselContent",
+      "CarouselItem",
+      "CarouselNext",
+      "CarouselPrevious"
+    ],
+    "templates": {
+      "Carousel": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Carousel>> = /*__DS_PROPS__*/ {}\n\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>{playgroundProps.children ?? <>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" />\n      </>}</Carousel>\n    </div>\n  )\n}",
+      "CarouselContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CarouselContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>{playgroundProps.children ?? <>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </>}</CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" />\n      </Carousel>\n    </div>\n  )\n}",
+      "CarouselItem": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CarouselItem>> = /*__DS_PROPS__*/ {}\n\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>{playgroundProps.children ?? <>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </>}</CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" />\n      </Carousel>\n    </div>\n  )\n}",
+      "CarouselNext": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CarouselNext>> = /*__DS_PROPS__*/ {}\n\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" {...playgroundProps} />\n      </Carousel>\n    </div>\n  )\n}",
+      "CarouselPrevious": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CarouselPrevious>> = /*__DS_PROPS__*/ {}\n\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" {...playgroundProps} />\n        <CarouselNext className=\"-end-2\" />\n      </Carousel>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from \"@/components/ui/carousel\";\n\nexport function CarouselDemo() {\n  return (\n    <div className=\"relative mx-auto w-full max-w-xs px-10\">\n      <Carousel>\n        <CarouselContent>\n          {[1, 2, 3].map((slide) => (\n            <CarouselItem key={slide}>\n              <div className=\"flex aspect-square items-center justify-center rounded-lg border bg-muted\">\n                <span className=\"text-3xl font-semibold\">{slide}</span>\n              </div>\n            </CarouselItem>\n          ))}\n        </CarouselContent>\n        <CarouselPrevious className=\"-start-2\" />\n        <CarouselNext className=\"-end-2\" />\n      </Carousel>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "CarouselDemo"
+    }
+  }
+}

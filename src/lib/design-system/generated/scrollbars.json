@@ -1,0 +1,84 @@
+{
+  "sourcePath": "src/components/ui/custom-scrollbar.tsx",
+  "importPath": "@/components/ui/custom-scrollbar",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "CustomScrollbar"
+  ],
+  "parts": [
+    {
+      "name": "CustomScrollbar",
+      "contract": "CustomScrollbarProps",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\" | \"both\"",
+          "required": false,
+          "defaultValue": "\"vertical\"",
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical",
+              "both"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "custom-scrollbar"
+  ],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { CustomScrollbar } from \"@/components/ui/custom-scrollbar\";\n\nconst lines = Array.from({ length: 24 }, (_, index) => (\n  <p key={index} className=\"text-sm text-muted-foreground\">\n    Scrollable line {index + 1} — thumb uses{\" \"}\n    <code className=\"text-foreground\">--primary</code> with a transparent track.\n  </p>\n))\n\nexport function ScrollbarDemo() {\n  return (\n    <div className=\"grid gap-6 lg:grid-cols-2\">\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">CustomScrollbar</p>\n        <CustomScrollbar className=\"h-48 rounded-lg border border-border bg-card/40 p-4\">\n          <div className=\"space-y-3\">{lines}</div>\n        </CustomScrollbar>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">Native overflow</p>\n        <div className=\"custom-scrollbar h-48 overflow-y-auto rounded-lg border border-border bg-card/40 p-4\">\n          <div className=\"space-y-3\">{lines}</div>\n        </div>\n      </div>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/scrollbar-demo.tsx",
+    "name": "ScrollbarDemo"
+  },
+  "playground": {
+    "parts": [
+      "CustomScrollbar"
+    ],
+    "templates": {
+      "CustomScrollbar": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CustomScrollbar } from \"@/components/ui/custom-scrollbar\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CustomScrollbar>> = /*__DS_PROPS__*/ {}\n\n\nconst lines = Array.from({ length: 24 }, (_, index) => (\n  <p key={index} className=\"text-sm text-muted-foreground\">\n    Scrollable line {index + 1} — thumb uses{\" \"}\n    <code className=\"text-foreground\">--primary</code> with a transparent track.\n  </p>\n))\n\nexport function ScrollbarDemo() {\n  return (\n    <div className=\"grid gap-6 lg:grid-cols-2\">\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">CustomScrollbar</p>\n        <CustomScrollbar className=\"h-48 rounded-lg border border-border bg-card/40 p-4\">{playgroundProps.children ?? <>\n          <div className=\"space-y-3\">{lines}</div>\n        </>}</CustomScrollbar>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">Native overflow</p>\n        <div className=\"custom-scrollbar h-48 overflow-y-auto rounded-lg border border-border bg-card/40 p-4\">\n          <div className=\"space-y-3\">{lines}</div>\n        </div>\n      </div>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { CustomScrollbar } from \"@/components/ui/custom-scrollbar\";\n\nconst lines = Array.from({ length: 24 }, (_, index) => (\n  <p key={index} className=\"text-sm text-muted-foreground\">\n    Scrollable line {index + 1} — thumb uses{\" \"}\n    <code className=\"text-foreground\">--primary</code> with a transparent track.\n  </p>\n))\n\nexport function ScrollbarDemo() {\n  return (\n    <div className=\"grid gap-6 lg:grid-cols-2\">\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">CustomScrollbar</p>\n        <CustomScrollbar className=\"h-48 rounded-lg border border-border bg-card/40 p-4\">\n          <div className=\"space-y-3\">{lines}</div>\n        </CustomScrollbar>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-sm font-medium\">Native overflow</p>\n        <div className=\"custom-scrollbar h-48 overflow-y-auto rounded-lg border border-border bg-card/40 p-4\">\n          <div className=\"space-y-3\">{lines}</div>\n        </div>\n      </div>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/scrollbar-demo.tsx",
+      "name": "ScrollbarDemo"
+    }
+  }
+}

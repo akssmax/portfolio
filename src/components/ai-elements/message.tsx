@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { code } from "@streamdown/code"
+import { code } from "@/lib/code-highlighter"
 import type { UIMessage } from "ai"
 import type { ComponentProps, HTMLAttributes } from "react"
 import { memo } from "react"

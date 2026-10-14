@@ -1,0 +1,61 @@
+{
+  "sourcePath": "src/components/theme-customizer.tsx",
+  "importPath": "@/components/theme-customizer",
+  "primitive": "Local component",
+  "dependencies": [
+    "lucide-react",
+    "./theme-customizer/color-preset-grid",
+    "./theme-customizer/color-vision-picker",
+    "./theme-customizer/font-picker",
+    "./theme-customizer/font-scale-picker",
+    "./theme-customizer/mode-picker",
+    "./theme-customizer/radius-picker"
+  ],
+  "exports": [
+    "ThemeCustomizer"
+  ],
+  "parts": [
+    {
+      "name": "ThemeCustomizer",
+      "contract": "ThemeCustomizerProps",
+      "props": [
+        {
+          "name": "triggerSize",
+          "type": "\"icon\" | \"icon-sm\"",
+          "required": false,
+          "defaultValue": "\"icon\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "icon",
+              "icon-sm"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { ThemeCustomizer } from \"@/components/theme-customizer\";\n\nexport function ThemeCustomizerDemo() {\n  return <ThemeCustomizer />\n}",
+    "path": "src/components/design-system/demos/custom-demos.tsx",
+    "name": "ThemeCustomizerDemo"
+  },
+  "playground": {
+    "parts": [
+      "ThemeCustomizer"
+    ],
+    "templates": {
+      "ThemeCustomizer": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ThemeCustomizer } from \"@/components/theme-customizer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ThemeCustomizer>> = /*__DS_PROPS__*/ {}\n\n\nexport function ThemeCustomizerDemo() {\n  return <ThemeCustomizer {...playgroundProps} />\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { ThemeCustomizer } from \"@/components/theme-customizer\";\n\nexport function ThemeCustomizerDemo() {\n  return <ThemeCustomizer />\n}",
+      "path": "src/components/design-system/demos/custom-demos.tsx",
+      "name": "ThemeCustomizerDemo"
+    }
+  }
+}

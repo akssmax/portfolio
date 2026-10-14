@@ -125,13 +125,81 @@ Rate limits: **3 resume generations / 24h per IP**; **30 web searches / hr per I
 
 ## Adding components
 
+### Design system documentation
+
+Open `/design-system` for the searchable component directory and foundations.
+Each component page includes a live preview, complete example, local API,
+theme tokens, data slots, accessibility guidance, and implementation source.
+Playgrounds generate prop controls from local TypeScript: selects for literal
+unions, switches for booleans, numeric and text inputs, date inputs, and JSON
+editors for structured values. Choose a rendered component part to edit its
+props. Callback fields report preview interactions in an event log;
+composition and render-function props are documented as code fields.
+Common controls appear first. Structured values, generic styling, callbacks,
+and composition fields are grouped under a collapsed Advanced section.
+Prop search appears only for lists of 12 or more fields, and the part selector
+appears only when the example includes multiple component parts.
+The current overrides are included in the copyable example.
+
+Implementation source is fetched only when its disclosure opens; it is excluded
+from route data and server hydration. Collapsed code blocks render 15 lines while
+Copy always includes the complete example. Every preview has its own generated
+lazy module; avoid importing the old demo galleries into the documentation shell.
+The portfolio chat interface also loads on first open.
+
+Markdown syntax highlighting uses the explicit grammar and theme imports in
+`src/lib/code-highlighter.ts`. Add a grammar there when needed; unlisted languages
+remain readable as plain text. Keep the cache bounded for streaming responses.
+Vite externalizes React, React DOM, Lucide, and the PDF libraries in the Nitro
+environment; Nitro traces the same list into deployment output. Preserve a single
+React runtime when changing this list. Production builds use Node's default heap.
+
+Foundations → Animation (`/design-system/animation`) documents the shared easing
+and transition exports, motion tiers, live interaction recipes, and an inventory
+of Motion, CSS, SVG, GSAP, canvas, WebGL, and WebGPU effects with their owning files.
+Use `useAnimationProfile()` for new effects and clean up imperative playback,
+timers, and animation frames. The docs sidebar uses `SIDEBAR_TRANSITION` from
+`src/lib/motion-easing.ts`; it preserves navigation state while collapsing and
+becomes inert immediately when closed.
+
+The references come from the local implementation, rather than a copy of the
+upstream shadcn API. Dev startup and production builds regenerate them.
+
+```bash
+npm run docs:generate # Refresh generated API references and example code
+npm run docs:check    # Check source freshness and typecheck all complete examples
+```
+
+When customizing a component:
+
+1. Edit its local source in `src/components/ui/` or the relevant pattern directory.
+2. Update its demo in `src/components/design-system/demos/`.
+3. Update authored guidance in `src/lib/design-system/guidance.ts` when behavior changes.
+4. Run the documentation commands and `npm run typecheck`.
+5. Verify the affected states, themes, and consumers in the browser.
+
+Register new pages in `src/lib/design-system-registry.ts` and their live demos in
+`src/components/design-system/demos/index.tsx`. Custom components also need a
+source mapping in `scripts/generate-design-system-docs.ts`.
+Do not edit `src/lib/design-system/generated/*.json` by hand.
+Interactive renderers in `src/components/design-system/generated-playgrounds/`
+are generated too. Focused examples for common primitives and M3 Shapes live in
+`src/components/design-system/demos/playground-fixtures.tsx`.
+
+The reusable workflow and layout reference live in
+[design-system-docs](skills/design-system-docs/SKILL.md). Once installed in your
+personal Codex skills directory, invoke `$design-system-docs` from other projects.
+
+### Adding an upstream component
+
 To add components to your app, run the following command:
 
 ```bash
 npx shadcn@latest add button
 ```
 
-This will place the ui components in the `components` directory.
+This will place UI components in `src/components/ui/`. Review local changes
+before replacing an existing customized component.
 
 ## Using components
 

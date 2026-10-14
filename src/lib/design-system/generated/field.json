@@ -1,0 +1,502 @@
+{
+  "sourcePath": "src/components/ui/field.tsx",
+  "importPath": "@/components/ui/field",
+  "primitive": "Local component",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "exports": [
+    "Field",
+    "FieldLabel",
+    "FieldDescription",
+    "FieldError",
+    "FieldGroup",
+    "FieldLegend",
+    "FieldSeparator",
+    "FieldSet",
+    "FieldContent",
+    "FieldTitle"
+  ],
+  "parts": [
+    {
+      "name": "Field",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof fieldVariants>",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\" | \"responsive\" | null",
+          "required": false,
+          "defaultValue": "\"vertical\"",
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical",
+              "responsive"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldLabel",
+      "contract": "React.ComponentProps<typeof Label>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "htmlFor",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "The id of the form control this label names.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldDescription",
+      "contract": "React.ComponentProps<\"p\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldError",
+      "contract": "React.ComponentProps<\"div\"> & {\n  errors?: Array<{ message?: string } | undefined>\n}",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "errors",
+          "type": "({ message?: string; })[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldGroup",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldLegend",
+      "contract": "React.ComponentProps<\"legend\"> & { variant?: \"legend\" | \"label\" }",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"label\" | \"legend\"",
+          "required": false,
+          "defaultValue": "\"legend\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "label",
+              "legend"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldSeparator",
+      "contract": "React.ComponentProps<\"div\"> & {\n  children?: React.ReactNode\n}",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldSet",
+      "contract": "React.ComponentProps<\"fieldset\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldContent",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "FieldTitle",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "field-set",
+    "field-legend",
+    "field-group",
+    "field",
+    "field-content",
+    "field-label",
+    "field-description",
+    "field-separator",
+    "field-separator-content",
+    "field-error"
+  ],
+  "tokens": [
+    "--destructive",
+    "--primary",
+    "--muted-foreground",
+    "--background"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Field, FieldContent, FieldLabel } from \"@/components/ui/field\";\n\nimport { Input } from \"@/components/ui/input\";\n\nexport function FieldDemo() {\n  return (\n    <Field className=\"w-full max-w-sm\">\n      <FieldLabel htmlFor=\"username\">Username</FieldLabel>\n      <FieldContent>\n        <Input id=\"username\" placeholder=\"johndoe\" />\n      </FieldContent>\n    </Field>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "FieldDemo"
+  },
+  "playground": {
+    "parts": [
+      "Field",
+      "FieldContent",
+      "FieldLabel"
+    ],
+    "templates": {
+      "Field": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Field, FieldContent, FieldLabel } from \"@/components/ui/field\";\n\nimport { Input } from \"@/components/ui/input\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Field>> = /*__DS_PROPS__*/ {}\n\n\nexport function FieldDemo() {\n  return (\n    <Field className=\"w-full max-w-sm\">{playgroundProps.children ?? <>\n      <FieldLabel htmlFor=\"username\">Username</FieldLabel>\n      <FieldContent>\n        <Input id=\"username\" placeholder=\"johndoe\" />\n      </FieldContent>\n    </>}</Field>\n  )\n}",
+      "FieldContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Field, FieldContent, FieldLabel } from \"@/components/ui/field\";\n\nimport { Input } from \"@/components/ui/input\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FieldContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function FieldDemo() {\n  return (\n    <Field className=\"w-full max-w-sm\">\n      <FieldLabel htmlFor=\"username\">Username</FieldLabel>\n      <FieldContent>{playgroundProps.children ?? <>\n        <Input id=\"username\" placeholder=\"johndoe\" />\n      </>}</FieldContent>\n    </Field>\n  )\n}",
+      "FieldLabel": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Field, FieldContent, FieldLabel } from \"@/components/ui/field\";\n\nimport { Input } from \"@/components/ui/input\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FieldLabel>> = /*__DS_PROPS__*/ {}\n\n\nexport function FieldDemo() {\n  return (\n    <Field className=\"w-full max-w-sm\">\n      <FieldLabel htmlFor=\"username\">{playgroundProps.children ?? <>Username</>}</FieldLabel>\n      <FieldContent>\n        <Input id=\"username\" placeholder=\"johndoe\" />\n      </FieldContent>\n    </Field>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Field, FieldContent, FieldLabel } from \"@/components/ui/field\";\n\nimport { Input } from \"@/components/ui/input\";\n\nexport function FieldDemo() {\n  return (\n    <Field className=\"w-full max-w-sm\">\n      <FieldLabel htmlFor=\"username\">Username</FieldLabel>\n      <FieldContent>\n        <Input id=\"username\" placeholder=\"johndoe\" />\n      </FieldContent>\n    </Field>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "FieldDemo"
+    }
+  }
+}

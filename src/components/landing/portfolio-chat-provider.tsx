@@ -2,6 +2,8 @@
 
 import {
   createContext,
+  lazy,
+  Suspense,
   useCallback,
   useContext,
   useMemo,
@@ -9,7 +11,11 @@ import {
 } from "react"
 import posthog from "posthog-js"
 
-import { PortfolioChatSheet } from "@/components/landing/portfolio-chat-sheet"
+const PortfolioChatSheet = lazy(() =>
+  import("@/components/landing/portfolio-chat-sheet").then((module) => ({
+    default: module.PortfolioChatSheet,
+  }))
+)
 
 type PortfolioChatContextValue = {
   openChat: () => void
@@ -23,14 +29,22 @@ type PortfolioChatActions = {
   isAvailable: boolean
 }
 
-const PortfolioChatContext = createContext<PortfolioChatContextValue | null>(null)
+const PortfolioChatContext = createContext<PortfolioChatContextValue | null>(
+  null
+)
 
-export function PortfolioChatProvider({ children }: { children: React.ReactNode }) {
+export function PortfolioChatProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [open, setOpen] = useState(false)
+  const [hasOpened, setHasOpened] = useState(false)
   const [initialMessage, setInitialMessage] = useState<string | null>(null)
   const [sessionKey, setSessionKey] = useState(0)
 
   const openChat = useCallback(() => {
+    setHasOpened(true)
     setInitialMessage(null)
     setOpen(true)
 
@@ -46,6 +60,7 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
   }, [])
 
   const openChatWithMessage = useCallback((message: string) => {
+    setHasOpened(true)
     setInitialMessage(message)
     setOpen(true)
 
@@ -66,23 +81,27 @@ export function PortfolioChatProvider({ children }: { children: React.ReactNode 
       openChatWithMessage,
       isAvailable: true,
     }),
-    [openChat, openChatWithMessage],
+    [openChat, openChatWithMessage]
   )
 
   return (
     <PortfolioChatContext.Provider value={value}>
       {children}
-      <PortfolioChatSheet
-        key={sessionKey}
-        open={open}
-        onOpenChange={(next) => {
-          setOpen(next)
-          if (!next) {
-            setSessionKey((key) => key + 1)
-          }
-        }}
-        initialMessage={initialMessage}
-      />
+      <Suspense fallback={null}>
+        {hasOpened && (
+          <PortfolioChatSheet
+            key={sessionKey}
+            open={open}
+            onOpenChange={(next) => {
+              setOpen(next)
+              if (!next) {
+                setSessionKey((key) => key + 1)
+              }
+            }}
+            initialMessage={initialMessage}
+          />
+        )}
+      </Suspense>
     </PortfolioChatContext.Provider>
   )
 }
@@ -97,7 +116,9 @@ export function usePortfolioChat(): PortfolioChatActions {
   const context = useContext(PortfolioChatContext)
   if (!context) {
     if (import.meta.env.DEV && typeof window !== "undefined") {
-      console.warn("usePortfolioChat called outside PortfolioChatProvider — chat actions are disabled.")
+      console.warn(
+        "usePortfolioChat called outside PortfolioChatProvider — chat actions are disabled."
+      )
     }
     return noopChatActions
   }

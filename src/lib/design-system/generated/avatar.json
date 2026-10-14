@@ -1,0 +1,361 @@
+{
+  "sourcePath": "src/components/ui/avatar.tsx",
+  "importPath": "@/components/ui/avatar",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Avatar",
+    "AvatarImage",
+    "AvatarFallback",
+    "AvatarGroup",
+    "AvatarGroupCount",
+    "AvatarBadge"
+  ],
+  "parts": [
+    {
+      "name": "Avatar",
+      "contract": "React.ComponentProps<typeof AvatarPrimitive.Root> & {\n  size?: \"default\" | \"sm\" | \"lg\"\n}",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\" | \"lg\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "sm",
+              "lg"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AvatarImage",
+      "contract": "React.ComponentProps<typeof AvatarPrimitive.Image>",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onLoadingStatusChange",
+          "type": "((status: \"loading\" | \"idle\" | \"loaded\" | \"error\") => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AvatarFallback",
+      "contract": "React.ComponentProps<typeof AvatarPrimitive.Fallback>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "delayMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Delay in milliseconds before showing the fallback.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AvatarGroup",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AvatarGroupCount",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AvatarBadge",
+      "contract": "React.ComponentProps<\"span\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "avatar",
+    "avatar-image",
+    "avatar-fallback",
+    "avatar-badge",
+    "avatar-group",
+    "avatar-group-count"
+  ],
+  "tokens": [
+    "--border",
+    "--muted",
+    "--muted-foreground",
+    "--primary",
+    "--primary-foreground",
+    "--background"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\n\nexport function AvatarDemo() {\n  return (\n    <div className=\"flex gap-3\">\n      <Avatar>\n        <AvatarImage src=\"/images/portraits/01.webp\" alt=\"Akshay Saini\" />\n        <AvatarFallback>AS</AvatarFallback>\n      </Avatar>\n      <Avatar>\n        <AvatarFallback>AS</AvatarFallback>\n      </Avatar>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "AvatarDemo"
+  },
+  "playground": {
+    "parts": [
+      "Avatar",
+      "AvatarFallback",
+      "AvatarImage"
+    ],
+    "templates": {
+      "Avatar": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Avatar>> = /*__DS_PROPS__*/ {}\n\n\nexport function AvatarPropDemo() {\n  return (\n    <Avatar>{playgroundProps.children ?? <>\n      <AvatarImage src=\"/images/portraits/01.webp\" alt=\"Akshay Saini\" />\n      <AvatarFallback>AS</AvatarFallback>\n    </>}</Avatar>\n  )\n}",
+      "AvatarFallback": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof AvatarFallback>> = /*__DS_PROPS__*/ {}\n\n\nexport function AvatarPropDemo() {\n  return (\n    <Avatar>\n      <AvatarImage src=\"/images/portraits/01.webp\" alt=\"Akshay Saini\" />\n      <AvatarFallback>{playgroundProps.children ?? <>AS</>}</AvatarFallback>\n    </Avatar>\n  )\n}",
+      "AvatarImage": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof AvatarImage>> = /*__DS_PROPS__*/ {}\n\n\nexport function AvatarPropDemo() {\n  return (\n    <Avatar>\n      <AvatarImage src=\"/images/portraits/01.webp\" alt=\"Akshay Saini\" {...playgroundProps} />\n      <AvatarFallback>AS</AvatarFallback>\n    </Avatar>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\";\n\nexport function AvatarPropDemo() {\n  return (\n    <Avatar>\n      <AvatarImage src=\"/images/portraits/01.webp\" alt=\"Akshay Saini\" />\n      <AvatarFallback>AS</AvatarFallback>\n    </Avatar>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "AvatarPropDemo"
+    }
+  }
+}

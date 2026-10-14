@@ -1,0 +1,200 @@
+{
+  "sourcePath": "src/components/ui/scroll-area.tsx",
+  "importPath": "@/components/ui/scroll-area",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "ScrollArea",
+    "ScrollBar"
+  ],
+  "parts": [
+    {
+      "name": "ScrollArea",
+      "contract": "React.ComponentProps<typeof ScrollAreaPrimitive.Root>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "dir",
+          "type": "(\"ltr\" | \"rtl\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "ltr",
+              "rtl"
+            ]
+          }
+        },
+        {
+          "name": "scrollHideDelay",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"auto\" | \"hover\" | \"always\" | \"scroll\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "auto",
+              "hover",
+              "always",
+              "scroll"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ScrollBar",
+      "contract": "React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": "\"vertical\"",
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "scroll-area",
+    "scroll-area-viewport",
+    "scroll-area-scrollbar",
+    "scroll-area-thumb"
+  ],
+  "tokens": [
+    "--ring",
+    "--primary"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { ScrollArea } from \"@/components/ui/scroll-area\";\n\nexport function ScrollAreaDemo() {\n  return (\n    <ScrollArea className=\"h-32 w-full max-w-sm rounded-md border p-4\">\n      <p className=\"text-sm text-muted-foreground\">\n        Scrollable content area. Lorem ipsum dolor sit amet, consectetur adipiscing\n        elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n      </p>\n    </ScrollArea>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "ScrollAreaDemo"
+  },
+  "playground": {
+    "parts": [
+      "ScrollArea"
+    ],
+    "templates": {
+      "ScrollArea": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ScrollArea } from \"@/components/ui/scroll-area\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ScrollArea>> = /*__DS_PROPS__*/ {}\n\n\nexport function ScrollAreaDemo() {\n  return (\n    <ScrollArea className=\"h-32 w-full max-w-sm rounded-md border p-4\">{playgroundProps.children ?? <>\n      <p className=\"text-sm text-muted-foreground\">\n        Scrollable content area. Lorem ipsum dolor sit amet, consectetur adipiscing\n        elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n      </p>\n    </>}</ScrollArea>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { ScrollArea } from \"@/components/ui/scroll-area\";\n\nexport function ScrollAreaDemo() {\n  return (\n    <ScrollArea className=\"h-32 w-full max-w-sm rounded-md border p-4\">\n      <p className=\"text-sm text-muted-foreground\">\n        Scrollable content area. Lorem ipsum dolor sit amet, consectetur adipiscing\n        elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n      </p>\n    </ScrollArea>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "ScrollAreaDemo"
+    }
+  }
+}

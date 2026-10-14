@@ -1,0 +1,150 @@
+{
+  "sourcePath": "src/components/marketing/feature-card.tsx",
+  "importPath": "@/components/marketing/feature-card",
+  "primitive": "Local component",
+  "dependencies": [
+    "@tanstack/react-router",
+    "lucide-react",
+    "motion/react"
+  ],
+  "exports": [
+    "FeatureCard"
+  ],
+  "parts": [
+    {
+      "name": "FeatureCard",
+      "contract": "FeatureCardProps",
+      "props": [
+        {
+          "name": "primaryLink",
+          "type": "FeatureCardPrimaryLink",
+          "required": false,
+          "defaultValue": "\"live\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "live",
+              "case-study"
+            ]
+          }
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "externalHref",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "linkFrom",
+          "type": "CaseStudyFrom",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "home",
+              "projects",
+              "intro",
+              "journey"
+            ]
+          }
+        },
+        {
+          "name": "previewAlt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "previewSrc",
+          "type": "string | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--background",
+    "--foreground",
+    "--primary",
+    "--muted-foreground",
+    "--card",
+    "--border",
+    "--popover",
+    "--muted"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { FeatureCard } from \"@/components/marketing/feature-card\";\n\nimport { getProjectPreview } from \"@/lib/projects/project-preview\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function FeatureCardDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n  const project = recentProjects[0]\n\n  if (!project) return null\n\n  return (\n    <div className=\"w-full max-w-xl rounded-lg border border-border bg-background p-4\">\n      <FeatureCard\n        title={project.title}\n        description={project.description}\n        slug={project.slug}\n        previewSrc={getProjectPreview(project).src}\n        previewAlt={getProjectPreview(project).alt}\n      />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/custom-demos.tsx",
+    "name": "FeatureCardDemo"
+  },
+  "playground": {
+    "parts": [
+      "FeatureCard"
+    ],
+    "templates": {
+      "FeatureCard": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { FeatureCard } from \"@/components/marketing/feature-card\";\n\nimport { getProjectPreview } from \"@/lib/projects/project-preview\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FeatureCard>> = /*__DS_PROPS__*/ {}\n\n\nexport function FeatureCardDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n  const project = recentProjects[0]\n\n  if (!project) return null\n\n  return (\n    <div className=\"w-full max-w-xl rounded-lg border border-border bg-background p-4\">\n      <FeatureCard\n        title={project.title}\n        description={project.description}\n        slug={project.slug}\n        previewSrc={getProjectPreview(project).src}\n        previewAlt={getProjectPreview(project).alt} {...playgroundProps}\n      />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { FeatureCard } from \"@/components/marketing/feature-card\";\n\nimport { getProjectPreview } from \"@/lib/projects/project-preview\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function FeatureCardDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n  const project = recentProjects[0]\n\n  if (!project) return null\n\n  return (\n    <div className=\"w-full max-w-xl rounded-lg border border-border bg-background p-4\">\n      <FeatureCard\n        title={project.title}\n        description={project.description}\n        slug={project.slug}\n        previewSrc={getProjectPreview(project).src}\n        previewAlt={getProjectPreview(project).alt}\n      />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/custom-demos.tsx",
+      "name": "FeatureCardDemo"
+    }
+  }
+}

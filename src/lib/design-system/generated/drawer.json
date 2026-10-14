@@ -1,0 +1,925 @@
+{
+  "sourcePath": "src/components/ui/drawer.tsx",
+  "importPath": "@/components/ui/drawer",
+  "primitive": "Vaul",
+  "dependencies": [
+    "vaul"
+  ],
+  "exports": [
+    "Drawer",
+    "DrawerPortal",
+    "DrawerOverlay",
+    "DrawerTrigger",
+    "DrawerClose",
+    "DrawerContent",
+    "DrawerHeader",
+    "DrawerFooter",
+    "DrawerTitle",
+    "DrawerDescription"
+  ],
+  "parts": [
+    {
+      "name": "Drawer",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Root>",
+      "props": [
+        {
+          "name": "activeSnapPoint",
+          "type": "string | number | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "autoFocus",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "closeThreshold",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Number between 0 and 1 that determines when the drawer should be closed.\nExample: threshold of 0.5 would close the drawer if the user swiped for 50% of the height of the drawer or more.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "container",
+          "type": "HTMLElement | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Opened by default, skips initial enter animation. Still reacts to `open` state changes",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "direction",
+          "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Direction of the drawer. Can be `top` or `bottom`, `left`, `right`.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ]
+          }
+        },
+        {
+          "name": "disablePreventScroll",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When set to `true` prevents scrolling on the document body on mount, and restores it on unmount.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `false` dragging, clicking outside, pressing esc, etc. will not close the drawer.\nUse this in comination with the `open` prop, otherwise you won't be able to open/close the drawer.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "fadeFromIndex",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Index of a `snapPoint` from which the overlay fade should be applied. Defaults to the last snap point.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "fixed",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true`, don't move the drawer upwards if there's space, but rather only change it's height so it's fully scrollable when the keyboard is open",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "handleOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true` only allows the drawer to be dragged by the `<Drawer.Handle />` component.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `false` it allows to interact with elements outside of the drawer without closing it.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "nested",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "noBodyStyles",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true` the `body` doesn't get any styles assigned from Vaul",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onAnimationEnd",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Gets triggered after the open or close animation ends, it receives an `open` argument with the `open` state of the drawer by the time the function was triggered.\nUseful to revert any state changes for example.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onClose",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onDrag",
+          "type": "((event: React.PointerEvent<HTMLDivElement>, percentageDragged: number) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onRelease",
+          "type": "((event: React.PointerEvent<HTMLDivElement>, open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "preventScrollRestoration",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "repositionInputs",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true` Vaul will reposition inputs rather than scroll then into view if the keyboard is in the way.\nSetting it to `false` will fall back to the default browser behavior.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "scrollLockTimeout",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Duration for which the drawer is not draggable after scrolling content inside of the drawer.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "setActiveSnapPoint",
+          "type": "((snapPoint: number | string | null) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "setBackgroundColorOnScale",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `false` we don't change body's background color when the drawer is open.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "shouldScaleBackground",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "snapPoints",
+          "type": "(string | number)[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Array of numbers from 0 to 100 that corresponds to % of the screen a given snap point should take up.\nShould go from least visible. Example `[0.2, 0.5, 0.8]`.\nYou can also use px values, which doesn't take screen height into account.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "snapToSequentialPoint",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disabled velocity based swiping for snap points.\nThis means that a snap point won't be skipped even if the velocity is high enough.\nUseful if each snap point in a drawer is equally important.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerPortal",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Portal>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "container",
+          "type": "Element | DocumentFragment | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Specify a container element to portal the content into.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerOverlay",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Overlay>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerTrigger",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Trigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerClose",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Close>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerContent",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Content>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCloseAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on close.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the escape key is down.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the focus moves outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when an interaction happens outside the `DismissableLayer`.\nSpecifically, when a `pointerdown` event happens outside or focus moves outside of it.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on open.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the a `pointerdown` event happens outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerFooter",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerTitle",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Title>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DrawerDescription",
+      "contract": "React.ComponentProps<typeof DrawerPrimitive.Description>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "drawer",
+    "drawer-trigger",
+    "drawer-portal",
+    "drawer-close",
+    "drawer-overlay",
+    "drawer-content",
+    "drawer-header",
+    "drawer-footer",
+    "drawer-title",
+    "drawer-description"
+  ],
+  "tokens": [
+    "--popover",
+    "--popover-foreground",
+    "--muted",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "DrawerDemo"
+  },
+  "playground": {
+    "parts": [
+      "Drawer",
+      "DrawerContent",
+      "DrawerDescription",
+      "DrawerHeader",
+      "DrawerTitle",
+      "DrawerTrigger"
+    ],
+    "templates": {
+      "Drawer": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Drawer>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>{playgroundProps.children ?? <>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </>}</Drawer>\n  )\n}",
+      "DrawerContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DrawerContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>{playgroundProps.children ?? <>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </>}</DrawerContent>\n    </Drawer>\n  )\n}",
+      "DrawerDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DrawerDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>{playgroundProps.children ?? <>Drawer description text.</>}</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}",
+      "DrawerHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DrawerHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>{playgroundProps.children ?? <>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </>}</DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}",
+      "DrawerTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DrawerTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>{playgroundProps.children ?? <>Drawer title</>}</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}",
+      "DrawerTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DrawerTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>{playgroundProps.children ?? <>\n        <Button variant=\"outline\">Open drawer</Button>\n      </>}</DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/components/ui/drawer\";\n\nexport function DrawerDemo() {\n  return (\n    <Drawer>\n      <DrawerTrigger asChild>\n        <Button variant=\"outline\">Open drawer</Button>\n      </DrawerTrigger>\n      <DrawerContent>\n        <DrawerHeader>\n          <DrawerTitle>Drawer title</DrawerTitle>\n          <DrawerDescription>Drawer description text.</DrawerDescription>\n        </DrawerHeader>\n      </DrawerContent>\n    </Drawer>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "DrawerDemo"
+    }
+  }
+}

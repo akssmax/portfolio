@@ -1,0 +1,1533 @@
+{
+  "sourcePath": "src/components/ui/combobox.tsx",
+  "importPath": "@/components/ui/combobox",
+  "primitive": "Base UI",
+  "dependencies": [
+    "@base-ui/react",
+    "lucide-react"
+  ],
+  "exports": [
+    "Combobox",
+    "ComboboxInput",
+    "ComboboxContent",
+    "ComboboxList",
+    "ComboboxItem",
+    "ComboboxGroup",
+    "ComboboxLabel",
+    "ComboboxCollection",
+    "ComboboxEmpty",
+    "ComboboxSeparator",
+    "ComboboxChips",
+    "ComboboxChip",
+    "ComboboxChipsInput",
+    "ComboboxTrigger",
+    "ComboboxValue"
+  ],
+  "parts": [
+    {
+      "name": "Combobox",
+      "contract": "ComboboxPrimitive.Root.Props<Value, Multiple>",
+      "props": [
+        {
+          "name": "actionsRef",
+          "type": "React.RefObject<AriaCombobox.Actions | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "A ref to imperative actions.\n- `unmount`: When specified, the combobox will not be unmounted when closed.\nInstead, the `unmount` function must be called to unmount the combobox manually.\nUseful when the combobox's animation is controlled by an external library.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Provides a hint to the browser for autofill.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "autoHighlight",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the first matching item is highlighted automatically while filtering.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultInputValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "The uncontrolled input value when initially rendered.\n\nTo render a controlled input, use the `inputValue` prop instead.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the popup is initially open.\n\nTo render a controlled popup, use the `open` prop instead.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "(Multiple extends true ? Value[] : Value) | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "The uncontrolled selected value of the combobox when it's initially rendered.\n\nTo render a controlled combobox, use the `value` prop instead.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component should ignore user interaction.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "filter",
+          "type": "((itemValue: Value, query: string, itemToString?: ((itemValue: Value) => string)) => boolean) | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Filter function used to match items vs input query.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "filteredItems",
+          "type": "readonly any[] | readonly Group<any>[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Filtered items to display in the list.\nWhen provided, the list will use these items instead of filtering the `items` prop internally.\nUse when you want to control filtering logic externally with the `useFilter()` hook.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Identifies the form that owns the internal input.\nUseful when the combobox is rendered outside the form.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "grid",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether list items are presented in a grid layout.\nWhen enabled, arrow keys navigate across rows and columns inferred from DOM rows.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "highlightItemOnHover",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether moving the pointer over items should highlight them.\nDisabling this prop allows CSS `:hover` to be differentiated from the `:focus` (`data-highlighted`) state.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "The id of the component.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the list is rendered inline without using the popup.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "inputRef",
+          "type": "React.Ref<HTMLInputElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "A ref to the hidden input element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "inputValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "The input value of the combobox. Use when controlled.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "isItemEqualToValue",
+          "type": "((itemValue: Value, value: Value) => boolean)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Custom comparison logic used to determine if a combobox item value matches the current selected value. Useful when item values are objects without matching referentially.\nDefaults to `Object.is` comparison.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "items",
+          "type": "readonly any[] | readonly Group<any>[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "The items to be displayed in the list.\nCan be either a flat array of items or an array of groups with items.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "itemToStringLabel",
+          "type": "((itemValue: Value) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "When the item values are objects (`<Combobox.Item value={object}>`), this function converts the object value to a string representation for display in the input.\nIf the shape of the object is `{ value, label }`, the label will be used automatically without needing to specify this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "itemToStringValue",
+          "type": "((itemValue: Value) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "When the item values are objects (`<Combobox.Item value={object}>`), this function converts the object value to a string representation for form submission.\nIf the shape of the object is `{ value, label }`, the value will be used automatically without needing to specify this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "The maximum number of items to display in the list.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "locale",
+          "type": "Intl.LocalesArgument",
+          "required": false,
+          "defaultValue": null,
+          "description": "The locale to use for string comparison.\nDefaults to the user's runtime locale.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "loopFocus",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether to loop keyboard focus back to the input when the end of the list is reached while using the arrow keys. The first item can then be reached by pressing <kbd>ArrowDown</kbd> again from the input, or the last item can be reached by pressing <kbd>ArrowUp</kbd> from the input.\nThe input is always included in the focus loop per [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/).\nWhen disabled, focus does not move when on the last element and the user presses <kbd>ArrowDown</kbd>, or when on the first element and the user presses <kbd>ArrowUp</kbd>.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Determines if the popup enters a modal state when open.\n- `true`: user interaction is limited to the popup: document page scroll is locked and pointer interactions on outside elements are disabled.\n- `false`: user interaction with the rest of the document is allowed.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "multiple",
+          "type": "Multiple",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether multiple items can be selected.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Identifies the field when a form is submitted.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onInputValueChange",
+          "type": "((inputValue: string, eventDetails: ComboboxPrimitive.Root.ChangeEventDetails) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the input value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onItemHighlighted",
+          "type": "((highlightedValue: Value, eventDetails: ComboboxPrimitive.Root.HighlightEventDetails) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Callback fired when an item is highlighted or unhighlighted.\nReceives the highlighted item value (or `undefined` if no item is highlighted) and event details with a `reason` property describing why the highlight changed.\nThe `reason` can be:\n- `'keyboard'`: the highlight changed due to keyboard navigation.\n- `'pointer'`: the highlight changed due to pointer hovering.\n- `'none'`: the highlight changed programmatically.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean, eventDetails: ComboboxPrimitive.Root.ChangeEventDetails) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the popup is opened or closed.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenChangeComplete",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called after any animations complete when the popup is opened or closed.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: (Multiple extends true ? Value[] : Value) | (Multiple extends true ? never : null), eventDetails: ComboboxPrimitive.Root.ChangeEventDetails) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the selected value of the combobox changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the popup is currently open. Use when controlled.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "openOnInputClick",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the popup opens when clicking the input.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the user should be unable to choose a different option from the popup.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the user must choose a value before submitting a form.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "value",
+          "type": "(Multiple extends true ? Value[] : Value) | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "The selected value of the combobox. Use when controlled.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "virtualized",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the items are being externally virtualized.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxInput",
+      "contract": "ComboboxPrimitive.Input.Props & {\n  showTrigger?: boolean\n  showClear?: boolean\n}",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the component should ignore user interaction.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showClear",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showTrigger",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteInputState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "max",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "min",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteInputState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "step",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteInputState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "type",
+          "type": "React.HTMLInputTypeAttribute",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxContent",
+      "contract": "ComboboxPrimitive.Popup.Props &\n  Pick<\n    ComboboxPrimitive.Positioner.Props,\n    \"side\" | \"align\" | \"sideOffset\" | \"alignOffset\" | \"anchor\"\n  >",
+      "props": [
+        {
+          "name": "align",
+          "type": "Align",
+          "required": false,
+          "defaultValue": "\"start\"",
+          "description": "How to align the popup relative to the specified side.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "center",
+              "end",
+              "start"
+            ]
+          }
+        },
+        {
+          "name": "alignOffset",
+          "type": "number | OffsetFunction",
+          "required": false,
+          "defaultValue": "0",
+          "description": "Additional offset along the alignment axis in pixels.\nAlso accepts a function that returns the offset to read the dimensions of the anchor\nand positioner elements, along with its side and alignment.\n\nThe function takes a `data` object parameter with the following properties:\n- `data.anchor`: the dimensions of the anchor element with properties `width` and `height`.\n- `data.positioner`: the dimensions of the positioner element with properties `width` and `height`.\n- `data.side`: which side of the anchor element the positioner is aligned against.\n- `data.align`: how the positioner is aligned relative to the specified side.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "side",
+          "type": "Side",
+          "required": false,
+          "defaultValue": "\"bottom\"",
+          "description": "Which side of the anchor element to align the popup against.\nMay automatically change to avoid collisions.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "left",
+              "right",
+              "top",
+              "bottom",
+              "inline-end",
+              "inline-start"
+            ]
+          }
+        },
+        {
+          "name": "sideOffset",
+          "type": "number | OffsetFunction",
+          "required": false,
+          "defaultValue": "6",
+          "description": "Distance between the anchor and the popup in pixels.\nAlso accepts a function that returns the distance to read the dimensions of the anchor\nand positioner elements, along with its side and alignment.\n\nThe function takes a `data` object parameter with the following properties:\n- `data.anchor`: the dimensions of the anchor element with properties `width` and `height`.\n- `data.positioner`: the dimensions of the positioner element with properties `width` and `height`.\n- `data.side`: which side of the anchor element the positioner is aligned against.\n- `data.align`: how the positioner is aligned relative to the specified side.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "anchor",
+          "type": "Element | VirtualElement | React.RefObject<Element | null> | (() => Element | VirtualElement | null) | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "An element to position the popup against.\nBy default, the popup will be positioned against the trigger.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompletePopupState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "finalFocus",
+          "type": "boolean | React.RefObject<HTMLElement | null> | ((closeType: InteractionType) => void | boolean | HTMLElement | null)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Determines the element to focus when the popup is closed.\n\n- `false`: Do not move focus.\n- `true`: Move focus based on the default behavior (trigger or previously focused element).\n- `RefObject`: Move focus to the ref element.\n- `function`: Called with the interaction type (`mouse`, `touch`, `pen`, or `keyboard`).\n  Return an element to focus, `true` to use the default behavior, or `false`/`undefined` to do nothing.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "initialFocus",
+          "type": "boolean | React.RefObject<HTMLElement | null> | ((openType: InteractionType) => void | boolean | HTMLElement | null)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Determines the element to focus when the popup is opened.\n\n- `false`: Do not move focus.\n- `true`: Move focus based on the default behavior (first tabbable element or popup).\n- `RefObject`: Move focus to the ref element.\n- `function`: Called with the interaction type (`mouse`, `touch`, `pen`, or `keyboard`).\n  Return an element to focus, `true` to use the default behavior, or `false`/`undefined` to do nothing.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompletePopupState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompletePopupState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxList",
+      "contract": "ComboboxPrimitive.List.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((item: any, index: number) => React.ReactNode)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteListState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteListState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteListState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxItem",
+      "contract": "ComboboxPrimitive.Item.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: ComboboxItemState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component should ignore user interaction.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "The index of the item in the list. Improves performance when specified by avoiding the need to calculate the index automatically from the DOM.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "nativeButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component renders a native `<button>` element when replacing it\nvia the `render` prop.\nSet to `true` if the rendered element is a native button.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onClick",
+          "type": "((event: BaseUIEvent<React.MouseEvent<HTMLDivElement, MouseEvent>>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "An optional click handler for the item when selected.\nIt fires when clicking the item with the pointer, as well as when pressing `Enter` with the keyboard if the item is highlighted when the `Input` or `List` element has focus.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, ComboboxItemState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: ComboboxItemState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "required": false,
+          "defaultValue": null,
+          "description": "A unique value that identifies this item.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxGroup",
+      "contract": "ComboboxPrimitive.Group.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteGroupState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "items",
+          "type": "readonly any[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Items to be rendered within this group.\nWhen provided, child `Collection` components will use these items.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteGroupState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteGroupState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxLabel",
+      "contract": "ComboboxPrimitive.GroupLabel.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteGroupLabelState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteGroupLabelState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteGroupLabelState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxCollection",
+      "contract": "ComboboxPrimitive.Collection.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "(item: any, index: number) => React.ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxEmpty",
+      "contract": "ComboboxPrimitive.Empty.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteEmptyState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteEmptyState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteEmptyState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxSeparator",
+      "contract": "ComboboxPrimitive.Separator.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: SeparatorState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "Orientation",
+          "required": false,
+          "defaultValue": null,
+          "description": "The orientation of the separator.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, SeparatorState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: SeparatorState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxChips",
+      "contract": "React.ComponentPropsWithRef<typeof ComboboxPrimitive.Chips> &\n  ComboboxPrimitive.Chips.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: ComboboxChipsState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, ComboboxChipsState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: ComboboxChipsState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxChip",
+      "contract": "ComboboxPrimitive.Chip.Props & {\n  showRemove?: boolean\n}",
+      "props": [
+        {
+          "name": "showRemove",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: ComboboxChipState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, ComboboxChipState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: ComboboxChipState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxChipsInput",
+      "contract": "ComboboxPrimitive.Input.Props",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: AutocompleteInputState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component should ignore user interaction.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "max",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "min",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, AutocompleteInputState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "step",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: AutocompleteInputState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "type",
+          "type": "React.HTMLInputTypeAttribute",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxTrigger",
+      "contract": "ComboboxPrimitive.Trigger.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string | ((state: ComboboxTriggerState) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class applied to the element, or a function that\nreturns a class based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component should ignore user interaction.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "nativeButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the component renders a native `<button>` element when replacing it\nvia the `render` prop.\nSet to `false` if the rendered element is not a button (for example, `<div>`).",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "render",
+          "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | ComponentRenderFn<HTMLProps, ComboboxTriggerState>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Allows you to replace the component's HTML element\nwith a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties | ((state: ComboboxTriggerState) => React.CSSProperties)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Style applied to the element, or a function that\nreturns a style object based on the component's state.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ComboboxValue",
+      "contract": "ComboboxPrimitive.Value.Props",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode | ((selectedValue: any) => React.ReactNode)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "The placeholder value to display when no value is selected.\nThis is overridden by `children` if specified, or by a null item's label in `items`.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "combobox-value",
+    "combobox-trigger",
+    "combobox-clear",
+    "input-group-button",
+    "combobox-content",
+    "combobox-list",
+    "combobox-item",
+    "combobox-group",
+    "combobox-label",
+    "combobox-collection",
+    "combobox-empty",
+    "combobox-separator",
+    "combobox-chips",
+    "combobox-chip",
+    "combobox-chip-remove",
+    "combobox-chip-input"
+  ],
+  "tokens": [
+    "--muted-foreground",
+    "--popover",
+    "--popover-foreground",
+    "--foreground",
+    "--input",
+    "--accent",
+    "--accent-foreground",
+    "--border",
+    "--ring",
+    "--destructive",
+    "--muted"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "ComboboxDemo"
+  },
+  "playground": {
+    "parts": [
+      "Combobox",
+      "ComboboxContent",
+      "ComboboxEmpty",
+      "ComboboxInput",
+      "ComboboxItem",
+      "ComboboxList"
+    ],
+    "templates": {
+      "Combobox": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Combobox>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>{playgroundProps.children ?? <>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </>}</Combobox>\n  )\n}",
+      "ComboboxContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ComboboxContent>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>{playgroundProps.children ?? <>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </>}</ComboboxContent>\n    </Combobox>\n  )\n}",
+      "ComboboxEmpty": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ComboboxEmpty>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>{playgroundProps.children ?? <>No framework found.</>}</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}",
+      "ComboboxInput": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ComboboxInput>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\" {...playgroundProps}\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}",
+      "ComboboxItem": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ComboboxItem>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>{playgroundProps.children ?? <>\n              {item}\n            </>}</ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}",
+      "ComboboxList": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ComboboxList>> = /*__DS_PROPS__*/ {}\n\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList {...playgroundProps}>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { useState } from \"react\";\n\nimport { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from \"@/components/ui/combobox\";\n\nconst frameworks = [\"Next.js\", \"React\", \"Vue\", \"Svelte\", \"Astro\"]\n\nexport function ComboboxDemo() {\n  const [value, setValue] = useState<string | null>(null)\n\n  return (\n    <Combobox items={frameworks} value={value} onValueChange={setValue}>\n      <ComboboxInput\n        placeholder=\"Select framework...\"\n        className=\"w-full max-w-xs\"\n      />\n      <ComboboxContent>\n        <ComboboxEmpty>No framework found.</ComboboxEmpty>\n        <ComboboxList>\n          {(item) => (\n            <ComboboxItem key={item} value={item}>\n              {item}\n            </ComboboxItem>\n          )}\n        </ComboboxList>\n      </ComboboxContent>\n    </Combobox>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "ComboboxDemo"
+    }
+  }
+}

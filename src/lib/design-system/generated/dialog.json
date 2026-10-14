@@ -1,0 +1,693 @@
+{
+  "sourcePath": "src/components/ui/dialog.tsx",
+  "importPath": "@/components/ui/dialog",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui",
+    "lucide-react"
+  ],
+  "exports": [
+    "Dialog",
+    "DialogClose",
+    "DialogContent",
+    "DialogDescription",
+    "DialogFooter",
+    "DialogHeader",
+    "DialogOverlay",
+    "DialogPortal",
+    "DialogTitle",
+    "DialogTrigger"
+  ],
+  "parts": [
+    {
+      "name": "Dialog",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Root>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial visibility for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the overlay uses modal interaction behavior.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogClose",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Close>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogContent",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Content> & {\n  showCloseButton?: boolean\n}",
+      "props": [
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCloseAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on close.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the escape key is down.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the focus moves outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when an interaction happens outside the `DismissableLayer`.\nSpecifically, when a `pointerdown` event happens outside or focus moves outside of it.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on open.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the a `pointerdown` event happens outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogDescription",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Description>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogFooter",
+      "contract": "React.ComponentProps<\"div\"> & {\n  showCloseButton?: boolean\n}",
+      "props": [
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogOverlay",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Overlay>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogPortal",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Portal>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "container",
+          "type": "Element | DocumentFragment | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Specify a container element to portal the content into.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogTitle",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Title>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DialogTrigger",
+      "contract": "React.ComponentProps<typeof DialogPrimitive.Trigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "dialog",
+    "dialog-trigger",
+    "dialog-portal",
+    "dialog-close",
+    "dialog-overlay",
+    "dialog-content",
+    "dialog-header",
+    "dialog-footer",
+    "dialog-title",
+    "dialog-description"
+  ],
+  "tokens": [
+    "--popover",
+    "--popover-foreground",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "DialogDemo"
+  },
+  "playground": {
+    "parts": [
+      "Dialog",
+      "DialogContent",
+      "DialogDescription",
+      "DialogHeader",
+      "DialogTitle",
+      "DialogTrigger"
+    ],
+    "templates": {
+      "Dialog": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Dialog>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>{playgroundProps.children ?? <>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </>}</Dialog>\n  )\n}",
+      "DialogContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DialogContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>{playgroundProps.children ?? <>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </>}</DialogContent>\n    </Dialog>\n  )\n}",
+      "DialogDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DialogDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>{playgroundProps.children ?? <>\n            This is a dialog description for the design system preview.\n          </>}</DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}",
+      "DialogHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DialogHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>{playgroundProps.children ?? <>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </>}</DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}",
+      "DialogTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DialogTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>{playgroundProps.children ?? <>Dialog title</>}</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}",
+      "DialogTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof DialogTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>{playgroundProps.children ?? <>\n        <Button variant=\"outline\">Open dialog</Button>\n      </>}</DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from \"@/components/ui/dialog\";\n\nexport function DialogDemo() {\n  return (\n    <Dialog>\n      <DialogTrigger asChild>\n        <Button variant=\"outline\">Open dialog</Button>\n      </DialogTrigger>\n      <DialogContent>\n        <DialogHeader>\n          <DialogTitle>Dialog title</DialogTitle>\n          <DialogDescription>\n            This is a dialog description for the design system preview.\n          </DialogDescription>\n        </DialogHeader>\n      </DialogContent>\n    </Dialog>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "DialogDemo"
+    }
+  }
+}

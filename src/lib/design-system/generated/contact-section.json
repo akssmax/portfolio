@@ -1,0 +1,295 @@
+{
+  "sourcePath": "src/components/landing/contact-section.tsx",
+  "importPath": "@/components/landing/contact-section",
+  "primitive": "Local component",
+  "dependencies": [
+    "lucide-react",
+    "motion/react"
+  ],
+  "exports": [
+    "CtaSection",
+    "ContactSection"
+  ],
+  "parts": [
+    {
+      "name": "CtaSection",
+      "contract": "CtaSectionProps",
+      "props": [
+        {
+          "name": "bottomCutout",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "bottomCutoutPosition",
+          "type": "CtaSectionPosition",
+          "required": false,
+          "defaultValue": "\"center\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        },
+        {
+          "name": "dubWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "320",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"contact\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "m3Size",
+          "type": "number",
+          "required": false,
+          "defaultValue": "72",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "showBorders",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Show the decorative top/bottom edge lines and cutouts.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showGithubActivity",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "topCutout",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "topCutoutPosition",
+          "type": "CtaSectionPosition",
+          "required": false,
+          "defaultValue": "\"center\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "CtaSectionVariant",
+          "required": false,
+          "defaultValue": "\"dub-notch\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "dub-notch",
+              "m3-arch",
+              "m3-flower",
+              "m3-cookie",
+              "m3-heart",
+              "m3-pill",
+              "m3-hexagon",
+              "m3-puffy",
+              "minimal"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContactSection",
+      "contract": "{\n  variant?: CtaSectionVariant\n  showGithubActivity?: boolean\n  topCutout?: boolean\n  bottomCutout?: boolean\n  topCutoutPosition?: CtaSectionPosition\n  bottomCutoutPosition?: CtaSectionPosition\n  m3Size?: number\n  dubWidth?: number\n  showBorders?: boolean\n}",
+      "props": [
+        {
+          "name": "bottomCutout",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "bottomCutoutPosition",
+          "type": "CtaSectionPosition",
+          "required": false,
+          "defaultValue": "\"center\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        },
+        {
+          "name": "dubWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "320",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "m3Size",
+          "type": "number",
+          "required": false,
+          "defaultValue": "72",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "showBorders",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showGithubActivity",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "topCutout",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "topCutoutPosition",
+          "type": "CtaSectionPosition",
+          "required": false,
+          "defaultValue": "\"center\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "CtaSectionVariant",
+          "required": false,
+          "defaultValue": "\"dub-notch\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "dub-notch",
+              "m3-arch",
+              "m3-flower",
+              "m3-cookie",
+              "m3-heart",
+              "m3-pill",
+              "m3-hexagon",
+              "m3-puffy",
+              "minimal"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--primary",
+    "--primary-foreground",
+    "--background",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { CtaSection } from \"@/components/landing/contact-section\";\n\nexport function ContactSectionPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-card [--cta-cutout-bg:var(--card)]\">\n      <CtaSection\n        variant=\"dub-notch\"\n        topCutout\n        bottomCutout\n        topCutoutPosition=\"center\"\n        bottomCutoutPosition=\"right\"\n      />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/playground-fixtures.tsx",
+    "name": "ContactSectionPropDemo"
+  },
+  "playground": {
+    "parts": [
+      "CtaSection"
+    ],
+    "templates": {
+      "CtaSection": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CtaSection } from \"@/components/landing/contact-section\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CtaSection>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContactSectionPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-card [--cta-cutout-bg:var(--card)]\">\n      <CtaSection\n        variant=\"dub-notch\"\n        topCutout\n        bottomCutout\n        topCutoutPosition=\"center\"\n        bottomCutoutPosition=\"right\" {...playgroundProps}\n      />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { CtaSection } from \"@/components/landing/contact-section\";\n\nexport function ContactSectionPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-card [--cta-cutout-bg:var(--card)]\">\n      <CtaSection\n        variant=\"dub-notch\"\n        topCutout\n        bottomCutout\n        topCutoutPosition=\"center\"\n        bottomCutoutPosition=\"right\"\n      />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "ContactSectionPropDemo"
+    }
+  }
+}

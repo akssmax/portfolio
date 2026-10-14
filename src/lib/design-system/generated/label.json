@@ -1,0 +1,92 @@
+{
+  "sourcePath": "src/components/ui/label.tsx",
+  "importPath": "@/components/ui/label",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Label"
+  ],
+  "parts": [
+    {
+      "name": "Label",
+      "contract": "React.ComponentProps<typeof LabelPrimitive.Root>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "htmlFor",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "The id of the form control this label names.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "label"
+  ],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { Input } from \"@/components/ui/input\";\n\nimport { Label } from \"@/components/ui/label\";\n\nexport function LabelDemo() {\n  return (\n    <div className=\"space-y-2\">\n      <Label htmlFor=\"name\">Name</Label>\n      <Input id=\"name\" placeholder=\"Your name\" autoComplete=\"name\" />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-3-demos.tsx",
+    "name": "LabelDemo"
+  },
+  "playground": {
+    "parts": [
+      "Label"
+    ],
+    "templates": {
+      "Label": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Input } from \"@/components/ui/input\";\n\nimport { Label } from \"@/components/ui/label\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Label>> = /*__DS_PROPS__*/ {}\n\n\nexport function LabelDemo() {\n  return (\n    <div className=\"space-y-2\">\n      <Label htmlFor=\"name\">{playgroundProps.children ?? <>Name</>}</Label>\n      <Input id=\"name\" placeholder=\"Your name\" autoComplete=\"name\" />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Input } from \"@/components/ui/input\";\n\nimport { Label } from \"@/components/ui/label\";\n\nexport function LabelDemo() {\n  return (\n    <div className=\"space-y-2\">\n      <Label htmlFor=\"name\">Name</Label>\n      <Input id=\"name\" placeholder=\"Your name\" autoComplete=\"name\" />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-3-demos.tsx",
+      "name": "LabelDemo"
+    }
+  }
+}

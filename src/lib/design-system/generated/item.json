@@ -1,0 +1,523 @@
+{
+  "sourcePath": "src/components/ui/item.tsx",
+  "importPath": "@/components/ui/item",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "exports": [
+    "Item",
+    "ItemMedia",
+    "ItemContent",
+    "ItemActions",
+    "ItemGroup",
+    "ItemSeparator",
+    "ItemTitle",
+    "ItemDescription",
+    "ItemHeader",
+    "ItemFooter"
+  ],
+  "parts": [
+    {
+      "name": "Item",
+      "contract": "React.ComponentProps<\"div\"> &\n  VariantProps<typeof itemVariants> & { asChild?: boolean }",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"xs\" | \"sm\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "xs",
+              "sm"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"outline\" | \"muted\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "outline",
+              "muted"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemMedia",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof itemMediaVariants>",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"image\" | \"default\" | \"icon\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "image",
+              "default",
+              "icon"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemContent",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemActions",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemGroup",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemSeparator",
+      "contract": "React.ComponentProps<typeof Separator>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether or not the component is purely decorative. When true, accessibility-related attributes\nare updated so that that the rendered element is removed from the accessibility tree.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Either `vertical` or `horizontal`. Defaults to `horizontal`.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemTitle",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemDescription",
+      "contract": "React.ComponentProps<\"p\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ItemFooter",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "item-group",
+    "item-separator",
+    "item",
+    "item-media",
+    "item-content",
+    "item-title",
+    "item-description",
+    "item-actions",
+    "item-header",
+    "item-footer"
+  ],
+  "tokens": [
+    "--ring",
+    "--muted",
+    "--border",
+    "--muted-foreground",
+    "--primary"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "ItemDemo"
+  },
+  "playground": {
+    "parts": [
+      "Item",
+      "ItemActions",
+      "ItemContent",
+      "ItemDescription",
+      "ItemGroup",
+      "ItemMedia",
+      "ItemTitle"
+    ],
+    "templates": {
+      "Item": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Item>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">{playgroundProps.children ?? <>\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </>}</Item>\n      <Item variant=\"outline\">{playgroundProps.children ?? <>\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </>}</Item>\n    </ItemGroup>\n  )\n}",
+      "ItemActions": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemActions>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>{playgroundProps.children ?? <>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </>}</ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+      "ItemContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>{playgroundProps.children ?? <>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </>}</ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>{playgroundProps.children ?? <>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </>}</ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+      "ItemDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>{playgroundProps.children ?? <>\n            Update your photo, name, and contact details.\n          </>}</ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>{playgroundProps.children ?? <>\n            Choose how and when you want to be notified.\n          </>}</ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+      "ItemGroup": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemGroup>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">{playgroundProps.children ?? <>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </>}</ItemGroup>\n  )\n}",
+      "ItemMedia": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemMedia>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">{playgroundProps.children ?? <>\n          <UserIcon />\n        </>}</ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">{playgroundProps.children ?? <>\n          <SettingsIcon />\n        </>}</ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+      "ItemTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ItemTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>{playgroundProps.children ?? <>Profile settings</>}</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>{playgroundProps.children ?? <>Notifications</>}</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from \"@/components/ui/item\";\n\nexport function ItemDemo() {\n  return (\n    <ItemGroup className=\"w-full max-w-md\">\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <UserIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Profile settings</ItemTitle>\n          <ItemDescription>\n            Update your photo, name, and contact details.\n          </ItemDescription>\n        </ItemContent>\n        <ItemActions>\n          <Button size=\"sm\" variant=\"outline\">\n            Edit\n          </Button>\n        </ItemActions>\n      </Item>\n      <Item variant=\"outline\">\n        <ItemMedia variant=\"icon\">\n          <SettingsIcon />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle>Notifications</ItemTitle>\n          <ItemDescription>\n            Choose how and when you want to be notified.\n          </ItemDescription>\n        </ItemContent>\n      </Item>\n    </ItemGroup>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "ItemDemo"
+    }
+  }
+}

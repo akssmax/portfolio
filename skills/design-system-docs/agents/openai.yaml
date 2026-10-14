@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design System Docs"
+  short_description: "Build developer docs with a refined app shell"
+  default_prompt: "Use $design-system-docs to build or improve this project’s design system documentation with the shared layout, live prop controls, and motion foundations."

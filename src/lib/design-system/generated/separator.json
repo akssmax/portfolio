@@ -1,0 +1,108 @@
+{
+  "sourcePath": "src/components/ui/separator.tsx",
+  "importPath": "@/components/ui/separator",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Separator"
+  ],
+  "parts": [
+    {
+      "name": "Separator",
+      "contract": "React.ComponentProps<typeof SeparatorPrimitive.Root>",
+      "props": [
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Whether or not the component is purely decorative. When true, accessibility-related attributes\nare updated so that that the rendered element is removed from the accessibility tree.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": "\"horizontal\"",
+          "description": "Either `vertical` or `horizontal`. Defaults to `horizontal`.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "separator"
+  ],
+  "tokens": [
+    "--border"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Separator } from \"@/components/ui/separator\";\n\nexport function SeparatorDemo() {\n  return (\n    <div className=\"w-full max-w-md space-y-1\">\n      <p className=\"text-sm font-medium\">Section A</p>\n      <Separator />\n      <p className=\"text-sm text-muted-foreground\">Section B</p>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "SeparatorDemo"
+  },
+  "playground": {
+    "parts": [
+      "Separator"
+    ],
+    "templates": {
+      "Separator": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Separator } from \"@/components/ui/separator\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Separator>> = /*__DS_PROPS__*/ {}\n\n\nexport function SeparatorDemo() {\n  return (\n    <div className=\"w-full max-w-md space-y-1\">\n      <p className=\"text-sm font-medium\">Section A</p>\n      <Separator {...playgroundProps} />\n      <p className=\"text-sm text-muted-foreground\">Section B</p>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Separator } from \"@/components/ui/separator\";\n\nexport function SeparatorDemo() {\n  return (\n    <div className=\"w-full max-w-md space-y-1\">\n      <p className=\"text-sm font-medium\">Section A</p>\n      <Separator />\n      <p className=\"text-sm text-muted-foreground\">Section B</p>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "SeparatorDemo"
+    }
+  }
+}

@@ -24,7 +24,9 @@ import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as DesignSystemIndexRouteImport } from './routes/design-system/index'
 import { Route as DesignSystemAccessibilityRouteImport } from './routes/design-system/accessibility'
+import { Route as DesignSystemAnimationRouteImport } from './routes/design-system/animation'
 import { Route as DesignSystemColorsRouteImport } from './routes/design-system/colors'
+import { Route as DesignSystemCustomizationRouteImport } from './routes/design-system/customization'
 import { Route as DesignSystemScrollbarsRouteImport } from './routes/design-system/scrollbars'
 import { Route as DesignSystemTypographyRouteImport } from './routes/design-system/typography'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
@@ -114,11 +116,22 @@ const DesignSystemAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => DesignSystemRouteRoute,
   } as any)
+const DesignSystemAnimationRoute = DesignSystemAnimationRouteImport.update({
+  id: '/animation',
+  path: '/animation',
+  getParentRoute: () => DesignSystemRouteRoute,
+} as any)
 const DesignSystemColorsRoute = DesignSystemColorsRouteImport.update({
   id: '/colors',
   path: '/colors',
   getParentRoute: () => DesignSystemRouteRoute,
 } as any)
+const DesignSystemCustomizationRoute =
+  DesignSystemCustomizationRouteImport.update({
+    id: '/customization',
+    path: '/customization',
+    getParentRoute: () => DesignSystemRouteRoute,
+  } as any)
 const DesignSystemScrollbarsRoute = DesignSystemScrollbarsRouteImport.update({
   id: '/scrollbars',
   path: '/scrollbars',
@@ -200,7 +213,9 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
+  '/design-system/animation': typeof DesignSystemAnimationRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/customization': typeof DesignSystemCustomizationRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -228,7 +243,9 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
+  '/design-system/animation': typeof DesignSystemAnimationRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/customization': typeof DesignSystemCustomizationRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -260,7 +277,9 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/design-system/accessibility': typeof DesignSystemAccessibilityRoute
+  '/design-system/animation': typeof DesignSystemAnimationRoute
   '/design-system/colors': typeof DesignSystemColorsRoute
+  '/design-system/customization': typeof DesignSystemCustomizationRoute
   '/design-system/scrollbars': typeof DesignSystemScrollbarsRoute
   '/design-system/typography': typeof DesignSystemTypographyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -293,7 +312,9 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/blog/$slug'
     | '/design-system/accessibility'
+    | '/design-system/animation'
     | '/design-system/colors'
+    | '/design-system/customization'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
@@ -321,7 +342,9 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/blog/$slug'
     | '/design-system/accessibility'
+    | '/design-system/animation'
     | '/design-system/colors'
+    | '/design-system/customization'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
@@ -352,7 +375,9 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/blog/$slug'
     | '/design-system/accessibility'
+    | '/design-system/animation'
     | '/design-system/colors'
+    | '/design-system/customization'
     | '/design-system/scrollbars'
     | '/design-system/typography'
     | '/projects/$slug'
@@ -502,11 +527,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DesignSystemAccessibilityRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
+    '/design-system/animation': {
+      id: '/design-system/animation'
+      path: '/animation'
+      fullPath: '/design-system/animation'
+      preLoaderRoute: typeof DesignSystemAnimationRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
     '/design-system/colors': {
       id: '/design-system/colors'
       path: '/colors'
       fullPath: '/design-system/colors'
       preLoaderRoute: typeof DesignSystemColorsRouteImport
+      parentRoute: typeof DesignSystemRouteRoute
+    }
+    '/design-system/customization': {
+      id: '/design-system/customization'
+      path: '/customization'
+      fullPath: '/design-system/customization'
+      preLoaderRoute: typeof DesignSystemCustomizationRouteImport
       parentRoute: typeof DesignSystemRouteRoute
     }
     '/design-system/scrollbars': {
@@ -605,7 +644,9 @@ declare module '@tanstack/react-router' {
 
 interface DesignSystemRouteRouteChildren {
   DesignSystemAccessibilityRoute: typeof DesignSystemAccessibilityRoute
+  DesignSystemAnimationRoute: typeof DesignSystemAnimationRoute
   DesignSystemColorsRoute: typeof DesignSystemColorsRoute
+  DesignSystemCustomizationRoute: typeof DesignSystemCustomizationRoute
   DesignSystemScrollbarsRoute: typeof DesignSystemScrollbarsRoute
   DesignSystemTypographyRoute: typeof DesignSystemTypographyRoute
   DesignSystemIndexRoute: typeof DesignSystemIndexRoute
@@ -614,7 +655,9 @@ interface DesignSystemRouteRouteChildren {
 
 const DesignSystemRouteRouteChildren: DesignSystemRouteRouteChildren = {
   DesignSystemAccessibilityRoute: DesignSystemAccessibilityRoute,
+  DesignSystemAnimationRoute: DesignSystemAnimationRoute,
   DesignSystemColorsRoute: DesignSystemColorsRoute,
+  DesignSystemCustomizationRoute: DesignSystemCustomizationRoute,
   DesignSystemScrollbarsRoute: DesignSystemScrollbarsRoute,
   DesignSystemTypographyRoute: DesignSystemTypographyRoute,
   DesignSystemIndexRoute: DesignSystemIndexRoute,

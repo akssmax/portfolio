@@ -1,0 +1,827 @@
+{
+  "sourcePath": "src/components/ui/command.tsx",
+  "importPath": "@/components/ui/command",
+  "primitive": "Local component",
+  "dependencies": [
+    "cmdk",
+    "lucide-react"
+  ],
+  "exports": [
+    "Command",
+    "CommandDialog",
+    "CommandInput",
+    "CommandList",
+    "CommandEmpty",
+    "CommandGroup",
+    "CommandItem",
+    "CommandShortcut",
+    "CommandSeparator"
+  ],
+  "parts": [
+    {
+      "name": "Command",
+      "contract": "React.ComponentProps<typeof CommandPrimitive>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | (readonly string[] & string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional default item value when it is initially rendered.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disablePointerSelection",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `true` to disable selection via pointer events.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "filter",
+          "type": "((value: string, search: string, keywords?: string[]) => number)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Custom filter function for whether each command menu item should matches the given search query.\nIt should return a number between 0 and 1, with 1 being the best match and 0 being hidden entirely.\nBy default, uses the `command-score` library.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Accessible label for this command menu. Not shown visibly.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `true` to turn on looping around when using the arrow keys.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the selected item of the menu changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "shouldFilter",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `false` to turn off the automatic filtering and sorting.\nIf `false`, you must conditionally render valid items based on the search query yourself.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional controlled state of the selected command menu item.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "vimBindings",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Set to `false` to disable ctrl+n/j/p/k shortcuts. Defaults to `true`.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandDialog",
+      "contract": "React.ComponentProps<typeof Dialog> & {\n  title?: string\n  description?: string\n  className?: string\n  showCloseButton?: boolean\n}",
+      "props": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"Search for a command to run...\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"Command Palette\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial visibility for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the overlay uses modal interaction behavior.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandInput",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.Input>",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "max",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "min",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((search: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the search value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "step",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional controlled state for the value of the search input.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandList",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.List>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Accessible label for this List of suggestions. Not shown visibly.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandEmpty",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.Empty>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandGroup",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.Group>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether this group is forcibly rendered regardless of filtering.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "heading",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional heading to render for this group.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "If no heading is provided, you must provide a value that is unique for this group.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandItem",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.Item>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether this item is currently disabled.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether this item is forcibly rendered regardless of filtering.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "keywords",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional keywords to match against when filtering.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "onSelect",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler for when this item is selected, either via click or keyboard selection.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A unique value for this item.\nIf no value is provided, it will be inferred from `children` or the rendered `textContent`. If your `textContent` changes between renders, you _must_ provide a stable, unique `value`.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandShortcut",
+      "contract": "React.ComponentProps<\"span\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommandSeparator",
+      "contract": "React.ComponentProps<typeof CommandPrimitive.Separator>",
+      "props": [
+        {
+          "name": "alwaysRender",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether this separator should always be rendered. Useful if you disable automatic filtering.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "command",
+    "command-input-wrapper",
+    "command-input",
+    "command-list",
+    "command-empty",
+    "command-group",
+    "command-separator",
+    "command-item",
+    "command-shortcut"
+  ],
+  "tokens": [
+    "--popover",
+    "--popover-foreground",
+    "--input",
+    "--foreground",
+    "--muted-foreground",
+    "--border",
+    "--muted"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "CommandDemo"
+  },
+  "playground": {
+    "parts": [
+      "Command",
+      "CommandEmpty",
+      "CommandGroup",
+      "CommandInput",
+      "CommandItem",
+      "CommandList",
+      "CommandSeparator"
+    ],
+    "templates": {
+      "Command": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Command>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">{playgroundProps.children ?? <>\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </>}</Command>\n  )\n}",
+      "CommandEmpty": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandEmpty>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>{playgroundProps.children ?? <>No results found.</>}</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+      "CommandGroup": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandGroup>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">{playgroundProps.children ?? <>\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </>}</CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">{playgroundProps.children ?? <>\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </>}</CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+      "CommandInput": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandInput>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" {...playgroundProps} />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+      "CommandItem": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandItem>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>{playgroundProps.children ?? <>\n            <CalendarIcon />\n            Calendar\n          </>}</CommandItem>\n          <CommandItem>{playgroundProps.children ?? <>\n            <UserIcon />\n            Profile\n          </>}</CommandItem>\n          <CommandItem>{playgroundProps.children ?? <>\n            <SettingsIcon />\n            Settings\n          </>}</CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>{playgroundProps.children ?? <>Appearance</>}</CommandItem>\n          <CommandItem>{playgroundProps.children ?? <>Keyboard shortcuts</>}</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+      "CommandList": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandList>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>{playgroundProps.children ?? <>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </>}</CommandList>\n    </Command>\n  )\n}",
+      "CommandSeparator": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CommandSeparator>> = /*__DS_PROPS__*/ {}\n\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator {...playgroundProps} />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { CalendarIcon, SettingsIcon, UserIcon } from \"lucide-react\";\n\nimport { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from \"@/components/ui/command\";\n\nexport function CommandDemo() {\n  return (\n    <Command className=\"max-w-sm rounded-lg border shadow-md\">\n      <CommandInput placeholder=\"Type a command or search...\" />\n      <CommandList>\n        <CommandEmpty>No results found.</CommandEmpty>\n        <CommandGroup heading=\"Suggestions\">\n          <CommandItem>\n            <CalendarIcon />\n            Calendar\n          </CommandItem>\n          <CommandItem>\n            <UserIcon />\n            Profile\n          </CommandItem>\n          <CommandItem>\n            <SettingsIcon />\n            Settings\n          </CommandItem>\n        </CommandGroup>\n        <CommandSeparator />\n        <CommandGroup heading=\"Settings\">\n          <CommandItem>Appearance</CommandItem>\n          <CommandItem>Keyboard shortcuts</CommandItem>\n        </CommandGroup>\n      </CommandList>\n    </Command>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "CommandDemo"
+    }
+  }
+}

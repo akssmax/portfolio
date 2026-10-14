@@ -1,0 +1,112 @@
+{
+  "sourcePath": "src/components/ui/badge.tsx",
+  "importPath": "@/components/ui/badge",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "exports": [
+    "Badge"
+  ],
+  "parts": [
+    {
+      "name": "Badge",
+      "contract": "React.ComponentProps<\"span\"> &\n  VariantProps<typeof badgeVariants> & { asChild?: boolean }",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "link",
+              "default",
+              "destructive",
+              "outline",
+              "secondary",
+              "ghost"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "badge"
+  ],
+  "tokens": [
+    "--ring",
+    "--destructive",
+    "--primary",
+    "--primary-foreground",
+    "--secondary",
+    "--secondary-foreground",
+    "--border",
+    "--foreground",
+    "--muted",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Badge } from \"@/components/ui/badge\";\n\nexport function BadgeDemo() {\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      <Badge>Default</Badge>\n      <Badge variant=\"secondary\">Secondary</Badge>\n      <Badge variant=\"outline\">Outline</Badge>\n      <Badge variant=\"destructive\">Destructive</Badge>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "BadgeDemo"
+  },
+  "playground": {
+    "parts": [
+      "Badge"
+    ],
+    "templates": {
+      "Badge": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Badge } from \"@/components/ui/badge\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Badge>> = /*__DS_PROPS__*/ {}\n\n\nexport function BadgePropDemo() {\n  return <Badge>{playgroundProps.children ?? <>In progress</>}</Badge>\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Badge } from \"@/components/ui/badge\";\n\nexport function BadgePropDemo() {\n  return <Badge>In progress</Badge>\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "BadgePropDemo"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "sourcePath": "src/components/ui/skeleton.tsx",
+  "importPath": "@/components/ui/skeleton",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "Skeleton"
+  ],
+  "parts": [
+    {
+      "name": "Skeleton",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "skeleton"
+  ],
+  "tokens": [
+    "--muted"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Skeleton } from \"@/components/ui/skeleton\";\n\nexport function SkeletonDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm items-center gap-4\">\n      <Skeleton className=\"size-12 rounded-full\" />\n      <div className=\"flex-1 space-y-2\">\n        <Skeleton className=\"h-4 w-full\" />\n        <Skeleton className=\"h-4 w-3/4\" />\n      </div>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "SkeletonDemo"
+  },
+  "playground": {
+    "parts": [
+      "Skeleton"
+    ],
+    "templates": {
+      "Skeleton": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Skeleton } from \"@/components/ui/skeleton\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Skeleton>> = /*__DS_PROPS__*/ {}\n\n\nexport function SkeletonDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm items-center gap-4\">\n      <Skeleton className=\"size-12 rounded-full\" {...playgroundProps} />\n      <div className=\"flex-1 space-y-2\">\n        <Skeleton className=\"h-4 w-full\" {...playgroundProps} />\n        <Skeleton className=\"h-4 w-3/4\" {...playgroundProps} />\n      </div>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Skeleton } from \"@/components/ui/skeleton\";\n\nexport function SkeletonDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm items-center gap-4\">\n      <Skeleton className=\"size-12 rounded-full\" />\n      <div className=\"flex-1 space-y-2\">\n        <Skeleton className=\"h-4 w-full\" />\n        <Skeleton className=\"h-4 w-3/4\" />\n      </div>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "SkeletonDemo"
+    }
+  }
+}

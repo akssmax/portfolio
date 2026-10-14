@@ -1,0 +1,329 @@
+{
+  "sourcePath": "src/components/ui/chat-prompt-input.tsx",
+  "importPath": "@/components/ui/chat-prompt-input",
+  "primitive": "Local component",
+  "dependencies": [
+    "@fontsource-variable/geist",
+    "motion/react",
+    "lucide-react",
+    "sonner"
+  ],
+  "exports": [
+    "ChatPromptInput",
+    "ChatPromptInputMinimal",
+    "ChatPromptInputExpanded"
+  ],
+  "parts": [
+    {
+      "name": "ChatPromptInput",
+      "contract": "ChatPromptInputProps",
+      "props": [
+        {
+          "name": "showBorderBeam",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Animated arc of light sweeping the input's rounded border.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "showModeToggle",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Hide the Chat / Gen UI switcher (submissions stay on the controlled mode).",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "tone",
+          "type": "\"default\" | \"on-media\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "on-media"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"minimal\" | \"adaptive\" | \"expanded\"",
+          "required": false,
+          "defaultValue": "\"adaptive\"",
+          "description": "adaptive: ChatGPT-style pill when idle, full panel when active.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "minimal",
+              "adaptive",
+              "expanded"
+            ]
+          }
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string, mode: \"gen-ui\" | \"chat\") => void",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": "Called when the value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "The composer renders its own input and actions. Place extra content in the surrounding container."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "isModeDisabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "mode",
+          "type": "\"gen-ui\" | \"chat\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "gen-ui",
+              "chat"
+            ]
+          }
+        },
+        {
+          "name": "onModeChange",
+          "type": "((mode: \"gen-ui\" | \"chat\") => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A short input hint. Keep a separate visible label.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "placeholders",
+          "type": "readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "projects",
+          "type": "ProjectCard[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ChatPromptInputMinimal",
+      "contract": "{\n  controller: ChatPromptController\n  onMedia?: boolean\n  className?: string\n}",
+      "props": [
+        {
+          "name": "onMedia",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "controller",
+          "type": "{ mode: \"gen-ui\" | \"chat\"; setMode: (newMode: \"gen-ui\" | \"chat\") => void; value: string; disabled: boolean; loading: boolean; isModeDisabled: boolean; showModeToggle: boolean; showBorderBeam: boolean; isFocused: boolean; isVoiceSupported: boolean; isListening: boolean; toggleVoiceInput: () => void; attachedProjects: ProjectCard[]; setAttachedProjects: React.Dispatch<React.SetStateAction<ProjectCard[]>>; showOverlay: boolean; closeOverlay: () => void; searchQuery: string; filteredProjects: ProjectCard[]; selectedIndex: number; handleAttachProject: (project: ProjectCard) => void; handlePlusClick: () => void; handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void; handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; handleFocus: () => void; handleBlur: () => void; handleFormSubmit: () => void; textareaRef: React.RefObject<HTMLTextAreaElement | null>; activePlaceholder: string; showAnimatedPlaceholder: boolean; showExpanded: boolean; isMultiline: boolean; canSubmit: boolean; placeholder: string; }",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ChatPromptInputExpanded",
+      "contract": "{\n  controller: ChatPromptController\n  onMedia?: boolean\n  className?: string\n}",
+      "props": [
+        {
+          "name": "onMedia",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "controller",
+          "type": "{ mode: \"gen-ui\" | \"chat\"; setMode: (newMode: \"gen-ui\" | \"chat\") => void; value: string; disabled: boolean; loading: boolean; isModeDisabled: boolean; showModeToggle: boolean; showBorderBeam: boolean; isFocused: boolean; isVoiceSupported: boolean; isListening: boolean; toggleVoiceInput: () => void; attachedProjects: ProjectCard[]; setAttachedProjects: React.Dispatch<React.SetStateAction<ProjectCard[]>>; showOverlay: boolean; closeOverlay: () => void; searchQuery: string; filteredProjects: ProjectCard[]; selectedIndex: number; handleAttachProject: (project: ProjectCard) => void; handlePlusClick: () => void; handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void; handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; handleFocus: () => void; handleBlur: () => void; handleFormSubmit: () => void; textareaRef: React.RefObject<HTMLTextAreaElement | null>; activePlaceholder: string; showAnimatedPlaceholder: boolean; showExpanded: boolean; isMultiline: boolean; canSubmit: boolean; placeholder: string; }",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "chat-prompt-context"
+  ],
+  "tokens": [
+    "--secondary-foreground",
+    "--primary",
+    "--accent-foreground",
+    "--muted",
+    "--border",
+    "--background",
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--destructive",
+    "--primary-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport * as React from \"react\";\n\nimport { ChatPromptInput } from \"@/components/ui/chat-prompt-input\";\n\nexport function ChatInputDemo() {\n  const [value, setValue] = React.useState(\"\")\n  const [mode, setMode] = React.useState<\"gen-ui\" | \"chat\">(\"chat\")\n  const [lastSubmission, setLastSubmission] = React.useState<{\n    text: string\n    mode: \"gen-ui\" | \"chat\"\n  } | null>(null)\n\n  const handleSubmit = (text: string, mode: \"gen-ui\" | \"chat\") => {\n    setLastSubmission({ text, mode })\n    setValue(\"\")\n  }\n\n  return (\n    <div className=\"w-full max-w-2xl min-w-0 space-y-4\">\n      {/* Reserve more headroom only while the floating project menu is open. */}\n      <div className=\"pt-12 pb-2 has-[[data-slot=chat-prompt-context]]:pt-80\">\n        <ChatPromptInput\n          value={value}\n          onValueChange={setValue}\n          mode={mode}\n          onModeChange={setMode}\n          onSubmit={handleSubmit}\n          placeholder=\"Ask about a project…\"\n        />\n      </div>\n      {lastSubmission && (\n        <div\n          role=\"status\"\n          className=\"space-y-1.5 rounded-xl border border-border/80 bg-card/60 p-4 text-xs break-words\"\n        >\n          <p className=\"font-semibold text-foreground\">Last submission</p>\n          <p className=\"text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Mode:</span>{\" \"}\n            {lastSubmission.mode === \"gen-ui\" ? \"Gen UI\" : \"Chat\"}\n          </p>\n          <p className=\"leading-relaxed text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Prompt:</span> &quot;\n            {lastSubmission.text}&quot;\n          </p>\n        </div>\n      )}\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/chat-prompt-input-demo.tsx",
+    "name": "ChatInputDemo"
+  },
+  "playground": {
+    "parts": [
+      "ChatPromptInput"
+    ],
+    "templates": {
+      "ChatPromptInput": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport * as React from \"react\";\n\nimport { ChatPromptInput } from \"@/components/ui/chat-prompt-input\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ChatPromptInput>> = /*__DS_PROPS__*/ {}\n\n\nexport function ChatInputDemo() {\n  const [value, setValue] = React.useState(\"\")\n  const [mode, setMode] = React.useState<\"gen-ui\" | \"chat\">(\"chat\")\n  const [lastSubmission, setLastSubmission] = React.useState<{\n    text: string\n    mode: \"gen-ui\" | \"chat\"\n  } | null>(null)\n\n  const handleSubmit = (text: string, mode: \"gen-ui\" | \"chat\") => {\n    setLastSubmission({ text, mode })\n    setValue(\"\")\n  }\n\n  return (\n    <div className=\"w-full max-w-2xl min-w-0 space-y-4\">\n      {/* Reserve more headroom only while the floating project menu is open. */}\n      <div className=\"pt-12 pb-2 has-[[data-slot=chat-prompt-context]]:pt-80\">\n        <ChatPromptInput\n          value={value}\n          onValueChange={setValue}\n          mode={mode}\n          onModeChange={setMode}\n          onSubmit={handleSubmit}\n          placeholder=\"Ask about a project…\" {...playgroundProps}\n        />\n      </div>\n      {lastSubmission && (\n        <div\n          role=\"status\"\n          className=\"space-y-1.5 rounded-xl border border-border/80 bg-card/60 p-4 text-xs break-words\"\n        >\n          <p className=\"font-semibold text-foreground\">Last submission</p>\n          <p className=\"text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Mode:</span>{\" \"}\n            {lastSubmission.mode === \"gen-ui\" ? \"Gen UI\" : \"Chat\"}\n          </p>\n          <p className=\"leading-relaxed text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Prompt:</span> &quot;\n            {lastSubmission.text}&quot;\n          </p>\n        </div>\n      )}\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport * as React from \"react\";\n\nimport { ChatPromptInput } from \"@/components/ui/chat-prompt-input\";\n\nexport function ChatInputDemo() {\n  const [value, setValue] = React.useState(\"\")\n  const [mode, setMode] = React.useState<\"gen-ui\" | \"chat\">(\"chat\")\n  const [lastSubmission, setLastSubmission] = React.useState<{\n    text: string\n    mode: \"gen-ui\" | \"chat\"\n  } | null>(null)\n\n  const handleSubmit = (text: string, mode: \"gen-ui\" | \"chat\") => {\n    setLastSubmission({ text, mode })\n    setValue(\"\")\n  }\n\n  return (\n    <div className=\"w-full max-w-2xl min-w-0 space-y-4\">\n      {/* Reserve more headroom only while the floating project menu is open. */}\n      <div className=\"pt-12 pb-2 has-[[data-slot=chat-prompt-context]]:pt-80\">\n        <ChatPromptInput\n          value={value}\n          onValueChange={setValue}\n          mode={mode}\n          onModeChange={setMode}\n          onSubmit={handleSubmit}\n          placeholder=\"Ask about a project…\"\n        />\n      </div>\n      {lastSubmission && (\n        <div\n          role=\"status\"\n          className=\"space-y-1.5 rounded-xl border border-border/80 bg-card/60 p-4 text-xs break-words\"\n        >\n          <p className=\"font-semibold text-foreground\">Last submission</p>\n          <p className=\"text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Mode:</span>{\" \"}\n            {lastSubmission.mode === \"gen-ui\" ? \"Gen UI\" : \"Chat\"}\n          </p>\n          <p className=\"leading-relaxed text-muted-foreground\">\n            <span className=\"font-medium text-foreground\">Prompt:</span> &quot;\n            {lastSubmission.text}&quot;\n          </p>\n        </div>\n      )}\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/chat-prompt-input-demo.tsx",
+      "name": "ChatInputDemo"
+    }
+  }
+}

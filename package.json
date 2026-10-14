@@ -4,6 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
+    "predev": "npm run docs:generate",
+    "docs:generate": "node --import tsx scripts/generate-design-system-docs.ts",
+    "docs:check": "node --import tsx scripts/check-design-system-docs.ts",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
@@ -26,7 +29,7 @@
     "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
     "generate:og-banner": "node --import tsx scripts/generate-og-banner.ts",
     "generate:sitemap": "node --import tsx scripts/generate-sitemap.ts",
-    "prebuild": "npm run generate:sitemap",
+    "prebuild": "npm run docs:generate && npm run generate:sitemap",
     "build:rag": "node --env-file=.env.local --import tsx scripts/build-rag-index.ts",
     "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts"
   },
@@ -75,6 +78,7 @@
     "react-resizable-panels": "^4.11.1",
     "recharts": "^3.8.0",
     "shadcn": "^4.7.0",
+    "shiki": "^3.23.0",
     "sonner": "^2.0.7",
     "streamdown": "^2.5.0",
     "tailwind-merge": "^3.6.0",

@@ -2,7 +2,7 @@
 
 import "@fontsource-variable/geist"
 import * as React from "react"
-import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react"
 import {
   ArrowUp,
   Cpu,
@@ -88,7 +88,7 @@ export type ChatPromptInputProps = Omit<React.ComponentProps<"div">, "onSubmit">
   variant?: "adaptive" | "expanded" | "minimal"
   /** Hide the Chat / Gen UI switcher (submissions stay on the controlled mode). */
   showModeToggle?: boolean
-  /** Magic UI border beam traveling along the input border. */
+  /** Animated arc of light sweeping the input's rounded border. */
   showBorderBeam?: boolean
 }
 
@@ -507,6 +507,7 @@ function ProjectContextOverlay({
 
   return (
     <div
+      data-slot="chat-prompt-context"
       className="absolute bottom-full left-0 right-0 z-40 mb-3.5 flex max-h-[300px] flex-col overflow-hidden rounded-2xl border border-border bg-card/95 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-3 duration-200"
       onMouseDown={(e) => e.preventDefault()}
     >
@@ -897,7 +898,7 @@ export function ChatPromptInputMinimal({
       <PromptLayoutSurface
         sharedLayout
         className={cn(
-          "relative flex gap-1 overflow-hidden rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "relative flex gap-1 rounded-[1.75rem] border px-2 py-1.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
           controller.isMultiline ? "items-end" : "items-center",
           onMedia
             ? "border-border/70 bg-background/90 backdrop-blur-md dark:bg-card/70"
@@ -928,19 +929,18 @@ export function ChatPromptInputMinimal({
           <VoiceButton controller={controller} />
           <SubmitButton controller={controller} />
         </div>
+        {controller.showBorderBeam ? (
+          <BorderBeam
+            duration={6}
+            size={120}
+            borderWidth={1.5}
+            colorFrom="#ffaa40"
+            colorTo="#9c40ff"
+            className="z-10"
+            style={{ inset: -1 }}
+          />
+        ) : null}
       </PromptLayoutSurface>
-
-      {controller.showBorderBeam ? (
-        <BorderBeam
-          duration={6}
-          size={64}
-          borderWidth={1.5}
-          colorFrom="#ffaa40"
-          colorTo="#9c40ff"
-          radius="1.75rem"
-          className="z-10"
-        />
-      ) : null}
     </div>
   )
 }
@@ -972,7 +972,7 @@ export function ChatPromptInputExpanded({
       <PromptLayoutSurface
         sharedLayout
         className={cn(
-          "relative w-full flex flex-col gap-3 overflow-hidden rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "relative w-full flex flex-col gap-3 rounded-2xl bg-card/65 backdrop-blur-xl border border-border/80 p-2 shadow-2xl transition-[border-color,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
           controller.showModeToggle ? "pt-12" : "pt-2",
           onMedia &&
             "border-border/80 bg-background text-foreground shadow-2xl backdrop-blur-none dark:border-border/80 dark:bg-card/65 dark:backdrop-blur-xl",
@@ -1002,19 +1002,18 @@ export function ChatPromptInputExpanded({
           </div>
         </div>
       </div>
+        {controller.showBorderBeam ? (
+          <BorderBeam
+            duration={7}
+            size={120}
+            borderWidth={1.5}
+            colorFrom="#ffaa40"
+            colorTo="#9c40ff"
+            className="z-10"
+            style={{ inset: -1 }}
+          />
+        ) : null}
       </PromptLayoutSurface>
-
-      {controller.showBorderBeam ? (
-        <BorderBeam
-          duration={7}
-          size={120}
-          borderWidth={1.5}
-          colorFrom="#ffaa40"
-          colorTo="#9c40ff"
-          radius="var(--radius-2xl)"
-          className="z-10"
-        />
-      ) : null}
     </div>
   )
 }
@@ -1028,6 +1027,7 @@ export function ChatPromptInput({
   ...props
 }: ChatPromptInputProps) {
   const onMedia = tone === "on-media"
+  const layoutScope = React.useId()
   const shouldReduceMotion = useReducedMotion()
   const controller = useChatPromptInput({
     ...props,
@@ -1041,40 +1041,42 @@ export function ChatPromptInput({
     variant === "minimal" || (variant === "adaptive" && !controller.showExpanded)
 
   return (
-    <div className={cn("relative w-full max-w-2xl mx-auto", className)}>
-      <ProjectContextOverlay controller={controller} />
+    <LayoutGroup id={layoutScope}>
+      <div className={cn("relative w-full max-w-2xl mx-auto", className)}>
+        <ProjectContextOverlay controller={controller} />
 
-      {shouldReduceMotion ? (
-        showMinimal ? (
-          <ChatPromptInputMinimal controller={controller} onMedia={onMedia} />
-        ) : (
-          <ChatPromptInputExpanded controller={controller} onMedia={onMedia} />
-        )
-      ) : (
-        <AnimatePresence mode="wait" initial={false}>
-          {showMinimal ? (
-            <motion.div
-              key="minimal"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, pointerEvents: "none" }}
-              transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-            >
-              <ChatPromptInputMinimal controller={controller} onMedia={onMedia} />
-            </motion.div>
+        {shouldReduceMotion ? (
+          showMinimal ? (
+            <ChatPromptInputMinimal controller={controller} onMedia={onMedia} />
           ) : (
-            <motion.div
-              key="expanded"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, pointerEvents: "none" }}
-              transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-            >
-              <ChatPromptInputExpanded controller={controller} onMedia={onMedia} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
-    </div>
+            <ChatPromptInputExpanded controller={controller} onMedia={onMedia} />
+          )
+        ) : (
+          <AnimatePresence mode="wait" initial={false}>
+            {showMinimal ? (
+              <motion.div
+                key="minimal"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, pointerEvents: "none" }}
+                transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
+              >
+                <ChatPromptInputMinimal controller={controller} onMedia={onMedia} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="expanded"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, pointerEvents: "none" }}
+                transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
+              >
+                <ChatPromptInputExpanded controller={controller} onMedia={onMedia} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+      </div>
+    </LayoutGroup>
   )
 }

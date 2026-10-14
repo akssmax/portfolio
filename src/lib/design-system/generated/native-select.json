@@ -1,0 +1,315 @@
+{
+  "sourcePath": "src/components/ui/native-select.tsx",
+  "importPath": "@/components/ui/native-select",
+  "primitive": "Local component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "exports": [
+    "NativeSelect",
+    "NativeSelectOptGroup",
+    "NativeSelectOption"
+  ],
+  "parts": [
+    {
+      "name": "NativeSelect",
+      "contract": "NativeSelectProps",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "sm"
+            ]
+          }
+        },
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A native autocomplete hint for the browser.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLSelectElement, HTMLSelectElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NativeSelectOptGroup",
+      "contract": "React.ComponentProps<\"optgroup\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLOptGroupElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NativeSelectOption",
+      "contract": "React.ComponentProps<\"option\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLOptionElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "native-select-wrapper",
+    "native-select",
+    "native-select-icon",
+    "native-select-option",
+    "native-select-optgroup"
+  ],
+  "tokens": [
+    "--input",
+    "--primary",
+    "--primary-foreground",
+    "--muted-foreground",
+    "--ring",
+    "--destructive"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { NativeSelect, NativeSelectOption } from \"@/components/ui/native-select\";\n\nexport function NativeSelectDemo() {\n  return (\n    <NativeSelect className=\"max-w-sm\">\n      <NativeSelectOption value=\"\">Select option</NativeSelectOption>\n      <NativeSelectOption value=\"1\">Option 1</NativeSelectOption>\n      <NativeSelectOption value=\"2\">Option 2</NativeSelectOption>\n    </NativeSelect>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "NativeSelectDemo"
+  },
+  "playground": {
+    "parts": [
+      "NativeSelect",
+      "NativeSelectOption"
+    ],
+    "templates": {
+      "NativeSelect": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NativeSelect, NativeSelectOption } from \"@/components/ui/native-select\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NativeSelect>> = /*__DS_PROPS__*/ {}\n\n\nexport function NativeSelectDemo() {\n  return (\n    <NativeSelect className=\"max-w-sm\">{playgroundProps.children ?? <>\n      <NativeSelectOption value=\"\">Select option</NativeSelectOption>\n      <NativeSelectOption value=\"1\">Option 1</NativeSelectOption>\n      <NativeSelectOption value=\"2\">Option 2</NativeSelectOption>\n    </>}</NativeSelect>\n  )\n}",
+      "NativeSelectOption": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NativeSelect, NativeSelectOption } from \"@/components/ui/native-select\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NativeSelectOption>> = /*__DS_PROPS__*/ {}\n\n\nexport function NativeSelectDemo() {\n  return (\n    <NativeSelect className=\"max-w-sm\">\n      <NativeSelectOption value=\"\">{playgroundProps.children ?? <>Select option</>}</NativeSelectOption>\n      <NativeSelectOption value=\"1\">{playgroundProps.children ?? <>Option 1</>}</NativeSelectOption>\n      <NativeSelectOption value=\"2\">{playgroundProps.children ?? <>Option 2</>}</NativeSelectOption>\n    </NativeSelect>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { NativeSelect, NativeSelectOption } from \"@/components/ui/native-select\";\n\nexport function NativeSelectDemo() {\n  return (\n    <NativeSelect className=\"max-w-sm\">\n      <NativeSelectOption value=\"\">Select option</NativeSelectOption>\n      <NativeSelectOption value=\"1\">Option 1</NativeSelectOption>\n      <NativeSelectOption value=\"2\">Option 2</NativeSelectOption>\n    </NativeSelect>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "NativeSelectDemo"
+    }
+  }
+}

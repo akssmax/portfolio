@@ -1,0 +1,92 @@
+{
+  "sourcePath": "src/components/ui/aspect-ratio.tsx",
+  "importPath": "@/components/ui/aspect-ratio",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "AspectRatio"
+  ],
+  "parts": [
+    {
+      "name": "AspectRatio",
+      "contract": "React.ComponentProps<typeof AspectRatioPrimitive.Root>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "ratio",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "aspect-ratio"
+  ],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { AspectRatio } from \"@/components/ui/aspect-ratio\";\n\nexport function AspectRatioDemo() {\n  return (\n    <AspectRatio ratio={16 / 9} className=\"w-full max-w-sm overflow-hidden rounded-lg bg-muted\">\n      <div className=\"flex h-full items-center justify-center text-sm text-muted-foreground\">\n        16:9\n      </div>\n    </AspectRatio>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "AspectRatioDemo"
+  },
+  "playground": {
+    "parts": [
+      "AspectRatio"
+    ],
+    "templates": {
+      "AspectRatio": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { AspectRatio } from \"@/components/ui/aspect-ratio\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof AspectRatio>> = /*__DS_PROPS__*/ {}\n\n\nexport function AspectRatioDemo() {\n  return (\n    <AspectRatio ratio={16 / 9} className=\"w-full max-w-sm overflow-hidden rounded-lg bg-muted\">{playgroundProps.children ?? <>\n      <div className=\"flex h-full items-center justify-center text-sm text-muted-foreground\">\n        16:9\n      </div>\n    </>}</AspectRatio>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { AspectRatio } from \"@/components/ui/aspect-ratio\";\n\nexport function AspectRatioDemo() {\n  return (\n    <AspectRatio ratio={16 / 9} className=\"w-full max-w-sm overflow-hidden rounded-lg bg-muted\">\n      <div className=\"flex h-full items-center justify-center text-sm text-muted-foreground\">\n        16:9\n      </div>\n    </AspectRatio>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "AspectRatioDemo"
+    }
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "sourcePath": "src/components/ui/resizable.tsx",
+  "importPath": "@/components/ui/resizable",
+  "primitive": "Local component",
+  "dependencies": [
+    "react-resizable-panels"
+  ],
+  "exports": [
+    "ResizableHandle",
+    "ResizablePanel",
+    "ResizablePanelGroup"
+  ],
+  "parts": [
+    {
+      "name": "ResizableHandle",
+      "contract": "ResizablePrimitive.SeparatorProps & {\n  withHandle?: boolean\n}",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class name.\r\n\r\nℹ️ Use the `data-separator` attribute for custom _hover_ and _active_ styles\r\n\r\n⚠️ The following properties cannot be overridden: `flex-grow`, `flex-shrink`",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When disabled, the separator cannot be used to resize its neighboring panels.\r\n\r\nℹ️ The panels may still be resized indirectly (while other panels are being resized).\r\nTo prevent a panel from being resized at all, it needs to also be disabled.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "disableDoubleClick",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When true, double-clicking this `Separator` will not reset its `Panel` to its default size.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "elementRef",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Ref attached to the root `HTMLDivElement`.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Uniquely identifies the separator within the parent group.\r\nFalls back to `useId` when not provided.\r\n\r\nℹ️ This value will also be assigned to the `data-separator` attribute.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS properties.\r\n\r\nℹ️ Use the `data-separator` attribute for custom _hover_ and _active_ styles\r\n\r\n⚠️ The following properties cannot be overridden: `flex-grow`, `flex-shrink`",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "withHandle",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ResizablePanel",
+      "contract": "ResizablePrimitive.PanelProps",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class name.\r\n\r\n⚠️ Class is applied to nested `HTMLDivElement` to avoid styles that interfere with Flex layout.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "collapsedSize",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Panel size when collapsed; defaults to 0%.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "collapsible",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "This panel can be collapsed.\r\n\r\nℹ️ A collapsible panel will collapse when it's size is less than of the specified `minSize`",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "defaultSize",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Default size of Panel within its parent group; default is auto-assigned based on the total number of Panels.\r\n\r\n⚠️ Percentage based sizes may cause slight layout shift when server-rendering.\r\nFor more information see the documentation.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When disabled, a panel cannot be resized either directly or indirectly (by resizing another panel).",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "elementRef",
+          "type": "Ref<HTMLDivElement | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Ref attached to the root `HTMLDivElement`.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "groupResizeBehavior",
+          "type": "\"preserve-relative-size\" | \"preserve-pixel-size\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "How should this Panel behave if the parent Group is resized?\r\nDefaults to `preserve-relative-size`.\r\n\r\n- `preserve-relative-size`: Retain the current relative size (as a percentage of the Group)\r\n- `preserve-pixel-size`: Retain its current size (in pixels)\r\n\r\nℹ️ Panel min/max size constraints may impact this behavior.\r\n\r\n⚠️ A Group must contain at least one Panel with `preserve-relative-size` resize behavior.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "preserve-relative-size",
+              "preserve-pixel-size"
+            ]
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Uniquely identifies this panel within the parent group.\r\nFalls back to `useId` when not provided.\r\n\r\nℹ️ This prop is used to associate persisted group layouts with the original panel.\r\n\r\nℹ️ This value will also be assigned to the `data-panel` attribute.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "maxSize",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Maximum size of Panel within its parent group; defaults to 100%.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "minSize",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Minimum size of Panel within its parent group; defaults to 0%.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "onResize",
+          "type": "((panelSize: ResizablePrimitive.PanelSize, id: string | number, prevPanelSize: ResizablePrimitive.PanelSize) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when panel sizes change.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "panelRef",
+          "type": "Ref<ResizablePrimitive.PanelImperativeHandle | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Exposes the following imperative API:\r\n- `collapse(): void`\r\n- `expand(): void`\r\n- `getSize(): number`\r\n- `isCollapsed(): boolean`\r\n- `resize(size: number): void`\r\n\r\nℹ️ The `usePanelRef` and `usePanelCallbackRef` hooks are exported for convenience use in TypeScript projects.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS properties.\r\n\r\n⚠️ Style is applied to nested `HTMLDivElement` to avoid styles that interfere with Flex layout.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ResizablePanelGroup",
+      "contract": "ResizablePrimitive.GroupProps",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Panel and Separator components that comprise this group.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS class name.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultLayout",
+          "type": "ResizablePrimitive.Layout",
+          "required": false,
+          "defaultValue": null,
+          "description": "Default layout for the Group.\r\n\r\nℹ️ This value allows layouts to be remembered between page reloads.\r\n\r\n⚠️ Slight layout shift may occur when server-rendering panels with percentage-based default sizes.\r\nRefer to the documentation for suggestions on how to minimize the impact of this.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disableCursor",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "This library sets custom mouse cursor styles to indicate drag state.\r\nUse this prop to disable that behavior for Panels and Separators in this group.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable resize functionality.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "elementRef",
+          "type": "Ref<HTMLDivElement | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Ref attached to the root `HTMLDivElement`.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "groupRef",
+          "type": "Ref<ResizablePrimitive.GroupImperativeHandle | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Exposes the following imperative API:\r\n- `getLayout(): Layout`\r\n- `setLayout(layout: Layout): void`\r\n\r\nℹ️ The `useGroupRef` and `useGroupCallbackRef` hooks are exported for convenience use in TypeScript projects.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Uniquely identifies this group within an application.\r\nFalls back to `useId` when not provided.\r\n\r\nℹ️ This value will also be assigned to the `data-group` attribute.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onLayoutChange",
+          "type": "((layout: ResizablePrimitive.Layout) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the Group's layout is changing.\r\n\r\n⚠️ For layout changes caused by pointer events, this method is called each time the pointer is moved.\r\nFor most cases, it is recommended to use the `onLayoutChanged` callback instead.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onLayoutChanged",
+          "type": "((layout: ResizablePrimitive.Layout) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called after the Group's layout has  been changed.\r\n\r\nℹ️ For layout changes caused by pointer events, this method is not called until the pointer has been released.\r\nThis method is recommended when saving layouts to some storage api.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Specifies the resizable orientation (\"horizontal\" or \"vertical\"); defaults to \"horizontal\"",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "resizeTargetMinimumSize",
+          "type": "{ coarse: number; fine: number; }",
+          "required": false,
+          "defaultValue": null,
+          "description": "Minimum size of the resizable hit target area (either `Separator` or `Panel` edge)\r\nThis threshold ensures are large enough to avoid mis-clicks.\r\n\r\n- Coarse inputs (typically a finger on a touchscreen) have reduced accuracy;\r\nto ensure accessibility and ease of use, hit targets should be larger to prevent mis-clicks.\r\n- Fine inputs (typically a mouse) can be smaller\r\n\r\nℹ️ [Apple interface guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility) suggest `20pt` (`27px`) on desktops and `28pt` (`37px`) for touch devices\r\nIn practice this seems to be much larger than many of their own applications use though.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "CSS properties.\r\n\r\n⚠️ The following styles cannot be overridden: `display`, `flex-direction`, `flex-wrap`, and `overflow`.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "resizable-panel-group",
+    "resizable-panel",
+    "resizable-handle"
+  ],
+  "tokens": [
+    "--border",
+    "--ring"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nexport function ResizableDemo() {\n  return (\n    <ResizablePanelGroup orientation=\"horizontal\" className=\"max-w-md rounded-lg border\">\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel A</div>\n      </ResizablePanel>\n      <ResizableHandle />\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel B</div>\n      </ResizablePanel>\n    </ResizablePanelGroup>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "ResizableDemo"
+  },
+  "playground": {
+    "parts": [
+      "ResizableHandle",
+      "ResizablePanel",
+      "ResizablePanelGroup"
+    ],
+    "templates": {
+      "ResizableHandle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ResizableHandle>> = /*__DS_PROPS__*/ {}\n\n\nexport function ResizableDemo() {\n  return (\n    <ResizablePanelGroup orientation=\"horizontal\" className=\"max-w-md rounded-lg border\">\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel A</div>\n      </ResizablePanel>\n      <ResizableHandle {...playgroundProps} />\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel B</div>\n      </ResizablePanel>\n    </ResizablePanelGroup>\n  )\n}",
+      "ResizablePanel": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ResizablePanel>> = /*__DS_PROPS__*/ {}\n\n\nexport function ResizableDemo() {\n  return (\n    <ResizablePanelGroup orientation=\"horizontal\" className=\"max-w-md rounded-lg border\">\n      <ResizablePanel defaultSize={50}>{playgroundProps.children ?? <>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel A</div>\n      </>}</ResizablePanel>\n      <ResizableHandle />\n      <ResizablePanel defaultSize={50}>{playgroundProps.children ?? <>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel B</div>\n      </>}</ResizablePanel>\n    </ResizablePanelGroup>\n  )\n}",
+      "ResizablePanelGroup": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ResizablePanelGroup>> = /*__DS_PROPS__*/ {}\n\n\nexport function ResizableDemo() {\n  return (\n    <ResizablePanelGroup orientation=\"horizontal\" className=\"max-w-md rounded-lg border\">{playgroundProps.children ?? <>\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel A</div>\n      </ResizablePanel>\n      <ResizableHandle />\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel B</div>\n      </ResizablePanel>\n    </>}</ResizablePanelGroup>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nexport function ResizableDemo() {\n  return (\n    <ResizablePanelGroup orientation=\"horizontal\" className=\"max-w-md rounded-lg border\">\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel A</div>\n      </ResizablePanel>\n      <ResizableHandle />\n      <ResizablePanel defaultSize={50}>\n        <div className=\"flex h-20 items-center justify-center p-4 text-sm\">Panel B</div>\n      </ResizablePanel>\n    </ResizablePanelGroup>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "ResizableDemo"
+    }
+  }
+}

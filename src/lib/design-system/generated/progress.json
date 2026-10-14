@@ -1,0 +1,117 @@
+{
+  "sourcePath": "src/components/ui/progress.tsx",
+  "importPath": "@/components/ui/progress",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Progress"
+  ],
+  "parts": [
+    {
+      "name": "Progress",
+      "contract": "React.ComponentProps<typeof ProgressPrimitive.Root>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "getValueLabel",
+          "type": "((value: number, max: number) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "number"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "progress",
+    "progress-indicator"
+  ],
+  "tokens": [
+    "--muted",
+    "--primary"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Progress } from \"@/components/ui/progress\";\n\nexport function ProgressDemo() {\n  return <Progress value={66} className=\"w-full max-w-sm\" />\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "ProgressDemo"
+  },
+  "playground": {
+    "parts": [
+      "Progress"
+    ],
+    "templates": {
+      "Progress": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Progress } from \"@/components/ui/progress\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Progress>> = /*__DS_PROPS__*/ {}\n\n\nexport function ProgressDemo() {\n  return <Progress value={66} className=\"w-full max-w-sm\" {...playgroundProps} />\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Progress } from \"@/components/ui/progress\";\n\nexport function ProgressDemo() {\n  return <Progress value={66} className=\"w-full max-w-sm\" />\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "ProgressDemo"
+    }
+  }
+}

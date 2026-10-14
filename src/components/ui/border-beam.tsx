@@ -1,14 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { animate, motion, useMotionValue } from "motion/react"
+import { animate, motion, useMotionTemplate, useMotionValue } from "motion/react"
+import { useAnimationProfile } from "@/hooks/use-can-animate"
 
 interface BorderBeamProps {
-  /** Size of the travelling beam segment. */
+  /** Angular length of the lit arc, in degrees. */
   size?: number
   /** Animation duration in seconds. */
   duration?: number
-  /** Delay before the animation starts. */
+  /** Phase offset in seconds. */
   delay?: number
   colorFrom?: string
   colorTo?: string
@@ -23,17 +24,14 @@ interface BorderBeamProps {
 }
 
 /**
- * Magic UI BorderBeam — a light that travels along a container's border.
- *
- * The travelling element carries a native `offset-path: rect(... round ...)`
- * and its `offset-distance` is tweened by Framer Motion (a linear numeric
- * tween) rather than a CSS keyframe, which steps less at the rounded corners.
- * The `.border-beam-ring` mask clips the light to the 1px border ring.
- * Parent must be `relative` and `overflow-hidden`.
+ * A sweeping arc of light, masked to the parent's rounded border.
+ * Animate the gradient's angle rather than rotating a square along a path,
+ * so the arc stays continuous through tight corners and container resizing.
+ * Parent must be `relative`; its border radius is inherited by default.
  */
 export function BorderBeam({
   className,
-  size = 50,
+  size = 120,
   delay = 0,
   duration = 6,
   colorFrom = "#ffaa40",
@@ -44,50 +42,35 @@ export function BorderBeam({
   borderWidth = 1,
   radius,
 }: BorderBeamProps) {
-  // `round` is clamped to half the container's shortest side, so an explicit
-  // radius (e.g. a pill's `1.75rem`) hugs the real border; otherwise mirror
-  // Magic UI and round by the beam size.
-  const cornerRadius = radius ?? `${size}px`
-  // Framer Motion's `animate` prop does not treat `offsetDistance` as an
-  // animatable CSS property (it snaps straight to the target), so drive it with
-  // a MotionValue instead.
-  const distance = useMotionValue(`${initialOffset}%`)
+  const { canAnimate } = useAnimationProfile()
+  const startAngle = (reverse ? 100 - initialOffset : initialOffset) * 3.6
+  const angle = useMotionValue(startAngle)
+  const arc = Math.min(359, Math.max(1, size))
+  const background = useMotionTemplate`conic-gradient(from ${angle}deg, transparent 0deg, ${colorTo} ${arc * 0.35}deg, ${colorFrom} ${arc * 0.7}deg, transparent ${arc}deg)`
 
   React.useEffect(() => {
-    const from = reverse ? `${100 - initialOffset}%` : `${initialOffset}%`
-    const to = reverse ? `${-initialOffset}%` : `${100 + initialOffset}%`
-    const controls = animate(distance, [from, to], {
+    angle.set(startAngle)
+    if (!canAnimate || duration <= 0) return
+
+    const controls = animate(angle, [startAngle, startAngle + (reverse ? -360 : 360)], {
       duration,
       delay: -delay,
       ease: "linear",
       repeat: Infinity,
     })
     return () => controls.stop()
-  }, [distance, duration, delay, initialOffset, reverse])
+  }, [angle, canAnimate, duration, delay, startAngle, reverse])
 
   return (
-    <div
-      className={`border-beam-ring pointer-events-none absolute inset-0 rounded-[inherit] border-(length:--border-beam-width) border-transparent ${className ?? ""}`}
-      style={
-        {
-          "--border-beam-width": `${borderWidth}px`,
-          ...(radius ? { borderRadius: radius } : null),
-          ...style,
-        } as React.CSSProperties
-      }
+    <motion.div
+      className={`border-beam-ring pointer-events-none absolute inset-0 rounded-[inherit] ${className ?? ""}`}
+      style={{
+        padding: borderWidth,
+        background,
+        ...(radius ? { borderRadius: radius } : null),
+        ...style,
+      }}
       aria-hidden
-    >
-      <motion.div
-        className="absolute aspect-square"
-        style={{
-          width: size,
-          // Native rounded-rect path — smooth corner interpolation.
-          offsetPath: `rect(0 auto auto 0 round ${cornerRadius})`,
-          offsetDistance: distance,
-          willChange: "offset-distance",
-          background: `linear-gradient(to left, ${colorFrom}, ${colorTo}, transparent)`,
-        }}
-      />
-    </div>
+    />
   )
 }

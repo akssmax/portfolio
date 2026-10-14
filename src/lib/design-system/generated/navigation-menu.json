@@ -1,0 +1,683 @@
+{
+  "sourcePath": "src/components/ui/navigation-menu.tsx",
+  "importPath": "@/components/ui/navigation-menu",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui",
+    "lucide-react"
+  ],
+  "exports": [
+    "NavigationMenu",
+    "NavigationMenuList",
+    "NavigationMenuItem",
+    "NavigationMenuContent",
+    "NavigationMenuTrigger",
+    "NavigationMenuLink",
+    "NavigationMenuIndicator",
+    "NavigationMenuViewport"
+  ],
+  "parts": [
+    {
+      "name": "NavigationMenu",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {\n  viewport?: boolean\n}",
+      "props": [
+        {
+          "name": "viewport",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "delayDuration",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "The duration from when the pointer enters the trigger until the tooltip gets opened.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "dir",
+          "type": "(\"ltr\" | \"rtl\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "ltr",
+              "rtl"
+            ]
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "orientation",
+          "type": "(\"horizontal\" | \"vertical\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "Layout and keyboard interaction direction.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "horizontal",
+              "vertical"
+            ]
+          }
+        },
+        {
+          "name": "skipDelayDuration",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "How much time a user has to enter another trigger without incurring a delay again.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuList",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.List>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuItem",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Item>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuContent",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Content>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the escape key is down.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the focus moves outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when an interaction happens outside the `DismissableLayer`.\nSpecifically, when a `pointerdown` event happens outside or focus moves outside of it.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the a `pointerdown` event happens outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuTrigger",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuLink",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Link>",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onSelect",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuIndicator",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Indicator>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NavigationMenuViewport",
+      "contract": "React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "navigation-menu",
+    "navigation-menu-list",
+    "navigation-menu-item",
+    "navigation-menu-trigger",
+    "navigation-menu-content",
+    "navigation-menu-viewport",
+    "navigation-menu-link",
+    "navigation-menu-indicator"
+  ],
+  "tokens": [
+    "--muted",
+    "--ring",
+    "--popover",
+    "--popover-foreground",
+    "--foreground",
+    "--border"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "NavigationMenuDemo"
+  },
+  "playground": {
+    "parts": [
+      "NavigationMenu",
+      "NavigationMenuContent",
+      "NavigationMenuItem",
+      "NavigationMenuLink",
+      "NavigationMenuList",
+      "NavigationMenuTrigger"
+    ],
+    "templates": {
+      "NavigationMenu": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenu>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>{playgroundProps.children ?? <>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </>}</NavigationMenu>\n  )\n}",
+      "NavigationMenuContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenuContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>{playgroundProps.children ?? <>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </>}</NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+      "NavigationMenuItem": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenuItem>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>{playgroundProps.children ?? <>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </>}</NavigationMenuItem>\n        <NavigationMenuItem>{playgroundProps.children ?? <>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </>}</NavigationMenuItem>\n        <NavigationMenuItem>{playgroundProps.children ?? <>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </>}</NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+      "NavigationMenuLink": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenuLink>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">{playgroundProps.children ?? <>\n            Home\n          </>}</NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">{playgroundProps.children ?? <>Button</>}</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">{playgroundProps.children ?? <>Dialog</>}</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">{playgroundProps.children ?? <>Tabs</>}</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">{playgroundProps.children ?? <>\n            Docs\n          </>}</NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+      "NavigationMenuList": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenuList>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>{playgroundProps.children ?? <>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </>}</NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+      "NavigationMenuTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof NavigationMenuTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>{playgroundProps.children ?? <>Components</>}</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from \"@/components/ui/navigation-menu\";\n\nexport function NavigationMenuDemo() {\n  return (\n    <NavigationMenu>\n      <NavigationMenuList>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Home\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuTrigger>Components</NavigationMenuTrigger>\n          <NavigationMenuContent>\n            <ul className=\"grid w-48 gap-1 p-2\">\n              <li>\n                <NavigationMenuLink href=\"#\">Button</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Dialog</NavigationMenuLink>\n              </li>\n              <li>\n                <NavigationMenuLink href=\"#\">Tabs</NavigationMenuLink>\n              </li>\n            </ul>\n          </NavigationMenuContent>\n        </NavigationMenuItem>\n        <NavigationMenuItem>\n          <NavigationMenuLink href=\"#\" className=\"px-4 py-2\">\n            Docs\n          </NavigationMenuLink>\n        </NavigationMenuItem>\n      </NavigationMenuList>\n    </NavigationMenu>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "NavigationMenuDemo"
+    }
+  }
+}

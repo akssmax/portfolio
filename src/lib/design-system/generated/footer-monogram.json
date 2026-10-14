@@ -1,0 +1,187 @@
+{
+  "sourcePath": "src/components/brand/footer-monogram.tsx",
+  "importPath": "@/components/brand/footer-monogram",
+  "primitive": "Local component",
+  "dependencies": [
+    "motion/react",
+    "motion/react"
+  ],
+  "exports": [
+    "FooterMonogram"
+  ],
+  "parts": [
+    {
+      "name": "FooterMonogram",
+      "contract": "FooterMonogramProps",
+      "props": [
+        {
+          "name": "animation",
+          "type": "\"shift\" | \"none\" | \"loop\" | \"draw\" | \"trace\" | \"glow\" | \"pulse\" | \"reveal\"",
+          "required": false,
+          "defaultValue": "\"draw\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "shift",
+              "none",
+              "loop",
+              "draw",
+              "trace",
+              "glow",
+              "pulse",
+              "reveal"
+            ]
+          }
+        },
+        {
+          "name": "enableRunnerGame",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "fillTone",
+          "type": "\"muted\" | \"subtle\" | \"foreground\"",
+          "required": false,
+          "defaultValue": "\"muted\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "muted",
+              "subtle",
+              "foreground"
+            ]
+          }
+        },
+        {
+          "name": "size",
+          "type": "MonogramSize",
+          "required": false,
+          "defaultValue": "\"footer\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "footer",
+              "sm",
+              "lg",
+              "md"
+            ]
+          }
+        },
+        {
+          "name": "strokeTone",
+          "type": "\"foreground\" | \"primary\" | \"accent\"",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "foreground",
+              "primary",
+              "accent"
+            ]
+          }
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "2.5",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "trigger",
+          "type": "MonogramTrigger",
+          "required": false,
+          "defaultValue": "\"hover\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "hover",
+              "always"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onRunnerActiveChange",
+          "type": "((active: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "runnerActive",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "wrapperClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--muted-foreground",
+    "--foreground",
+    "--primary",
+    "--accent-foreground",
+    "--ring"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { FooterMonogram } from \"@/components/brand/footer-monogram\";\n\nexport function FooterMonogramPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-background px-6\">\n      <FooterMonogram animation=\"draw\" size=\"footer\" />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/playground-fixtures.tsx",
+    "name": "FooterMonogramPropDemo"
+  },
+  "playground": {
+    "parts": [
+      "FooterMonogram"
+    ],
+    "templates": {
+      "FooterMonogram": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { FooterMonogram } from \"@/components/brand/footer-monogram\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FooterMonogram>> = /*__DS_PROPS__*/ {}\n\n\nexport function FooterMonogramPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-background px-6\">\n      <FooterMonogram animation=\"draw\" size=\"footer\" {...playgroundProps} />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { FooterMonogram } from \"@/components/brand/footer-monogram\";\n\nexport function FooterMonogramPropDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-xl border border-border bg-background px-6\">\n      <FooterMonogram animation=\"draw\" size=\"footer\" />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "FooterMonogramPropDemo"
+    }
+  }
+}

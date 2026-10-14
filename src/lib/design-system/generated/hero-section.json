@@ -1,0 +1,54 @@
+{
+  "sourcePath": "src/components/landing/hero-variations.tsx",
+  "importPath": "@/components/landing/hero-variations",
+  "primitive": "Local component",
+  "dependencies": [
+    "lucide-react",
+    "@tanstack/react-router",
+    "nanoid",
+    "motion/react"
+  ],
+  "exports": [
+    "HeroRotatingCopy",
+    "HeroMinimalCenter"
+  ],
+  "parts": [
+    {
+      "name": "HeroRotatingCopy",
+      "contract": "No props",
+      "props": []
+    },
+    {
+      "name": "HeroMinimalCenter",
+      "contract": "No props",
+      "props": []
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--muted-foreground",
+    "--foreground",
+    "--border",
+    "--primary",
+    "--background",
+    "--card"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { HeroRotatingCopy } from \"@/components/landing/hero-variations\";\n\nexport function HeroSectionDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <HeroRotatingCopy />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/custom-demos.tsx",
+    "name": "HeroSectionDemo"
+  },
+  "playground": {
+    "parts": [
+      "HeroRotatingCopy"
+    ],
+    "templates": {
+      "HeroRotatingCopy": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { HeroRotatingCopy } from \"@/components/landing/hero-variations\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof HeroRotatingCopy>> = /*__DS_PROPS__*/ {}\n\n\nexport function HeroSectionDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <HeroRotatingCopy {...playgroundProps} />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { HeroRotatingCopy } from \"@/components/landing/hero-variations\";\n\nexport function HeroSectionDemo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <HeroRotatingCopy />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/custom-demos.tsx",
+      "name": "HeroSectionDemo"
+    }
+  }
+}

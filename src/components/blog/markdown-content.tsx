@@ -1,6 +1,6 @@
 "use client"
 
-import { code } from "@streamdown/code"
+import { code } from "@/lib/code-highlighter"
 import type { ComponentProps } from "react"
 import { Streamdown } from "streamdown"
 

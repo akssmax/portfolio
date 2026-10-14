@@ -1,0 +1,186 @@
+{
+  "sourcePath": "src/components/ui/textarea.tsx",
+  "importPath": "@/components/ui/textarea",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "Textarea"
+  ],
+  "parts": [
+    {
+      "name": "Textarea",
+      "contract": "React.ComponentProps<\"textarea\">",
+      "props": [
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A native autocomplete hint for the browser.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Native text field · use value or defaultValue for its content."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial value for uncontrolled usage.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "minLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLTextAreaElement, HTMLTextAreaElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A short input hint. Keep a separate visible label.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Keep the value readable and focusable while preventing editing.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "textarea"
+  ],
+  "tokens": [
+    "--input",
+    "--muted-foreground",
+    "--ring",
+    "--destructive"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Label } from \"@/components/ui/label\";\n\nimport { Textarea } from \"@/components/ui/textarea\";\n\nexport function TextareaDemo() {\n  return (\n    <div className=\"w-full max-w-sm space-y-2\">\n      <Label htmlFor=\"demo-message\">Message</Label>\n      <Textarea id=\"demo-message\" placeholder=\"Type your message here.\" />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "TextareaDemo"
+  },
+  "playground": {
+    "parts": [
+      "Textarea"
+    ],
+    "templates": {
+      "Textarea": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Label } from \"@/components/ui/label\";\n\nimport { Textarea } from \"@/components/ui/textarea\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Textarea>> = /*__DS_PROPS__*/ {}\n\n\nexport function TextareaDemo() {\n  return (\n    <div className=\"w-full max-w-sm space-y-2\">\n      <Label htmlFor=\"demo-message\">Message</Label>\n      <Textarea id=\"demo-message\" placeholder=\"Type your message here.\" {...playgroundProps} />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Label } from \"@/components/ui/label\";\n\nimport { Textarea } from \"@/components/ui/textarea\";\n\nexport function TextareaDemo() {\n  return (\n    <div className=\"w-full max-w-sm space-y-2\">\n      <Label htmlFor=\"demo-message\">Message</Label>\n      <Textarea id=\"demo-message\" placeholder=\"Type your message here.\" />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "TextareaDemo"
+    }
+  }
+}

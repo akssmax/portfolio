@@ -1,0 +1,270 @@
+{
+  "sourcePath": "src/components/ui/collapsible.tsx",
+  "importPath": "@/components/ui/collapsible",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Collapsible",
+    "CollapsibleTrigger",
+    "CollapsibleContent"
+  ],
+  "parts": [
+    {
+      "name": "Collapsible",
+      "contract": "React.ComponentProps<typeof CollapsiblePrimitive.Root>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial visibility for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CollapsibleTrigger",
+      "contract": "React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "CollapsibleContent",
+      "contract": "React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "collapsible",
+    "collapsible-trigger",
+    "collapsible-content"
+  ],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from \"@/components/ui/collapsible\";\n\nimport { ChevronDown } from \"lucide-react\";\n\nimport { useState } from \"react\";\n\nexport function CollapsibleDemo() {\n  const [open, setOpen] = useState(false)\n  return (\n    <Collapsible open={open} onOpenChange={setOpen} className=\"w-full max-w-md\">\n      <CollapsibleTrigger asChild>\n        <Button variant=\"outline\" className=\"w-full justify-between\">\n          Toggle content\n          <ChevronDown className={open ? \"rotate-180\" : \"\"} />\n        </Button>\n      </CollapsibleTrigger>\n      <CollapsibleContent className=\"pt-2 text-sm text-muted-foreground\">\n        Hidden content revealed on expand.\n      </CollapsibleContent>\n    </Collapsible>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "CollapsibleDemo"
+  },
+  "playground": {
+    "parts": [
+      "Collapsible",
+      "CollapsibleContent",
+      "CollapsibleTrigger"
+    ],
+    "templates": {
+      "Collapsible": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from \"@/components/ui/collapsible\";\n\nimport { ChevronDown } from \"lucide-react\";\n\nimport { useState } from \"react\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Collapsible>> = /*__DS_PROPS__*/ {}\n\n\nexport function CollapsibleDemo() {\n  const [open, setOpen] = useState(false)\n  return (\n    <Collapsible open={open} onOpenChange={setOpen} className=\"w-full max-w-md\">{playgroundProps.children ?? <>\n      <CollapsibleTrigger asChild>\n        <Button variant=\"outline\" className=\"w-full justify-between\">\n          Toggle content\n          <ChevronDown className={open ? \"rotate-180\" : \"\"} />\n        </Button>\n      </CollapsibleTrigger>\n      <CollapsibleContent className=\"pt-2 text-sm text-muted-foreground\">\n        Hidden content revealed on expand.\n      </CollapsibleContent>\n    </>}</Collapsible>\n  )\n}",
+      "CollapsibleContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from \"@/components/ui/collapsible\";\n\nimport { ChevronDown } from \"lucide-react\";\n\nimport { useState } from \"react\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CollapsibleContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function CollapsibleDemo() {\n  const [open, setOpen] = useState(false)\n  return (\n    <Collapsible open={open} onOpenChange={setOpen} className=\"w-full max-w-md\">\n      <CollapsibleTrigger asChild>\n        <Button variant=\"outline\" className=\"w-full justify-between\">\n          Toggle content\n          <ChevronDown className={open ? \"rotate-180\" : \"\"} />\n        </Button>\n      </CollapsibleTrigger>\n      <CollapsibleContent className=\"pt-2 text-sm text-muted-foreground\">{playgroundProps.children ?? <>\n        Hidden content revealed on expand.\n      </>}</CollapsibleContent>\n    </Collapsible>\n  )\n}",
+      "CollapsibleTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from \"@/components/ui/collapsible\";\n\nimport { ChevronDown } from \"lucide-react\";\n\nimport { useState } from \"react\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof CollapsibleTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function CollapsibleDemo() {\n  const [open, setOpen] = useState(false)\n  return (\n    <Collapsible open={open} onOpenChange={setOpen} className=\"w-full max-w-md\">\n      <CollapsibleTrigger asChild>{playgroundProps.children ?? <>\n        <Button variant=\"outline\" className=\"w-full justify-between\">\n          Toggle content\n          <ChevronDown className={open ? \"rotate-180\" : \"\"} />\n        </Button>\n      </>}</CollapsibleTrigger>\n      <CollapsibleContent className=\"pt-2 text-sm text-muted-foreground\">\n        Hidden content revealed on expand.\n      </CollapsibleContent>\n    </Collapsible>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Collapsible, CollapsibleContent, CollapsibleTrigger } from \"@/components/ui/collapsible\";\n\nimport { ChevronDown } from \"lucide-react\";\n\nimport { useState } from \"react\";\n\nexport function CollapsibleDemo() {\n  const [open, setOpen] = useState(false)\n  return (\n    <Collapsible open={open} onOpenChange={setOpen} className=\"w-full max-w-md\">\n      <CollapsibleTrigger asChild>\n        <Button variant=\"outline\" className=\"w-full justify-between\">\n          Toggle content\n          <ChevronDown className={open ? \"rotate-180\" : \"\"} />\n        </Button>\n      </CollapsibleTrigger>\n      <CollapsibleContent className=\"pt-2 text-sm text-muted-foreground\">\n        Hidden content revealed on expand.\n      </CollapsibleContent>\n    </Collapsible>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "CollapsibleDemo"
+    }
+  }
+}

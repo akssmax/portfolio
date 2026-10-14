@@ -1,0 +1,105 @@
+{
+  "sourcePath": "src/components/marketing/feature-card-grid.tsx",
+  "importPath": "@/components/marketing/feature-card-grid",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "FeatureCardGrid"
+  ],
+  "parts": [
+    {
+      "name": "FeatureCardGrid",
+      "contract": "FeatureCardGridProps",
+      "props": [
+        {
+          "name": "layout",
+          "type": "\"case-study\" | \"compact\"",
+          "required": false,
+          "defaultValue": "\"compact\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "case-study",
+              "compact"
+            ]
+          }
+        },
+        {
+          "name": "primaryLink",
+          "type": "FeatureCardPrimaryLink",
+          "required": false,
+          "defaultValue": "\"live\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "live",
+              "case-study"
+            ]
+          }
+        },
+        {
+          "name": "projects",
+          "type": "ShowcaseProject[]",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "linkFrom",
+          "type": "CaseStudyFrom",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "home",
+              "projects",
+              "intro",
+              "journey"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--border",
+    "--card",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { FeatureCardGrid } from \"@/components/marketing/feature-card-grid\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function FeatureCardGridDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full rounded-lg border border-border bg-background p-4\">\n      <FeatureCardGrid projects={recentProjects.slice(0, 3)} />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/custom-demos.tsx",
+    "name": "FeatureCardGridDemo"
+  },
+  "playground": {
+    "parts": [
+      "FeatureCardGrid"
+    ],
+    "templates": {
+      "FeatureCardGrid": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { FeatureCardGrid } from \"@/components/marketing/feature-card-grid\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FeatureCardGrid>> = /*__DS_PROPS__*/ {}\n\n\nexport function FeatureCardGridDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full rounded-lg border border-border bg-background p-4\">\n      <FeatureCardGrid projects={recentProjects.slice(0, 3)} {...playgroundProps} />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { FeatureCardGrid } from \"@/components/marketing/feature-card-grid\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function FeatureCardGridDemo() {\n  const { recentProjects } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full rounded-lg border border-border bg-background p-4\">\n      <FeatureCardGrid projects={recentProjects.slice(0, 3)} />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/custom-demos.tsx",
+      "name": "FeatureCardGridDemo"
+    }
+  }
+}

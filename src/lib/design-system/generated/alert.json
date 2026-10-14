@@ -1,0 +1,209 @@
+{
+  "sourcePath": "src/components/ui/alert.tsx",
+  "importPath": "@/components/ui/alert",
+  "primitive": "Local component",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "exports": [
+    "Alert",
+    "AlertTitle",
+    "AlertDescription",
+    "AlertAction"
+  ],
+  "parts": [
+    {
+      "name": "Alert",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof alertVariants>",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"destructive\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "destructive"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AlertTitle",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AlertDescription",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AlertAction",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "alert",
+    "alert-title",
+    "alert-description",
+    "alert-action"
+  ],
+  "tokens": [
+    "--card",
+    "--card-foreground",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { AlertCircle } from \"lucide-react\";\n\nimport { Alert, AlertDescription, AlertTitle } from \"@/components/ui/alert\";\n\nexport function AlertDemo() {\n  return (\n    <Alert className=\"max-w-md\">\n      <AlertCircle />\n      <AlertTitle>Heads up</AlertTitle>\n      <AlertDescription>\n        You can add components to your app using the CLI.\n      </AlertDescription>\n    </Alert>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "AlertDemo"
+  },
+  "playground": {
+    "parts": [
+      "Alert",
+      "AlertDescription",
+      "AlertTitle"
+    ],
+    "templates": {
+      "Alert": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { AlertCircle } from \"lucide-react\";\n\nimport { Alert, AlertDescription, AlertTitle } from \"@/components/ui/alert\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Alert>> = /*__DS_PROPS__*/ {}\n\n\nexport function AlertDemo() {\n  return (\n    <Alert className=\"max-w-md\">{playgroundProps.children ?? <>\n      <AlertCircle />\n      <AlertTitle>Heads up</AlertTitle>\n      <AlertDescription>\n        You can add components to your app using the CLI.\n      </AlertDescription>\n    </>}</Alert>\n  )\n}",
+      "AlertDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { AlertCircle } from \"lucide-react\";\n\nimport { Alert, AlertDescription, AlertTitle } from \"@/components/ui/alert\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof AlertDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function AlertDemo() {\n  return (\n    <Alert className=\"max-w-md\">\n      <AlertCircle />\n      <AlertTitle>Heads up</AlertTitle>\n      <AlertDescription>{playgroundProps.children ?? <>\n        You can add components to your app using the CLI.\n      </>}</AlertDescription>\n    </Alert>\n  )\n}",
+      "AlertTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { AlertCircle } from \"lucide-react\";\n\nimport { Alert, AlertDescription, AlertTitle } from \"@/components/ui/alert\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof AlertTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function AlertDemo() {\n  return (\n    <Alert className=\"max-w-md\">\n      <AlertCircle />\n      <AlertTitle>{playgroundProps.children ?? <>Heads up</>}</AlertTitle>\n      <AlertDescription>\n        You can add components to your app using the CLI.\n      </AlertDescription>\n    </Alert>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { AlertCircle } from \"lucide-react\";\n\nimport { Alert, AlertDescription, AlertTitle } from \"@/components/ui/alert\";\n\nexport function AlertDemo() {\n  return (\n    <Alert className=\"max-w-md\">\n      <AlertCircle />\n      <AlertTitle>Heads up</AlertTitle>\n      <AlertDescription>\n        You can add components to your app using the CLI.\n      </AlertDescription>\n    </Alert>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-1-demos.tsx",
+      "name": "AlertDemo"
+    }
+  }
+}

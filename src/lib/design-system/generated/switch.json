@@ -1,0 +1,181 @@
+{
+  "sourcePath": "src/components/ui/switch.tsx",
+  "importPath": "@/components/ui/switch",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "exports": [
+    "Switch"
+  ],
+  "parts": [
+    {
+      "name": "Switch",
+      "contract": "React.ComponentProps<typeof SwitchPrimitive.Root> & {\n  size?: \"sm\" | \"default\"\n}",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "sm"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled selection state.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultChecked",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial selection state for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onCheckedChange",
+          "type": "((checked: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the selection state changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "switch",
+    "switch-thumb"
+  ],
+  "tokens": [
+    "--ring",
+    "--destructive",
+    "--primary",
+    "--input",
+    "--background",
+    "--primary-foreground",
+    "--foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Label } from \"@/components/ui/label\";\n\nimport { Switch } from \"@/components/ui/switch\";\n\nexport function SwitchDemo() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <Switch id=\"airplane\" />\n      <Label htmlFor=\"airplane\">Airplane mode</Label>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-1-demos.tsx",
+    "name": "SwitchDemo"
+  },
+  "playground": {
+    "parts": [
+      "Switch"
+    ],
+    "templates": {
+      "Switch": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Label } from \"@/components/ui/label\";\n\nimport { Switch } from \"@/components/ui/switch\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Switch>> = /*__DS_PROPS__*/ {}\n\n\nexport function SwitchPropDemo() {\n  return (\n    <div className=\"flex items-center gap-3\">\n      <Switch id=\"playground-notifications\" {...playgroundProps} />\n      <Label htmlFor=\"playground-notifications\">Email notifications</Label>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Label } from \"@/components/ui/label\";\n\nimport { Switch } from \"@/components/ui/switch\";\n\nexport function SwitchPropDemo() {\n  return (\n    <div className=\"flex items-center gap-3\">\n      <Switch id=\"playground-notifications\" />\n      <Label htmlFor=\"playground-notifications\">Email notifications</Label>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "SwitchPropDemo"
+    }
+  }
+}

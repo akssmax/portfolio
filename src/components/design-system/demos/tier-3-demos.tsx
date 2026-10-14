@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
@@ -21,11 +22,8 @@ export function CalendarDemo() {
 
 export function SonnerDemo() {
   return (
-  <>
-      <Button
-        variant="outline"
-        onClick={() => toast("Event has been created")}
-      >
+    <>
+      <Button variant="outline" onClick={() => toast("Event has been created")}>
         Show toast
       </Button>
       <Toaster />
@@ -37,9 +35,7 @@ export function LabelDemo() {
   return (
     <div className="space-y-2">
       <Label htmlFor="name">Name</Label>
-      <p className="text-sm text-muted-foreground" id="name">
-        Label associated with form controls.
-      </p>
+      <Input id="name" placeholder="Your name" autoComplete="name" />
     </div>
   )
 }

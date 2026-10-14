@@ -92,13 +92,18 @@ export function InputDemo() {
 }
 
 export function TextareaDemo() {
-  return <Textarea placeholder="Type your message here." className="max-w-sm" />
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <Label htmlFor="demo-message">Message</Label>
+      <Textarea id="demo-message" placeholder="Type your message here." />
+    </div>
+  )
 }
 
 export function SelectDemo() {
   return (
     <Select>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px]" aria-label="Fruit">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>
@@ -161,8 +166,8 @@ export function AvatarDemo() {
   return (
     <div className="flex gap-3">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage src="/images/portraits/01.webp" alt="Akshay Saini" />
+        <AvatarFallback>AS</AvatarFallback>
       </Avatar>
       <Avatar>
         <AvatarFallback>AS</AvatarFallback>

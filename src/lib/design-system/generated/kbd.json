@@ -1,0 +1,111 @@
+{
+  "sourcePath": "src/components/ui/kbd.tsx",
+  "importPath": "@/components/ui/kbd",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "Kbd",
+    "KbdGroup"
+  ],
+  "parts": [
+    {
+      "name": "Kbd",
+      "contract": "React.ComponentProps<\"kbd\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "KbdGroup",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "kbd",
+    "kbd-group"
+  ],
+  "tokens": [
+    "--muted",
+    "--muted-foreground",
+    "--background"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Kbd } from \"@/components/ui/kbd\";\n\nexport function KbdDemo() {\n  return (\n    <div className=\"flex gap-2\">\n      <Kbd>⌘</Kbd>\n      <Kbd>K</Kbd>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "KbdDemo"
+  },
+  "playground": {
+    "parts": [
+      "Kbd"
+    ],
+    "templates": {
+      "Kbd": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Kbd } from \"@/components/ui/kbd\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Kbd>> = /*__DS_PROPS__*/ {}\n\n\nexport function KbdDemo() {\n  return (\n    <div className=\"flex gap-2\">\n      <Kbd>{playgroundProps.children ?? <>⌘</>}</Kbd>\n      <Kbd>{playgroundProps.children ?? <>K</>}</Kbd>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Kbd } from \"@/components/ui/kbd\";\n\nexport function KbdDemo() {\n  return (\n    <div className=\"flex gap-2\">\n      <Kbd>⌘</Kbd>\n      <Kbd>K</Kbd>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "KbdDemo"
+    }
+  }
+}

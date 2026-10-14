@@ -1,0 +1,1356 @@
+{
+  "sourcePath": "src/components/ui/context-menu.tsx",
+  "importPath": "@/components/ui/context-menu",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui",
+    "lucide-react"
+  ],
+  "exports": [
+    "ContextMenu",
+    "ContextMenuTrigger",
+    "ContextMenuContent",
+    "ContextMenuItem",
+    "ContextMenuCheckboxItem",
+    "ContextMenuRadioItem",
+    "ContextMenuLabel",
+    "ContextMenuSeparator",
+    "ContextMenuShortcut",
+    "ContextMenuGroup",
+    "ContextMenuPortal",
+    "ContextMenuSub",
+    "ContextMenuSubContent",
+    "ContextMenuSubTrigger",
+    "ContextMenuRadioGroup"
+  ],
+  "parts": [
+    {
+      "name": "ContextMenu",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Root>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "dir",
+          "type": "(\"ltr\" | \"rtl\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "ltr",
+              "rtl"
+            ]
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the overlay uses modal interaction behavior.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuTrigger",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Trigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuContent",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Content> & {\n  side?: \"top\" | \"right\" | \"bottom\" | \"left\"\n}",
+      "props": [
+        {
+          "name": "alignOffset",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "arrowPadding",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "avoidCollisions",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "collisionBoundary",
+          "type": "(Element | null) | (Element | null)[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "collisionPadding",
+          "type": "number | Partial<Record<\"left\" | \"right\" | \"top\" | \"bottom\", number>>",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "hideWhenDetached",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether keyboard navigation should loop around",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCloseAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on close.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "side",
+          "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Preferred side for the floating content.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ]
+          }
+        },
+        {
+          "name": "sticky",
+          "type": "\"partial\" | \"always\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "partial",
+              "always"
+            ]
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "updatePositionStrategy",
+          "type": "\"always\" | \"optimized\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "always",
+              "optimized"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuItem",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Item> & {\n  inset?: boolean\n  variant?: \"default\" | \"destructive\"\n}",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"destructive\"",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "destructive"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "inset",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onSelect",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "textValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuCheckboxItem",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem> & {\n  inset?: boolean\n}",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "checked",
+          "type": "(boolean | \"indeterminate\")",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled selection state.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              false,
+              true,
+              "indeterminate"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "inset",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCheckedChange",
+          "type": "((checked: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the selection state changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onSelect",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "textValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuRadioItem",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.RadioItem> & {\n  inset?: boolean\n}",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "inset",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onSelect",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "textValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuLabel",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Label> & {\n  inset?: boolean\n}",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "inset",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuSeparator",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Separator>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuShortcut",
+      "contract": "React.ComponentProps<\"span\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuGroup",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Group>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuPortal",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Portal>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "container",
+          "type": "Element | DocumentFragment | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Specify a container element to portal the content into.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuSub",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.Sub>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial visibility for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuSubContent",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.SubContent>",
+      "props": [
+        {
+          "name": "alignOffset",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "arrowPadding",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "avoidCollisions",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "collisionBoundary",
+          "type": "(Element | null) | (Element | null)[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "collisionPadding",
+          "type": "number | Partial<Record<\"left\" | \"right\" | \"top\" | \"bottom\", number>>",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "hideWhenDetached",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether keyboard navigation should loop around",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "sideOffset",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "Distance between the trigger and floating content.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "sticky",
+          "type": "\"partial\" | \"always\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "partial",
+              "always"
+            ]
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "updatePositionStrategy",
+          "type": "\"always\" | \"optimized\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "always",
+              "optimized"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuSubTrigger",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {\n  inset?: boolean\n}",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "inset",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "textValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContextMenuRadioGroup",
+      "contract": "React.ComponentProps<typeof ContextMenuPrimitive.RadioGroup>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the value changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled value. Pair with the matching change callback.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "context-menu",
+    "context-menu-trigger",
+    "context-menu-group",
+    "context-menu-portal",
+    "context-menu-sub",
+    "context-menu-radio-group",
+    "context-menu-content",
+    "context-menu-item",
+    "context-menu-sub-trigger",
+    "context-menu-sub-content",
+    "context-menu-checkbox-item",
+    "context-menu-radio-item",
+    "context-menu-label",
+    "context-menu-separator",
+    "context-menu-shortcut"
+  ],
+  "tokens": [
+    "--popover",
+    "--popover-foreground",
+    "--foreground",
+    "--accent",
+    "--accent-foreground",
+    "--destructive",
+    "--muted-foreground",
+    "--border"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-4-demos.tsx",
+    "name": "ContextMenuDemo"
+  },
+  "playground": {
+    "parts": [
+      "ContextMenu",
+      "ContextMenuContent",
+      "ContextMenuItem",
+      "ContextMenuSeparator",
+      "ContextMenuShortcut",
+      "ContextMenuTrigger"
+    ],
+    "templates": {
+      "ContextMenu": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenu>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>{playgroundProps.children ?? <>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </>}</ContextMenu>\n  )\n}",
+      "ContextMenuContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenuContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">{playgroundProps.children ?? <>\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </>}</ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+      "ContextMenuItem": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenuItem>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>{playgroundProps.children ?? <>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </>}</ContextMenuItem>\n        <ContextMenuItem disabled>{playgroundProps.children ?? <>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </>}</ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>{playgroundProps.children ?? <>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </>}</ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+      "ContextMenuSeparator": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenuSeparator>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator {...playgroundProps} />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+      "ContextMenuShortcut": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenuShortcut>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>{playgroundProps.children ?? <>⌘[</>}</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>{playgroundProps.children ?? <>⌘]</>}</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>{playgroundProps.children ?? <>⌘R</>}</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+      "ContextMenuTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ContextMenuTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">{playgroundProps.children ?? <>\n        Right click here\n      </>}</ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from \"@/components/ui/context-menu\";\n\nexport function ContextMenuDemo() {\n  return (\n    <ContextMenu>\n      <ContextMenuTrigger className=\"flex h-32 w-full max-w-sm items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground\">\n        Right click here\n      </ContextMenuTrigger>\n      <ContextMenuContent className=\"w-48\">\n        <ContextMenuItem>\n          Back\n          <ContextMenuShortcut>⌘[</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuItem disabled>\n          Forward\n          <ContextMenuShortcut>⌘]</ContextMenuShortcut>\n        </ContextMenuItem>\n        <ContextMenuSeparator />\n        <ContextMenuItem>\n          Reload\n          <ContextMenuShortcut>⌘R</ContextMenuShortcut>\n        </ContextMenuItem>\n      </ContextMenuContent>\n    </ContextMenu>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-4-demos.tsx",
+      "name": "ContextMenuDemo"
+    }
+  }
+}

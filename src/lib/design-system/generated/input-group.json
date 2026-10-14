@@ -1,0 +1,648 @@
+{
+  "sourcePath": "src/components/ui/input-group.tsx",
+  "importPath": "@/components/ui/input-group",
+  "primitive": "Local component",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "exports": [
+    "InputGroup",
+    "InputGroupAddon",
+    "InputGroupButton",
+    "InputGroupText",
+    "InputGroupInput",
+    "InputGroupTextarea"
+  ],
+  "parts": [
+    {
+      "name": "InputGroup",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLDivElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "InputGroupAddon",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof inputGroupAddonVariants>",
+      "props": [
+        {
+          "name": "align",
+          "type": "\"inline-end\" | \"inline-start\" | \"block-start\" | \"block-end\" | null",
+          "required": false,
+          "defaultValue": "\"inline-start\"",
+          "description": "Alignment relative to the trigger.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "inline-end",
+              "inline-start",
+              "block-start",
+              "block-end"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLDivElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "InputGroupButton",
+      "contract": "Omit<React.ComponentProps<typeof Button>, \"size\"> &\n  VariantProps<typeof inputGroupButtonVariants>",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"xs\" | \"sm\" | \"icon-xs\" | \"icon-sm\" | null",
+          "required": false,
+          "defaultValue": "\"xs\"",
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "xs",
+              "sm",
+              "icon-xs",
+              "icon-sm"
+            ]
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": "\"button\"",
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": "\"ghost\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "link",
+              "default",
+              "destructive",
+              "outline",
+              "secondary",
+              "ghost"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLButtonElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "InputGroupText",
+      "contract": "React.ComponentProps<\"span\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLSpanElement, Element>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "InputGroupInput",
+      "contract": "React.ComponentProps<\"input\">",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "autoComplete",
+          "type": "React.HTMLInputAutoCompleteAttribute",
+          "required": false,
+          "defaultValue": null,
+          "description": "A native autocomplete hint for the browser.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Native text field · use value or defaultValue for its content."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "max",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "min",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "minLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A short input hint. Keep a separate visible label.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Keep the value readable and focusable while preventing editing.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "step",
+          "type": "string | number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "React.HTMLInputTypeAttribute",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "InputGroupTextarea",
+      "contract": "React.ComponentProps<\"textarea\">",
+      "props": [
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A native autocomplete hint for the browser.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "minLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "React.ChangeEventHandler<HTMLTextAreaElement, HTMLTextAreaElement>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Native input change event. Read event.target.value for the updated value.",
+          "control": {
+            "kind": "readonly",
+            "reason": "DOM reference · configure this prop in code."
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "A short input hint. Keep a separate visible label.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Keep the value readable and focusable while preventing editing.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "input-group",
+    "input-group-addon",
+    "input-group-control"
+  ],
+  "tokens": [
+    "--input",
+    "--primary",
+    "--destructive",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { InputGroup, InputGroupInput } from \"@/components/ui/input-group\";\n\nexport function InputGroupDemo() {\n  return (\n    <InputGroup className=\"max-w-sm\">\n      <InputGroupInput placeholder=\"Search...\" />\n    </InputGroup>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "InputGroupDemo"
+  },
+  "playground": {
+    "parts": [
+      "InputGroup",
+      "InputGroupInput"
+    ],
+    "templates": {
+      "InputGroup": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { InputGroup, InputGroupInput } from \"@/components/ui/input-group\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof InputGroup>> = /*__DS_PROPS__*/ {}\n\n\nexport function InputGroupDemo() {\n  return (\n    <InputGroup className=\"max-w-sm\">{playgroundProps.children ?? <>\n      <InputGroupInput placeholder=\"Search...\" />\n    </>}</InputGroup>\n  )\n}",
+      "InputGroupInput": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { InputGroup, InputGroupInput } from \"@/components/ui/input-group\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof InputGroupInput>> = /*__DS_PROPS__*/ {}\n\n\nexport function InputGroupDemo() {\n  return (\n    <InputGroup className=\"max-w-sm\">\n      <InputGroupInput placeholder=\"Search...\" {...playgroundProps} />\n    </InputGroup>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { InputGroup, InputGroupInput } from \"@/components/ui/input-group\";\n\nexport function InputGroupDemo() {\n  return (\n    <InputGroup className=\"max-w-sm\">\n      <InputGroupInput placeholder=\"Search...\" />\n    </InputGroup>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "InputGroupDemo"
+    }
+  }
+}

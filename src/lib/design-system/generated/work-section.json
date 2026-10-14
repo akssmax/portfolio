@@ -1,0 +1,65 @@
+{
+  "sourcePath": "src/components/landing/work-section.tsx",
+  "importPath": "@/components/landing/work-section",
+  "primitive": "Local component",
+  "dependencies": [
+    "@tanstack/react-router",
+    "motion/react",
+    "lucide-react"
+  ],
+  "exports": [
+    "WorkSection"
+  ],
+  "parts": [
+    {
+      "name": "WorkSection",
+      "contract": "WorkSectionProps",
+      "props": [
+        {
+          "name": "caseStudies",
+          "type": "ProjectCard[]",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "recentProjects",
+          "type": "ProjectCard[]",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--border",
+    "--muted-foreground",
+    "--muted"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { WorkSection } from \"@/components/landing/work-section\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function WorkSectionDemo() {\n  const { recentProjects, caseStudies } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/custom-demos.tsx",
+    "name": "WorkSectionDemo"
+  },
+  "playground": {
+    "parts": [
+      "WorkSection"
+    ],
+    "templates": {
+      "WorkSection": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { WorkSection } from \"@/components/landing/work-section\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof WorkSection>> = /*__DS_PROPS__*/ {}\n\n\nexport function WorkSectionDemo() {\n  const { recentProjects, caseStudies } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} {...playgroundProps} />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { WorkSection } from \"@/components/landing/work-section\";\n\nimport { getFallbackHomeWorkSections } from \"@/lib/sanity/fallback-projects\";\n\nexport function WorkSectionDemo() {\n  const { recentProjects, caseStudies } = getFallbackHomeWorkSections()\n\n  return (\n    <div className=\"w-full overflow-hidden rounded-lg border border-border\">\n      <WorkSection recentProjects={recentProjects} caseStudies={caseStudies} />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/custom-demos.tsx",
+      "name": "WorkSectionDemo"
+    }
+  }
+}

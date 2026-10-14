@@ -1,0 +1,603 @@
+{
+  "sourcePath": "src/components/ui/sheet.tsx",
+  "importPath": "@/components/ui/sheet",
+  "primitive": "Radix UI",
+  "dependencies": [
+    "radix-ui",
+    "lucide-react"
+  ],
+  "exports": [
+    "Sheet",
+    "SheetTrigger",
+    "SheetClose",
+    "SheetContent",
+    "SheetHeader",
+    "SheetFooter",
+    "SheetTitle",
+    "SheetDescription"
+  ],
+  "parts": [
+    {
+      "name": "Sheet",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Root>",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Initial visibility for uncontrolled usage.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Whether the overlay uses modal interaction behavior.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when visibility changes.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controlled visibility. Pair with onOpenChange.",
+          "control": {
+            "kind": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetTrigger",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Trigger>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetClose",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Close>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetContent",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Content> & {\n  side?: \"top\" | \"right\" | \"bottom\" | \"left\"\n  showCloseButton?: boolean\n}",
+      "props": [
+        {
+          "name": "showCloseButton",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "side",
+          "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+          "required": false,
+          "defaultValue": "\"right\"",
+          "description": "Preferred side for the floating content.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ]
+          }
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "forceMount",
+          "type": "true",
+          "required": false,
+          "defaultValue": null,
+          "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "onCloseAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on close.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onEscapeKeyDown",
+          "type": "((event: KeyboardEvent) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the escape key is down.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onFocusOutside",
+          "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the focus moves outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onInteractOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when an interaction happens outside the `DismissableLayer`.\nSpecifically, when a `pointerdown` event happens outside or focus moves outside of it.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onOpenAutoFocus",
+          "type": "((event: Event) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when auto-focusing on open.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "onPointerDownOutside",
+          "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the a `pointerdown` event happens outside of the `DismissableLayer`.\nCan be prevented.",
+          "control": {
+            "kind": "event",
+            "reason": "Interact with the preview to observe this callback."
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetFooter",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetTitle",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Title>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SheetDescription",
+      "contract": "React.ComponentProps<typeof SheetPrimitive.Description>",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "React.ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "React.CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "sheet",
+    "sheet-trigger",
+    "sheet-close",
+    "sheet-portal",
+    "sheet-overlay",
+    "sheet-content",
+    "sheet-header",
+    "sheet-footer",
+    "sheet-title",
+    "sheet-description"
+  ],
+  "tokens": [
+    "--popover",
+    "--popover-foreground",
+    "--foreground",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "SheetDemo"
+  },
+  "playground": {
+    "parts": [
+      "Sheet",
+      "SheetContent",
+      "SheetDescription",
+      "SheetHeader",
+      "SheetTitle",
+      "SheetTrigger"
+    ],
+    "templates": {
+      "Sheet": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Sheet>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>{playgroundProps.children ?? <>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </>}</Sheet>\n  )\n}",
+      "SheetContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof SheetContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>{playgroundProps.children ?? <>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </>}</SheetContent>\n    </Sheet>\n  )\n}",
+      "SheetDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof SheetDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>{playgroundProps.children ?? <>Sheet description.</>}</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}",
+      "SheetHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof SheetHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>{playgroundProps.children ?? <>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </>}</SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}",
+      "SheetTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof SheetTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>{playgroundProps.children ?? <>Sheet title</>}</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}",
+      "SheetTrigger": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof SheetTrigger>> = /*__DS_PROPS__*/ {}\n\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>{playgroundProps.children ?? <>\n        <Button variant=\"outline\">Open sheet</Button>\n      </>}</SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\";\n\nimport { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\n\nexport function SheetDemo() {\n  return (\n    <Sheet>\n      <SheetTrigger asChild>\n        <Button variant=\"outline\">Open sheet</Button>\n      </SheetTrigger>\n      <SheetContent>\n        <SheetHeader>\n          <SheetTitle>Sheet title</SheetTitle>\n          <SheetDescription>Sheet description.</SheetDescription>\n        </SheetHeader>\n      </SheetContent>\n    </Sheet>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "SheetDemo"
+    }
+  }
+}

@@ -1,0 +1,618 @@
+{
+  "sourcePath": "src/components/landing/footer-gradients.tsx",
+  "importPath": "@/components/landing/footer-gradients",
+  "primitive": "Local component",
+  "dependencies": [
+    "next-themes"
+  ],
+  "exports": [
+    "FooterGradients",
+    "DiaGradient",
+    "PeakedGradient",
+    "DodgeGradient",
+    "Fold3DGradient"
+  ],
+  "parts": [
+    {
+      "name": "FooterGradients",
+      "contract": "FooterGradientsProps",
+      "props": [
+        {
+          "name": "activeVariant",
+          "type": "FooterGradientVariant",
+          "required": false,
+          "defaultValue": "\"fold3d\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "dia",
+              "peaked",
+              "dodge",
+              "fold3d"
+            ]
+          }
+        },
+        {
+          "name": "replayKey",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "reveal",
+          "type": "\"none\" | \"scroll\" | \"mount\"",
+          "required": false,
+          "defaultValue": "\"scroll\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "none",
+              "scroll",
+              "mount"
+            ]
+          }
+        },
+        {
+          "name": "bars",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "colors",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "depth",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "foldAngle",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "peak",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "pointiness",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "riseMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "stops",
+          "type": "Stop[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "valley",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DiaGradient",
+      "contract": "{\n  bars?: number\n  blur?: number\n  peak?: number\n  valley?: number\n  stops?: Array<Stop>\n  riseMs?: number\n  reveal?: \"mount\" | \"scroll\" | \"none\"\n  replayKey?: number\n  className?: string\n  style?: CSSProperties\n}",
+      "props": [
+        {
+          "name": "bars",
+          "type": "number",
+          "required": false,
+          "defaultValue": "9",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "defaultValue": "15",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "peak",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.98",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "replayKey",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "reveal",
+          "type": "\"none\" | \"scroll\" | \"mount\"",
+          "required": false,
+          "defaultValue": "\"scroll\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "none",
+              "scroll",
+              "mount"
+            ]
+          }
+        },
+        {
+          "name": "riseMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1100",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "valley",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.55",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "stops",
+          "type": "Stop[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PeakedGradient",
+      "contract": "{\n  colors?: Array<string>\n  peak?: number\n  pointiness?: number\n  blur?: number\n  reveal?: \"mount\" | \"scroll\" | \"none\"\n  riseMs?: number\n  replayKey?: number\n  className?: string\n  style?: CSSProperties\n}",
+      "props": [
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "defaultValue": "26",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "peak",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.92",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "pointiness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.5",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "replayKey",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "reveal",
+          "type": "\"none\" | \"scroll\" | \"mount\"",
+          "required": false,
+          "defaultValue": "\"scroll\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "none",
+              "scroll",
+              "mount"
+            ]
+          }
+        },
+        {
+          "name": "riseMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1100",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "colors",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DodgeGradient",
+      "contract": "{\n  colors?: Array<string>\n  reveal?: \"mount\" | \"scroll\" | \"none\"\n  riseMs?: number\n  replayKey?: number\n  className?: string\n  style?: CSSProperties\n}",
+      "props": [
+        {
+          "name": "replayKey",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "reveal",
+          "type": "\"none\" | \"scroll\" | \"mount\"",
+          "required": false,
+          "defaultValue": "\"scroll\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "none",
+              "scroll",
+              "mount"
+            ]
+          }
+        },
+        {
+          "name": "riseMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1100",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "colors",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fold3DGradient",
+      "contract": "{\n  bars?: number\n  blur?: number\n  peak?: number\n  valley?: number\n  stops?: Array<Stop>\n  riseMs?: number\n  reveal?: \"mount\" | \"scroll\" | \"none\"\n  replayKey?: number\n  className?: string\n  style?: CSSProperties\n  foldAngle?: number\n  depth?: number\n}",
+      "props": [
+        {
+          "name": "bars",
+          "type": "number",
+          "required": false,
+          "defaultValue": "9",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "blur",
+          "type": "number",
+          "required": false,
+          "defaultValue": "15",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "depth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "620",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "foldAngle",
+          "type": "number",
+          "required": false,
+          "defaultValue": "74",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "peak",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.98",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "replayKey",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "reveal",
+          "type": "\"none\" | \"scroll\" | \"mount\"",
+          "required": false,
+          "defaultValue": "\"scroll\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "none",
+              "scroll",
+              "mount"
+            ]
+          }
+        },
+        {
+          "name": "riseMs",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1100",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "valley",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.55",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "stops",
+          "type": "Stop[]",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [],
+  "example": {
+    "code": "\"use client\"\n\nimport { FooterGradients } from \"@/components/landing/footer-gradients\";\n\nexport function FooterGradientsPropDemo() {\n  return (\n    <div className=\"relative h-72 w-full overflow-hidden rounded-xl border border-border bg-background\">\n      <div className=\"absolute inset-x-0 bottom-0 h-4/5\">\n        <FooterGradients\n          activeVariant=\"fold3d\"\n          reveal=\"mount\"\n          bars={9}\n          blur={15}\n          peak={0.98}\n          valley={0.55}\n          pointiness={0.5}\n          foldAngle={74}\n          depth={620}\n          riseMs={1100}\n        />\n      </div>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/playground-fixtures.tsx",
+    "name": "FooterGradientsPropDemo"
+  },
+  "playground": {
+    "parts": [
+      "FooterGradients"
+    ],
+    "templates": {
+      "FooterGradients": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { FooterGradients } from \"@/components/landing/footer-gradients\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof FooterGradients>> = /*__DS_PROPS__*/ {}\n\n\nexport function FooterGradientsPropDemo() {\n  return (\n    <div className=\"relative h-72 w-full overflow-hidden rounded-xl border border-border bg-background\">\n      <div className=\"absolute inset-x-0 bottom-0 h-4/5\">\n        <FooterGradients\n          activeVariant=\"fold3d\"\n          reveal=\"mount\"\n          bars={9}\n          blur={15}\n          peak={0.98}\n          valley={0.55}\n          pointiness={0.5}\n          foldAngle={74}\n          depth={620}\n          riseMs={1100} {...playgroundProps}\n        />\n      </div>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { FooterGradients } from \"@/components/landing/footer-gradients\";\n\nexport function FooterGradientsPropDemo() {\n  return (\n    <div className=\"relative h-72 w-full overflow-hidden rounded-xl border border-border bg-background\">\n      <div className=\"absolute inset-x-0 bottom-0 h-4/5\">\n        <FooterGradients\n          activeVariant=\"fold3d\"\n          reveal=\"mount\"\n          bars={9}\n          blur={15}\n          peak={0.98}\n          valley={0.55}\n          pointiness={0.5}\n          foldAngle={74}\n          depth={620}\n          riseMs={1100}\n        />\n      </div>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "FooterGradientsPropDemo"
+    }
+  }
+}

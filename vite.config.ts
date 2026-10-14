@@ -12,6 +12,13 @@ import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const isDev = process.env.NODE_ENV !== "production"
+const serverExternals = [
+  "react",
+  "react-dom",
+  "lucide-react",
+  "@react-pdf/renderer",
+  "pdfjs-dist",
+]
 
 const config = defineConfig({
   envDir: rootDir,
@@ -26,6 +33,10 @@ const config = defineConfig({
   ssr: {
     noExternal: ["flubber"],
   },
+  environments: {
+    // Externalize before CommonJS transforms; Nitro then traces the same list.
+    nitro: { resolve: { external: serverExternals } },
+  },
   plugins: [
     // @react-pdf/renderer needs Buffer in the browser (pdfkit file IDs, etc.)
     nodePolyfills({
@@ -38,6 +49,13 @@ const config = defineConfig({
     }),
     ...(isDev ? [devtools()] : []),
     nitro({
+      // These packages run directly in Node. Include them in the deployment
+      // without parsing large icon and PDF libraries into a second bundle.
+      // Keep React and its renderer together to preserve a single hook runtime.
+      // Lucide also exposes a dynamic icon map whose imports must be copied.
+      traceDeps: serverExternals.map((name) =>
+        name === "lucide-react" ? `${name}*` : name
+      ),
       vercel: {
         functions: {
           maxDuration: 120,

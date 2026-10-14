@@ -1,0 +1,398 @@
+{
+  "sourcePath": "src/components/ai-elements/conversation.tsx",
+  "importPath": "@/components/ai-elements/conversation",
+  "primitive": "Local component",
+  "dependencies": [
+    "ai",
+    "lucide-react",
+    "use-stick-to-bottom"
+  ],
+  "exports": [
+    "Conversation",
+    "ConversationContent",
+    "ConversationEmptyState",
+    "ConversationScrollButton"
+  ],
+  "parts": [
+    {
+      "name": "Conversation",
+      "contract": "ConversationProps",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode | ((context: StickToBottomContext) => ReactNode)",
+          "required": true,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "contextRef",
+          "type": "Ref<StickToBottomContext>",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "damping",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "A value from 0 to 1, on how much to damp the animation.\n0 means no damping, 1 means full damping.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "initial",
+          "type": "boolean | Animation",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "instance",
+          "type": "StickToBottomInstance",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "mass",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "The inertial mass associated with the animation.\nHigher numbers make the animation slower.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "resize",
+          "type": "Animation",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "stiffness",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": "The stiffness of how fast/slow the animation gets up to speed.",
+          "control": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "targetScrollTop",
+          "type": "GetTargetScrollTop",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ConversationContent",
+      "contract": "ConversationContentProps",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode | ((context: StickToBottomContext) => ReactNode)",
+          "required": true,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Render function · configure this in code."
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "scrollClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ConversationEmptyState",
+      "contract": "ConversationEmptyStateProps",
+      "props": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"Ask a question about Akshay's work, skills, or experience.\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"No messages yet\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ConversationScrollButton",
+      "contract": "ConversationScrollButtonProps",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Compose onto a single child element instead of the default element.",
+          "control": {
+            "kind": "readonly",
+            "reason": "Composition prop · configure the element in code."
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable interaction. Supply surrounding context when the reason is not obvious.",
+          "control": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Size preset defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "xs",
+              "sm",
+              "lg",
+              "icon",
+              "icon-xs",
+              "icon-sm",
+              "icon-lg"
+            ]
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        },
+        {
+          "name": "type",
+          "type": "\"button\" | \"submit\" | \"reset\"",
+          "required": false,
+          "defaultValue": null,
+          "description": "Element or primitive behavior. Check the declared type below.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "button",
+              "submit",
+              "reset"
+            ]
+          }
+        },
+        {
+          "name": "variant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "link",
+              "default",
+              "destructive",
+              "outline",
+              "secondary",
+              "ghost"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--muted-foreground",
+    "--border",
+    "--background",
+    "--muted",
+    "--foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\";\n\nimport { BotIcon } from \"lucide-react\";\n\nimport { Conversation, ConversationContent, ConversationEmptyState } from \"@/components/ai-elements/conversation\";\n\nimport { Message, MessageContent, MessageResponse } from \"@/components/ai-elements/message\";\n\nimport { MessageFeedbackBar } from \"@/components/ai-elements/message-feedback-bar\";\n\nimport { PromptInput } from \"@/components/ai-elements/prompt-input\";\n\nimport { Shimmer } from \"@/components/ai-elements/shimmer\";\n\nimport { Source, Sources, SourcesContent, SourcesTrigger } from \"@/components/ai-elements/sources\";\n\nimport { Suggestion, Suggestions } from \"@/components/ai-elements/suggestion\";\n\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nexport function AiConversationDemo() {\n  return (\n    <Card className=\"h-80\">\n      <CardHeader>\n        <CardTitle>Conversation</CardTitle>\n        <CardDescription>Scrollable message log with stick-to-bottom behavior.</CardDescription>\n      </CardHeader>\n      <CardContent className=\"h-52 p-0\">\n        <Conversation className=\"h-full rounded-lg border\">\n          <ConversationContent>\n            <ConversationEmptyState\n              icon={<BotIcon className=\"size-6\" />}\n              title=\"No messages yet\"\n            />\n          </ConversationContent>\n        </Conversation>\n      </CardContent>\n    </Card>\n  )\n}\n\nexport function AiMessageDemo() {\n  const [feedback, setFeedback] = useState<\"up\" | \"down\" | null>(null)\n  const sampleText =\n    \"Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI.\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Message from=\"user\">\n        <MessageContent>Why should we hire Akshay?</MessageContent>\n      </Message>\n      <Message from=\"assistant\">\n        <MessageContent>\n          <MessageResponse>{sampleText}</MessageResponse>\n        </MessageContent>\n        <MessageFeedbackBar\n          text={sampleText}\n          feedback={feedback}\n          onFeedback={setFeedback}\n        />\n      </Message>\n    </div>\n  )\n}\n\nexport function AiPromptInputDemo() {\n  const [value, setValue] = useState(\"Tell me about the Kodo project\")\n  return (\n    <PromptInput\n      value={value}\n      onValueChange={setValue}\n      onSubmit={() => undefined}\n      placeholder=\"Ask a question…\"\n    />\n  )\n}\n\nexport function AiSuggestionDemo() {\n  return (\n    <Suggestions>\n      <Suggestion suggestion=\"Why hire Akshay?\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Kodo case study\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Design systems work\" onClick={() => undefined} />\n    </Suggestions>\n  )\n}\n\nexport function AiSourcesDemo() {\n  return (\n    <Sources defaultOpen>\n      <SourcesTrigger count={2} />\n      <SourcesContent>\n        <Source href=\"/projects/kodo\" title=\"Project: kodo\" />\n        <Source href=\"/about\" title=\"About Akshay Saini\" />\n      </SourcesContent>\n    </Sources>\n  )\n}\n\nexport function AiShimmerDemo() {\n  return <Shimmer className=\"text-sm\">Thinking…</Shimmer>\n}\n\nexport function AiElementsDemo() {\n  return (\n    <div className=\"space-y-8\">\n      <AiConversationDemo />\n      <AiMessageDemo />\n      <AiPromptInputDemo />\n      <AiSuggestionDemo />\n      <AiSourcesDemo />\n      <AiShimmerDemo />\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/ai-elements-demo.tsx",
+    "name": "AiElementsDemo"
+  },
+  "playground": {
+    "parts": [
+      "Conversation",
+      "ConversationContent",
+      "ConversationEmptyState"
+    ],
+    "templates": {
+      "Conversation": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { BotIcon } from \"lucide-react\";\n\nimport { Conversation, ConversationContent, ConversationEmptyState } from \"@/components/ai-elements/conversation\";\n\nimport { Message, MessageContent, MessageResponse } from \"@/components/ai-elements/message\";\n\nimport { MessageFeedbackBar } from \"@/components/ai-elements/message-feedback-bar\";\n\nimport { PromptInput } from \"@/components/ai-elements/prompt-input\";\n\nimport { Shimmer } from \"@/components/ai-elements/shimmer\";\n\nimport { Source, Sources, SourcesContent, SourcesTrigger } from \"@/components/ai-elements/sources\";\n\nimport { Suggestion, Suggestions } from \"@/components/ai-elements/suggestion\";\n\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Conversation>> = /*__DS_PROPS__*/ {}\n\n\nexport function AiConversationDemo() {\n  return (\n    <Card className=\"h-80\">\n      <CardHeader>\n        <CardTitle>Conversation</CardTitle>\n        <CardDescription>Scrollable message log with stick-to-bottom behavior.</CardDescription>\n      </CardHeader>\n      <CardContent className=\"h-52 p-0\">\n        <Conversation className=\"h-full rounded-lg border\" {...playgroundProps}>\n          <ConversationContent>\n            <ConversationEmptyState\n              icon={<BotIcon className=\"size-6\" />}\n              title=\"No messages yet\"\n            />\n          </ConversationContent>\n        </Conversation>\n      </CardContent>\n    </Card>\n  )\n}\n\nexport function AiMessageDemo() {\n  const [feedback, setFeedback] = useState<\"up\" | \"down\" | null>(null)\n  const sampleText =\n    \"Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI.\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Message from=\"user\">\n        <MessageContent>Why should we hire Akshay?</MessageContent>\n      </Message>\n      <Message from=\"assistant\">\n        <MessageContent>\n          <MessageResponse>{sampleText}</MessageResponse>\n        </MessageContent>\n        <MessageFeedbackBar\n          text={sampleText}\n          feedback={feedback}\n          onFeedback={setFeedback}\n        />\n      </Message>\n    </div>\n  )\n}\n\nexport function AiPromptInputDemo() {\n  const [value, setValue] = useState(\"Tell me about the Kodo project\")\n  return (\n    <PromptInput\n      value={value}\n      onValueChange={setValue}\n      onSubmit={() => undefined}\n      placeholder=\"Ask a question…\"\n    />\n  )\n}\n\nexport function AiSuggestionDemo() {\n  return (\n    <Suggestions>\n      <Suggestion suggestion=\"Why hire Akshay?\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Kodo case study\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Design systems work\" onClick={() => undefined} />\n    </Suggestions>\n  )\n}\n\nexport function AiSourcesDemo() {\n  return (\n    <Sources defaultOpen>\n      <SourcesTrigger count={2} />\n      <SourcesContent>\n        <Source href=\"/projects/kodo\" title=\"Project: kodo\" />\n        <Source href=\"/about\" title=\"About Akshay Saini\" />\n      </SourcesContent>\n    </Sources>\n  )\n}\n\nexport function AiShimmerDemo() {\n  return <Shimmer className=\"text-sm\">Thinking…</Shimmer>\n}\n\nexport function AiElementsDemo() {\n  return (\n    <div className=\"space-y-8\">\n      <AiConversationDemo />\n      <AiMessageDemo />\n      <AiPromptInputDemo />\n      <AiSuggestionDemo />\n      <AiSourcesDemo />\n      <AiShimmerDemo />\n    </div>\n  )\n}",
+      "ConversationContent": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { BotIcon } from \"lucide-react\";\n\nimport { Conversation, ConversationContent, ConversationEmptyState } from \"@/components/ai-elements/conversation\";\n\nimport { Message, MessageContent, MessageResponse } from \"@/components/ai-elements/message\";\n\nimport { MessageFeedbackBar } from \"@/components/ai-elements/message-feedback-bar\";\n\nimport { PromptInput } from \"@/components/ai-elements/prompt-input\";\n\nimport { Shimmer } from \"@/components/ai-elements/shimmer\";\n\nimport { Source, Sources, SourcesContent, SourcesTrigger } from \"@/components/ai-elements/sources\";\n\nimport { Suggestion, Suggestions } from \"@/components/ai-elements/suggestion\";\n\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ConversationContent>> = /*__DS_PROPS__*/ {}\n\n\nexport function AiConversationDemo() {\n  return (\n    <Card className=\"h-80\">\n      <CardHeader>\n        <CardTitle>Conversation</CardTitle>\n        <CardDescription>Scrollable message log with stick-to-bottom behavior.</CardDescription>\n      </CardHeader>\n      <CardContent className=\"h-52 p-0\">\n        <Conversation className=\"h-full rounded-lg border\">\n          <ConversationContent {...playgroundProps}>\n            <ConversationEmptyState\n              icon={<BotIcon className=\"size-6\" />}\n              title=\"No messages yet\"\n            />\n          </ConversationContent>\n        </Conversation>\n      </CardContent>\n    </Card>\n  )\n}\n\nexport function AiMessageDemo() {\n  const [feedback, setFeedback] = useState<\"up\" | \"down\" | null>(null)\n  const sampleText =\n    \"Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI.\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Message from=\"user\">\n        <MessageContent>Why should we hire Akshay?</MessageContent>\n      </Message>\n      <Message from=\"assistant\">\n        <MessageContent>\n          <MessageResponse>{sampleText}</MessageResponse>\n        </MessageContent>\n        <MessageFeedbackBar\n          text={sampleText}\n          feedback={feedback}\n          onFeedback={setFeedback}\n        />\n      </Message>\n    </div>\n  )\n}\n\nexport function AiPromptInputDemo() {\n  const [value, setValue] = useState(\"Tell me about the Kodo project\")\n  return (\n    <PromptInput\n      value={value}\n      onValueChange={setValue}\n      onSubmit={() => undefined}\n      placeholder=\"Ask a question…\"\n    />\n  )\n}\n\nexport function AiSuggestionDemo() {\n  return (\n    <Suggestions>\n      <Suggestion suggestion=\"Why hire Akshay?\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Kodo case study\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Design systems work\" onClick={() => undefined} />\n    </Suggestions>\n  )\n}\n\nexport function AiSourcesDemo() {\n  return (\n    <Sources defaultOpen>\n      <SourcesTrigger count={2} />\n      <SourcesContent>\n        <Source href=\"/projects/kodo\" title=\"Project: kodo\" />\n        <Source href=\"/about\" title=\"About Akshay Saini\" />\n      </SourcesContent>\n    </Sources>\n  )\n}\n\nexport function AiShimmerDemo() {\n  return <Shimmer className=\"text-sm\">Thinking…</Shimmer>\n}\n\nexport function AiElementsDemo() {\n  return (\n    <div className=\"space-y-8\">\n      <AiConversationDemo />\n      <AiMessageDemo />\n      <AiPromptInputDemo />\n      <AiSuggestionDemo />\n      <AiSourcesDemo />\n      <AiShimmerDemo />\n    </div>\n  )\n}",
+      "ConversationEmptyState": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { useState } from \"react\";\n\nimport { BotIcon } from \"lucide-react\";\n\nimport { Conversation, ConversationContent, ConversationEmptyState } from \"@/components/ai-elements/conversation\";\n\nimport { Message, MessageContent, MessageResponse } from \"@/components/ai-elements/message\";\n\nimport { MessageFeedbackBar } from \"@/components/ai-elements/message-feedback-bar\";\n\nimport { PromptInput } from \"@/components/ai-elements/prompt-input\";\n\nimport { Shimmer } from \"@/components/ai-elements/shimmer\";\n\nimport { Source, Sources, SourcesContent, SourcesTrigger } from \"@/components/ai-elements/sources\";\n\nimport { Suggestion, Suggestions } from \"@/components/ai-elements/suggestion\";\n\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof ConversationEmptyState>> = /*__DS_PROPS__*/ {}\n\n\nexport function AiConversationDemo() {\n  return (\n    <Card className=\"h-80\">\n      <CardHeader>\n        <CardTitle>Conversation</CardTitle>\n        <CardDescription>Scrollable message log with stick-to-bottom behavior.</CardDescription>\n      </CardHeader>\n      <CardContent className=\"h-52 p-0\">\n        <Conversation className=\"h-full rounded-lg border\">\n          <ConversationContent>\n            <ConversationEmptyState\n              icon={<BotIcon className=\"size-6\" />}\n              title=\"No messages yet\" {...playgroundProps}\n            />\n          </ConversationContent>\n        </Conversation>\n      </CardContent>\n    </Card>\n  )\n}\n\nexport function AiMessageDemo() {\n  const [feedback, setFeedback] = useState<\"up\" | \"down\" | null>(null)\n  const sampleText =\n    \"Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI.\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Message from=\"user\">\n        <MessageContent>Why should we hire Akshay?</MessageContent>\n      </Message>\n      <Message from=\"assistant\">\n        <MessageContent>\n          <MessageResponse>{sampleText}</MessageResponse>\n        </MessageContent>\n        <MessageFeedbackBar\n          text={sampleText}\n          feedback={feedback}\n          onFeedback={setFeedback}\n        />\n      </Message>\n    </div>\n  )\n}\n\nexport function AiPromptInputDemo() {\n  const [value, setValue] = useState(\"Tell me about the Kodo project\")\n  return (\n    <PromptInput\n      value={value}\n      onValueChange={setValue}\n      onSubmit={() => undefined}\n      placeholder=\"Ask a question…\"\n    />\n  )\n}\n\nexport function AiSuggestionDemo() {\n  return (\n    <Suggestions>\n      <Suggestion suggestion=\"Why hire Akshay?\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Kodo case study\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Design systems work\" onClick={() => undefined} />\n    </Suggestions>\n  )\n}\n\nexport function AiSourcesDemo() {\n  return (\n    <Sources defaultOpen>\n      <SourcesTrigger count={2} />\n      <SourcesContent>\n        <Source href=\"/projects/kodo\" title=\"Project: kodo\" />\n        <Source href=\"/about\" title=\"About Akshay Saini\" />\n      </SourcesContent>\n    </Sources>\n  )\n}\n\nexport function AiShimmerDemo() {\n  return <Shimmer className=\"text-sm\">Thinking…</Shimmer>\n}\n\nexport function AiElementsDemo() {\n  return (\n    <div className=\"space-y-8\">\n      <AiConversationDemo />\n      <AiMessageDemo />\n      <AiPromptInputDemo />\n      <AiSuggestionDemo />\n      <AiSourcesDemo />\n      <AiShimmerDemo />\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { useState } from \"react\";\n\nimport { BotIcon } from \"lucide-react\";\n\nimport { Conversation, ConversationContent, ConversationEmptyState } from \"@/components/ai-elements/conversation\";\n\nimport { Message, MessageContent, MessageResponse } from \"@/components/ai-elements/message\";\n\nimport { MessageFeedbackBar } from \"@/components/ai-elements/message-feedback-bar\";\n\nimport { PromptInput } from \"@/components/ai-elements/prompt-input\";\n\nimport { Shimmer } from \"@/components/ai-elements/shimmer\";\n\nimport { Source, Sources, SourcesContent, SourcesTrigger } from \"@/components/ai-elements/sources\";\n\nimport { Suggestion, Suggestions } from \"@/components/ai-elements/suggestion\";\n\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nexport function AiConversationDemo() {\n  return (\n    <Card className=\"h-80\">\n      <CardHeader>\n        <CardTitle>Conversation</CardTitle>\n        <CardDescription>Scrollable message log with stick-to-bottom behavior.</CardDescription>\n      </CardHeader>\n      <CardContent className=\"h-52 p-0\">\n        <Conversation className=\"h-full rounded-lg border\">\n          <ConversationContent>\n            <ConversationEmptyState\n              icon={<BotIcon className=\"size-6\" />}\n              title=\"No messages yet\"\n            />\n          </ConversationContent>\n        </Conversation>\n      </CardContent>\n    </Card>\n  )\n}\n\nexport function AiMessageDemo() {\n  const [feedback, setFeedback] = useState<\"up\" | \"down\" | null>(null)\n  const sampleText =\n    \"Akshay brings 8 years of product design experience across fintech, devtools, and agentic AI.\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Message from=\"user\">\n        <MessageContent>Why should we hire Akshay?</MessageContent>\n      </Message>\n      <Message from=\"assistant\">\n        <MessageContent>\n          <MessageResponse>{sampleText}</MessageResponse>\n        </MessageContent>\n        <MessageFeedbackBar\n          text={sampleText}\n          feedback={feedback}\n          onFeedback={setFeedback}\n        />\n      </Message>\n    </div>\n  )\n}\n\nexport function AiPromptInputDemo() {\n  const [value, setValue] = useState(\"Tell me about the Kodo project\")\n  return (\n    <PromptInput\n      value={value}\n      onValueChange={setValue}\n      onSubmit={() => undefined}\n      placeholder=\"Ask a question…\"\n    />\n  )\n}\n\nexport function AiSuggestionDemo() {\n  return (\n    <Suggestions>\n      <Suggestion suggestion=\"Why hire Akshay?\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Kodo case study\" onClick={() => undefined} />\n      <Suggestion suggestion=\"Design systems work\" onClick={() => undefined} />\n    </Suggestions>\n  )\n}\n\nexport function AiSourcesDemo() {\n  return (\n    <Sources defaultOpen>\n      <SourcesTrigger count={2} />\n      <SourcesContent>\n        <Source href=\"/projects/kodo\" title=\"Project: kodo\" />\n        <Source href=\"/about\" title=\"About Akshay Saini\" />\n      </SourcesContent>\n    </Sources>\n  )\n}\n\nexport function AiShimmerDemo() {\n  return <Shimmer className=\"text-sm\">Thinking…</Shimmer>\n}\n\nexport function AiElementsDemo() {\n  return (\n    <div className=\"space-y-8\">\n      <AiConversationDemo />\n      <AiMessageDemo />\n      <AiPromptInputDemo />\n      <AiSuggestionDemo />\n      <AiSourcesDemo />\n      <AiShimmerDemo />\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/ai-elements-demo.tsx",
+      "name": "AiElementsDemo"
+    }
+  }
+}

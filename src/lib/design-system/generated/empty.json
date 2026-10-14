@@ -1,0 +1,286 @@
+{
+  "sourcePath": "src/components/ui/empty.tsx",
+  "importPath": "@/components/ui/empty",
+  "primitive": "Local component",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "exports": [
+    "Empty",
+    "EmptyHeader",
+    "EmptyTitle",
+    "EmptyDescription",
+    "EmptyContent",
+    "EmptyMedia"
+  ],
+  "parts": [
+    {
+      "name": "Empty",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EmptyHeader",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EmptyTitle",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EmptyDescription",
+      "contract": "React.ComponentProps<\"p\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EmptyContent",
+      "contract": "React.ComponentProps<\"div\">",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "EmptyMedia",
+      "contract": "React.ComponentProps<\"div\"> & VariantProps<typeof emptyMediaVariants>",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"icon\" | null",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual treatment defined by the local component.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "default",
+              "icon"
+            ]
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    "empty",
+    "empty-header",
+    "empty-icon",
+    "empty-title",
+    "empty-description",
+    "empty-content"
+  ],
+  "tokens": [
+    "--muted",
+    "--foreground",
+    "--muted-foreground",
+    "--primary"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">\n      <EmptyHeader>\n        <EmptyTitle>No results</EmptyTitle>\n        <EmptyDescription>Try adjusting your filters.</EmptyDescription>\n      </EmptyHeader>\n    </Empty>\n  )\n}",
+    "path": "src/components/design-system/demos/tier-2-demos.tsx",
+    "name": "EmptyDemo"
+  },
+  "playground": {
+    "parts": [
+      "Empty",
+      "EmptyDescription",
+      "EmptyHeader",
+      "EmptyTitle"
+    ],
+    "templates": {
+      "Empty": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof Empty>> = /*__DS_PROPS__*/ {}\n\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">{playgroundProps.children ?? <>\n      <EmptyHeader>\n        <EmptyTitle>No results</EmptyTitle>\n        <EmptyDescription>Try adjusting your filters.</EmptyDescription>\n      </EmptyHeader>\n    </>}</Empty>\n  )\n}",
+      "EmptyDescription": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof EmptyDescription>> = /*__DS_PROPS__*/ {}\n\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">\n      <EmptyHeader>\n        <EmptyTitle>No results</EmptyTitle>\n        <EmptyDescription>{playgroundProps.children ?? <>Try adjusting your filters.</>}</EmptyDescription>\n      </EmptyHeader>\n    </Empty>\n  )\n}",
+      "EmptyHeader": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof EmptyHeader>> = /*__DS_PROPS__*/ {}\n\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">\n      <EmptyHeader>{playgroundProps.children ?? <>\n        <EmptyTitle>No results</EmptyTitle>\n        <EmptyDescription>Try adjusting your filters.</EmptyDescription>\n      </>}</EmptyHeader>\n    </Empty>\n  )\n}",
+      "EmptyTitle": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof EmptyTitle>> = /*__DS_PROPS__*/ {}\n\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">\n      <EmptyHeader>\n        <EmptyTitle>{playgroundProps.children ?? <>No results</>}</EmptyTitle>\n        <EmptyDescription>Try adjusting your filters.</EmptyDescription>\n      </EmptyHeader>\n    </Empty>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from \"@/components/ui/empty\";\n\nexport function EmptyDemo() {\n  return (\n    <Empty className=\"max-w-sm border\">\n      <EmptyHeader>\n        <EmptyTitle>No results</EmptyTitle>\n        <EmptyDescription>Try adjusting your filters.</EmptyDescription>\n      </EmptyHeader>\n    </Empty>\n  )\n}",
+      "path": "src/components/design-system/demos/tier-2-demos.tsx",
+      "name": "EmptyDemo"
+    }
+  }
+}

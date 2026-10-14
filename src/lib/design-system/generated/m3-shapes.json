@@ -1,0 +1,477 @@
+{
+  "sourcePath": "src/components/m3-shapes/m3-shape.tsx",
+  "importPath": "@/components/m3-shapes/m3-shape",
+  "primitive": "Local component",
+  "dependencies": [],
+  "exports": [
+    "M3Shape",
+    "M3ShapeClip",
+    "M3ShapePlaceholder",
+    "M3ShapeIcon",
+    "M3ShapeImage"
+  ],
+  "parts": [
+    {
+      "name": "M3Shape",
+      "contract": "M3ShapeProps",
+      "props": [
+        {
+          "name": "fillClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"text-primary\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "shape",
+          "type": "\"circle\" | \"diamond\" | \"square\" | \"triangle\" | \"slanted\" | \"arch\" | \"fan\" | \"arrow\" | \"semicircle\" | \"oval\" | \"pill\" | \"hexagon\" | \"pentagon\" | \"gem\" | \"very-sunny\" | \"sunny\" | \"4-sided-cookie\" | \"6-sided-cookie\" | \"7-sided-cookie\" | \"9-sided-cookie\" | \"12-sided-cookie\" | \"ghost-ish\" | \"4-leaf-clover\" | \"8-leaf-clover\" | \"burst\" | \"soft-burst\" | \"shape36\" | \"boom\" | \"soft-boom\" | \"flower\" | \"puffy\" | \"puffy-diamond\" | \"pixel-circle\" | \"pixel-triangle\" | \"bun\" | \"heart\"",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "circle",
+              "diamond",
+              "square",
+              "triangle",
+              "slanted",
+              "arch",
+              "fan",
+              "arrow",
+              "semicircle",
+              "oval",
+              "pill",
+              "hexagon",
+              "pentagon",
+              "gem",
+              "very-sunny",
+              "sunny",
+              "4-sided-cookie",
+              "6-sided-cookie",
+              "7-sided-cookie",
+              "9-sided-cookie",
+              "12-sided-cookie",
+              "ghost-ish",
+              "4-leaf-clover",
+              "8-leaf-clover",
+              "burst",
+              "soft-burst",
+              "shape36",
+              "boom",
+              "soft-boom",
+              "flower",
+              "puffy",
+              "puffy-diamond",
+              "pixel-circle",
+              "pixel-triangle",
+              "bun",
+              "heart"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "M3ShapeClip",
+      "contract": "M3ShapeClipProps",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "shape",
+          "type": "\"circle\" | \"diamond\" | \"square\" | \"triangle\" | \"slanted\" | \"arch\" | \"fan\" | \"arrow\" | \"semicircle\" | \"oval\" | \"pill\" | \"hexagon\" | \"pentagon\" | \"gem\" | \"very-sunny\" | \"sunny\" | \"4-sided-cookie\" | \"6-sided-cookie\" | \"7-sided-cookie\" | \"9-sided-cookie\" | \"12-sided-cookie\" | \"ghost-ish\" | \"4-leaf-clover\" | \"8-leaf-clover\" | \"burst\" | \"soft-burst\" | \"shape36\" | \"boom\" | \"soft-boom\" | \"flower\" | \"puffy\" | \"puffy-diamond\" | \"pixel-circle\" | \"pixel-triangle\" | \"bun\" | \"heart\"",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "circle",
+              "diamond",
+              "square",
+              "triangle",
+              "slanted",
+              "arch",
+              "fan",
+              "arrow",
+              "semicircle",
+              "oval",
+              "pill",
+              "hexagon",
+              "pentagon",
+              "gem",
+              "very-sunny",
+              "sunny",
+              "4-sided-cookie",
+              "6-sided-cookie",
+              "7-sided-cookie",
+              "9-sided-cookie",
+              "12-sided-cookie",
+              "ghost-ish",
+              "4-leaf-clover",
+              "8-leaf-clover",
+              "burst",
+              "soft-burst",
+              "shape36",
+              "boom",
+              "soft-boom",
+              "flower",
+              "puffy",
+              "puffy-diamond",
+              "pixel-circle",
+              "pixel-triangle",
+              "bun",
+              "heart"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "fillClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "M3ShapePlaceholder",
+      "contract": "M3ShapePlaceholderProps",
+      "props": [
+        {
+          "name": "fillClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"bg-muted\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "shape",
+          "type": "\"circle\" | \"diamond\" | \"square\" | \"triangle\" | \"slanted\" | \"arch\" | \"fan\" | \"arrow\" | \"semicircle\" | \"oval\" | \"pill\" | \"hexagon\" | \"pentagon\" | \"gem\" | \"very-sunny\" | \"sunny\" | \"4-sided-cookie\" | \"6-sided-cookie\" | \"7-sided-cookie\" | \"9-sided-cookie\" | \"12-sided-cookie\" | \"ghost-ish\" | \"4-leaf-clover\" | \"8-leaf-clover\" | \"burst\" | \"soft-burst\" | \"shape36\" | \"boom\" | \"soft-boom\" | \"flower\" | \"puffy\" | \"puffy-diamond\" | \"pixel-circle\" | \"pixel-triangle\" | \"bun\" | \"heart\"",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "circle",
+              "diamond",
+              "square",
+              "triangle",
+              "slanted",
+              "arch",
+              "fan",
+              "arrow",
+              "semicircle",
+              "oval",
+              "pill",
+              "hexagon",
+              "pentagon",
+              "gem",
+              "very-sunny",
+              "sunny",
+              "4-sided-cookie",
+              "6-sided-cookie",
+              "7-sided-cookie",
+              "9-sided-cookie",
+              "12-sided-cookie",
+              "ghost-ish",
+              "4-leaf-clover",
+              "8-leaf-clover",
+              "burst",
+              "soft-burst",
+              "shape36",
+              "boom",
+              "soft-boom",
+              "flower",
+              "puffy",
+              "puffy-diamond",
+              "pixel-circle",
+              "pixel-triangle",
+              "bun",
+              "heart"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "M3ShapeIcon",
+      "contract": "M3ShapeIconProps",
+      "props": [
+        {
+          "name": "fillClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"text-primary/15\"",
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "Content rendered inside this part.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "shape",
+          "type": "\"circle\" | \"diamond\" | \"square\" | \"triangle\" | \"slanted\" | \"arch\" | \"fan\" | \"arrow\" | \"semicircle\" | \"oval\" | \"pill\" | \"hexagon\" | \"pentagon\" | \"gem\" | \"very-sunny\" | \"sunny\" | \"4-sided-cookie\" | \"6-sided-cookie\" | \"7-sided-cookie\" | \"9-sided-cookie\" | \"12-sided-cookie\" | \"ghost-ish\" | \"4-leaf-clover\" | \"8-leaf-clover\" | \"burst\" | \"soft-burst\" | \"shape36\" | \"boom\" | \"soft-boom\" | \"flower\" | \"puffy\" | \"puffy-diamond\" | \"pixel-circle\" | \"pixel-triangle\" | \"bun\" | \"heart\"",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "circle",
+              "diamond",
+              "square",
+              "triangle",
+              "slanted",
+              "arch",
+              "fan",
+              "arrow",
+              "semicircle",
+              "oval",
+              "pill",
+              "hexagon",
+              "pentagon",
+              "gem",
+              "very-sunny",
+              "sunny",
+              "4-sided-cookie",
+              "6-sided-cookie",
+              "7-sided-cookie",
+              "9-sided-cookie",
+              "12-sided-cookie",
+              "ghost-ish",
+              "4-leaf-clover",
+              "8-leaf-clover",
+              "burst",
+              "soft-burst",
+              "shape36",
+              "boom",
+              "soft-boom",
+              "flower",
+              "puffy",
+              "puffy-diamond",
+              "pixel-circle",
+              "pixel-triangle",
+              "bun",
+              "heart"
+            ]
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "iconClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "text"
+          }
+        }
+      ]
+    },
+    {
+      "name": "M3ShapeImage",
+      "contract": "M3ShapeImageProps",
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "Text alternative describing the image's purpose.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "shape",
+          "type": "\"circle\" | \"diamond\" | \"square\" | \"triangle\" | \"slanted\" | \"arch\" | \"fan\" | \"arrow\" | \"semicircle\" | \"oval\" | \"pill\" | \"hexagon\" | \"pentagon\" | \"gem\" | \"very-sunny\" | \"sunny\" | \"4-sided-cookie\" | \"6-sided-cookie\" | \"7-sided-cookie\" | \"9-sided-cookie\" | \"12-sided-cookie\" | \"ghost-ish\" | \"4-leaf-clover\" | \"8-leaf-clover\" | \"burst\" | \"soft-burst\" | \"shape36\" | \"boom\" | \"soft-boom\" | \"flower\" | \"puffy\" | \"puffy-diamond\" | \"pixel-circle\" | \"pixel-triangle\" | \"bun\" | \"heart\"",
+          "required": true,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "enum",
+            "options": [
+              "circle",
+              "diamond",
+              "square",
+              "triangle",
+              "slanted",
+              "arch",
+              "fan",
+              "arrow",
+              "semicircle",
+              "oval",
+              "pill",
+              "hexagon",
+              "pentagon",
+              "gem",
+              "very-sunny",
+              "sunny",
+              "4-sided-cookie",
+              "6-sided-cookie",
+              "7-sided-cookie",
+              "9-sided-cookie",
+              "12-sided-cookie",
+              "ghost-ish",
+              "4-leaf-clover",
+              "8-leaf-clover",
+              "burst",
+              "soft-burst",
+              "shape36",
+              "boom",
+              "soft-boom",
+              "flower",
+              "puffy",
+              "puffy-diamond",
+              "pixel-circle",
+              "pixel-triangle",
+              "bun",
+              "heart"
+            ]
+          }
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": "Image resource URL.",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Additional classes merged with the local styles using cn().",
+          "control": {
+            "kind": "text"
+          }
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "defaultValue": null,
+          "description": "See the declared TypeScript contract for this prop.",
+          "control": {
+            "kind": "json"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [],
+  "tokens": [
+    "--primary",
+    "--muted",
+    "--muted-foreground"
+  ],
+  "example": {
+    "code": "\"use client\"\n\nimport { Heart, Sparkles, Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nimport { m3Shapes } from \"@/lib/m3-shapes\";\n\nexport function M3ShapesDemo() {\n  return (\n    <div className=\"space-y-12\">\n      <section className=\"space-y-4\">\n        <div>\n          <h3 className=\"text-lg font-medium\">All shapes</h3>\n          <p className=\"text-sm text-muted-foreground\">\n            36 Material Design 3 expressive shapes imported from Figma.\n          </p>\n        </div>\n        <div className=\"grid grid-cols-4 gap-4 sm:grid-cols-6 lg:grid-cols-9\">\n          {m3Shapes.map((shape) => (\n            <div key={shape.id} className=\"flex flex-col items-center gap-2\">\n              <M3Shape shape={shape.id} className=\"size-14\" />\n              <span className=\"text-center text-[10px] leading-tight text-muted-foreground\">\n                {shape.label}\n              </span>\n            </div>\n          ))}\n        </div>\n      </section>\n\n      <section className=\"space-y-4\">\n        <div>\n          <h3 className=\"text-lg font-medium\">Icon shape boxes</h3>\n          <p className=\"text-sm text-muted-foreground\">\n            Use as soft icon containers with centered content.\n          </p>\n        </div>\n        <div className=\"flex flex-wrap items-center gap-6\">\n          <M3ShapeIcon shape=\"heart\" className=\"size-16\">\n            <Heart className=\"size-7\" />\n          </M3ShapeIcon>\n          <M3ShapeIcon shape=\"sunny\" className=\"size-16\">\n            <Star className=\"size-7\" />\n          </M3ShapeIcon>\n          <M3ShapeIcon shape=\"burst\" className=\"size-16\">\n            <Sparkles className=\"size-7\" />\n          </M3ShapeIcon>\n        </div>\n      </section>\n\n      <section className=\"space-y-4\">\n        <div>\n          <h3 className=\"text-lg font-medium\">Image clipping masks</h3>\n          <p className=\"text-sm text-muted-foreground\">\n            Clip photos and artwork to any M3 shape.\n          </p>\n        </div>\n        <div className=\"flex flex-wrap items-center gap-6\">\n          <M3ShapeImage\n            shape=\"circle\"\n            className=\"size-24\"\n            src=\"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop\"\n            alt=\"Mountain landscape\"\n          />\n          <M3ShapeImage\n            shape=\"diamond\"\n            className=\"size-24\"\n            src=\"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop\"\n            alt=\"Mountain landscape\"\n          />\n          <M3ShapeImage\n            shape=\"flower\"\n            className=\"size-24\"\n            src=\"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop\"\n            alt=\"Mountain landscape\"\n          />\n        </div>\n      </section>\n\n      <section className=\"space-y-4\">\n        <div>\n          <h3 className=\"text-lg font-medium\">Placeholders</h3>\n          <p className=\"text-sm text-muted-foreground\">\n            Empty boxes for loading states or content slots.\n          </p>\n        </div>\n        <div className=\"flex flex-wrap items-center gap-6\">\n          <M3ShapePlaceholder shape=\"arch\" className=\"size-24\" />\n          <M3ShapePlaceholder\n            shape=\"gem\"\n            className=\"size-24\"\n            label=\"Image\"\n          />\n          <M3ShapePlaceholder\n            shape=\"4-leaf-clover\"\n            className=\"size-24\"\n            fillClassName=\"bg-primary/10\"\n          />\n        </div>\n      </section>\n    </div>\n  )\n}",
+    "path": "src/components/design-system/demos/m3-shapes-demo.tsx",
+    "name": "M3ShapesDemo"
+  },
+  "playground": {
+    "parts": [
+      "M3Shape",
+      "M3ShapeClip",
+      "M3ShapeIcon",
+      "M3ShapeImage",
+      "M3ShapePlaceholder"
+    ],
+    "templates": {
+      "M3Shape": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof M3Shape>> = /*__DS_PROPS__*/ {}\n\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" {...playgroundProps} />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">\n          <Star className=\"size-9\" />\n        </M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">\n          <div className=\"size-full bg-primary/20\" />\n        </M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}",
+      "M3ShapeClip": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof M3ShapeClip>> = /*__DS_PROPS__*/ {}\n\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">\n          <Star className=\"size-9\" />\n        </M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">{playgroundProps.children ?? <>\n          <div className=\"size-full bg-primary/20\" />\n        </>}</M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}",
+      "M3ShapeIcon": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof M3ShapeIcon>> = /*__DS_PROPS__*/ {}\n\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">{playgroundProps.children ?? <>\n          <Star className=\"size-9\" />\n        </>}</M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">\n          <div className=\"size-full bg-primary/20\" />\n        </M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}",
+      "M3ShapeImage": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof M3ShapeImage>> = /*__DS_PROPS__*/ {}\n\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">\n          <Star className=\"size-9\" />\n        </M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\" {...playgroundProps}\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">\n          <div className=\"size-full bg-primary/20\" />\n        </M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}",
+      "M3ShapePlaceholder": "\"use client\"\n\nimport type { ComponentProps as PlaygroundComponentProps } from \"react\"\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nconst playgroundProps: Partial<PlaygroundComponentProps<typeof M3ShapePlaceholder>> = /*__DS_PROPS__*/ {}\n\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">\n          <Star className=\"size-9\" />\n        </M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\" {...playgroundProps}\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">\n          <div className=\"size-full bg-primary/20\" />\n        </M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}"
+    },
+    "example": {
+      "code": "\"use client\"\n\nimport { Star } from \"lucide-react\";\n\nimport { M3Shape, M3ShapeClip, M3ShapeIcon, M3ShapeImage, M3ShapePlaceholder } from \"@/components/m3-shapes\";\n\nexport function M3ShapePropDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-2 gap-8 2xl:grid-cols-3\">\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3Shape shape=\"circle\" className=\"size-24\" />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3Shape\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeIcon shape=\"sunny\" className=\"size-24\">\n          <Star className=\"size-9\" />\n        </M3ShapeIcon>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeIcon\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeImage\n          shape=\"heart\"\n          className=\"size-24\"\n          src=\"/images/portraits/01.webp\"\n          alt=\"Akshay Saini\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeImage\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapePlaceholder\n          shape=\"hexagon\"\n          className=\"size-24\"\n          label=\"Preview\"\n        />\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapePlaceholder\n        </span>\n      </div>\n      <div className=\"flex flex-col items-center gap-4\">\n        <M3ShapeClip shape=\"arch\" className=\"size-24\">\n          <div className=\"size-full bg-primary/20\" />\n        </M3ShapeClip>\n        <span className=\"font-mono text-[10px] text-muted-foreground\">\n          M3ShapeClip\n        </span>\n      </div>\n    </div>\n  )\n}",
+      "path": "src/components/design-system/demos/playground-fixtures.tsx",
+      "name": "M3ShapePropDemo"
+    }
+  }
+}
