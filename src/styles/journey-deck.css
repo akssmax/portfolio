@@ -1340,3 +1340,145 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Stage line and founder thread under the role row */
+.jd-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 0 2px;
+}
+.jd-stage {
+  font: 800 10px var(--journey-font);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.jd-founder {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+.jd-people-copy .jd-context {
+  margin: -8px 0 18px;
+}
+
+/* People: photos and a recommendation */
+.jd-people-side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.jd-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-brand) 18%, var(--card));
+  font: 900 11px var(--journey-font);
+}
+.jd-avatar img,
+.jd-quote figcaption img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jd-person {
+  gap: 14px;
+}
+.jd-quote {
+  margin: 0;
+  padding: 18px clamp(16px, 2.5vw, 26px);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--project-brand);
+  border-radius: 0 14px 14px 0;
+  background: var(--card);
+}
+.jd-quote blockquote {
+  margin: 0;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.5;
+}
+.jd-quote figcaption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.jd-quote figcaption img {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+}
+.jd-quote figcaption span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.jd-quote figcaption strong {
+  font-size: 13px;
+}
+.jd-quote figcaption small {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.jd-quote figcaption a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Finish: what the journey adds up to */
+.jd-finish-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: min(760px, 100%);
+  margin: 0 0 28px;
+  border-block: 1px solid color-mix(in srgb, var(--background) 25%, transparent);
+}
+.jd-finish-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  padding: 16px 10px;
+}
+.jd-finish-stats div + div {
+  border-left: 1px solid color-mix(in srgb, var(--background) 25%, transparent);
+}
+.jd-finish-stats dd {
+  margin: 0;
+  font: 500 clamp(1.8rem, 3vw, 2.6rem)/1 var(--journey-font);
+  color: var(--background);
+}
+.jd-finish-stats dt {
+  color: color-mix(in srgb, var(--background) 70%, var(--foreground));
+  font-size: 11px;
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .jd-finish-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .jd-finish-stats div:nth-child(3) {
+    border-left: 0;
+  }
+}

@@ -1,4 +1,5 @@
-import { profile } from "@/lib/profile"
+import type { FounderThreadStep } from "@/lib/profile"
+import { getFounderThread, profile } from "@/lib/profile"
 
 export type JourneyInteraction =
   | "tools"
@@ -42,6 +43,12 @@ export type StoryChapter = {
   collaborators?: Array<{ name: string; role?: string }>
   teamNote?: string
   teamSource?: { label: string; href: string }
+  /** Company stage and how I worked there, shown under the role. */
+  stage?: string
+  /** Set on Tulr, Videobug, Unlogged and 100x.bot: one founder, three products. */
+  founderThread?: FounderThreadStep
+  /** Short excerpt from a LinkedIn recommendation in src/lib/testimonials.ts. */
+  quote?: { testimonialId: string; text: string }
   compact?: boolean
 }
 
@@ -80,6 +87,7 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "wallzy",
+    stage: "Student side project · co-founded it",
     number: "02",
     year: "2017",
     period: wallzy.period,
@@ -133,6 +141,7 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "tenxresults",
+    stage: "Marketing agency",
     number: "03",
     year: "2019",
     period: internship.period,
@@ -151,6 +160,7 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "freelance",
+    stage: "Early-stage clients",
     number: "04",
     year: "2020",
     period: freelance.period,
@@ -170,8 +180,10 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "tulr",
+    founderThread: getFounderThread(tulr),
+    stage: "Early-stage startup · worked directly with the founder",
     number: "05",
-    year: "2020",
+    year: "2021",
     period: tulr.period,
     company: tulr.company,
     role: tulr.role,
@@ -231,6 +243,8 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "videobug",
+    founderThread: getFounderThread(unlogged),
+    stage: "Pre-YC to YC S22 · founding team",
     number: "06",
     year: "2022",
     period: `2022 · within ${unlogged.period} role`,
@@ -289,6 +303,12 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "unlogged",
+    founderThread: getFounderThread(unlogged),
+    quote: {
+      testimonialId: "shardul-lavekar",
+      text: "I have worked with Akshay for 3 years and highly recommend him. Super hard working, very committed, and loyal.",
+    },
+    stage: "YC S22 startup · founding team",
     number: "07",
     year: "2023",
     period: unlogged.period,
@@ -352,6 +372,11 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "kodo",
+    quote: {
+      testimonialId: "gaurav-thapa",
+      text: "Akshay brings strong product and UI thinking, execution speed, and ownership, which makes him very effective in fast-moving startup environments.",
+    },
+    stage: "YC W21 fintech · first enterprise customers",
     number: "08",
     year: "2024",
     period: kodo.period,
@@ -412,6 +437,8 @@ export const storyChapters: Array<StoryChapter> = [
   },
   {
     id: "100x-bot",
+    founderThread: getFounderThread(agentWork),
+    stage: "YC S22 AI startup · founders and engineers",
     number: "09",
     year: "2025–2026",
     period: agentWork.period,
@@ -432,16 +459,53 @@ export const storyChapters: Array<StoryChapter> = [
     caseStudy: "100x-chat-shell",
     source: { label: "100x.bot", href: "https://100x.bot/" },
     brand: "#76c94d",
+    featureIntro:
+      "Third product with the same founder. I designed in Figma and built in code: a working agent prototype for sales demos, its design system, and the live marketing site.",
+    features: [
+      {
+        title: "Tell the story on the web",
+        description:
+          "The marketing site, designed in Figma and built in code with Cursor.",
+        image: "/projects/100x/hero.webp",
+        alt: "100x.bot marketing site hero with a scripted browser demo",
+        imageLabel: "Live marketing site",
+      },
+      {
+        title: "Turn a task into a workflow",
+        description:
+          "A visual builder with a browser simulation of each step.",
+        image: "/projects/v1-100x-proto/workflows.webp",
+        alt: "100x agent prototype showing the visual workflow builder with browser simulation",
+        imageLabel: "Code prototype I built",
+      },
+      {
+        title: "One system for every surface",
+        description:
+          "Components, tokens, and themes on shadcn/ui, including AI-native parts.",
+        image: "/projects/v1-100x-proto/design-system.webp",
+        alt: "100x design system page with components, tokens, and themes",
+        imageLabel: "Design system",
+      },
+      {
+        title: "An agent you can talk to",
+        description:
+          "Chat with quick actions and the browser workspace side by side.",
+        image: "/projects/v1-100x-proto/home.webp",
+        alt: "100x agent prototype showing the agent shell with quick actions and a browser workspace",
+        imageLabel: "Code prototype I built",
+      },
+    ],
     collaborators: [
       { name: "Shardul Lavekar" },
       { name: "Parth Mudgal" },
       { name: "Samarth RS", role: "Designer" },
     ],
     teamNote:
-      "This chapter was shaped with founders, designers, and engineers.",
+      "Back with Shardul and Parth for a third product, alongside designers and engineers. I also managed 2 junior developers.",
   },
   {
     id: "freelancing",
+    stage: "Clients and my own launches",
     number: "10",
     year: "Now",
     period: current.period,
@@ -461,6 +525,38 @@ export const storyChapters: Array<StoryChapter> = [
     caseStudy: "indus-best-mega-food-park",
     source: { label: "Indus Best Mega Food Park", href: "https://www.indusbestmegafoodpark.com/" },
     brand: "#0f766e",
+    featureIntro:
+      "Since July 2026 I design and build products end to end, for clients and for my own launches, with Claude Code and Codex.",
+    features: [
+      {
+        title: "Indus Best Mega Food Park",
+        description: "A production website for a food processing park, live now.",
+        image: "/projects/indus/hero.webp",
+        alt: "Indus Best Mega Food Park production website hero",
+        imageLabel: "Client website, live",
+      },
+      {
+        title: "Cue",
+        description: "A browser DJ studio with a transition assistant, in public beta.",
+        image: "/projects/cue/automix.webp",
+        alt: "Cue transition assistant with parallel waveforms and ranked routines",
+        imageLabel: "My own product",
+      },
+      {
+        title: "Ion Workspace",
+        description: "Business email and calendar in one app.",
+        image: "/projects/ion/mail.webp",
+        alt: "Ion Workspace mail view in the demo workspace",
+        imageLabel: "My own product",
+      },
+      {
+        title: "Postforge",
+        description: "A design tool for brand-aware social posts.",
+        image: "/projects/postforge/tool.webp",
+        alt: "Postforge design tool with brand kit and canvas",
+        imageLabel: "My own product",
+      },
+    ],
   },
 ]
 

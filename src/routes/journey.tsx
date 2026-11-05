@@ -9,12 +9,15 @@ import {
   MousePointer2,
   RotateCcw,
   UsersRound,
+  Waypoints,
 } from "lucide-react"
 
 import type { StoryChapter } from "@/lib/journey/story"
 import { JourneyPlayground } from "@/components/journey/journey-playground"
 import { ThemeCustomizer } from "@/components/theme-customizer"
 import { findStoryChapter, storyChapters } from "@/lib/journey/story"
+import { getFounderBadgeLabel } from "@/lib/profile"
+import { getTestimonialInitials, testimonials } from "@/lib/testimonials"
 import { siteUrl } from "@/lib/site-url"
 
 import "@/styles/journey-story.css"
@@ -447,7 +450,9 @@ function SlideEyebrow({
 }) {
   return (
     <div className="jd-slide-eyebrow">
-      <span>{chapter.number} / 09</span>
+      <span>
+        {chapter.number} / {String(storyChapters.length).padStart(2, "0")}
+      </span>
       <span className="jd-eyebrow-line" />
       <span>{chapter.year}</span>
       <span className="jd-eyebrow-dot">●</span>
@@ -471,8 +476,8 @@ function OpeningSlide({ onStart }: { onStart: () => void }) {
             Then I kept building<span className="jd-period-mark">.</span>
           </h1>
           <p>
-            Nine chapters. Many teams. A growing collection of products and
-            things learned along the way.
+            Ten chapters, mostly at early-stage startups, side by side with
+            founders and small teams. Here are the products and the people.
           </p>
           <button type="button" onClick={onStart} className="jd-primary-cta">
             Start the story <ArrowRight size={18} />
@@ -504,7 +509,7 @@ function OpeningSlide({ onStart }: { onStart: () => void }) {
       </div>
       <div className="jd-opening-bottom">
         <span>DESIGN / BRAND / PRODUCT / CODE</span>
-        <span>01 — 09</span>
+        <span>01 — {String(storyChapters.length).padStart(2, "0")}</span>
       </div>
     </section>
   )
@@ -535,6 +540,7 @@ function IntroSlide({
               {chapter.id === "freelance" ? " · alongside Tulr" : ""}
             </span>
           </div>
+          <ChapterContext chapter={chapter} />
           <div className="jd-my-part">
             <span>
               <MousePointer2 size={14} /> MY PART
@@ -664,12 +670,14 @@ function PeopleSlide({ chapter }: { chapter: StoryChapter }) {
             Made with <em>people.</em>
           </h2>
           <p>{chapter.teamNote}</p>
+          <ChapterContext chapter={chapter} />
           <div className="jd-people-contribution">
             <span>MY CONTRIBUTION</span>
             <p>{chapter.contribution}</p>
           </div>
           <ProjectLinks chapter={chapter} />
         </div>
+        <div className="jd-people-side">
         <div className="jd-people-card">
           <div className="jd-people-card-top">
             <span>COLLABORATORS</span>
@@ -680,6 +688,7 @@ function PeopleSlide({ chapter }: { chapter: StoryChapter }) {
           {chapter.collaborators?.map((person, index) => (
             <div className="jd-person" key={person.name}>
               <span>{String(index + 1).padStart(2, "0")}</span>
+              <PersonAvatar name={person.name} />
               <strong>{person.name}</strong>
               <small>{person.role ?? "Collaborator"}</small>
             </div>
@@ -699,10 +708,72 @@ function PeopleSlide({ chapter }: { chapter: StoryChapter }) {
             ) : null}
           </div>
         </div>
+        <ChapterQuote chapter={chapter} />
+        </div>
       </div>
     </section>
   )
 }
+
+function ChapterContext({ chapter }: { chapter: StoryChapter }) {
+  if (!chapter.stage && !chapter.founderThread) return null
+  return (
+    <div className="jd-context">
+      {chapter.stage ? <span className="jd-stage">{chapter.stage}</span> : null}
+      {chapter.founderThread ? (
+        <span className="jd-founder">
+          <Waypoints size={13} aria-hidden />
+          {getFounderBadgeLabel(chapter.founderThread)}
+        </span>
+      ) : null}
+    </div>
+  )
+}
+
+function PersonAvatar({ name }: { name: string }) {
+  const photo = testimonials.find((item) => item.name === name)?.avatarSrc
+  return (
+    <span className="jd-avatar" aria-hidden="true">
+      {photo ? (
+        <img src={photo} alt="" loading="lazy" />
+      ) : (
+        getTestimonialInitials(name)
+      )}
+    </span>
+  )
+}
+
+function ChapterQuote({ chapter }: { chapter: StoryChapter }) {
+  const quote = chapter.quote
+  const source = quote
+    ? testimonials.find((item) => item.id === quote.testimonialId)
+    : undefined
+  if (!quote || !source) return null
+  return (
+    <figure className="jd-quote">
+      <blockquote>“{quote.text}”</blockquote>
+      <figcaption>
+        <img src={source.avatarSrc} alt="" loading="lazy" />
+        <span>
+          <strong>{source.name}</strong>
+          <small>
+            {source.relationship} · {source.date}
+          </small>
+        </span>
+        <a href={source.linkedInUrl} target="_blank" rel="noopener noreferrer">
+          LinkedIn <ArrowUpRight size={13} />
+        </a>
+      </figcaption>
+    </figure>
+  )
+}
+
+const finishStats = [
+  { value: "2×", label: "Founding designer" },
+  { value: "3", label: "Products with one founder" },
+  { value: "2", label: "YC-backed companies" },
+  { value: "4", label: "Founders worked with directly" },
+]
 
 function FinishSlide({ onRestart }: { onRestart: () => void }) {
   return (
@@ -716,6 +787,14 @@ function FinishSlide({ onRestart }: { onRestart: () => void }) {
         I design and build product experiences with people who care about how
         things work and how they feel.
       </p>
+      <dl className="jd-finish-stats">
+        {finishStats.map((stat) => (
+          <div key={stat.label}>
+            <dt>{stat.label}</dt>
+            <dd>{stat.value}</dd>
+          </div>
+        ))}
+      </dl>
       <div className="jd-finish-actions">
         <a href="mailto:akshaysaini.design@gmail.com">
           Say hello <ArrowUpRight size={18} />
