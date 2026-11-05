@@ -1,8 +1,10 @@
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
+import { MINIMAL_ACCENT_IMAGE_OPTIONS, pickMinimalAccentPreferences } from "../../minimal-accent-utils"
+import { HtmlFounderBadge } from "../founder-badge"
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import { toMailtoHref, toTelHref } from "../../contact-link-utils"
-import { pickMinimalAccentPreferences, MINIMAL_ACCENT_IMAGE_OPTIONS } from "../../minimal-accent-utils"
-import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS  } from "./resume-html-props"
+import type {ResumeHtmlLayoutProps} from "./resume-html-props";
 import { cn } from "@/lib/utils"
 
 export function MinimalHtmlResume({
@@ -157,6 +159,7 @@ export function MinimalHtmlResume({
                   />
                 </div>
               </div>
+              <HtmlFounderBadge label={job.founderBadge} />
               <EditableText
                 value={job.description}
                 onChange={

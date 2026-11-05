@@ -29,9 +29,11 @@
     "generate:favicons": "node --import tsx scripts/generate-favicons.ts",
     "generate:og-banner": "node --import tsx scripts/generate-og-banner.ts",
     "generate:sitemap": "node --import tsx scripts/generate-sitemap.ts",
-    "prebuild": "npm run docs:generate && npm run generate:sitemap",
+    "generate:llms": "node --import tsx scripts/generate-llms-txt.ts",
+    "prebuild": "npm run docs:generate && npm run generate:sitemap && npm run generate:llms",
     "build:rag": "node --env-file=.env.local --import tsx scripts/build-rag-index.ts",
-    "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts"
+    "build:rag:stub": "node --import tsx scripts/generate-rag-stub.ts",
+    "stats:claude": "node --import tsx scripts/generate-claude-stats.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

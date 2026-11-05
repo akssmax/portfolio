@@ -1,10 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 
 import { DeckShell } from "@/components/intro/deck-shell"
-import { buildPostforgeDeck } from "@/lib/intro/postforge-deck"
 import { DECK_SLIDE_IDS } from "@/lib/intro/types"
-import { getVisualCaseStudyConfig } from "@/lib/projects/visual-case-study-configs"
-import { getProjectBySlug } from "@/lib/sanity/projects"
+import { getProjectBySlug } from "@/lib/sanity/data"
 
 const MAX_SLIDE_INDEX = DECK_SLIDE_IDS.length - 1
 
@@ -25,7 +23,12 @@ export const Route = createFileRoute("/intro")({
     return {}
   },
   loader: async () => {
-    const project = await getProjectBySlug("postforge")
+    // Loaders aren't code-split, so load the deck builders only for this route.
+    const [project, { buildPostforgeDeck }, { getVisualCaseStudyConfig }] = await Promise.all([
+      getProjectBySlug("postforge"),
+      import("@/lib/intro/postforge-deck"),
+      import("@/lib/projects/visual-case-study-configs"),
+    ])
     const visual = getVisualCaseStudyConfig("postforge")
 
     if (!project || !visual) {

@@ -21,7 +21,7 @@ export const hiringProfile = {
     ...profile.certifications.map((c) => `${c.title} — ${c.issuer} (${c.date})`),
     "Self-taught product designer; no formal B.Des/M.Des degree",
   ],
-  primaryDesignTools: ["Figma", "FigJam", "Miro", "Framer", "Adobe Creative Suite", "Cursor", "Codex", "Claude", "Blender", "Three.js"],
+  primaryDesignTools: ["Figma", "FigJam", "Miro", "Framer", "Adobe Creative Suite", "Cursor", "Codex", "Claude", "OpenCode", "Paper", "Blender", "Three.js"],
   b2cHighlights: [
     "100x.bot — consumer-facing agentic AI product UI, browser extension, and marketing site",
     "Kodo — Kodo ERP (Procure-to-Pay) plus consumer-facing payment app revamp (MD3) and UPI app demo for NPCI",

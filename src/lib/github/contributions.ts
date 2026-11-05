@@ -162,9 +162,86 @@ export function githubUsernameFromProfileUrl(url: string): string {
   }
 }
 
-export async function fetchGithubContributions(
+const GRAPHQL_LEVELS: Record<string, ContributionDay["level"]> = {
+  NONE: 0,
+  FIRST_QUARTILE: 1,
+  SECOND_QUARTILE: 2,
+  THIRD_QUARTILE: 3,
+  FOURTH_QUARTILE: 4,
+}
+
+type GraphqlCalendarResponse = {
+  data?: {
+    user: {
+      contributionsCollection: {
+        contributionCalendar: {
+          weeks: Array<{
+            contributionDays: Array<{
+              date: string
+              contributionCount: number
+              contributionLevel: string
+            }>
+          }>
+        }
+      }
+    } | null
+  }
+  errors?: Array<{ message: string }>
+}
+
+/**
+ * Authenticated calendar. When the token belongs to the profile owner, GitHub
+ * includes private-repo contributions — the same total you see when logged in.
+ */
+async function fetchGraphqlContributions(
   username: string,
-): Promise<GithubContributionsPayload> {
+  token: string,
+): Promise<Array<ContributionDay>> {
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      Authorization: `bearer ${token}`,
+      "Content-Type": "application/json",
+      "User-Agent": "design-portfolio",
+    },
+    body: JSON.stringify({
+      query: `query($login: String!) {
+        user(login: $login) {
+          contributionsCollection {
+            contributionCalendar {
+              weeks { contributionDays { date contributionCount contributionLevel } }
+            }
+          }
+        }
+      }`,
+      variables: { login: username },
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`GitHub GraphQL failed (${response.status})`)
+  }
+
+  const json = (await response.json()) as GraphqlCalendarResponse
+  const weeks =
+    json.data?.user?.contributionsCollection.contributionCalendar.weeks
+  if (!weeks) {
+    throw new Error(json.errors?.[0]?.message ?? "GitHub GraphQL returned no data")
+  }
+
+  return weeks
+    .flatMap((week) => week.contributionDays)
+    .map((day) => ({
+      date: day.date,
+      count: day.contributionCount,
+      level: GRAPHQL_LEVELS[day.contributionLevel] ?? 0,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date))
+}
+
+async function fetchPublicCalendar(
+  username: string,
+): Promise<Array<ContributionDay>> {
   const response = await fetch(
     `https://github.com/users/${encodeURIComponent(username)}/contributions`,
     {
@@ -176,7 +253,30 @@ export async function fetchGithubContributions(
     throw new Error(`GitHub contributions upstream failed (${response.status})`)
   }
 
-  const contributions = parseGithubContributionCalendar(await response.text())
+  return parseGithubContributionCalendar(await response.text())
+}
+
+export async function fetchGithubContributions(
+  username: string,
+  token?: string,
+): Promise<GithubContributionsPayload> {
+  let contributions: Array<ContributionDay> | null = null
+  if (token) {
+    try {
+      contributions = await fetchGraphqlContributions(username, token)
+    } catch (error) {
+      console.warn("[github] GraphQL failed, falling back to public calendar", error)
+    }
+  }
+  contributions ??= await fetchPublicCalendar(username)
+
+  return buildPayload(username, contributions)
+}
+
+function buildPayload(
+  username: string,
+  contributions: Array<ContributionDay>,
+): GithubContributionsPayload {
   const total = contributions.reduce((sum, day) => sum + day.count, 0)
 
   return {

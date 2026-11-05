@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/landing/site-header"
 import { RouteError } from "@/components/route-error"
 import { Button } from "@/components/ui/button"
 import { getImageUrl } from "@/lib/sanity/image"
-import { getPostBySlug } from "@/lib/sanity/posts"
+import { getPostBySlug } from "@/lib/sanity/data"
 import { siteUrl } from "@/lib/site-url"
  
 export const Route = createFileRoute("/blog/$slug")({

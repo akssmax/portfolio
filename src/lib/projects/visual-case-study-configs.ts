@@ -31,6 +31,67 @@ export type VisualCaseStudyLayoutProps = VisualCaseStudyConfig & {
 
 const DESIGN_WITH_AI_APP = "https://llm-daisyui-shell.vercel.app"
 
+const CUE_APP = "https://dj-app-kappa.vercel.app"
+
+const CUE: VisualCaseStudyConfig = {
+  liveUrl: `${CUE_APP}/`,
+  ctaLabel: "Open Cue",
+  secondaryUrl: "https://github.com/akssmax/dj-app",
+  secondaryLabel: "View on GitHub",
+  heroImageSrc: "/projects/cue/hero.webp",
+  heroImageAlt: "Cue studio with two decks, waveforms, hot cues and the mixer",
+  heroImageHref: `${CUE_APP}/app`,
+  stack: ["TanStack Start", "React", "TypeScript", "Web Audio", "ONNX Runtime", "WebGPU", "Tailwind CSS"],
+  stats: [
+    { value: "25", label: "Automix routines" },
+    { value: "28", label: "Transition lessons" },
+    { value: "0", label: "Bytes of audio uploaded" },
+  ],
+  builtSummary:
+    "A free DJ studio in the browser. Automix explains every transition it picks, a coach teaches the same moves, and beat, key and stem analysis all run on your device.",
+  footerNote:
+    "Cue is in public beta and runs best in desktop Chrome or Edge. Bundled demo music is from Pixabay.",
+  highlights: [
+    "Two decks and a mixer with sync, key lock, hot cues, loops, effects, scratching and recording",
+    "Automix that plans ahead, picks from 25 routines and shows the reasons for each choice",
+    "On-device beat, key, section and stem separation, with user fixes that always win",
+    "28 lessons, a live coach and DDJ-FLX4 controller support",
+  ],
+  designNotes: [
+    "Make the automation legible: every transition shows a score, its reasons and a headphone preview.",
+    "Turn the planner's reasoning into teaching, so the coach and Automix speak the same language.",
+    "Keep music private by running analysis and stems locally instead of on a server.",
+  ],
+  galleries: [
+    {
+      title: "Transitions you can read",
+      description: "Parallel waveforms and a ranked list of routines for the pair on the decks.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/cue/automix.webp",
+          alt: "Cue transition assistant with parallel waveforms and ranked routines",
+          label: "Transition assistant",
+          href: `${CUE_APP}/app`,
+        },
+      ],
+    },
+    {
+      title: "Learn by mixing",
+      description: "Guided practice gives live cues above the real decks.",
+      layout: "feature",
+      images: [
+        {
+          src: "/projects/cue/learn.webp",
+          alt: "Cue Learn & play view with live guidance and the decks",
+          label: "Learn & play",
+          href: `${CUE_APP}/learn`,
+        },
+      ],
+    },
+  ],
+}
+
 const ION: VisualCaseStudyConfig = {
   liveUrl: "https://ion-workspace.vercel.app/",
   ctaLabel: "Explore Ion",
@@ -656,6 +717,7 @@ const RESUME_BUILDER: VisualCaseStudyConfig = {
 }
 
 const VISUAL_CASE_STUDY_CONFIGS: Record<string, VisualCaseStudyConfig> = {
+  "cue-dj-studio": CUE,
   "ion-workspace": ION,
   "indus-best-mega-food-park": INDUS,
   postforge: POSTFORGE,

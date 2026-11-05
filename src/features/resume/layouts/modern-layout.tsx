@@ -1,27 +1,30 @@
-import type { ReactNode } from "react"
 import { Image, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
 import {
-  DEFAULT_CONTACT_ICONS,
-  type ResumeContactIconField,
-  type ResumeDisplayPreferences,
+  DEFAULT_CONTACT_ICONS
+  
+  
 } from "../resume-display-preferences"
 import { toMailtoHref, toTelHref } from "../contact-link-utils"
-import type { ResumeDocument, ResumeSectionId } from "../types"
+import { getPdfSectionMarginBottom } from "../section-spacing-utils"
 import { ResumeLogomark } from "./resume-logomark"
 import { PdfCompanyLogo } from "./pdf-company-logo"
 import { PdfResumeIcon } from "./pdf/pdf-resume-icons"
 import { PdfResumeSectionTitle } from "./pdf/pdf-resume-section"
 import { RESUME_SPACING } from "./spacing-tokens"
-import { getPdfSectionMarginBottom } from "../section-spacing-utils"
 import {
-  DEFAULT_PDF_LAYOUT_PROPS,
-  type ResumePdfLayoutProps,
+  DEFAULT_PDF_LAYOUT_PROPS
+  
 } from "./pdf-layout-props"
 import {
   PDF_JOB_HEADER_PROPS,
   PDF_SECTION_HEADING_PROPS,
 } from "./pdf-pagination-props"
+import { PdfFounderBadge } from "./founder-badge"
+import type {ResumePdfLayoutProps} from "./pdf-layout-props";
+import type {ResumeContactIconField, ResumeDisplayPreferences} from "../resume-display-preferences";
+import type { ResumeDocument, ResumeSectionId } from "../types"
+import type { ReactNode } from "react"
 
 const S = RESUME_SPACING.modern
 const PAGE_MARGIN = {
@@ -478,6 +481,7 @@ export function ModernResumeLayout({
                       {job.location}
                     </Text>
                   </View>
+                  <PdfFounderBadge label={job.founderBadge} />
                   <Text style={styles.paragraph}>{job.description}</Text>
                   {job.highlights?.length ? (
                     <View style={styles.bulletList}>

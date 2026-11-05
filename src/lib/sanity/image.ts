@@ -1,6 +1,6 @@
 import { createImageUrlBuilder, type ImageUrlBuilder } from "@sanity/image-url"
 
-import { getSanityClient, isSanityConfigured } from "./client"
+import { isSanityConfigured } from "./config"
 
 let cachedBuilder: ImageUrlBuilder | null = null
 
@@ -9,7 +9,11 @@ function getBuilder(): ImageUrlBuilder {
     throw new Error("Sanity is not configured")
   }
   if (!cachedBuilder) {
-    cachedBuilder = createImageUrlBuilder(getSanityClient())
+    // Project details are enough to build URLs — no need to ship the full client.
+    cachedBuilder = createImageUrlBuilder({
+      projectId: import.meta.env.VITE_SANITY_PROJECT_ID!,
+      dataset: import.meta.env.VITE_SANITY_DATASET ?? "production",
+    })
   }
   return cachedBuilder
 }

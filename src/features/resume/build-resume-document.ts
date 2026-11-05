@@ -1,4 +1,4 @@
-import { profile } from "@/lib/profile"
+import { getFounderBadge, profile } from "@/lib/profile"
 
 import { DEFAULT_RESUME_SECTIONS } from "./default-sections"
 import {
@@ -10,6 +10,7 @@ import {
   OFFICIAL_PROFILE_TEXT,
   OFFICIAL_PROJECTS,
   OFFICIAL_PROFESSIONAL_EXPERIENCE_COUNT,
+  OFFICIAL_RESUME_TITLE,
 } from "./official-resume-content"
 import type { ResumeDocument, ResumeSectionConfig } from "./types"
 
@@ -43,7 +44,7 @@ export function buildResumeDocument(
 ): ResumeDocument {
   const document: ResumeDocument = {
     name: profile.name,
-    title: profile.title,
+    title: OFFICIAL_RESUME_TITLE,
     location: profile.location,
     portrait: {
       src: profile.portrait.src,
@@ -62,6 +63,8 @@ export function buildResumeDocument(
       period: item.period,
       location: item.location,
       description: item.description,
+      founderBadge: getFounderBadge(item),
+      companyUrl: "websiteUrl" in item ? item.websiteUrl : undefined,
       highlights: item.highlights,
       logoSrc: item.logoSrc,
       experienceGroup:

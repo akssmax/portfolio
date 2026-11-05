@@ -12,6 +12,12 @@ type WavePalette = {
 }
 
 const lightPalettes: Record<string, WavePalette | undefined> = {
+  "cue-dj-studio": {
+    background: "#f5f9fc",
+    wave: "#bcd6e6",
+    hover: "#3aa9dc",
+    accent: "rgba(92, 200, 245, 0.18)",
+  },
   "ion-workspace": {
     background: "#f9faf4",
     wave: "#d7dec2",
@@ -58,6 +64,12 @@ const defaultLightPalette: WavePalette = {
 }
 
 const darkPalettes: Record<string, WavePalette | undefined> = {
+  "cue-dj-studio": {
+    background: "#121519",
+    wave: "#3d6176",
+    hover: "#f4e04d",
+    accent: "rgba(92, 200, 245, 0.2)",
+  },
   "ion-workspace": {
     background: "#151a11",
     wave: "#60783c",
@@ -104,6 +116,12 @@ const defaultDarkPalette: WavePalette = {
 }
 
 const heroPalettes: Record<string, WavePalette | undefined> = {
+  "cue-dj-studio": {
+    background: "#16171b",
+    wave: "#4a5866",
+    hover: "#5cc8f5",
+    accent: "rgba(244, 224, 77, 0.14)",
+  },
   kodo: {
     background: "#faf5fa",
     wave: "#cab9cd",

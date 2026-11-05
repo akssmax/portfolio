@@ -91,8 +91,8 @@ function LayoutPreview({
 
   if (layout === "modern") {
     return (
-      <div className="h-16 rounded-md border border-border bg-background px-3 py-2 flex gap-2">
-        <div className="w-12 border-r border-border pr-1">
+      <div className="flex h-16 gap-2 overflow-hidden rounded-md border border-border bg-background px-3 py-2">
+        <div className="w-12 shrink-0 border-r border-border pr-1">
           <div
             className="h-1 w-8 rounded-full"
             style={{ backgroundColor: brandColor }}
@@ -100,10 +100,10 @@ function LayoutPreview({
           <div className="mt-1.5 h-1.5 w-8 rounded-[2px] bg-foreground/30" />
           <div className="mt-1 h-1 w-5 rounded-[2px] bg-foreground/20" />
         </div>
-        <div className="flex-1">
-          <div className="h-1 w-full bg-foreground/20 rounded-full" />
-          <div className="mt-1 h-1 w-12 bg-foreground/10 rounded-full" />
-          <div className="mt-2 h-1 w-16 bg-foreground/10 rounded-full" />
+        <div className="min-w-0 flex-1">
+          <div className="h-1 w-full rounded-full bg-foreground/20" />
+          <div className="mt-1 h-1 w-3/5 rounded-full bg-foreground/10" />
+          <div className="mt-2 h-1 w-4/5 rounded-full bg-foreground/10" />
         </div>
       </div>
     )
@@ -155,6 +155,24 @@ function LayoutPreview({
           {[0, 1, 2, 3].map((item) => (
             <div key={item} className="h-2 rounded bg-foreground/10" />
           ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (layout === "signature") {
+    return (
+      <div className="h-16 rounded-md border border-border bg-background px-3 py-2">
+        <div className="h-1.5 w-14 rounded-full bg-foreground/70" />
+        <div className="mt-1 h-1 w-10 rounded-full" style={{ backgroundColor: brandColor }} />
+        <div className="mt-1.5 h-0.5 w-full rounded-full" style={{ backgroundColor: brandColor }} />
+        <div className="mt-1.5 flex gap-1">
+          <div className="h-1 w-6 rounded-full bg-foreground/30" />
+          <div className="h-1 flex-1 rounded-full bg-foreground/10" />
+        </div>
+        <div className="mt-1 flex gap-1">
+          <div className="h-1 w-6 rounded-full bg-foreground/30" />
+          <div className="h-1 flex-1 rounded-full bg-foreground/10" />
         </div>
       </div>
     )
@@ -257,7 +275,7 @@ export function ResumeBuilderControls({
                 type="text"
                 value={jobTitle}
                 onChange={(e) => onJobTitleChange?.(e.target.value)}
-                placeholder="e.g. Product Designer / Design Engineer"
+                placeholder="e.g. Full Stack Designer"
                 className="bg-background text-sm"
               />
             </div>

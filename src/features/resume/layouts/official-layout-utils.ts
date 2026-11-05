@@ -169,16 +169,21 @@ export function buildOfficialContactParts(
     parts.push({ label: contact.phone, href: `tel:${contact.phone.replace(/\s/g, "")}` })
   }
   if (contact.website) {
-    parts.push({ label: "Portfolio", href: contact.website })
+    parts.push({ label: shortUrl(contact.website), href: contact.website })
   }
   if (contact.linkedin) {
-    parts.push({ label: "LinkedIn", href: contact.linkedin })
+    parts.push({ label: shortUrl(contact.linkedin), href: contact.linkedin })
   }
   if (contact.github) {
-    parts.push({ label: "GitHub", href: contact.github })
+    parts.push({ label: shortUrl(contact.github), href: contact.github })
   }
 
   return parts
+}
+
+/** Visible, parser-readable URL: "linkedin.com/in/akssmax" instead of "LinkedIn". */
+function shortUrl(url: string): string {
+  return url.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "")
 }
 
 export function buildOfficialFooterLabel(document: ResumeDocument): string {

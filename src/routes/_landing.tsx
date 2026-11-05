@@ -8,8 +8,9 @@ import { SiteFooter } from "@/components/landing/site-footer"
 import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 import { useDeferredMount } from "@/hooks/use-deferred-mount"
+import { useHydrated } from "@/hooks/use-hydrated"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { getHomeWorkSections } from "@/lib/sanity/projects"
+import { getHomeWorkSections } from "@/lib/sanity/data"
 import { siteUrl } from "@/lib/site-url"
 import { RouteError } from "@/components/route-error"
 
@@ -86,6 +87,8 @@ function Landing1Layout() {
   const isMobile = useIsMobile()
   const brandColors = useBrandColors()
   const { resolvedTheme } = useTheme()
+  // The theme is only known in the browser; match the server render until hydrated.
+  const hydrated = useHydrated()
   const isChatRoute = location.pathname.startsWith("/chat")
   const isLight = resolvedTheme === "light"
   const dotFieldAppearance = getDotFieldAppearance(
@@ -124,9 +127,9 @@ function Landing1Layout() {
 
       <SiteHeader
         tone={
-          !isChatRoute && resolvedTheme === "dark" ? "on-media" : "default"
+          hydrated && !isChatRoute && resolvedTheme === "dark" ? "on-media" : "default"
         }
-        elevateBlurOnScroll={isHome && isLight}
+        elevateBlurOnScroll={hydrated && isHome && isLight}
       />
       
       <main className={cn(

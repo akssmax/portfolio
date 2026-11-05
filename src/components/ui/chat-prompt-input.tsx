@@ -27,13 +27,55 @@ import {
   promptHeightTransition,
 } from "@/lib/motion-easing"
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition"
-import { getFallbackProjectCards } from "@/lib/sanity/fallback-projects"
 import { getImageUrl } from "@/lib/sanity/image"
 import { usesAvatarCardCover } from "@/lib/projects/project-card-placeholder"
 
 export const CHAT_PROMPT_SHARED_LAYOUT_ID = "chat-prompt-input-container"
 
 const PLACEHOLDER_CYCLE_MS = 3000
+
+const EMPTY_PROJECTS: Array<ProjectCard> = []
+let fallbackProjectsPromise: Promise<Array<ProjectCard>> | null = null
+
+function loadFallbackProjects(): Promise<Array<ProjectCard>> {
+  fallbackProjectsPromise ??= import("@/lib/sanity/fallback-projects").then((module) =>
+    module.getFallbackProjectCards(),
+  )
+  return fallbackProjectsPromise
+}
+
+/**
+ * The full fallback project list is large, so keep it out of the hero's
+ * critical bundle: fetch it once the browser is idle, or right away if the
+ * project picker opens first.
+ */
+function useFallbackProjects(enabled: boolean, neededNow: boolean): Array<ProjectCard> {
+  const [list, setList] = React.useState<Array<ProjectCard>>(EMPTY_PROJECTS)
+
+  React.useEffect(() => {
+    if (!enabled) return
+    let cancelled = false
+    const load = () => {
+      void loadFallbackProjects().then((cards) => {
+        if (!cancelled) setList(cards)
+      })
+    }
+
+    if (neededNow || !("requestIdleCallback" in window)) {
+      load()
+      return () => {
+        cancelled = true
+      }
+    }
+    const id = window.requestIdleCallback(load, { timeout: 5000 })
+    return () => {
+      cancelled = true
+      window.cancelIdleCallback(id)
+    }
+  }, [enabled, neededNow])
+
+  return list
+}
 
 const PROJECT_ICON_CONFIG: Record<
   string,
@@ -205,7 +247,8 @@ function useChatPromptInput({
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const isPlusTriggered = React.useRef(false)
 
-  const allProjects = React.useMemo(() => projects ?? getFallbackProjectCards(), [projects])
+  const fallbackProjects = useFallbackProjects(!projects, showOverlay)
+  const allProjects = projects ?? fallbackProjects
 
   const filteredProjects = React.useMemo(() => {
     const unattached = allProjects.filter(

@@ -1,10 +1,9 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { Suspense, lazy, useCallback, useState } from "react"
 import { motion } from "motion/react"
 import type { Transition, Variants } from "motion/react"
 
-import { MonogramRunnerGame } from "@/components/brand/monogram-runner-game"
 import {
   Tooltip,
   TooltipContent,
@@ -17,6 +16,13 @@ import {
   MONOGRAM_MAIN,
   MONOGRAM_VIEWBOX,
 } from "@/lib/brand/monogram-mark"
+
+// The runner game is an easter egg — load its code only when someone reaches for it.
+const loadRunnerGame = () => import("@/components/brand/monogram-runner-game")
+const MonogramRunnerGame = lazy(() =>
+  loadRunnerGame().then((module) => ({ default: module.MonogramRunnerGame })),
+)
+const preloadRunnerGame = () => void loadRunnerGame()
 
 export { MONOGRAM_ACCENT, MONOGRAM_MAIN, MONOGRAM_VIEWBOX } from "@/lib/brand/monogram-mark"
 
@@ -437,10 +443,12 @@ export function FooterMonogram({
       {...containerMotionProps}
     >
       {canPlayRunner && runnerActive ? (
-        <MonogramRunnerGame
-          onExit={() => setRunnerActive(false)}
-          className="absolute inset-0 max-w-none rounded-none border-0"
-        />
+        <Suspense fallback={null}>
+          <MonogramRunnerGame
+            onExit={() => setRunnerActive(false)}
+            className="absolute inset-0 max-w-none rounded-none border-0"
+          />
+        </Suspense>
       ) : canPlayRunner ? (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -453,6 +461,8 @@ export function FooterMonogram({
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               )}
               onClick={() => setRunnerActive(true)}
+              onPointerEnter={preloadRunnerGame}
+              onFocus={preloadRunnerGame}
               aria-label="Start monogram runner game"
             >
               <span className="sr-only">Easter egg: click to play a mini runner game</span>

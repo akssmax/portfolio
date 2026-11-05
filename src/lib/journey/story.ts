@@ -159,7 +159,7 @@ export const storyChapters: Array<StoryChapter> = [
     eyebrow: "Side quests",
     title: "I kept making things for early teams.",
     story:
-      "Alongside the start of my Tulr role, I took on freelance work across websites, packaging, and app concepts. These projects overlapped from May 2020 through January 2021.",
+      "From May 2020 through January 2021, I took on freelance work across websites, packaging, and app concepts. That included a few months of contract design for Tulr, which turned into a full-time founding designer role in February 2021.",
     contribution:
       "Work ranged from Strictly4Men packaging and web to Tenxgeeks and a cloud gaming concept.",
     details: freelance.highlights,

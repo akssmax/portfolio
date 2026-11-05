@@ -109,6 +109,102 @@ const POSTFORGE_TECH_STACK_ITEMS = [
 
 export const fallbackProjects: Project[] = [
   {
+    _id: "fallback-cue-dj-studio",
+    title: "Cue",
+    slug: "cue-dj-studio",
+    description:
+      "Public beta · A free DJ studio in the browser, with an Automix that explains every transition and a coach that teaches you to mix.",
+    tag: "Product UI · Public beta",
+    featured: true,
+    workSection: "recentProject",
+    buildBadge: "built-with-ai",
+    coverImageUrl: "/projects/cue/hero.webp",
+    year: "Oct 2026",
+    role: "Product Design & Engineering",
+    client: "Personal",
+    tools: ["TanStack Start", "React", "Web Audio", "ONNX Runtime"],
+    publishedAt: "2026-10-25T00:00:00.000Z",
+    metrics: "25 Automix routines · 28 lessons · On-device stems",
+    seo: {
+      metaTitle: "Cue — DJ Studio in the Browser",
+      metaDescription:
+        "Cue is a free, no-install DJ studio with an explainable Automix, on-device beat, key and stem analysis, and a live coach that teaches mixing.",
+    },
+    content: [
+      {
+        _type: "sectionHeading",
+        _key: "cue-context-heading",
+        title: "The project",
+        subtitle: "A DJ studio that mixes with you, not just for you.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cue-context",
+        body: [
+          textBlock(
+            "cue-context-1",
+            "Most automix features are a black box, and most DJ software assumes you already know how to mix. Cue is a free DJ studio that runs in the browser with no install and no account. Its Automix shows why it picked each transition, and its coach turns the same reasoning into lessons you practise on real decks.",
+          ),
+          textBlock(
+            "cue-context-2",
+            "Audio never leaves the device. Beat, key, section and stem analysis run locally on the GPU where available, and tracks, cues and stems are kept in the browser.",
+          ),
+        ],
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cue-work-heading",
+        title: "What I built",
+        subtitle: "Studio, Automix, analysis and learning in one app.",
+      },
+      {
+        _type: "richTextBlock",
+        _key: "cue-work",
+        body: bulletList("cue-work-item", [
+          "Two decks and a mixer with sync, key lock, hot cues, loops, beat-synced effects, jog scratching and mix recording",
+          "An Automix that plans 2–3 tracks ahead, chooses from 25 routines and shows the score and reasons behind each choice",
+          "A Set mode that follows an energy arc from warm-up to close, with a preview of any planned transition in headphones",
+          "On-device beat, key, section and stem analysis with Beat This! and htdemucs, plus manual fixes that Automix always trusts",
+          "28 transition lessons, a live coach and Pioneer DDJ-FLX4 controller support",
+        ]),
+      },
+      {
+        _type: "sectionHeading",
+        _key: "cue-screens-heading",
+        title: "Selected screens",
+        subtitle: "Captured from the public beta.",
+      },
+      {
+        _type: "staticImage",
+        _key: "cue-automix-screen",
+        src: "/projects/cue/automix.webp",
+        alt: "Cue transition assistant comparing parallel waveforms and ranking transition routines",
+        caption: "The transition assistant ranks routines for the current pair and explains each score.",
+      },
+      {
+        _type: "staticImage",
+        _key: "cue-learn-screen",
+        src: "/projects/cue/learn.webp",
+        alt: "Cue Learn & play view with live guidance above the decks and mixer",
+        caption: "Guided practice follows your hands on the real decks.",
+      },
+      {
+        _type: "embed",
+        _key: "cue-live-site",
+        url: "https://dj-app-kappa.vercel.app/",
+        label: "Open Cue",
+        embedType: "link",
+      },
+      {
+        _type: "embed",
+        _key: "cue-repo",
+        url: "https://github.com/akssmax/dj-app",
+        label: "View on GitHub",
+        embedType: "link",
+      },
+    ],
+  },
+  {
     _id: "fallback-ion-workspace",
     title: "Ion Workspace",
     slug: "ion-workspace",
@@ -2153,7 +2249,7 @@ export const fallbackProjects: Project[] = [
     workSection: "caseStudy",
     buildBadge: "pre-llm",
     coverImageUrl: "/projects/tulr/hero.png",
-    year: "May 2020 – Dec 2021",
+    year: "Feb 2021 – Dec 2021",
     role: "UX Designer",
     client: "Tulr",
     tools: ["Figma"],

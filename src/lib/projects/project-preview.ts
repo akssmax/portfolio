@@ -4,6 +4,12 @@ import { getImageUrl } from "@/lib/sanity/image"
 
 /** Prefer the project screenshot; newly added projects can fall back to their CMS cover. */
 export function getProjectPreview(project: ProjectCard) {
+  if (project.slug === "cue-dj-studio") {
+    return {
+      src: project.coverImageUrl ?? "/projects/cue/hero.webp",
+      alt: "Cue studio with two decks, waveforms, hot cues and the mixer",
+    }
+  }
   if (project.slug === "ion-workspace") {
     return {
       src: project.coverImageUrl ?? "/projects/ion/mail.webp",

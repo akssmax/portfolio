@@ -1,7 +1,9 @@
+import { toMailtoHref, toTelHref } from "../../contact-link-utils"
+import { HtmlFounderBadge } from "../founder-badge"
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import { toMailtoHref, toTelHref } from "../../contact-link-utils"
-import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS  } from "./resume-html-props"
+import type {ResumeHtmlLayoutProps} from "./resume-html-props";
 import { cn } from "@/lib/utils"
 
 export function ClassicHtmlResume({
@@ -153,6 +155,7 @@ export function ClassicHtmlResume({
                   />
                 </div>
               </div>
+              <HtmlFounderBadge label={job.founderBadge} />
               <EditableText
                 value={job.description}
                 onChange={

@@ -12,7 +12,7 @@ import { SiteHeader } from "@/components/landing/site-header"
 import { ContactSection } from "@/components/landing/contact-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
-import { getAllWorkSections, getProjectBySlug } from "@/lib/sanity/projects"
+import { getAllWorkSections, getProjectBySlug } from "@/lib/sanity/data"
 import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
 import {
   TULR_PALETTE,

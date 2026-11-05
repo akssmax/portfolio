@@ -1,15 +1,10 @@
-import type { ResumeExperienceItem, ResumeProjectItem, ResumeSectionId } from "../../types"
-import { EditableText } from "./editable-text"
-import { HtmlResumeSection } from "./html-resume-section"
-import { ResumePortraitImage } from "./resume-portrait-image"
-import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
 import {
   buildOfficialContactParts,
   buildOfficialFooterLabel,
   buildOfficialLinkParts,
   formatLanguageLine,
-  formatOfficialTitle,
   formatOfficialMetricText,
+  formatOfficialTitle,
   getOfficialCapabilities,
   getOfficialCertifications,
   getOfficialCoreStrengths,
@@ -20,7 +15,6 @@ import {
   parseProjectMetaParts,
   splitExperienceGroups,
 } from "../official-layout-utils"
-import { cn } from "@/lib/utils"
 import { cssColorWithAlpha } from "../../color-utils"
 import { getSectionSpacingMbClass } from "../../section-spacing-utils"
 import {
@@ -29,6 +23,14 @@ import {
   OFFICIAL_HEADER_NAME_COLOR,
   OFFICIAL_HEADER_TAGLINE_COLOR,
 } from "../../official-resume-content"
+import { HtmlFounderBadge } from "../founder-badge"
+import { RESUME_HTML_ROOT_CLASS  } from "./resume-html-props"
+import { ResumePortraitImage } from "./resume-portrait-image"
+import { HtmlResumeSection } from "./html-resume-section"
+import { EditableText } from "./editable-text"
+import type {ResumeHtmlLayoutProps} from "./resume-html-props";
+import type { ResumeExperienceItem, ResumeProjectItem, ResumeSectionId } from "../../types"
+import { cn } from "@/lib/utils"
 
 function OfficialSection({
   title,
@@ -114,7 +116,7 @@ function ExperienceBlock({
                 : undefined
             }
             tagName="span"
-            className="text-[10px] font-bold text-neutral-800"
+            className={cn("text-[10px] font-bold text-neutral-800", job.companyUrl && "underline decoration-1 underline-offset-2")}
             placeholder="Company"
           />
           {job.location ? (
@@ -137,6 +139,7 @@ function ExperienceBlock({
               />
             </>
           ) : null}
+          <HtmlFounderBadge inline label={job.founderBadge} />
         </div>
         <EditableText
           value={job.period}
@@ -201,7 +204,7 @@ function ExperienceBlock({
   )
 }
 
-function CoreStrengthsGrid({ rows }: { rows: string[][] }) {
+function CoreStrengthsGrid({ rows }: { rows: Array<Array<string>> }) {
   return (
     <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
       {rows.map((row, rowIndex) => (
@@ -307,7 +310,7 @@ export function OfficialHtmlResume({
 
   const renderExperienceSection = (
     title: string,
-    jobs: ResumeExperienceItem[],
+    jobs: Array<ResumeExperienceItem>,
     startIndex: number,
   ) => {
     if (!jobs.length) return null
@@ -515,7 +518,7 @@ export function OfficialHtmlResume({
       {renderExperienceSection("Professional Experience", professional, 0)}
 
       {projects.length ? (
-        <OfficialSection sectionId="skills" title="Selected Product Work" brandColor={brandColor} display={display}>
+        <OfficialSection sectionId="skills" title="Recent Projects" brandColor={brandColor} display={display}>
           <div className="grid grid-cols-2 gap-2">
             {projects.map((project) => (
               <ProjectCard key={project.title} project={project} brandColor={brandColor} />

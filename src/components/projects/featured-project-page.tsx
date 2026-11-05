@@ -26,6 +26,14 @@ type FeatureTheme = {
 }
 
 const FEATURE_THEMES: Record<string, FeatureTheme> = {
+  "cue-dj-studio": {
+    background: "#16171b",
+    accent: "#5cc8f5",
+    accentInk: "#0f1114",
+    format: "stacked",
+    label: "Mix with a co-pilot",
+    overviewHeading: "Every transition, explained.",
+  },
   "ion-workspace": {
     background: "#191d16",
     accent: "#d6ff3d",

@@ -9,7 +9,7 @@ import {
   useMemo,
   useState,
 } from "react"
-import posthog from "posthog-js"
+import { captureIntent } from "@/lib/analytics/posthog"
 
 const PortfolioChatSheet = lazy(() =>
   import("@/components/landing/portfolio-chat-sheet").then((module) => ({
@@ -48,15 +48,7 @@ export function PortfolioChatProvider({
     setInitialMessage(null)
     setOpen(true)
 
-    const key = import.meta.env.VITE_POSTHOG_KEY
-    if (typeof window !== "undefined" && key) {
-      try {
-        posthog.capture("ai_panel_opened")
-        posthog.startSessionRecording()
-      } catch (err) {
-        console.error("Failed to track ai_panel_opened:", err)
-      }
-    }
+    captureIntent("ai_panel_opened")
   }, [])
 
   const openChatWithMessage = useCallback((message: string) => {
@@ -64,15 +56,7 @@ export function PortfolioChatProvider({
     setInitialMessage(message)
     setOpen(true)
 
-    const key = import.meta.env.VITE_POSTHOG_KEY
-    if (typeof window !== "undefined" && key) {
-      try {
-        posthog.capture("ai_panel_opened", { initial_message: message })
-        posthog.startSessionRecording()
-      } catch (err) {
-        console.error("Failed to track ai_panel_opened with message:", err)
-      }
-    }
+    captureIntent("ai_panel_opened", { initial_message: message })
   }, [])
 
   const value = useMemo<PortfolioChatContextValue>(

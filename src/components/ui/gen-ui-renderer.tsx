@@ -1,6 +1,6 @@
 import { motion } from "motion/react"
 import { fallbackProjects } from "@/lib/sanity/fallback-projects"
-import { profile } from "@/lib/profile"
+import { getExperienceSummary, profile } from "@/lib/profile"
 import { ExternalLink, Star, Briefcase, Calendar, MapPin, CheckCircle2, ArrowRight, Sparkles } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -170,7 +170,7 @@ export function GenUiRenderer({ name, argumentsJson, isStreaming = false }: GenU
                 </div>
 
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {exp.description}
+                  {getExperienceSummary(exp)}
                 </p>
 
                 {exp.highlights && exp.highlights.length > 0 && (

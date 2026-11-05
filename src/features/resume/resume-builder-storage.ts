@@ -42,6 +42,7 @@ const VALID_LAYOUTS: Array<ResumeLayoutId> = [
   "minimal",
   "executive",
   "official",
+  "signature",
 ]
 
 const VALID_PRESET_IDS = new Set<BrandPresetId>([

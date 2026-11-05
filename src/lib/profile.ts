@@ -8,11 +8,10 @@ const experience = [
     period: "Jul 2026 – Present",
     location: "Bengaluru, India",
     description:
-      "Independent product design and design engineering for apps and production websites.",
+      "Designing and shipping AI-native products end to end, from research and Figma to production, for clients and personal launches.",
     highlights: [
-      "Designed and built Postforge, a social media post design tool with brand kits, 20+ layouts, AI-assisted briefs, and export-ready posts and slide decks",
-      "Designing and building Ion Workspace, a connected app for business email, calendars, contacts, and files, with a public sample-data demo",
-      "Redesigned and built the Indus Best Mega Food Park website, now live in production, with campus and facilities information, investor journeys, enquiry flows, and a private content management workspace",
+      "Designed and built 4 products end to end: Cue (browser DJ studio), Postforge (social post design tool), Ion Workspace (business email and calendar app), and the Indus Best Mega Food Park website",
+      "Built each with Claude Code and Codex; Indus is live in production, and Cue is in public beta",
     ],
   },
   {
@@ -21,15 +20,16 @@ const experience = [
     websiteUrl: "https://100x.bot/",
     role: "Design Engineer",
     period: "Dec 2025 – Jun 2026",
-    location: "Bengaluru, India",
+    location: "Bengaluru, India · Unlogged Inc, YC S22",
+    founderThread: { step: 3, product: "100x.bot", years: "2025–2026", summary: "AI browser agent" },
     description:
-      "Designed and built agentic AI product experiences for a browser-native automation platform — extension UI, marketing site, and design system.",
+      "Designed and built agentic and conversational AI product experiences for a YC-backed browser automation platform: chat agent, extension UI, marketing site, and design system.",
     highlights: [
+      "Designed the conversational agent interface: chat, @-mentions for tabs and workflows, and model selection across Claude and Gemini",
       "Redesigned the Chromium extension with shadcn/ui and semantic design tokens",
-      "Managed and collaborated with 2 junior developers to ship features faster",
-      "Revamped website with MCP & Cursor — code-based handoff from initial Figma design",
-      "Built design system on shadcn/ui with AI-native components",
-      "Built multiple code-based prototypes for the sales team and feature development",
+      "Managed 2 junior developers and built code prototypes for sales demos and new features",
+      "Revamped the marketing website, building it in code with Cursor and MCP from the Figma design",
+      "Built the design system on shadcn/ui, including AI-native components",
     ],
   },
   {
@@ -40,37 +40,40 @@ const experience = [
     period: "Feb 2024 – Nov 2025",
     location: "Pune, India · YC W21",
     description:
-      "Led design on procure-to-pay flows for a YC W21 enterprise fintech product — translating complex finance and compliance requirements into intuitive workflows.",
+      "Led design for a YC W21 enterprise fintech across the Kodo ERP procure-to-pay platform and the corporate card product, turning complex finance and compliance requirements into clear workflows.",
     highlights: [
-      "Built two Kodo design systems with native light/dark mode — Tamagui and MD3",
-      "Built new website in Framer with Framer Motion and custom React components",
-      "Launched Kodo ERP P2P (Procure-to-Pay) v1 with enterprise customers",
-      "Designed UPI app demo for NPCI",
-      "Bharat Connect integration design screens (NPCI approved)",
-      "Revamped Kodo's payment solution app with MD3 guidelines",
-      "Built multiple customer demos and prototypes (code-based and Figma)",
-      "Built 700+ component library on top of base design system",
+      "Launched v1 of Kodo ERP procure-to-pay (P2P) and onboarded its first 2 enterprise customers, redBus and Brndme",
+      "Built 2 design systems with light and dark modes: Tamagui (React Native) to speed up the ERP mobile apps, and MD2-to-MD3 for the corporate card",
+      "Built a 1,000+ component library on top of the base design system",
+      "Designed NPCI's UPI app demo and NPCI-approved Bharat Connect integration screens",
+      "Revamped the corporate card app on Material Design 3",
+      "Built the new website in Framer with Framer Motion and custom React components",
+      "Built customer demos and prototypes in code and Figma for sales and product",
     ],
   },
   {
     company: "Unlogged",
     logoSrc: "/companies/unlogged.svg",
-    websiteUrl: "https://www.unlogged.io/",
+    websiteUrl: "https://www.producthunt.com/products/unlogged",
     role: "Founding Designer",
     period: "Dec 2021 – Jan 2024",
     location: "Remote · YC S22",
+    founderThread: {
+      step: 2,
+      product: "Videobug → Unlogged",
+      years: "2021–2024",
+      summary: "YC S22 developer tools",
+    },
     description:
-      "Led branding and product design as Videobug evolved into Unlogged, a YC S22 developer tool for debugging, testing, and replaying Java code.",
+      "Joined Videobug, a time-travel debugger for Java, before its YC S22 batch and stayed through the pivot and rebrand to Unlogged, a tool for recording, replaying, and testing Java code.",
     highlights: [
-      "Designed IntelliJ IDEA plugin",
-      "Designed and built website from scratch in Webflow",
-      "Designed web dashboard app",
-      "UX research, user testing, and prototyping",
-      "Branding and investor presentations",
-      "Led the product and visual identity across both Videobug and Unlogged",
-      "Built separate design systems for Videobug and Unlogged, including a modified Chakra UI system",
-      "Video editing for YouTube and LinkedIn",
-      "UI animations for marketing website",
+      "Designed Videobug end to end for YC S22: the IntelliJ plugin, website, pitch decks, and marketing materials",
+      "Led the rebrand from Videobug to Unlogged after the pivot, carrying the product and visual identity across both",
+      "Both launches reached Product Hunt's top 10: Unlogged #4 Product of the Day (638 upvotes), Videobug #10 (104 upvotes)",
+      "Designed the Unlogged IntelliJ IDEA plugin and its web dashboard",
+      "Built 2 design systems, one per brand, including a modified Chakra UI system",
+      "Designed and built the Webflow website from scratch, plus UI animations in Jitter and marketing videos",
+      "Ran UX research, user testing, and prototyping",
     ],
   },
   {
@@ -78,29 +81,32 @@ const experience = [
     logoSrc: "/companies/tulr.svg",
     websiteUrl: "https://www.producthunt.com/products/tulr-io",
     role: "Founding Designer",
-    period: "May 2020 – Dec 2021",
+    period: "Feb 2021 – Dec 2021",
     location: "Gurgaon, India · AuthMe Id Services",
+    founderThread: { step: 1, product: "Tulr", years: "2021", summary: "No-code platform" },
     description:
-      "Designed Tulr — a no-code platform combining videos, tables, forms, and calendars with automation. One-shot replacement for Airtable, Typeform, Calendly, and Loom.",
+      "Designed Tulr, a no-code “Lego kit” of tables, screen recordings, forms, and calendars with automation, replacing Airtable, Typeform, Calendly, and Loom for internal apps like applicant tracking.",
     highlights: [
-      "Mobile and web product design for the no-code builder",
-      "Built Tulr design system with a 700+ custom component library",
-      "Branding, animation, social media, and Product Hunt launch",
-      "Owned founding product design and visual identity across web and mobile",
-      "Collaborated with a team of 7 developers",
+      "Sole designer, owning product design and visual identity across web and mobile, working directly with the founders",
+      "Launched on Product Hunt as #5 Product of the Day with 175 upvotes; reviewers praised the clean, uncluttered UI",
+      "Designed the no-code builder for web and mobile, shaped by feedback from early customers",
+      "Built the Tulr design system and a custom library of 700+ components",
+      "Shipped with a team of 7 developers",
+      "Led branding, launch animations, and social media design",
     ],
   },
   {
     company: "Freelance",
-    role: "Graphic Designer",
+    role: "Product & Graphic Designer",
     period: "May 2020 – Jan 2021",
     location: "Gurgaon, India",
     description:
-      "Contract graphic design work across web, packaging, and brand assets for early-stage startups.",
+      "Contract product and graphic design for early-stage startups across web, apps, packaging, and brand assets.",
     highlights: [
+      "3–4 months of contract product design for Tulr, which led to the full-time founding designer role in Feb 2021",
       "Strictly4Men website and packaging design",
       "Tenxgeeks website design",
-      "Cloud-based gaming platform app",
+      "App design for a cloud gaming platform",
     ],
   },
   {
@@ -125,10 +131,10 @@ const experience = [
     period: "Jan 2017 – Dec 2018",
     location: "Hisar, Haryana",
     description:
-      "Built and designed an Android wallpaper app with custom editing tools.",
+      "Designed and built an Android wallpaper app with custom editing tools.",
     highlights: [
       "Custom wallpapers and in-app editing tools",
-      "User analytics in Fabric (acquired by Firebase)",
+      "User analytics in Fabric (now part of Firebase)",
       "Branding and visual identity",
       "100K+ installs on Google Play",
     ],
@@ -301,6 +307,18 @@ export const profile = {
       note: "React UI generation",
       logoSrc: "/tools/v0.svg",
     },
+    {
+      name: "OpenCode",
+      category: "Coding tools",
+      note: "Open-source AI coding agent",
+      logoSrc: "/tools/opencode.svg",
+    },
+    {
+      name: "Paper",
+      category: "Design",
+      note: "AI-native design canvas",
+      logoSrc: "/tools/paper.svg",
+    },
   ],
   experience,
   designSkills: [
@@ -330,6 +348,46 @@ export const profile = {
 }
 
 export type ProfileExperience = (typeof profile.experience)[number]
+
+/**
+ * Tulr, Videobug → Unlogged and 100x.bot were built with the same founder, across
+ * two companies. Shown as a linked thread on the site and as a lead sentence on the
+ * resume, so the moves read as one path rather than job-hopping.
+ */
+export const FOUNDER_THREAD = {
+  founder: "Shardul Lavekar",
+  companies: "AuthMe Id Services and Unlogged Inc",
+  total: 3,
+} as const
+
+export type FounderThreadStep = {
+  step: number
+  product: string
+  years: string
+  summary: string
+}
+
+export function getFounderThread(item: ProfileExperience): FounderThreadStep | undefined {
+  return "founderThread" in item ? item.founderThread : undefined
+}
+
+/** Badge text, e.g. "Product 2 of 3 with founder Shardul Lavekar". Plain text, so parsers read it. */
+export function getFounderBadgeLabel(thread: FounderThreadStep): string {
+  return `Product ${thread.step} of ${FOUNDER_THREAD.total} with founder ${FOUNDER_THREAD.founder}`
+}
+
+/** Founder badge text for an entry, if it is part of the founder thread. */
+export function getFounderBadge(item: ProfileExperience): string | undefined {
+  const thread = getFounderThread(item)
+  return thread ? getFounderBadgeLabel(thread) : undefined
+}
+
+/** Description plus the founder badge as a sentence: for llms.txt and chat answers. */
+export function getExperienceSummary(item: ProfileExperience): string {
+  const badge = getFounderBadge(item)
+  return badge ? `${item.description} (${badge}.)` : item.description
+}
+
 
 export type EmployerLogo = {
   name: string

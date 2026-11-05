@@ -13,7 +13,7 @@ import { SiteHeader } from "@/components/landing/site-header"
 import { SkillsSection } from "@/components/landing/skills-section"
 import { TestimonialsSection } from "@/components/landing/testimonials-section"
 import { WorkSection } from "@/components/landing/work-section"
-import { getHomeWorkSections } from "@/lib/sanity/projects"
+import { getHomeWorkSections } from "@/lib/sanity/data"
 import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/home-2")({

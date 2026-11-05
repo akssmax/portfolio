@@ -9,7 +9,7 @@ import { SiteFooter } from "@/components/landing/site-footer"
 import { WorkProjectGroup } from "@/components/projects/work-project-group"
 import { RouteError } from "@/components/route-error"
 import { getDotFieldAppearance, useBrandColors } from "@/hooks/use-brand-colors"
-import { getAllWorkSections } from "@/lib/sanity/projects"
+import { getAllWorkSections } from "@/lib/sanity/data"
 import { siteUrl } from "@/lib/site-url"
 
 const DotField = lazy(() => import("@/components/DotField"))

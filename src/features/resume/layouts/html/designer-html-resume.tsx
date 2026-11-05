@@ -1,13 +1,15 @@
-import { CompanyLogo } from "@/components/shared/company-logo"
 
 import { cssColorWithAlpha } from "../../color-utils"
 import { toMailtoHref, toTelHref } from "../../contact-link-utils"
+import { HtmlFounderBadge } from "../founder-badge"
 import { HtmlLogomark } from "./html-logomark"
 import { ResumePortraitImage } from "./resume-portrait-image"
 import { EditableText } from "./editable-text"
 import { HtmlResumeSection } from "./html-resume-section"
-import { RESUME_HTML_ROOT_CLASS, type ResumeHtmlLayoutProps } from "./resume-html-props"
+import { RESUME_HTML_ROOT_CLASS  } from "./resume-html-props"
+import type {ResumeHtmlLayoutProps} from "./resume-html-props";
 import { cn } from "@/lib/utils"
+import { CompanyLogo } from "@/components/shared/company-logo"
 
 function formatWebsiteLabel(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
@@ -270,6 +272,7 @@ export function DesignerHtmlResume({
                     />
                   </div>
                 </div>
+                <HtmlFounderBadge label={job.founderBadge} />
                 <EditableText
                   value={job.description}
                   onChange={

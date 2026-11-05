@@ -17,6 +17,7 @@ export type ResumeLayoutId =
   | "minimal"
   | "executive"
   | "official"
+  | "signature"
 
 export type ResumeExperienceItem = {
   company: string
@@ -28,6 +29,10 @@ export type ResumeExperienceItem = {
   logoSrc?: string
   /** Used by the Official layout to split professional vs earlier roles. */
   experienceGroup?: "professional" | "earlier"
+  /** Company site or launch page; the company name links to it. */
+  companyUrl?: string
+  /** Small pill under the header, e.g. "Product 2 of 3 with founder Shardul Lavekar". */
+  founderBadge?: string
 }
 
 export type ResumeHighlightMetric = {

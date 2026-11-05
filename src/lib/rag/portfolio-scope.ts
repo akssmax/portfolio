@@ -14,7 +14,7 @@ export const PORTFOLIO_SCOPE_RULES = [
 ].join("\n")
 
 const PORTFOLIO_TOPIC_PATTERN =
-  /\b(akshay|saini|portfolio|hire|hiring|recruiter|project|projects|design|figma|react|typescript|tailwind|resume|experience|kodo|100x|unlogged|tulr|postforge|rupeelens|design engineer|design system|bengaluru|bangalore|yc|fintech|devtools|agentic|ship|frontend|product designer|case stud|work at|notice period|salary|ctc|relocation|contact|about|skills|strengths|fit for|peerlist|linkedin|github|100x\.bot)\b/i
+  /\b(akshay|saini|portfolio|hire|hiring|recruiter|project|projects|design|figma|react|typescript|tailwind|resume|experience|kodo|100x|unlogged|tulr|postforge|rupeelens|cue|dj|design engineer|design system|bengaluru|bangalore|yc|fintech|devtools|agentic|ship|frontend|product designer|case stud|work at|notice period|salary|ctc|relocation|contact|about|skills|strengths|fit for|peerlist|linkedin|github|100x\.bot)\b/i
 
 const OFF_TOPIC_PATTERN =
   /\b(write (me )?(a )?(poem|poetry|story|novel|essay|song|rap|haiku|screenplay)|tell me a joke|make me laugh|solve this (math|equation)|do my homework|horoscope|medical advice|legal advice)\b/i

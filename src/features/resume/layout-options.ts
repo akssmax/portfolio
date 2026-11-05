@@ -38,4 +38,10 @@ export const RESUME_LAYOUT_OPTIONS: {
     description:
       "Reference CV structure with metrics row, project grid, earlier experience, and capabilities columns.",
   },
+  {
+    id: "signature",
+    label: "Signature",
+    description:
+      "True A4 pages with even margins, an AI-first toolkit, and page numbers. The preview matches the PDF.",
+  },
 ]

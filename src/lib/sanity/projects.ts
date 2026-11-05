@@ -13,7 +13,7 @@ import {
 } from "./queries"
 import type { Project, ProjectCard } from "./types"
 
-const localPortfolioProjectSlugs = new Set(["indus-best-mega-food-park", "ion-workspace"])
+const localPortfolioProjectSlugs = new Set(["cue-dj-studio", "indus-best-mega-food-park", "ion-workspace"])
 
 function withLocalPortfolioProjects(projects: Array<ProjectCard>): Array<ProjectCard> {
   const existingSlugs = new Set(projects.map((project) => project.slug))

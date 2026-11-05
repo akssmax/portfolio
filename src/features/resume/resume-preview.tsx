@@ -7,7 +7,10 @@ import { Download, Eye, Loader2, Sparkles } from "lucide-react"
 import { buildResumeDocument } from "./build-resume-document"
 import { ResumeHtmlDocument } from "./layouts/html/resume-html-document"
 import { CoverLetterHtmlDocument } from "./layouts/html/cover-letter-html-document"
-import { ResumeA4PagedHtmlPreview } from "./resume-a4-paged-html-preview"
+import {
+  RESUME_PREVIEW_FONT_FAMILY,
+  ResumeA4PagedHtmlPreview,
+} from "./resume-a4-paged-html-preview"
 import { ResumeA4PreviewDialog } from "./resume-a4-preview-dialog"
 import {
   resolveResumeBrandColor
@@ -133,13 +136,26 @@ export function ResumePreview({
 
       {/* Main Preview Container — editable HTML with A4 page breaks */}
       <div className="min-h-0 flex-1 overflow-auto bg-muted/30 p-3 sm:p-6">
-        {activeTab === "resume" ? (
-          <ResumeA4PagedHtmlPreview label="Resume preview">
+        {activeTab === "resume" && layout === "signature" ? (
+          // Signature paginates itself onto real A4 sheets with per-page margins.
+          <div aria-label="Resume preview" className="mx-auto w-full max-w-[794px]">
             <ResumeHtmlDocument
               key={layout}
               document={document}
               brandColor={brandColor}
               fontFamily={fontFamily}
+              display={display}
+              layout={layout}
+              onChange={onChange}
+            />
+          </div>
+        ) : activeTab === "resume" ? (
+          <ResumeA4PagedHtmlPreview label="Resume preview">
+            <ResumeHtmlDocument
+              key={layout}
+              document={document}
+              brandColor={brandColor}
+              fontFamily={RESUME_PREVIEW_FONT_FAMILY}
               display={display}
               layout={layout}
               onChange={onChange}

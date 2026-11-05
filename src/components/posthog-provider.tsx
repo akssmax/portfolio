@@ -2,31 +2,12 @@
 
 import { useEffect } from "react"
 import { useLocation } from "@tanstack/react-router"
-import posthog from "posthog-js"
+
+import { captureEvent, schedulePosthogLoad } from "@/lib/analytics/posthog"
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const key = import.meta.env.VITE_POSTHOG_KEY
-    const host = import.meta.env.VITE_POSTHOG_HOST || "https://eu.i.posthog.com"
-
-    if (typeof window !== "undefined" && key) {
-      try {
-        posthog.init(key, {
-          api_host: host,
-          ui_host: "https://eu.posthog.com",
-          defaults: "2026-05-30",
-          capture_pageview: false,
-          capture_pageleave: true,
-          person_profiles: "identified_only",
-          enable_recording_console_log: true,
-        })
-        // Explicitly start session recording to ensure it captures landing and interactions
-        posthog.startSessionRecording()
-      } catch (err) {
-        console.error("PostHog initialization failed:", err)
-      }
-    }
-  }, [])
+  // Load the SDK after the page is idle; events before that are queued.
+  useEffect(() => schedulePosthogLoad(), [])
 
   return (
     <>
@@ -40,17 +21,10 @@ function PostHogRouteTracker() {
   const location = useLocation()
 
   useEffect(() => {
-    const key = import.meta.env.VITE_POSTHOG_KEY
-    if (typeof window !== "undefined" && key) {
-      try {
-        posthog.capture("$pageview", {
-          $current_url: window.location.href,
-          $pathname: location.pathname,
-        })
-      } catch (err) {
-        console.error("PostHog pageview capture failed:", err)
-      }
-    }
+    captureEvent("$pageview", {
+      $current_url: window.location.href,
+      $pathname: location.pathname,
+    })
   }, [location.pathname])
 
   return null

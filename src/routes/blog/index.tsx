@@ -4,7 +4,7 @@ import { BlogPostGrid } from "@/components/blog/blog-post-grid"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { SiteHeader } from "@/components/landing/site-header"
 import { RouteError } from "@/components/route-error"
-import { getAllPosts } from "@/lib/sanity/posts"
+import { getAllPosts } from "@/lib/sanity/data"
 import { siteUrl } from "@/lib/site-url"
 
 export const Route = createFileRoute("/blog/")({

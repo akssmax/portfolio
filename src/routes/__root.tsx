@@ -13,6 +13,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { APPEARANCE_INIT_SCRIPT } from "@/lib/themes/apply-appearance"
 import { getDesignCareerSpanLabel } from "@/lib/experience-duration"
 import { profile } from "@/lib/profile"
+import { buildSiteStructuredData, serializeStructuredData } from "@/lib/structured-data"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -84,6 +85,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: APPEARANCE_INIT_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeStructuredData(buildSiteStructuredData()) }}
+        />
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

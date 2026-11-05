@@ -152,8 +152,25 @@ html[data-site-reduced-motion="true"] .feature-card:hover {
   transform: none;
 }
 
+/* Registered so the conic-gradient angle interpolates in a CSS keyframe. */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes border-beam-sweep {
+  from {
+    --beam-angle: var(--beam-start, 0deg);
+  }
+  to {
+    --beam-angle: calc(var(--beam-start, 0deg) + 360deg);
+  }
+}
+
 /* Subtract the inner content box to leave a continuous rounded border ring. */
 .border-beam-ring {
+  --beam-angle: var(--beam-start, 0deg);
   --border-beam-mask: linear-gradient(#000, #000), linear-gradient(#000, #000);
   -webkit-mask-image: var(--border-beam-mask);
   mask-image: var(--border-beam-mask);
@@ -161,6 +178,16 @@ html[data-site-reduced-motion="true"] .feature-card:hover {
   mask-clip: content-box, border-box;
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+
+.border-beam-ring[data-animated="true"] {
+  animation: border-beam-sweep var(--beam-duration, 6s) linear var(--beam-delay, 0s) infinite var(--beam-direction, normal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-beam-ring[data-animated="true"] {
+    animation: none;
+  }
 }
 
 /* Chat inputs use a proportional UI font so caret + placeholder align reliably. */

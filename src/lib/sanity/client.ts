@@ -1,11 +1,8 @@
 import { createClient, type SanityClient } from "@sanity/client"
 
-export function isSanityConfigured(): boolean {
-  return Boolean(
-    import.meta.env.VITE_SANITY_PROJECT_ID &&
-      import.meta.env.VITE_SANITY_DATASET,
-  )
-}
+import { isSanityConfigured } from "./config"
+
+export { isSanityConfigured }
 
 let cachedClient: SanityClient | null = null
 

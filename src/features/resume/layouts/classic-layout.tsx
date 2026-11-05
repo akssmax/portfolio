@@ -1,18 +1,20 @@
-import type { ReactNode } from "react"
 import { Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
-import { RESUME_SPACING } from "./spacing-tokens"
 import { getPdfSectionMarginBottom } from "../section-spacing-utils"
-import type { ResumeDisplayPreferences } from "../resume-display-preferences"
+import { RESUME_SPACING } from "./spacing-tokens"
 import {
-  DEFAULT_PDF_LAYOUT_PROPS,
-  type ResumePdfLayoutProps,
+  DEFAULT_PDF_LAYOUT_PROPS
+  
 } from "./pdf-layout-props"
 import {
   PDF_JOB_HEADER_PROPS,
   PDF_SECTION_HEADING_PROPS,
 } from "./pdf-pagination-props"
 import { PdfContactLines } from "./pdf-contact-lines"
+import { PdfFounderBadge } from "./founder-badge"
+import type {ResumePdfLayoutProps} from "./pdf-layout-props";
+import type { ResumeDisplayPreferences } from "../resume-display-preferences"
+import type { ReactNode } from "react"
 
 const S = RESUME_SPACING.classic
 
@@ -168,6 +170,7 @@ export function ClassicResumeLayout({
                 <Text style={styles.jobMeta}>{job.period}</Text>
                 <Text style={styles.jobMeta}>{job.location}</Text>
               </View>
+              <PdfFounderBadge label={job.founderBadge} />
               <Text style={styles.paragraph}>{job.description}</Text>
               {job.highlights?.length ? (
                 <View style={styles.bulletList}>

@@ -16,7 +16,10 @@ export const Route = createFileRoute("/api/github/contributions")({
         const username = githubUsernameFromProfileUrl(profile.links.github)
 
         try {
-          const data = await fetchGithubContributions(username)
+          const data = await fetchGithubContributions(
+            username,
+            process.env.GITHUB_TOKEN,
+          )
           return Response.json(data, {
             headers: {
               "Cache-Control": CACHE_CONTROL,

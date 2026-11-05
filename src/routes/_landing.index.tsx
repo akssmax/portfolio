@@ -20,8 +20,13 @@ const LazyContactSection = React.lazy(() =>
   })),
 )
 
+/** Projects kept on /projects but left off the homepage cards. */
+const HOMEPAGE_HIDDEN_PROJECT_SLUGS = new Set(["resume-builder", "rupeelens"])
+
 function getProjectLiveUrl(slug: string): string | null {
   switch (slug) {
+    case "cue-dj-studio":
+      return "https://dj-app-kappa.vercel.app/"
     case "indus-best-mega-food-park":
       return "https://www.indusbestmegafoodpark.com/"
     case "ion-workspace":
@@ -117,7 +122,9 @@ function Landing1IndexPage() {
 
   // Map recent projects with live URLs
   const recentProjectsList = React.useMemo(() => {
-    return recentProjects.map((p) => {
+    return recentProjects
+      .filter((p) => !HOMEPAGE_HIDDEN_PROJECT_SLUGS.has(p.slug))
+      .map((p) => {
       const liveUrl = getProjectLiveUrl(p.slug)
       return {
         ...p,
@@ -128,7 +135,9 @@ function Landing1IndexPage() {
 
   // Map case studies with live URLs
   const caseStudiesList = React.useMemo(() => {
-    return caseStudies.map((p) => {
+    return caseStudies
+      .filter((p) => !HOMEPAGE_HIDDEN_PROJECT_SLUGS.has(p.slug))
+      .map((p) => {
       const liveUrl = getProjectLiveUrl(p.slug)
       return {
         ...p,

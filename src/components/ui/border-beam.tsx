@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { animate, motion, useMotionTemplate, useMotionValue } from "motion/react"
 import { useAnimationProfile } from "@/hooks/use-can-animate"
 
 interface BorderBeamProps {
@@ -27,6 +26,8 @@ interface BorderBeamProps {
  * A sweeping arc of light, masked to the parent's rounded border.
  * Animate the gradient's angle rather than rotating a square along a path,
  * so the arc stays continuous through tight corners and container resizing.
+ * The angle is a registered CSS custom property animated by a CSS keyframe,
+ * so the sweep runs without per-frame JavaScript or DOM writes.
  * Parent must be `relative`; its border radius is inherited by default.
  */
 export function BorderBeam({
@@ -44,32 +45,25 @@ export function BorderBeam({
 }: BorderBeamProps) {
   const { canAnimate } = useAnimationProfile()
   const startAngle = (reverse ? 100 - initialOffset : initialOffset) * 3.6
-  const angle = useMotionValue(startAngle)
   const arc = Math.min(359, Math.max(1, size))
-  const background = useMotionTemplate`conic-gradient(from ${angle}deg, transparent 0deg, ${colorTo} ${arc * 0.35}deg, ${colorFrom} ${arc * 0.7}deg, transparent ${arc}deg)`
-
-  React.useEffect(() => {
-    angle.set(startAngle)
-    if (!canAnimate || duration <= 0) return
-
-    const controls = animate(angle, [startAngle, startAngle + (reverse ? -360 : 360)], {
-      duration,
-      delay: -delay,
-      ease: "linear",
-      repeat: Infinity,
-    })
-    return () => controls.stop()
-  }, [angle, canAnimate, duration, delay, startAngle, reverse])
+  const animated = canAnimate && duration > 0
 
   return (
-    <motion.div
+    <div
       className={`border-beam-ring pointer-events-none absolute inset-0 rounded-[inherit] ${className ?? ""}`}
-      style={{
-        padding: borderWidth,
-        background,
-        ...(radius ? { borderRadius: radius } : null),
-        ...style,
-      }}
+      data-animated={animated ? "true" : undefined}
+      style={
+        {
+          "--beam-start": `${startAngle}deg`,
+          "--beam-duration": `${duration}s`,
+          "--beam-delay": `${-delay}s`,
+          "--beam-direction": reverse ? "reverse" : "normal",
+          padding: borderWidth,
+          background: `conic-gradient(from var(--beam-angle), transparent 0deg, ${colorTo} ${arc * 0.35}deg, ${colorFrom} ${arc * 0.7}deg, transparent ${arc}deg)`,
+          ...(radius ? { borderRadius: radius } : null),
+          ...style,
+        } as React.CSSProperties
+      }
       aria-hidden
     />
   )

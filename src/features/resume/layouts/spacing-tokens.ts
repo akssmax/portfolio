@@ -122,6 +122,18 @@ export const RESUME_SPACING: Record<ResumeLayoutId, ResumeLayoutSpacing> = {
     footerReserve: 10,
     footerBottom: 16,
   },
+  /** Mirrors `SIGNATURE` in signature-tokens.ts, which the layout itself reads. */
+  signature: {
+    page: { paddingTop: 40, paddingBottom: 46, paddingLeft: 44, paddingRight: 44 },
+    lineHeight: 1.45,
+    fontSize: 9.5,
+    sectionGap: 16,
+    sectionTitleGap: 6,
+    headerGap: 16,
+    jobGap: 10,
+    footerReserve: 0,
+    footerBottom: 20,
+  },
 }
 
 /** Tailwind-friendly page padding classes derived from tokens (approx px ≈ pt). */

@@ -1,8 +1,9 @@
 import { motion, useReducedMotion } from "motion/react"
 
+import { FounderThreadBadge, experienceAnchor } from "@/components/about/founder-thread"
 import { CompanyLogo } from "@/components/shared/company-logo"
 import { getExperienceDuration, getExperienceSectionSubtitle } from "@/lib/experience-duration"
-import { profile } from "@/lib/profile"
+import { getFounderThread, profile } from "@/lib/profile"
 
 export function ExperienceSection() {
   const shouldReduceMotion = useReducedMotion()
@@ -32,7 +33,8 @@ export function ExperienceSection() {
           {profile.experience.map((item, index) => (
             <motion.article
               key={`${item.company}-${item.period}`}
-              className="grid gap-2 border-b border-border pb-8 last:border-0 last:pb-0 sm:grid-cols-[200px_1fr]"
+              id={experienceAnchor(item.company)}
+              className="scroll-mt-24 grid gap-2 border-b border-border pb-8 last:border-0 last:pb-0 sm:grid-cols-[200px_1fr]"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -49,6 +51,10 @@ export function ExperienceSection() {
                   <h3 className="font-medium text-foreground">
                     {item.role} · {item.company}
                   </h3>
+                  {(() => {
+                    const thread = getFounderThread(item)
+                    return thread ? <FounderThreadBadge thread={thread} /> : null
+                  })()}
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>

@@ -1,14 +1,16 @@
-import type { ReactNode } from "react"
 import { Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 
-import type { ResumeDocument, ResumeExperienceItem, ResumeProjectItem } from "../types"
 import { blendHexOverWhite } from "../color-utils"
-import { RESUME_SPACING } from "./spacing-tokens"
 import { getPdfSectionMarginBottom } from "../section-spacing-utils"
-import type { ResumeDisplayPreferences } from "../resume-display-preferences"
 import {
-  DEFAULT_PDF_LAYOUT_PROPS,
-  type ResumePdfLayoutProps,
+  OFFICIAL_HEADER_BG,
+  OFFICIAL_HEADER_CONTACT_SEPARATOR,
+  OFFICIAL_HEADER_NAME_COLOR,
+  OFFICIAL_HEADER_TAGLINE_COLOR,
+} from "../official-resume-content"
+import {
+  DEFAULT_PDF_LAYOUT_PROPS
+  
 } from "./pdf-layout-props"
 import {
   PDF_EXPERIENCE_BLOCK_PROPS,
@@ -24,8 +26,8 @@ import {
   buildOfficialFooterLabel,
   buildOfficialLinkParts,
   formatLanguageLine,
-  formatOfficialTitle,
   formatOfficialMetricText,
+  formatOfficialTitle,
   getOfficialCapabilities,
   getOfficialCertifications,
   getOfficialCoreStrengths,
@@ -36,13 +38,13 @@ import {
   parseProjectMetaParts,
   splitExperienceGroups,
 } from "./official-layout-utils"
-import {
-  OFFICIAL_HEADER_BG,
-  OFFICIAL_HEADER_CONTACT_SEPARATOR,
-  OFFICIAL_HEADER_NAME_COLOR,
-  OFFICIAL_HEADER_TAGLINE_COLOR,
-} from "../official-resume-content"
+import { RESUME_SPACING } from "./spacing-tokens"
 import { PdfResumePortrait } from "./pdf/pdf-resume-portrait"
+import { PdfFounderBadge } from "./founder-badge"
+import type {ResumePdfLayoutProps} from "./pdf-layout-props";
+import type { ResumeDisplayPreferences } from "../resume-display-preferences"
+import type { ResumeDocument, ResumeExperienceItem, ResumeProjectItem } from "../types"
+import type { ReactNode } from "react"
 
 const S = RESUME_SPACING.official
 
@@ -376,8 +378,8 @@ const styles = StyleSheet.create({
   },
 })
 
-function chunkPair<T>(items: T[]): T[][] {
-  const rows: T[][] = []
+function chunkPair<T>(items: Array<T>): Array<Array<T>> {
+  const rows: Array<Array<T>> = []
   for (let i = 0; i < items.length; i += 2) {
     rows.push(items.slice(i, i + 2))
   }
@@ -464,7 +466,7 @@ function OfficialHeader({
   )
 }
 
-function CoreStrengthsGrid({ rows }: { rows: string[][] }) {
+function CoreStrengthsGrid({ rows }: { rows: Array<Array<string>> }) {
   return (
     <View style={styles.strengthGrid}>
       {rows.map((row, rowIndex) => (
@@ -505,12 +507,21 @@ function ExperienceBlock({
       <View style={styles.jobHeaderRow}>
         <View style={styles.jobTitleColumn}>
           <Text style={styles.jobRole}>{job.role}</Text>
-          <Text style={styles.jobCompany}>
-            {job.company}
-            {job.location ? (
-              <Text style={styles.jobCompanyMeta}>{` · ${job.location}`}</Text>
-            ) : null}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+            <Text style={styles.jobCompany}>
+              {job.companyUrl ? (
+                <Link src={job.companyUrl} style={{ color: "#262626", textDecoration: "underline" }}>
+                  {job.company}
+                </Link>
+              ) : (
+                job.company
+              )}
+              {job.location ? (
+                <Text style={styles.jobCompanyMeta}>{` · ${job.location}`}</Text>
+              ) : null}
+            </Text>
+            <PdfFounderBadge inline label={job.founderBadge} />
+          </View>
         </View>
         <Text style={styles.jobPeriod}>{job.period}</Text>
       </View>
@@ -540,7 +551,7 @@ function ExperienceListSection({
   title: string
   brandColor: string
   display: ResumeDisplayPreferences
-  jobs: ResumeExperienceItem[]
+  jobs: Array<ResumeExperienceItem>
   gridLayout: boolean
 }) {
   if (gridLayout) {
@@ -638,7 +649,7 @@ function ProjectGrid({
   projects,
   brandColor,
 }: {
-  projects: ResumeProjectItem[]
+  projects: Array<ResumeProjectItem>
   brandColor: string
 }) {
   return (
@@ -663,7 +674,7 @@ function ProjectGrid({
   )
 }
 
-function ExperienceGrid({ jobs }: { jobs: ResumeExperienceItem[] }) {
+function ExperienceGrid({ jobs }: { jobs: Array<ResumeExperienceItem> }) {
   return (
     <View>
       {chunkPair(jobs).map((row, rowIndex) => (
@@ -818,7 +829,7 @@ export function OfficialResumeLayout({
 
       {projects.length ? (
         <Section
-          title="Selected Product Work"
+          title="Recent Projects"
           brandColor={brandColor}
           display={display}
           headingProps={PDF_GRID_SECTION_HEADING_PROPS}
@@ -921,7 +932,7 @@ export function OfficialResumeLayout({
                 {linkParts.map((part, index) => (
                   <Text key={`${part.label}-link-${index}`}>
                     {index > 0 ? " | " : ""}
-                    <Link src={part.href!} style={[styles.link, { color: brandColor }]}>
+                    <Link src={part.href} style={[styles.link, { color: brandColor }]}>
                       <Text>{part.label}</Text>
                     </Link>
                   </Text>

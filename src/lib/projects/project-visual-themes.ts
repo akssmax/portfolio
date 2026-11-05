@@ -35,6 +35,19 @@ const DEFAULT_THEME: ProjectVisualTheme = {
 }
 
 export const PROJECT_VISUAL_THEMES: Record<string, ProjectVisualTheme> = {
+  "cue-dj-studio": {
+    Icon: Sparkles,
+    iconSrc: "/projects/cue/mark.svg",
+    iconInverseSrc: "/projects/cue/mark-inverse.svg",
+    gradientLight: "from-[#5cc8f5]/25 via-[#f4e04d]/15 to-[#f5f9fc]/50",
+    gradientDark: "from-[#1d3a4a]/50 via-[#5cc8f5]/12 to-[#121519]/60",
+    iconColor: "text-[#16171b]",
+    iconHoverBackground: "#16171b",
+    borderColor: "border-[#16171b]/15",
+    glowColor: "shadow-[#16171b]/10 dark:shadow-[#5cc8f5]/10",
+    patternVariant: "concentric",
+    patternTone: "muted",
+  },
   "ion-workspace": {
     Icon: Sparkles,
     iconSrc: "/projects/ion/mark.svg",

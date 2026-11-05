@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowUpRight } from "lucide-react"
+import type { ReactNode } from "react"
 
 import type {
   ContributionDay,
@@ -46,7 +47,7 @@ function ContributionCell({ day }: { day: ContributionDay }) {
   )
 }
 
-export function GithubActivityCard() {
+export function GithubActivityCard({ toggle }: { toggle?: ReactNode } = {}) {
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [data, setData] = useState<GithubContributionsPayload | null>(null)
@@ -136,15 +137,18 @@ export function GithubActivityCard() {
             </h3>
           </div>
         </div>
-        <a
-          href={profile.links.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-        >
-          @{data?.username ?? "akssmax"}
-          <ArrowUpRight className="size-3.5" aria-hidden />
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          {toggle}
+          <a
+            href={profile.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            @{data?.username ?? "akssmax"}
+            <ArrowUpRight className="size-3.5" aria-hidden />
+          </a>
+        </div>
       </div>
 
       <div className="mt-6 border-t border-border/70 pt-5">

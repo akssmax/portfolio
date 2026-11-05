@@ -1,0 +1,64 @@
+# Akshay Saini
+
+> Akshay Saini is a product designer and design engineer (a full stack designer) based in Bengaluru (Bangalore), India. AI-native designer for 0-to-1 products, from research and Figma to production, built with Claude Code and Codex.
+
+Product designer with 6+ years designing web and mobile products end to end: research, interaction design, design systems, and detailed UX specs. Has worked with YC-backed teams in fintech, developer tools, no-code, and conversational AI, built six design systems, and partners closely with product, engineering, and content teams. Works in a lean UX loop: an AI-native workflow (Claude Code, Codex, Cursor) gets ideas prototyped in real code fast, then validated with users and analytics.
+
+Open to: full-time, contract, and freelance product design or design engineering roles, remote or in Bengaluru.
+
+## Contact
+
+- Email: akshaysaini.design@gmail.com
+- Portfolio: https://www.akshaysaini.xyz/
+- LinkedIn: https://www.linkedin.com/in/akssmax/
+- GitHub: https://github.com/akssmax
+- Dribbble: https://dribbble.com/akssmax
+
+## Key pages
+
+- [Home](https://www.akshaysaini.xyz/): Portfolio, with an AI assistant that answers questions about the work
+- [About](https://www.akshaysaini.xyz/about): Background, skills, tools, education
+- [Experience](https://www.akshaysaini.xyz/experience): Full work history
+- [Projects](https://www.akshaysaini.xyz/projects): Case studies and recent builds
+
+## Experience
+
+- Product Designer / Design Engineer, Freelancing, Jul 2026 – Present, Bengaluru, India: Designing and shipping AI-native products end to end, from research and Figma to production, for clients and personal launches.
+- Design Engineer, 100x.bot (https://100x.bot/), Dec 2025 – Jun 2026, Bengaluru, India · Unlogged Inc, YC S22: Designed and built agentic and conversational AI product experiences for a YC-backed browser automation platform: chat agent, extension UI, marketing site, and design system. (Product 3 of 3 with founder Shardul Lavekar.)
+- Lead Product Designer, Kodo (https://www.kodo.com/), Feb 2024 – Nov 2025, Pune, India · YC W21: Led design for a YC W21 enterprise fintech across the Kodo ERP procure-to-pay platform and the corporate card product, turning complex finance and compliance requirements into clear workflows.
+- Founding Designer, Unlogged (https://www.producthunt.com/products/unlogged), Dec 2021 – Jan 2024, Remote · YC S22: Joined Videobug, a time-travel debugger for Java, before its YC S22 batch and stayed through the pivot and rebrand to Unlogged, a tool for recording, replaying, and testing Java code. (Product 2 of 3 with founder Shardul Lavekar.)
+- Founding Designer, Tulr (https://www.producthunt.com/products/tulr-io), Feb 2021 – Dec 2021, Gurgaon, India · AuthMe Id Services: Designed Tulr, a no-code “Lego kit” of tables, screen recordings, forms, and calendars with automation, replacing Airtable, Typeform, Calendly, and Loom for internal apps like applicant tracking. (Product 1 of 3 with founder Shardul Lavekar.)
+- Product & Graphic Designer, Freelance, May 2020 – Jan 2021, Gurgaon, India: Contract product and graphic design for early-stage startups across web, apps, packaging, and brand assets.
+- Graphic Designer (Intern), tenxresults, Aug 2019 – Nov 2019, Gurgaon, India: Brand and marketing design for a results-driven marketing agency.
+- Graphic Designer & Co-founder, Wallzy (https://chrome-stats.com/d/com.phpmalik.wallzyPro), Jan 2017 – Dec 2018, Hisar, Haryana: Designed and built an Android wallpaper app with custom editing tools.
+
+## Projects and case studies
+
+- [Cue](https://www.akshaysaini.xyz/projects/cue-dj-studio): Public beta · A free DJ studio in the browser, with an Automix that explains every transition and a coach that teaches you to mix.
+- [Ion Workspace](https://www.akshaysaini.xyz/projects/ion-workspace): Ongoing · A connected business workspace for email, calendars, contacts, and files, with a public sample-data demo.
+- [Indus Best Mega Food Park](https://www.akshaysaini.xyz/projects/indus-best-mega-food-park): Live in production · Freelance redesign and custom build for a food-processing campus — clearer facilities, investor journeys, and enquiries.
+- [Postforge](https://www.akshaysaini.xyz/projects/postforge): On-brand social posts and slide decks — upload a logo, shuffle layouts, brief AI in chat, and export from one canvas.
+- [RupeeLens](https://www.akshaysaini.xyz/projects/rupeelens): Personal finance from Indian bank statements — local-first import, AI categorization, and spending insights in ₹.
+- [100x.Bot Marketing Site](https://www.akshaysaini.xyz/projects/100x-landing-page): YC-backed marketing site for browser automation — designed and built with Cursor.
+- [Design with AI](https://www.akshaysaini.xyz/projects/100x-chat-shell): A personal AI workspace — streaming chat, memory, RAG, and a conversational design studio in one shell.
+- [Resume Builder](https://www.akshaysaini.xyz/projects/resume-builder): AI resume builder — public profile import and a private owner workspace sharing one PDF pipeline.
+- [100x Agent Extension](https://www.akshaysaini.xyz/projects/v1-100x-proto): V1 agent extension prototype — chat, workflows, data explorer, and app generation in one shell.
+- [Kodo — Website, Cards & P2P](https://www.akshaysaini.xyz/projects/kodo): Designing Kodo's public website, Corporate Cards, and new procure-to-pay workspace across 21 months, connected by a shared design system.
+- [Unlogged — Java DevTools Plugin](https://www.akshaysaini.xyz/projects/unlogged): YC S22 open-source IntelliJ plugin for record/replay, runtime mocking, and JUnit test generation — plugin UX, marketing site, and branding.
+- [Tulr — No-Code Platform](https://www.akshaysaini.xyz/projects/tulr): Pre-LLM-era no-code platform combining videos, tables, forms, and calendars with automation — designed as a one-shot replacement for Airtable, Typeform, Calendly, and Loom.
+
+## Toolkit
+
+- AI and agents: Claude, Claude Code, Codex, OpenCode, Cursor, Paper, v0, MCP, Mistral, AI-assisted research and prototyping
+- Design: Figma (variables, Auto Layout, prototyping), FigJam, Framer, Jitter, design systems and tokens
+- Build and ship: React, TypeScript, TanStack Start, Next.js, Tailwind, shadcn/ui, Neon Postgres, Cloudflare, Vercel, Sanity
+- Measure and learn: PostHog, Amplitude, Google Analytics, Maze, usability testing, product discovery
+
+## Education
+
+- B.Tech, Computer Science, Guru Jambheshwar University of Science and Technology, 2014 – 2018
+
+## Writing
+
+- [Design systems in production](https://www.akshaysaini.xyz/blog/design-systems-in-production): What I learned shipping a token-driven design system that designers and engineers both actually use.
+- [Shipping AI features responsibly](https://www.akshaysaini.xyz/blog/shipping-ai-features-responsibly): Patterns for portfolio chat: server-side RAG, rate limits, sanitized markdown, and honest guardrails.

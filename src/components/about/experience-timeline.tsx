@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router"
 import { ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
+import { FounderThreadBadge, experienceAnchor } from "@/components/about/founder-thread"
 import { CompanyLogo } from "@/components/shared/company-logo"
 import { Button } from "@/components/ui/button"
 import { getExperienceDuration, getExperienceSectionSubtitle } from "@/lib/experience-duration"
-import { profile } from "@/lib/profile"
+import { getFounderThread, profile } from "@/lib/profile"
+import { cn } from "@/lib/utils"
 
 export function ExperienceTimeline() {
   const shouldReduceMotion = useReducedMotion()
@@ -34,28 +36,65 @@ export function ExperienceTimeline() {
           </Button>
         </div>
 
-        <div className="flex flex-col gap-10">
-          {profile.experience.map((item, index) => (
-            <motion.article
-              key={`${item.company}-${item.period}`}
-              className="grid gap-4 border-b border-border pb-10 last:border-0 last:pb-0 sm:grid-cols-[200px_1fr]"
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.04 }}
-            >
-              <div className="text-sm text-muted-foreground">
-                <p>{item.period}</p>
-                <p className="mt-1">{getExperienceDuration(item.period)}</p>
-                <p className="mt-1">{item.location}</p>
-              </div>
-              <div className="flex gap-4">
-                <CompanyLogo src={item.logoSrc} name={item.company} />
-                <div className="min-w-0">
-                  <h3 className="font-medium text-foreground">
-                    {item.role} · {item.company}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        <ol className="flex flex-col">
+          {profile.experience.map((item, index) => {
+            const thread = getFounderThread(item)
+            const next = profile.experience[index + 1]
+            const isLast = !next
+            const railToNextIsThread = Boolean(thread && next && getFounderThread(next))
+            const chapter = String(profile.experience.length - index).padStart(2, "0")
+
+            return (
+              <motion.li
+                key={`${item.company}-${item.period}`}
+                id={experienceAnchor(item.company)}
+                className="grid scroll-mt-24 grid-cols-[2.5rem_1rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[4rem_1.25rem_minmax(0,1fr)] sm:gap-x-4"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.04 }}
+              >
+                <span
+                  className={cn(
+                    "font-heading text-2xl leading-none tabular-nums sm:text-4xl",
+                    thread ? "text-primary" : "text-muted-foreground",
+                  )}
+                  aria-hidden
+                >
+                  {chapter}
+                </span>
+
+                <div className="flex flex-col items-center" aria-hidden>
+                  <span
+                    className={cn(
+                      "mt-2 size-2.5 shrink-0 rounded-full border-2",
+                      thread ? "border-primary bg-primary" : "border-muted-foreground bg-background",
+                    )}
+                  />
+                  {isLast ? null : (
+                    <span
+                      className={cn(
+                        "mt-1 w-0.5 flex-1 rounded-full",
+                        railToNextIsThread ? "bg-primary" : "bg-border",
+                      )}
+                    />
+                  )}
+                </div>
+
+                <article className={cn("min-w-0", isLast ? "pb-0" : "pb-12")}>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    {item.period} · {getExperienceDuration(item.period)} · {item.location}
+                  </p>
+                  <div className="mt-3 flex items-start gap-3">
+                    <CompanyLogo src={item.logoSrc} name={item.company} className="size-9" />
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-medium leading-snug text-foreground">
+                        {item.role} · {item.company}
+                      </h3>
+                      {thread ? <FounderThreadBadge thread={thread} /> : null}
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
                   {"highlights" in item && item.highlights?.length ? (
@@ -71,11 +110,11 @@ export function ExperienceTimeline() {
                       ))}
                     </ul>
                   ) : null}
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
+                </article>
+              </motion.li>
+            )
+          })}
+        </ol>
       </motion.div>
     </section>
   )

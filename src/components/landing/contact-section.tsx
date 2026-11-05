@@ -2,7 +2,7 @@ import { ArrowUpRight, Mail } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
 import { GithubIcon, LinkedinIcon } from "@/components/icons/social-icons"
-import { GithubActivityCard } from "@/components/landing/github-activity-card"
+import { BuildActivityCard } from "@/components/landing/build-activity-card"
 import { Button } from "@/components/ui/button"
 import { useFullMotion } from "@/hooks/use-can-animate"
 import { profile } from "@/lib/profile"
@@ -302,7 +302,7 @@ export function CtaSection({
         </ContentShell>
         {showGithubActivity && (
           <div className="mt-8 sm:mt-10">
-            <GithubActivityCard />
+            <BuildActivityCard />
           </div>
         )}
       </div>

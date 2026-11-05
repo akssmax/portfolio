@@ -336,7 +336,7 @@ export const tulrCaseStudy = {
   description:
     "At Tulr I designed a pre-LLM no-code builder that combined videos, tables, forms, and calendars with automation—a one-shot replacement for Airtable, Typeform, Calendly, and Loom.",
   role: "UX Designer",
-  period: "May 2020 – Dec 2021",
+  period: "Feb 2021 – Dec 2021",
   context:
     'Tulr.io let teams combine videos, tables, forms, and calendars, then layer automation on top to build internal apps without writing code. It shipped in the early no-code wave—before LLMs made "describe your app" the default onboarding pattern.',
   remit:
