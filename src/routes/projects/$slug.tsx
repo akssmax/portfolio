@@ -48,7 +48,7 @@ export const Route = createFileRoute("/projects/$slug")({
     const projectMetaTitle = project?.seo?.metaTitle
     const title =
       (isKodo
-        ? "Kodo — Website, Corporate Cards & P2P Workspace | Akshay Saini"
+        ? "Kodo — Procure-to-Pay ERP & Design Systems | Akshay Saini"
         : isFeaturedProject &&
             (!projectMetaTitle || /case study/i.test(projectMetaTitle))
           ? `${project.title} — Featured Project | Akshay Saini`

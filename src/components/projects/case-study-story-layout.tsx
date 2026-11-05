@@ -1,5 +1,5 @@
 import { Fragment } from "react"
-import { ArrowDown, ArrowUpRight, ImagePlus } from "lucide-react"
+import { ArrowDown, ArrowUpRight, CircleCheck, ImagePlus } from "lucide-react"
 import type { CSSProperties, ReactNode } from "react"
 
 import type {
@@ -242,7 +242,7 @@ function StoryHero({
       >
         <CaseStudyBackLink className="text-[var(--cs-hero-muted)] hover:bg-white/70 dark:text-[var(--cs-hero-muted-d)] dark:hover:bg-white/10" />
         <div className="mt-20 flex flex-wrap items-center justify-between gap-8 sm:mt-24">
-          <div className="inline-flex items-center gap-4 rounded-2xl border border-[var(--cs-hero-chip-border)] bg-[var(--cs-hero-chip-bg)] px-5 py-4 shadow-sm backdrop-blur-sm dark:border-[var(--cs-hero-chip-border-d)]">
+          <div className="inline-flex items-center gap-4 rounded-2xl border border-[var(--cs-hero-chip-border)] bg-[var(--cs-hero-chip-bg)] px-5 py-4 shadow-sm backdrop-blur-sm dark:border-[var(--cs-hero-chip-border-d)] dark:bg-[var(--cs-hero-chip-bg-d)]">
             <span className="text-[var(--cs-hero-ink)] dark:text-[var(--cs-hero-ink-d)]">
               {logo}
             </span>
@@ -254,7 +254,7 @@ function StoryHero({
               Case study
             </span>
           </div>
-          <span className="rounded-full border border-[var(--cs-chip-border)] bg-[var(--cs-chip-bg)] px-4 py-2 font-mono text-xs text-[var(--cs-chip-ink)] dark:border-[var(--cs-chip-border-d)] dark:text-[var(--cs-chip-ink-d)]">
+          <span className="rounded-full border border-[var(--cs-chip-border)] bg-[var(--cs-chip-bg)] px-4 py-2 font-mono text-xs text-[var(--cs-chip-ink)] dark:border-[var(--cs-chip-border-d)] dark:bg-[var(--cs-chip-bg-d)] dark:text-[var(--cs-chip-ink-d)]">
             {study.period}
           </span>
         </div>
@@ -264,7 +264,39 @@ function StoryHero({
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--cs-hero-sub)] sm:text-2xl dark:text-[var(--cs-hero-sub-d)]">
           {study.description}
         </p>
-        <div className="mt-14 grid gap-6 border-t border-[var(--cs-divider)] pt-6 text-sm sm:grid-cols-[1fr_auto] sm:items-end dark:border-[var(--cs-divider-d)]">
+        {study.facts?.length ? (
+          <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--cs-divider)] bg-[var(--cs-divider)] lg:grid-cols-4 dark:border-[var(--cs-divider-d)] dark:bg-[var(--cs-divider-d)]">
+            {study.facts.map((fact) => (
+              <div
+                key={fact.label}
+                className="bg-[var(--cs-hero-chip-bg)] p-4 backdrop-blur-sm sm:p-5 dark:bg-[var(--cs-hero-chip-bg-d)]"
+              >
+                <dt className="sr-only">{fact.label}</dt>
+                <dd>
+                  <span className="block font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
+                    {fact.value}
+                  </span>
+                  {fact.href ? (
+                    <a
+                      href={fact.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-flex items-center gap-1 text-sm text-[var(--cs-hero-sub)] underline-offset-4 hover:underline dark:text-[var(--cs-hero-sub-d)]"
+                    >
+                      {fact.label}
+                      <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                    </a>
+                  ) : (
+                    <span className="mt-1 block text-sm text-[var(--cs-hero-sub)] dark:text-[var(--cs-hero-sub-d)]">
+                      {fact.label}
+                    </span>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        <div className="mt-10 grid gap-6 border-t border-[var(--cs-divider)] pt-6 text-sm sm:grid-cols-[1fr_auto] sm:items-end dark:border-[var(--cs-divider-d)]">
           <div>
             <p className="text-xs tracking-[0.18em] text-[var(--cs-accent)] uppercase dark:text-[var(--cs-accent-d)]">
               Role
@@ -332,6 +364,14 @@ export function CaseStudyStoryLayout({
               ) : null}
             </Fragment>
           ))}
+          {study.research && study.nav.research ? (
+            <a
+              href="#research"
+              className="font-medium text-muted-foreground hover:text-[var(--cs-accent-strong)] dark:hover:text-[var(--cs-accent-strong-d)]"
+            >
+              {study.nav.research}
+            </a>
+          ) : null}
           <a
             href="#design-system"
             className="font-medium text-muted-foreground hover:text-[var(--cs-accent-strong)] dark:hover:text-[var(--cs-accent-strong-d)]"
@@ -369,7 +409,9 @@ export function CaseStudyStoryLayout({
               <p>{study.context}</p>
               <p>{study.remit}</p>
             </div>
-            <div className="mt-12 grid gap-3 md:grid-cols-3">
+            <div
+              className={`mt-12 grid gap-3 ${study.chapters.length === 4 ? "md:grid-cols-2 xl:grid-cols-4" : "md:grid-cols-3"}`}
+            >
               {study.chapters.map((chapter) => (
                 <a
                   key={chapter.id}
@@ -417,6 +459,51 @@ export function CaseStudyStoryLayout({
         </section>
       ) : null}
 
+      {study.research ? (
+        <section
+          id="research"
+          aria-labelledby="research-title"
+          className="scroll-mt-32 border-t border-border py-20 sm:py-28"
+        >
+          <div
+            className={`${sectionClass} grid gap-10 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12`}
+          >
+            <span className="text-sm font-semibold tracking-[0.16em] text-[var(--cs-accent)] uppercase dark:text-[var(--cs-accent-d)]">
+              {study.research.eyebrow}
+            </span>
+            <div>
+              <h2
+                id="research-title"
+                className="max-w-4xl font-heading text-4xl leading-tight font-semibold tracking-tight sm:text-5xl"
+              >
+                {study.research.title}
+              </h2>
+              <p className="mt-7 max-w-3xl text-lg leading-relaxed text-muted-foreground">
+                {study.research.body}
+              </p>
+              <ol className="mt-10 grid gap-3 sm:grid-cols-2">
+                {study.research.items.map((item, index) => (
+                  <li
+                    key={item.title}
+                    className="rounded-2xl border border-border bg-card p-5"
+                  >
+                    <span className="block font-mono text-xs text-[var(--cs-accent)] dark:text-[var(--cs-accent-d)]">
+                      0{index + 1}
+                    </span>
+                    <span className="mt-4 block font-semibold">
+                      {item.title}
+                    </span>
+                    <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                      {item.detail}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section
         id="design-system"
         aria-labelledby="system-title"
@@ -438,6 +525,34 @@ export function CaseStudyStoryLayout({
             <p className="mt-7 max-w-3xl text-lg leading-relaxed text-muted-foreground">
               {study.system.body}
             </p>
+            {study.system.systems?.length ? (
+              <div className="mt-10 grid gap-4 md:grid-cols-2">
+                {study.system.systems.map((system) => (
+                  <div
+                    key={system.name}
+                    className="rounded-2xl border border-border bg-card p-6 sm:p-7"
+                  >
+                    <p className="font-heading text-2xl font-semibold tracking-tight">
+                      {system.name}
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-[var(--cs-accent)] dark:text-[var(--cs-accent-d)]">
+                      {system.usedFor}
+                    </p>
+                    <ul className="mt-5 space-y-2.5 text-sm leading-relaxed text-foreground/80">
+                      {system.points.map((point) => (
+                        <li key={point} className="flex gap-2.5">
+                          <CircleCheck
+                            className="mt-0.5 size-4 shrink-0 text-[var(--cs-accent-strong)] dark:text-[var(--cs-accent-strong-d)]"
+                            aria-hidden="true"
+                          />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : null}
             <div
               data-media-slot="design-system-library"
               className="mt-10 flex min-h-60 flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--cs-placeholder-border)] bg-background/70 p-8 text-center dark:border-[var(--cs-placeholder-border-d)]"
@@ -464,14 +579,18 @@ export function CaseStudyStoryLayout({
                     key={person.name}
                     className="rounded-2xl border border-border bg-card p-6"
                   >
-                    <a
-                      href={person.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-semibold text-[var(--cs-accent-strong)] underline underline-offset-4 dark:text-[var(--cs-accent-strong-d)]"
-                    >
-                      {person.name}
-                    </a>
+                    {person.href ? (
+                      <a
+                        href={person.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[var(--cs-accent-strong)] underline underline-offset-4 dark:text-[var(--cs-accent-strong-d)]"
+                      >
+                        {person.name}
+                      </a>
+                    ) : (
+                      <span className="font-semibold">{person.name}</span>
+                    )}
                     <span className="mt-2 block text-sm text-muted-foreground">
                       {person.context}
                     </span>

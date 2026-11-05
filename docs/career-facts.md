@@ -45,7 +45,8 @@ Tulr's official start is **Feb 2021**. Older copy said Sep 2020; replace it wher
 - Akshay's designs were used end to end for the YC application: product, pitch decks, marketing.
 - Pivot and rebrand to Unlogged: record, replay and automated testing for Java. IntelliJ plugin (a dev tool) plus a web dashboard.
 - 2 design systems, one per brand (one a modified Chakra UI). Webflow site, UI animations in Jitter, marketing videos. UX research and user testing.
-- Founders' claim: Unlogged "reduced debugging time by up to 2 hours per day". Not used yet; ask before citing.
+- Founders' claim: Unlogged "reduced debugging time by up to 2 hours per day". Approved for the case study, always attributed to the founders.
+- Pivot reason: developers valued mocking and test generation most; it was before the LLM era. Research: developer interviews, usability tests, early-customer feedback, analytics. Everything listed shipped (Videobug plugin, Unlogged plugin, web dashboard, both websites).
 - JetBrains plugin (id 18529) has been removed; no install count was found.
 - Product Hunt: Videobug #10 Product of the Day, 104 upvotes (https://www.producthunt.com/products/videobug). Unlogged #4 Product of the Day, 638 upvotes, 501 followers, open source (https://www.producthunt.com/products/unlogged).
 - Links: unlogged.io and the Videobug site no longer exist; link to the Product Hunt pages. Kodo links to kodo.com (live). Tulr links to its Product Hunt page.
@@ -53,15 +54,18 @@ Tulr's official start is **Feb 2021**. Older copy said Sep 2020; replace it wher
 
 ### Kodo (YC W21)
 - Kodo ERP procure-to-pay (P2P) v1 launch. First 2 enterprise customers: **redBus** and **Brndme** (https://brndme.in/).
-- 2 design systems: **Tamagui (React Native)** for the ERP mobile apps, so they could ship faster, and **MD2 → MD3** for the corporate card product.
-- Corporate card app revamp to Material Design 3. NPCI UPI app demo; NPCI-approved Bharat Connect screens. Framer website. Demos and prototypes.
+- 2 design systems, 1,000+ components (P2P web, vendor portal, card app): **Tamagui** as the base for the P2P web workspace (one component set for web and React Native, tokens 1:1 with Figma variables, light/dark themes), and **MD2 → MD3** for the corporate card app. (Corrected Nov 2026: Tamagui was for P2P web, not ERP mobile apps.)
+- P2P v1 shipped (12+ months, discovery to rollout): requests + approvals (maker-checker, dynamic multi-level workflows), PO + GRN, invoices + payments, vendor portal + master data, workflow builder, permissions (role-based, custom roles, per module/action, scoped by entity), form builder, mailbox (invoice capture by email), reports (spend, status/ageing, custom builder, audit trail), Zoho/Tally accounting sync with ledger/vendor mapping.
+- Designed, not shipped: Reimbursements, Travel, the MD3 corporate card app revamp. UPI app was a demo the team showed at NPCI. Bharat Connect screens shipped (NPCI-approved). Framer website live.
+- Process: customer calls with redBus/Brndme, competitor audit, research with PMs, rapid prototypes (Figma, v0, Figma Make), dev handoff files, sales prototypes. Partners credited on the site: Gaurav Thapa, Tumul Roy. Kodo NDA has expired (user, Nov 2026).
 
 ### 100x.bot
 - Browser automation platform. Conversational agent UI (chat, @-mentions, Claude and Gemini model selection), Chromium extension (shadcn/ui), design system, website built with MCP and Cursor.
 - Managed 2 junior developers; built code prototypes for sales.
 
 ## Places that still need these facts
-- [ ] Case studies: Tulr, Unlogged/Videobug, 100x (`src/lib/projects/case-study-story.ts`, `src/lib/sanity/fallback-projects.ts`)
+- [x] Case studies: Unlogged/Videobug (Videobug is a chapter inside /projects/unlogged), Kodo
+- [ ] Case studies: Tulr, 100x (`src/lib/projects/case-study-story.ts`, `src/lib/sanity/fallback-projects.ts`)
 - [ ] Journey (`src/lib/journey/story.ts`, `src/components/journey/journey-playground.tsx`)
 - [ ] Experience timeline: visual same-founder link
 - [ ] `src/lib/hiring-profile.ts`, RAG corpus (`npm run build:rag`), llms.txt (`npm run generate:llms`)

@@ -42,7 +42,19 @@ export type CaseStudyChapter = {
 export type CaseStudyPerson = {
   name: string
   context: string
-  href: string
+  href?: string
+}
+
+export type CaseStudyFact = {
+  value: string
+  label: string
+  href?: string
+}
+
+export type CaseStudySystemCard = {
+  name: string
+  usedFor: string
+  points: Array<string>
 }
 
 export type CaseStudyStory = {
@@ -50,6 +62,15 @@ export type CaseStudyStory = {
   description: string
   role: string
   period: string
+  /** Short proof points shown under the hero description. */
+  facts?: Array<CaseStudyFact>
+  /** Optional research section, rendered between the chapters and the system. */
+  research?: {
+    eyebrow: string
+    title: string
+    body: string
+    items: Array<{ title: string; detail: string }>
+  }
   context: string
   remit: string
   brief: {
@@ -65,6 +86,7 @@ export type CaseStudyStory = {
     eyebrow: string
     title: string
     body: string
+    systems?: Array<CaseStudySystemCard>
     mediaSlot: {
       title: string
       description: string
@@ -87,6 +109,7 @@ export type CaseStudyStory = {
   }
   nav: {
     overview: string
+    research?: string
     system: string
     outcomes: string
   }
@@ -128,139 +151,225 @@ export type CaseStudyPalette = {
 }
 
 export const unloggedCaseStudy = {
-  title: "Unlogged: making a Java devtools plugin feel native to the IDE.",
+  title: "Videobug → Unlogged: from rewinding a bug to replaying a fix.",
   description:
-    "Across two years at Unlogged, I owned plugin UX inside IntelliJ IDEA, the marketing site, and the product's visual identity—making record/replay, runtime mocking, and automated test generation approachable for Java teams.",
-  role: "Product Designer",
+    "As founding designer from before YC to after the pivot, I designed Videobug, a time-travel debugger for Java, and then Unlogged, which recorded and replayed Java code to mock calls and generate tests. Plugin, dashboard, brands, websites and the YC application.",
+  role: "Founding Designer",
   period: "Dec 2021 – Jan 2024",
+  facts: [
+    { value: "YC S22", label: "Accepted as Videobug" },
+    {
+      value: "#4",
+      label: "Unlogged · Product of the Day, 638 upvotes",
+      href: "https://www.producthunt.com/products/unlogged",
+    },
+    {
+      value: "#10",
+      label: "Videobug · Product of the Day, 104 upvotes",
+      href: "https://www.producthunt.com/products/videobug",
+    },
+    { value: "2 brands", label: "Two products, two design systems" },
+  ],
   context:
-    "Unlogged is an open-source IntelliJ IDEA plugin that helps Java developers mock, monitor, replay, and test production traffic locally—with one-click JUnit test generation, runtime mocking, direct method invocation, and performance tracking.",
+    "Videobug recorded how Java code ran so developers could step back through an execution inside IntelliJ instead of guessing from logs. Developers found more value in what the recordings made possible next: mocking calls and generating tests. The product pivoted and was rebranded as Unlogged, an open-source IntelliJ plugin with a web dashboard for recording, replaying and testing Java code.",
   remit:
-    "After the team made Y Combinator's Summer 2022 batch, I joined as the design lead—owning plugin UX inside the IDE, the marketing site at unlogged.io (designed in Figma, built in Webflow), and the product's visual identity and branding.",
+    "I joined in December 2021, before YC, as the founding designer and stayed through January 2024. I designed both products end to end: the IntelliJ plugin, the web dashboard, both brands and design systems, the websites, launch motion and marketing videos, and the product, pitch decks and marketing used in the YC application.",
   brief: {
     eyebrow: "The brief",
-    title: "Two surfaces, one developer story.",
+    title: "One team, two products, one developer loop.",
   },
   chapters: [
     {
-      id: "plugin-ux",
+      id: "videobug",
       number: "01",
-      label: "Plugin UX",
-      title:
-        "Bring record and replay into the editor without getting in the way.",
+      label: "Videobug",
+      title: "Give Java developers a rewind button.",
       introduction:
-        "Developer tools live where every pixel competes with code. The plugin had to make complex backend workflows readable inside IntelliJ.",
+        "Videobug's promise was simple: record a run, then travel back through it to find the moment the code broke.",
       problem:
-        "Capturing method inputs, replaying traffic, injecting runtime mocks, and generating tests are powerful capabilities—but the IDE gives them little room and no patience for clutter.",
+        "Debugging a backend bug usually means adding logs, redeploying and guessing. Time-travel debugging is powerful, but it was a new idea for most Java developers, and it had to fit inside an IDE they already knew well.",
       responsibility:
-        "I designed the plugin flows end to end: record and replay, runtime mocking, JUnit generation, and method performance tracking.",
+        "As the only designer, I designed the debugger experience in IntelliJ, the Videobug brand and website, and the product, pitch decks and marketing used end to end in our YC application.",
       approach:
-        "Each capability maps to a step in the debugging loop—observe, isolate, verify—so a developer can move from a failing request to a passing test without leaving the editor.",
+        "Make the idea easy to grasp in one line and one picture: stop guessing, rewind your code, see what went wrong. The same message ran through the plugin, the launch artwork and the pitch.",
       decisions: [
-        "Record and replay captures method inputs and return values so work can be replayed locally without HTTP endpoints.",
-        "Runtime mocking injects recorded data for APIs, database calls, and downstream services.",
-        "JUnit generation turns a recorded scenario into a unit test with framework and serializer choices.",
-        "Performance tracking surfaces method-level execution thresholds and bottlenecks as you code.",
+        "Frame the product around one promise, time travel through your code, rather than a list of debugger features.",
+        "Keep recorded values inside the editor, next to the code, instead of in a separate tool.",
+        "Use one visual language across the product, the YC application and the launch.",
       ],
-      decisionLabel: "What the plugin does",
       shipped:
-        "IntelliJ IDEA plugin UX for record/replay, runtime mocking, JUnit generation, and method performance tracking.",
-      shippedLabel: "Work status",
+        "The Videobug IntelliJ plugin, website and brand, the YC S22 application materials, and a Product Hunt launch that reached #10 Product of the Day.",
       publicLink: {
-        label: "Visit Unlogged's website",
-        href: "https://www.unlogged.io/",
+        label: "Videobug on Product Hunt",
+        href: "https://www.producthunt.com/products/videobug",
       },
       media: [
         {
-          id: "plugin-overview",
-          title: "Record and replay inside IntelliJ",
-          caption: "Original plugin screens to be added",
+          id: "videobug-time-travel",
+          title: "Time travel your code",
+          caption: "Original Videobug launch artwork",
+          src: "/journey/videobug-time-travel.jpg",
+          alt: "Original Videobug Product Hunt artwork reading Time Travel Your Code",
           format: "wide",
         },
         {
-          id: "plugin-tests",
-          title: "One-click JUnit generation",
-          caption: "Original plugin screens to be added",
+          id: "videobug-stop-guessing",
+          title: "Stop guessing",
+          caption: "Original Videobug launch artwork",
+          src: "/journey/videobug-stop-guessing.jpg",
+          alt: "Videobug artwork reading Stop Guessing: see what's wrong with the code and push the fix in minutes",
           format: "standard",
+        },
+        {
+          id: "videobug-fix-bugs",
+          title: "Find the moment it broke",
+          caption: "Original Videobug launch artwork",
+          src: "/journey/videobug-fix-bugs.jpg",
+          alt: "Original Videobug Product Hunt feature artwork about fixing bugs",
+          format: "standard",
+        },
+        {
+          id: "videobug-debugger-ui",
+          title: "The debugger inside IntelliJ",
+          caption: "Original design export to be added",
+          format: "wide",
         },
       ],
     },
     {
-      id: "website",
+      id: "pivot",
       number: "02",
-      label: "The website",
+      label: "The pivot",
+      title: "Follow what developers actually valued.",
+      introduction:
+        "Talking to developers and watching them use Videobug changed the product. The recordings mattered most for what came after debugging.",
+      problem:
+        "Developers liked rewinding a bug, but they kept coming back to two things the recordings made possible: mocking downstream calls and turning real runs into tests. This was before the LLM era, so generating tests from real behaviour was a real unlock.",
+      responsibility:
+        "I took part in the research and testing behind the shift, and then redesigned the product and created a new brand for Unlogged.",
+      approach:
+        "Keep the core technology, recording how code runs, and change the job it does: from watching a bug to replaying, mocking and testing a fix.",
+      decisions: [
+        "Rename and rebrand as Unlogged, so the product no longer read as only a debugger.",
+        "Reorganise the plugin around record, replay, mock and test.",
+        "Release Unlogged as open source.",
+      ],
+      decisionLabel: "What changed",
+      shipped:
+        "Unlogged: a new brand, product structure and design system, launched on Product Hunt as an open-source project, reaching #4 Product of the Day.",
+      media: [
+        {
+          id: "pivot-unlogged-replay",
+          title: "From watching a bug to replaying a fix",
+          caption: "Unlogged product image",
+          src: "/journey/unlogged-replay.jpg",
+          alt: "Unlogged product image showing test replay in the IDE",
+          format: "wide",
+        },
+      ],
+    },
+    {
+      id: "plugin-ux",
+      number: "03",
+      label: "Plugin UX",
+      title:
+        "Bring record, replay and testing into the editor without getting in the way.",
+      introduction:
+        "Developer tools live where every pixel competes with code. The plugin had to make complex backend workflows readable inside IntelliJ.",
+      problem:
+        "Capturing method inputs, replaying them, injecting mocks and generating tests are powerful, but the IDE gives them little room and no patience for clutter.",
+      responsibility:
+        "I designed the plugin flows end to end: record and replay, runtime mocking, JUnit test generation and method performance tracking.",
+      approach:
+        "Map each capability to a step in the developer's loop, observe, isolate, verify, so a developer can go from a failing request to a passing test without leaving the editor.",
+      decisions: [
+        "Record and replay captures method inputs and return values, so code can be replayed locally without calling HTTP endpoints.",
+        "Runtime mocking injects recorded data for APIs, database calls and downstream services.",
+        "JUnit generation turns a recorded scenario into a unit test, with framework and serializer choices.",
+        "Performance tracking shows method-level execution times and bottlenecks while you code.",
+      ],
+      decisionLabel: "What the plugin does",
+      shipped:
+        "The Unlogged IntelliJ plugin with record and replay, runtime mocking, JUnit generation and performance tracking. The founders reported it reduced debugging time by up to 2 hours per day.",
+      media: [
+        {
+          id: "plugin-mocks",
+          title: "Mock a response at runtime",
+          caption: "Unlogged product image",
+          src: "/journey/unlogged-mocks.jpg",
+          alt: "Unlogged product image showing runtime mocking controls in an IDE",
+          format: "standard",
+        },
+        {
+          id: "plugin-tests",
+          title: "Turn a run into a test",
+          caption: "Unlogged product image",
+          src: "/journey/unlogged-tests.jpg",
+          alt: "Unlogged product image showing a generated test",
+          format: "standard",
+        },
+        {
+          id: "plugin-flows",
+          title: "Plugin flows in IntelliJ",
+          caption: "Original design export to be added",
+          format: "wide",
+        },
+      ],
+    },
+    {
+      id: "dashboard-website",
+      number: "04",
+      label: "Dashboard & web",
       title: "Explain bytecode instrumentation to skeptical engineers.",
       introduction:
-        "The public site had to earn trust from backend engineers while still feeling approachable to the teams evaluating the plugin.",
+        "Outside the IDE, the web dashboard, the website, launch motion and videos had to earn trust from backend engineers without dumbing the story down.",
       problem:
-        "Record/replay, runtime mocking, and automated test generation are technical ideas. The site had to explain them without dumbing the story down.",
+        "Record and replay, runtime mocking and test generation are technical ideas. Teams evaluating the plugin needed to understand them quickly, and engineers needed to see the depth.",
       responsibility:
-        "I designed the site in Figma and built it in Webflow, carrying the structure, copy hierarchy, and brand through to launch.",
+        "I designed the web dashboard, designed the website in Figma and built it in Webflow, made UI animations in Jitter, and produced marketing videos.",
       approach:
-        "The homepage leads with the developer outcome—mock, monitor, replay, and test—then opens into features, guidance, and the open-source story.",
+        "Lead with the developer outcome, mock, monitor, replay and test, then open into features, guides and the open-source story. Motion shows the product working instead of describing it.",
       decisions: [
-        "Lead with the four capabilities developers already ask for.",
+        "Lead with the four things developers already ask for.",
         "Keep technical depth visible instead of hiding it behind marketing language.",
         "Use the open-source and YC story to build credibility with early adopters.",
       ],
       shipped:
-        "unlogged.io, designed in Figma and built in Webflow from scratch, plus launch assets and UI motion.",
+        "The Unlogged web dashboard, the Webflow website, Jitter UI animations and marketing videos. Both the Videobug and Unlogged websites shipped; neither is online today.",
+      publicLink: {
+        label: "Unlogged on Product Hunt",
+        href: "https://www.producthunt.com/products/unlogged",
+      },
       media: [
         {
           id: "site-hero",
           title: "Mock, monitor, replay, and test",
-          caption: "Marketing site capture · homepage",
+          caption: "Website capture · homepage",
           src: "/projects/unlogged/hero.webp",
-          alt: "Unlogged marketing site hero with the Mock, Monitor, Replay, and Test message",
+          alt: "Unlogged website hero with the Mock, Monitor, Replay, and Test message",
           format: "wide",
         },
         {
           id: "site-features",
           title: "Feature storytelling",
-          caption: "Marketing site capture · features",
+          caption: "Website capture · features",
           src: "/projects/unlogged/features.webp",
-          alt: "Unlogged marketing site features section",
+          alt: "Unlogged website features section",
           format: "standard",
         },
-      ],
-    },
-    {
-      id: "brand-system",
-      number: "03",
-      label: "Brand & system",
-      title: "Give product and marketing one visual language.",
-      introduction:
-        "Plugin UI, web dashboard, investor decks, and marketing site needed a shared identity that a small team could keep consistent.",
-      problem:
-        "An early-stage startup ships fast. Without shared components and brand rules, every surface drifts in a different direction.",
-      responsibility:
-        "I built the visual identity and adapted a design system from Chakra UI for the product surfaces.",
-      approach:
-        "A small token set and component base kept the plugin, dashboard, and marketing site consistent as the product evolved.",
-      decisions: [
-        "Adapt Chakra UI primitives rather than designing one-off components.",
-        "Carry the brand through the website, investor decks, and launch animation.",
-        "Use prototypes and user testing with early customers to validate flows.",
-      ],
-      shipped:
-        "Branding, visual identity, investor decks, UI animation, and a Chakra-based design system for product surfaces.",
-      shippedLabel: "Work status",
-      media: [
         {
-          id: "brand-about",
+          id: "site-about",
           title: "Company story and team",
-          caption: "About page capture",
+          caption: "Website capture · about",
           src: "/projects/unlogged/about.webp",
           alt: "Unlogged about page with the YC journey and founding team",
           format: "standard",
         },
         {
-          id: "brand-mobile",
-          title: "Product surfaces",
-          caption: "Product capture",
-          src: "/projects/unlogged/mobile.webp",
-          alt: "Unlogged product surface",
-          format: "standard",
+          id: "dashboard",
+          title: "The web dashboard",
+          caption: "Original design export to be added",
+          format: "wide",
         },
       ],
     },
@@ -269,10 +378,56 @@ export const unloggedCaseStudy = {
     text: "We are the early adopters of Unlogged to automatically generate the unit test cases for our Java code. We were pleasantly surprised to see the results of what this plugin provided us that normally used to take manual efforts of ~2-3 hours by our developers.",
     attribution: "Pranav Khambayatkar — VP & Head of Engineering",
   },
+  research: {
+    eyebrow: "Research",
+    title: "Built with developers, not just for them.",
+    body: "Research ran through both products. It shaped the details of the plugin, and it was a big part of why Videobug became Unlogged.",
+    items: [
+      {
+        title: "Developer interviews",
+        detail:
+          "Conversations with Java developers about how they debug and test.",
+      },
+      {
+        title: "Usability tests",
+        detail:
+          "Watching developers use the plugin and prototypes, then fixing what slowed them down.",
+      },
+      {
+        title: "Early-customer feedback",
+        detail: "Regular feedback from early adopters and design partners.",
+      },
+      {
+        title: "Analytics",
+        detail:
+          "Plugin and dashboard usage data to see which features people relied on.",
+      },
+    ],
+  },
   system: {
-    eyebrow: "The connecting thread",
-    title: "A small system for a young devtools brand.",
-    body: "Adapting a Chakra-based system gave the plugin, dashboard, and marketing site a shared base without slowing a small team down. One set of tokens and components carried the brand from inside the IDE through to launch.",
+    eyebrow: "Design systems",
+    title: "Two brands, two systems, one small team.",
+    body: "Each product had its own brand and its own design system. A small token set and component base kept the plugin, dashboard and website consistent, so a small team could ship across product and marketing without drift.",
+    systems: [
+      {
+        name: "Videobug",
+        usedFor: "Debugger, website and YC materials",
+        points: [
+          "Brand, logo and launch artwork",
+          "Used across the debugger and the website",
+          "Carried into the YC application materials",
+        ],
+      },
+      {
+        name: "Unlogged",
+        usedFor: "Plugin, web dashboard and website",
+        points: [
+          "New brand after the pivot",
+          "Built on a modified Chakra UI",
+          "Used across the plugin, dashboard and website",
+        ],
+      },
+    ],
     mediaSlot: {
       title: "Design system library",
       description:
@@ -281,28 +436,21 @@ export const unloggedCaseStudy = {
     people: {
       eyebrow: "People I worked with",
       intro:
-        "Shardul Lavekar, Parth Mudgal, and Amogh CR were direct partners in this work, from plugin flows to the public launch.",
+        "Shardul Lavekar and Parth Mudgal co-founded the company, and Amogh CR was a developer on the team. The same team carried the product from Videobug to Unlogged.",
       entries: [
         {
           name: "Shardul Lavekar",
-          context: "Founder / QA",
-          href: "https://www.unlogged.io/about-us",
+          context: "Co-founder",
         },
         {
           name: "Parth Mudgal",
-          context: "Founder / Software Engineer",
-          href: "https://www.unlogged.io/about-us",
+          context: "Co-founder",
         },
         {
           name: "Amogh CR",
-          context: "Software Engineer",
-          href: "https://www.unlogged.io/about-us",
+          context: "Developer",
         },
       ],
-      link: {
-        label: "View the team",
-        href: "https://www.unlogged.io/about-us",
-      },
     },
   },
   outcomes: {
@@ -310,23 +458,24 @@ export const unloggedCaseStudy = {
     title: "What shipped, and what stayed with me.",
     releasesLabel: "Work and releases",
     releases: [
-      "unlogged.io, designed in Figma and built in Webflow.",
-      "IntelliJ plugin UX for record/replay, runtime mocking, JUnit generation, and performance tracking.",
-      "Web dashboard flows and onboarding for developer workflows.",
-      "Branding, visual identity, investor decks, and launch animation.",
+      "Videobug: IntelliJ debugger plugin, brand, website, and the YC S22 application materials. #10 Product of the Day.",
+      "Unlogged: IntelliJ plugin for record and replay, runtime mocking, JUnit generation and performance tracking. #4 Product of the Day, open source.",
+      "The Unlogged web dashboard, Webflow website, Jitter UI animations and marketing videos.",
+      "Two brands and two design systems, one built on a modified Chakra UI.",
     ],
     lessonsLabel: "Lessons learned",
     lessons: [
+      "Listen to what users do with a product, not only what it was built for. That is how Videobug became Unlogged.",
       "Developer tools earn trust through clarity, not simplification.",
       "Designing inside an IDE means respecting a surface that already has no room to spare.",
-      "A small shared system matters most when a small team ships across product and marketing.",
     ],
     footnote:
-      "This account focuses on the work I contributed to. Unlogged remains an open-source project.",
+      "The reduction in debugging time is the founders' figure, not a measurement of my own. The Videobug and Unlogged websites and the JetBrains plugin listing are no longer online.",
   },
   nav: {
     overview: "Overview",
-    system: "Design system",
+    research: "Research",
+    system: "Design systems",
     outcomes: "Takeaways",
   },
 } satisfies CaseStudyStory

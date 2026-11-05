@@ -1700,10 +1700,10 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-kodo",
-    title: "Kodo — Website, Cards & P2P",
+    title: "Kodo — Procure-to-Pay ERP",
     slug: "kodo",
     description:
-      "Designing Kodo's public website, Corporate Cards, and new procure-to-pay workspace across 21 months, connected by a shared design system.",
+      "Led design for Kodo's procure-to-pay ERP v1, live with redBus and Brndme: workflow builder, permissions, mailbox and Zoho/Tally sync, two design systems with 1,000+ components, NPCI screens and the website.",
     tag: "Enterprise Fintech",
     featured: true,
     workSection: "caseStudy",
@@ -1712,13 +1712,13 @@ export const fallbackProjects: Project[] = [
     year: "Feb 2024 – Nov 2025",
     role: "Lead Product Designer",
     client: "Kodo",
-    tools: ["Figma", "Framer"],
+    tools: ["Figma", "Framer", "Tamagui", "v0"],
     publishedAt: "2025-11-01T00:00:00.000Z",
-    metrics: "Website · Corporate Cards · Procure-to-pay workspace",
+    metrics: "P2P v1 live with redBus + Brndme · 1,000+ components · NPCI-approved screens",
     seo: {
-      metaTitle: "Kodo — Website, Corporate Cards & P2P Workspace — Case Study",
+      metaTitle: "Kodo — Procure-to-Pay ERP & Design Systems — Case Study",
       metaDescription:
-        "Akshay Saini's Lead Product Designer work across Kodo's website, Corporate Cards, and new procure-to-pay workspace, connected through a shared design system.",
+        "How Akshay Saini led design for Kodo's procure-to-pay ERP v1 with redBus and Brndme: dynamic workflows, permissions, mailbox to ledger, two design systems, NPCI screens and the website.",
     },
     content: [
       {
@@ -2029,25 +2029,25 @@ export const fallbackProjects: Project[] = [
   },
   {
     _id: "fallback-unlogged",
-    title: "Unlogged — Java DevTools Plugin",
+    title: "Videobug → Unlogged — Java DevTools",
     slug: "unlogged",
     description:
-      "YC S22 open-source IntelliJ plugin for record/replay, runtime mocking, and JUnit test generation — plugin UX, marketing site, and branding.",
+      "Founding designer from pre-YC to pivot: Videobug, a time-travel debugger for Java (YC S22), became Unlogged, an open-source IntelliJ plugin for record, replay, mocks and JUnit tests.",
     tag: "Product UI",
     featured: true,
     workSection: "caseStudy",
     buildBadge: "pre-llm",
     coverImageUrl: "/projects/unlogged/hero.webp",
     year: "Dec 2021 – Jan 2024",
-    role: "Product Designer",
+    role: "Founding Designer",
     client: "Unlogged",
     tools: ["Figma", "Webflow"],
     publishedAt: "2024-01-15T00:00:00.000Z",
-    metrics: "YC S22 · Open source · 0→1 plugin UX + marketing site",
+    metrics: "YC S22 · Product Hunt #4 and #10 · Open source",
     seo: {
-      metaTitle: "Unlogged — Java DevTools Plugin — Case Study",
+      metaTitle: "Videobug → Unlogged — Java DevTools — Case Study",
       metaDescription:
-        "How an open-source IntelliJ plugin for Java developers got clear plugin UX, a Webflow marketing site designed in Figma, and cohesive branding — at YC-backed Unlogged.",
+        "How Akshay Saini designed Videobug, a YC S22 time-travel debugger for Java, and its pivot into Unlogged: IntelliJ plugin, web dashboard, two brands and design systems, and websites.",
     },
     content: [
       {
