@@ -4,8 +4,8 @@ import { ArrowRight } from "lucide-react"
 import type { CaseStudyFrom } from "@/components/projects/case-study-back-link"
 import { RouteError } from "@/components/route-error"
 import { CaseStudyLayout } from "@/components/projects/case-study-layout"
-import { CaseStudyStoryLayout } from "@/components/projects/case-study-story-layout"
-import { KodoCaseStudyLayout } from "@/components/projects/kodo-case-study-layout"
+import { CaseStudyDeepDiveLayout } from "@/components/projects/case-study-deep-dive-layout"
+import { KodoLogo } from "@/components/logos/kodo-logo"
 import { FeaturedProjectPage } from "@/components/projects/featured-project-page"
 import { UnloggedLogo } from "@/components/logos/unlogged-logo"
 import { SiteHeader } from "@/components/landing/site-header"
@@ -13,7 +13,11 @@ import { ContactSection } from "@/components/landing/contact-section"
 import { SiteFooter } from "@/components/landing/site-footer"
 import { Button } from "@/components/ui/button"
 import { getAllWorkSections, getProjectBySlug } from "@/lib/sanity/data"
-import { kodoCaseStudy } from "@/lib/projects/kodo-case-study"
+import { KODO_PALETTE, kodoCaseStudy } from "@/lib/projects/kodo-case-study"
+import {
+  kodoDeepDive,
+  storyToDeepDive,
+} from "@/lib/projects/case-study-deep-dive"
 import {
   TULR_PALETTE,
   UNLOGGED_PALETTE,
@@ -145,10 +149,15 @@ function ProjectDetailPage() {
       <SiteHeader />
       <main className="border-t border-border">
         {project.slug === "kodo" ? (
-          <KodoCaseStudyLayout />
+          <CaseStudyDeepDiveLayout
+            study={kodoDeepDive()}
+            palette={KODO_PALETTE}
+            waveSlug="kodo"
+            logo={<KodoLogo className="h-9 w-auto" />}
+          />
         ) : project.slug === "unlogged" ? (
-          <CaseStudyStoryLayout
-            study={unloggedCaseStudy}
+          <CaseStudyDeepDiveLayout
+            study={storyToDeepDive(unloggedCaseStudy)}
             palette={UNLOGGED_PALETTE}
             waveSlug="unlogged"
             logo={
@@ -156,8 +165,8 @@ function ProjectDetailPage() {
             }
           />
         ) : project.slug === "tulr" ? (
-          <CaseStudyStoryLayout
-            study={tulrCaseStudy}
+          <CaseStudyDeepDiveLayout
+            study={storyToDeepDive(tulrCaseStudy)}
             palette={TULR_PALETTE}
             waveSlug="tulr"
             logo={

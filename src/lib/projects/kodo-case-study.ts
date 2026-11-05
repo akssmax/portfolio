@@ -1,3 +1,5 @@
+import type { CaseStudyPalette } from "@/lib/projects/case-study-story"
+
 export type KodoMedia = {
   /** Stable slot for replacing a placeholder with an original design export later. */
   id: string
@@ -155,6 +157,14 @@ export const kodoCaseStudy = {
         "Shipped in P2P v1: dynamic multi-level workflows with maker-checker, used by redBus and Brndme.",
       media: [
         {
+          id: "workflow-approval-detail",
+          title: "An approver's view of a purchase requisition",
+          caption: "Design file · P2P v1, sample data",
+          src: "/projects/kodo/p2p/approval-detail.webp",
+          alt: "Kodo purchase requisition approval screen with Approve and Decline actions, a Workflow tab, item table, uploaded documents and a comment thread",
+          format: "wide",
+        },
+        {
           id: "workflow-builder-canvas",
           title: "Building a multi-level approval flow",
           caption: "Original design export to be added",
@@ -241,7 +251,17 @@ export const kodoCaseStudy = {
         {
           id: "mailbox-inbox",
           title: "Invoices captured from email",
-          caption: "Original design export to be added",
+          caption: "Design file · P2P v1, sample data",
+          src: "/projects/kodo/p2p/mailbox.webp",
+          alt: "Kodo invoices page with a Mailbox tab listing emailed invoices by sender, date received, vendor and amount",
+          format: "wide",
+        },
+        {
+          id: "zoho-accounts",
+          title: "Connected Zoho accounts",
+          caption: "Design file · Zoho integration, sample data",
+          src: "/projects/kodo/p2p/zoho-integration.webp",
+          alt: "Kodo integrations page listing connected Zoho organisations with sync toggles and an accounting log tab",
           format: "wide",
         },
         {
@@ -456,3 +476,64 @@ export const kodoCaseStudy = {
     "Shipping fast with enterprise customers works when prototypes, handoff files and the design system all speak the same language.",
   ],
 } as const
+
+export const KODO_PALETTE: CaseStudyPalette = {
+  light: {
+    heroBg: "#faf5fa",
+    heroInk: "#211c22",
+    heroSub: "#574b56",
+    heroMuted: "#6c5968",
+    heroChipBg: "rgba(255, 255, 255, 0.8)",
+    heroChipBorder: "#e9dce5",
+    chipBg: "rgba(255, 255, 255, 0.75)",
+    chipBorder: "#e4d3df",
+    chipInk: "#674d62",
+    divider: "#e0cfdb",
+    accent: "#916783",
+    accentStrong: "#925a7d",
+    accentHover: "#6d3c5c",
+    accentBorder: "#bb92ad",
+    cardHoverBg: "#fbf7fa",
+    altBg: "#f8f4f7",
+    placeholderBg: "#fbf7fa",
+    placeholderBorder: "#d6bfd0",
+    placeholderIconBg: "#ffffff",
+    placeholderIconBorder: "#decbd8",
+    placeholderIconInk: "#835b7a",
+    placeholderEyebrow: "#8b6480",
+    placeholderInk: "#392b38",
+    placeholderSub: "#756573",
+    mediaBg: "#faf5fa",
+    wave: "#d8bfd0",
+    waveHover: "#bb92ad",
+  },
+  dark: {
+    heroBg: "#1c1920",
+    heroInk: "#f5edf3",
+    heroSub: "#e0d2dc",
+    heroMuted: "#dfcedb",
+    heroChipBg: "rgba(41, 35, 45, 0.85)",
+    heroChipBorder: "#695667",
+    chipBg: "rgba(41, 35, 45, 0.85)",
+    chipBorder: "#695667",
+    chipInk: "#e3cce0",
+    divider: "#5e4b5b",
+    accent: "#d3a6c4",
+    accentStrong: "#e7bad9",
+    accentHover: "#f3d3e8",
+    accentBorder: "#725d70",
+    cardHoverBg: "#2a202a",
+    altBg: "#211d24",
+    placeholderBg: "#211d24",
+    placeholderBorder: "#725d70",
+    placeholderIconBg: "#302735",
+    placeholderIconBorder: "#725d70",
+    placeholderIconInk: "#dfb8d2",
+    placeholderEyebrow: "#d5afca",
+    placeholderInk: "#f1e7ef",
+    placeholderSub: "#beaebe",
+    mediaBg: "#211d24",
+    wave: "#725d70",
+    waveHover: "#d3a6c4",
+  },
+}
