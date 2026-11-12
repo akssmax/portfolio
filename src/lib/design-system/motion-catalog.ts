@@ -285,7 +285,7 @@ export const motionCatalog: MotionCatalogEntry[] = [
     sources: [
       "src/hooks/use-journey-scroll.ts",
       "src/components/intro/deck-slide.tsx",
-      "src/styles/journey-deck.css",
+      "src/styles/journey-timeline.css",
       "src/lib/brand/runner-player-motion.ts",
     ],
   },

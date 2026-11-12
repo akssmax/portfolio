@@ -1,6 +1,6 @@
 # Akshay Saini
 
-> Akshay Saini is a product designer and design engineer (a full stack designer) based in Bengaluru (Bangalore), India. AI-native designer for 0-to-1 products, from research and Figma to production, built with Claude Code and Codex.
+> Akshay Saini is a product designer and design engineer (a full stack designer) based in Bengaluru (Bangalore), India. AI-native product designer who ships: 0-to-1 products, from research to production code.
 
 Product designer with 6+ years designing web and mobile products end to end: research, interaction design, design systems, and detailed UX specs. Has worked with YC-backed teams in fintech, developer tools, no-code, and conversational AI, built six design systems, and partners closely with product, engineering, and content teams. Works in a lean UX loop: an AI-native workflow (Claude Code, Codex, Cursor) gets ideas prototyped in real code fast, then validated with users and analytics.
 
@@ -43,8 +43,8 @@ Open to: full-time, contract, and freelance product design or design engineering
 - [Design with AI](https://www.akshaysaini.xyz/projects/100x-chat-shell): A personal AI workspace — streaming chat, memory, RAG, and a conversational design studio in one shell.
 - [Resume Builder](https://www.akshaysaini.xyz/projects/resume-builder): AI resume builder — public profile import and a private owner workspace sharing one PDF pipeline.
 - [100x Agent Extension](https://www.akshaysaini.xyz/projects/v1-100x-proto): V1 agent extension prototype — chat, workflows, data explorer, and app generation in one shell.
-- [Kodo — Website, Cards & P2P](https://www.akshaysaini.xyz/projects/kodo): Designing Kodo's public website, Corporate Cards, and new procure-to-pay workspace across 21 months, connected by a shared design system.
-- [Unlogged — Java DevTools Plugin](https://www.akshaysaini.xyz/projects/unlogged): YC S22 open-source IntelliJ plugin for record/replay, runtime mocking, and JUnit test generation — plugin UX, marketing site, and branding.
+- [Kodo — Procure-to-Pay ERP](https://www.akshaysaini.xyz/projects/kodo): Led design for Kodo's procure-to-pay ERP v1, live with redBus and Brndme: workflow builder, permissions, mailbox and Zoho/Tally sync, two design systems with 1,000+ components, NPCI screens and the website.
+- [Videobug → Unlogged — Java DevTools](https://www.akshaysaini.xyz/projects/unlogged): Founding designer from pre-YC to pivot: Videobug, a time-travel debugger for Java (YC S22), became Unlogged, an open-source IntelliJ plugin for record, replay, mocks and JUnit tests.
 - [Tulr — No-Code Platform](https://www.akshaysaini.xyz/projects/tulr): Pre-LLM-era no-code platform combining videos, tables, forms, and calendars with automation — designed as a one-shot replacement for Airtable, Typeform, Calendly, and Loom.
 
 ## Toolkit

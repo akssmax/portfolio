@@ -66,7 +66,7 @@ Tulr's official start is **Feb 2021**. Older copy said Sep 2020; replace it wher
 ## Places that still need these facts
 - [x] Case studies: Unlogged/Videobug (Videobug is a chapter inside /projects/unlogged), Kodo
 - [ ] Case studies: Tulr, 100x (`src/lib/projects/case-study-story.ts`, `src/lib/sanity/fallback-projects.ts`)
-- [ ] Journey (`src/lib/journey/story.ts`, `src/components/journey/journey-playground.tsx`)
+- [x] Journey (`src/lib/journey/timeline.ts`)
 - [ ] Experience timeline: visual same-founder link
 - [ ] `src/lib/hiring-profile.ts`, RAG corpus (`npm run build:rag`), llms.txt (`npm run generate:llms`)
 
