@@ -15,8 +15,11 @@ export function SettingsMenu({
   canFs,
   isFs,
   onFullscreen,
+  children,
 }: {
   settings: Array<Setting>
+  /** Extra buttons shown before fullscreen, e.g. the skills bag */
+  children?: React.ReactNode
   canFs: boolean
   isFs: boolean
   onFullscreen: () => void
@@ -47,6 +50,7 @@ export function SettingsMenu({
 
   return (
     <div className="r" ref={rootRef}>
+      {children}
       {canFs && (
         <button
           type="button"

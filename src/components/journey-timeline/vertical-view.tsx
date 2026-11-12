@@ -16,6 +16,8 @@ import {
 type ViewProps = {
   startAt: string | null
   onStop: (chapter: TimelineChapter) => void
+  /** Filled with this view's jump-to-stop function, for the skills bag */
+  navRef?: React.MutableRefObject<((id: string) => void) | null>
 }
 
 const chapterIndex = (id: string | null) =>
@@ -24,7 +26,7 @@ const chapterIndex = (id: string | null) =>
     timelineChapters.findIndex((c) => c.id === id)
   )
 
-export function VerticalView({ startAt, onStop }: ViewProps) {
+export function VerticalView({ startAt, onStop, navRef }: ViewProps) {
   const sfx = useSfx()
   const { seen, reveal } = useRevealed()
   const [cur, setCur] = React.useState<string>(timelineChapters[0].id)
@@ -175,6 +177,14 @@ export function VerticalView({ startAt, onStop }: ViewProps) {
 
   // Start where the other view left off
   React.useEffect(() => {
+    if (!navRef) return
+    navRef.current = (id: string) => goTo(id)
+    return () => {
+      navRef.current = null
+    }
+  }, [navRef, goTo])
+
+  React.useEffect(() => {
     if (!startAt) {
       window.scrollTo(0, 0)
       return
@@ -281,14 +291,18 @@ export function VerticalView({ startAt, onStop }: ViewProps) {
 
       <header className="hero">
         <div>
-          <div className="k">Akshay Saini · a design journey in five acts</div>
+          <div className="k">Akshay Saini · self-taught, still curious</div>
           <h1>
-            Ten stops.<em>One thread.</em>
+            I just like<em>making things.</em>
           </h1>
           <p>
-            From teaching myself VFX in school to AI agents in production.
-            Every stop has something to play with. Follow the line, and watch
-            the red thread: the founder who kept coming back.
+            It started with After Effects tutorials in school. Then came a
+            wallpaper app, a few startups, three cities, and now AI agents in
+            production. Every stop has something to play with.
+            <span className="thread-copy">
+              {" "}
+              The red line is a founder who kept bringing me back.
+            </span>
           </p>
           <div className="legend">
             <span>

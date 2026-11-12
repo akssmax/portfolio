@@ -907,6 +907,81 @@ function LearningVisualView({ visual }: { visual: LearningVisual }) {
   }
 }
 
+/** Launch board for things I designed and built myself: a browser frame plus a card per product. */
+function ShippedScene({ scene, active }: SceneProps<"shipped">) {
+  const ms = scene.ms ?? 4200
+  const { index, manual, select } = useAutoTabs(scene.items.length, active, ms)
+  const cur = scene.items[index]
+  return (
+    <div
+      className={`scene ship ${manual ? "manual" : ""}`}
+      style={{ "--dur": `${ms}ms` } as React.CSSProperties}
+    >
+      <div className="ship-browser">
+        <div className="ship-bar">
+          <span className="dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="ship-url">
+            <span aria-hidden="true">⌂ </span>
+            {cur.host}
+          </span>
+          <span className={`ship-st ${cur.status === "Live" ? "live" : ""}`}>
+            {cur.status}
+          </span>
+        </div>
+        <div className="ship-view">
+          {scene.items.map((it, i) => (
+            <img
+              key={it.name}
+              src={it.shot.img}
+              alt={it.shot.alt}
+              decoding="async"
+              className={i === index ? "on" : ""}
+              aria-hidden={i !== index}
+              onClick={() => select((index + 1) % scene.items.length)}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="ship-cards" role="tablist" aria-label="Products">
+        {scene.items.map((it, i) => (
+          <button
+            key={it.name}
+            type="button"
+            role="tab"
+            aria-selected={i === index}
+            className={`ship-card ${i === index ? "on" : ""}`}
+            onClick={() => select(i)}
+          >
+            <span className="top">
+              <b>{it.name}</b>
+              <i className={it.status === "Live" ? "live" : ""} aria-hidden="true" />
+            </span>
+            <small>{it.blurb}</small>
+            <em>{it.kind}</em>
+          </button>
+        ))}
+      </div>
+      <div className="ship-foot">
+        <span>
+          {cur.kind === "Client" ? "Client work" : "Designed, built and shipped by me"}
+        </span>
+        <span className="ship-links">
+          {cur.url && (
+            <a href={cur.url} target="_blank" rel="noreferrer">
+              Visit {cur.name} ↗
+            </a>
+          )}
+          <a href={`/projects/${cur.caseStudy}`}>Case study →</a>
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function ChapterScene({
   chapter,
   active,
@@ -945,6 +1020,9 @@ export function ChapterScene({
       break
     case "approval":
       body = <ApprovalScene scene={scene} active={active} />
+      break
+    case "shipped":
+      body = <ShippedScene scene={scene} active={active} />
       break
   }
   return (

@@ -31,13 +31,13 @@ export const Route = createFileRoute("/journey")({
       {
         name: "description",
         content:
-          "A scroll-driven story of Akshay Saini's design career in five acts, from motion graphics and Wallzy to fintech at Kodo and AI agents.",
+          "A self-taught designer's story in five acts, from After Effects in school and the Wallzy app to fintech at Kodo and AI agents.",
       },
       { property: "og:title", content: "Design Journey — Akshay Saini" },
       {
         property: "og:description",
         content:
-          "Ten stops, one thread: the products and people behind Akshay Saini's design career.",
+          "I just like making things: the products, people and cities behind Akshay Saini's design career.",
       },
       { property: "og:url", content: siteUrl("/journey") },
       { property: "og:type", content: "website" },

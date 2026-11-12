@@ -20,7 +20,21 @@ export type TimelineScene =
   | { kind: "rewind"; shots: Array<Shot> }
   | { kind: "log"; tabs: Array<{ label: string; shot: Shot; lines: Array<string> }>; ms?: number; thinking?: boolean }
   | { kind: "approval"; steps: Array<string>; shots: Array<Shot & { caption: string }> }
+  | { kind: "shipped"; items: Array<ShippedItem>; ms?: number }
   | { kind: "none" }
+
+/** A product I designed and built myself, shown on the Independent stop's launch board. */
+export type ShippedItem = {
+  name: string
+  blurb: string
+  kind: "Client" | "My product"
+  status: "Live" | "Beta"
+  /** Shown in the browser frame's address bar */
+  host: string
+  url?: string
+  caseStudy: string
+  shot: Shot
+}
 
 /** An outside link shown beside a scene caption, opened in a new tab. */
 export type SceneLink = { href: string; label: string }
@@ -52,6 +66,12 @@ export type TimelineChapter = {
   milestone?: string
   /** Outside links (Product Hunt, live apps), opened in a new tab */
   links?: Array<SceneLink>
+  /** Slug of the full case study under /projects */
+  caseStudy?: string
+  /** Skills picked up at this stop, collected by the skills bag */
+  picks?: Array<string>
+  /** Shown when "Honest notes" is on: what didn't work, and what it taught me */
+  honest?: { missed: string; taught: string }
   scene: TimelineScene
 }
 
@@ -147,6 +167,7 @@ export const timelineChapters: Array<TimelineChapter> = [
     story: "I'm a self-taught designer. VFX hooked me in school, in 11th and 12th, so I started learning After Effects, then Premiere Pro and Illustrator. Through college I ran a YouTube channel, shot photos and posted VFX edits on Instagram, just because I loved making things.",
     stat: { value: 428, label: "YouTube subscribers · 18 videos" },
     links: [{ href: "https://www.instagram.com/akssmax", label: "Instagram" }, { href: "https://www.youtube.com/@akshaysainiAK", label: "YouTube" }, { href: "https://500px.com/p/akssmax", label: "500px" }],
+    picks: ["After Effects", "Premiere Pro", "Illustrator", "Photography"],
     tags: ["VFX", "Motion", "YouTube", "Photography", "Vectors"],
     scene: { kind: "tools" },
   },
@@ -157,6 +178,8 @@ export const timelineChapters: Array<TimelineChapter> = [
     story: "Built with a friend during college: an Android app for discovering wallpapers and editing them in place.",
     stat: { value: 100000, suffix: "+", label: "installs" },
     people: [{ name: "Wally (phpmalik)", role: "Co-creator" }],
+    picks: ["Mobile UI", "App branding"],
+    honest: { missed: "Wallzy is gone from the Play Store now. We built it and launched it, but stopped looking after it.", taught: "Launching is the start. A product needs someone to keep caring for it." },
     tags: ["Co-founded", "Brand", "Editing tools"],
     scene: {
       kind: "tabs",
@@ -172,6 +195,7 @@ export const timelineChapters: Array<TimelineChapter> = [
     company: tenx.company, role: tenx.role, brand: "#c08a2e", compact: true,
     eyebrow: "The first studio", title: "An internship that was", emphasis: "a bit of everything.",
     story: "Branding, print, social ads, WordPress and video editing taught me to switch mediums quickly.",
+    picks: ["Print", "Social ads", "WordPress"],
     tags: ["Branding", "Print", "Social ads", "WordPress", "Video"],
     scene: { kind: "none" },
   },
@@ -180,6 +204,7 @@ export const timelineChapters: Array<TimelineChapter> = [
     company: freelance.company, role: freelance.role, brand: "#d0743c", milestone: "The UX journey begins",
     eyebrow: "Side quests · learning UX", title: "I made things for early teams,", emphasis: "and learned UX on the way.",
     story: "I taught myself Figma and UX theory, ran design sprints, picked up Lean UX and earned the UXDMC certification. I built Tenxgeeks with a friend, and a few months of contract work for Tulr turned into a founding role.",
+    picks: ["Figma", "UX research", "Design sprints", "Lean UX"],
     tags: ["Figma", "UXDMC certified", "Tenxgeeks", "Strictly4Men", "Contract: Tulr"],
     scene: {
       kind: "tabs",
@@ -202,6 +227,9 @@ export const timelineChapters: Array<TimelineChapter> = [
     stat: { value: 5, prefix: "#", label: "Product of the Day" },
     people: [{ name: "Shardul Lavekar", role: "Founder" }],
     links: [{ href: "https://www.producthunt.com/products/tulr-io", label: "Product Hunt" }],
+    caseStudy: "tulr",
+    picks: ["Design systems", "Working with developers", "Launch campaigns"],
+    honest: { missed: "Tulr never got past 1,000 users. One tool that replaced Airtable, Typeform, Calendly and Loom had to beat all four at once.", taught: "Be the best at one thing before trying to do five." },
     tags: ["700+ components", "Brand", "Launch"],
     scene: {
       kind: "tabs",
@@ -222,6 +250,9 @@ export const timelineChapters: Array<TimelineChapter> = [
     stat: { value: 22, prefix: "YC S", label: "batch" },
     people: [{ name: "Shardul Lavekar", role: "Co-founder" }, { name: "Parth Mudgal", role: "Co-founder" }, { name: "Amogh CR", role: "Developer" }],
     links: [{ href: "https://www.producthunt.com/products/videobug", label: "Product Hunt" }],
+    caseStudy: "unlogged",
+    picks: ["Pitch decks", "Developer tools"],
+    honest: { missed: "Developers liked the idea of time travel more than they used it. What they kept asking for was mocks and generated tests.", taught: "Follow what users keep asking for, even when it means renaming the company." },
     tags: ["IntelliJ plugin", "YC deck", "Brand"],
     scene: {
       kind: "rewind",
@@ -241,6 +272,9 @@ export const timelineChapters: Array<TimelineChapter> = [
     stat: { value: 638, label: "upvotes · #4 of the day" },
     quote: { text: "Super hard working, very committed, and loyal.", by: "Shardul Lavekar, co-founder" },
     links: [{ href: "https://www.producthunt.com/products/unlogged", label: "Product Hunt" }],
+    caseStudy: "unlogged",
+    picks: ["User testing", "Webflow", "Motion in Jitter"],
+    honest: { missed: "Unlogged came just before LLMs changed how developers write tests. The team wound it down and moved on to 100x.bot.", taught: "Timing matters as much as craft. A good product can still arrive at the wrong moment." },
     tags: ["2 design systems", "Webflow", "Jitter"],
     scene: {
       kind: "log",
@@ -261,6 +295,9 @@ export const timelineChapters: Array<TimelineChapter> = [
     quote: { text: "Strong product and UI thinking, execution speed, and ownership.", by: "Gaurav Thapa, CTO" },
     people: [{ name: "Gaurav Thapa", role: "CTO" }, { name: "Deepti Sanghi", role: "Co-founder" }, { name: "Tumul Roy" }, { name: "Yash Mohite" }],
     links: [{ href: "https://www.kodo.com/", label: "kodo.com" }],
+    caseStudy: "kodo",
+    picks: ["Enterprise UX", "Tamagui", "Material 3", "Leading design"],
+    honest: { missed: "Reimbursements, Travel and the card app revamp were designed but never shipped.", taught: "Ship v1 well before polishing v2. Designs that never ship don't help anyone." },
     tags: ["P2P v1", "Tamagui + MD3", "NPCI Bharat Connect", "Framer site"],
     scene: {
       kind: "approval",
@@ -282,6 +319,8 @@ export const timelineChapters: Array<TimelineChapter> = [
     story: "Back with the same founders for a third product: a browser agent. I designed in Figma and shipped in code, and managed two junior developers.",
     people: [{ name: "Shardul Lavekar" }, { name: "Parth Mudgal" }, { name: "Samarth RS", role: "Designer" }],
     links: [{ href: "https://100x.bot/", label: "100x.bot" }],
+    caseStudy: "v1-100x-proto",
+    picks: ["Agent UI", "React + shadcn/ui", "Managing developers"],
     tags: ["Chromium extension", "Agent UI", "shadcn/ui"],
     scene: {
       kind: "log",
@@ -301,15 +340,15 @@ export const timelineChapters: Array<TimelineChapter> = [
     company: "Independent", role: current.role, brand: "#0f8f84",
     eyebrow: "Independent", title: "Designing products and", emphasis: "shipping them myself.",
     story: "Client work and my own launches, designed and built end to end with Claude Code and Codex.",
-    links: [{ href: "https://www.indusbestmegafoodpark.com/", label: "Indus" }, { href: "https://ion-workspace.vercel.app/", label: "Ion" }, { href: "https://postforge-kohl.vercel.app/", label: "Postforge" }],
-    tags: ["Indus", "Cue", "Ion", "Postforge"],
+    tags: [],
     scene: {
-      kind: "tabs",
-      tabs: [
-        { label: "Indus", caption: "Indus Best Mega Food Park · client site, live", shot: { img: "/projects/indus/hero.webp", alt: "Indus Best Mega Food Park website" } },
-        { label: "Cue", caption: "Cue · browser DJ studio, beta", shot: { img: "/projects/cue/automix.webp", alt: "Cue transition assistant" } },
-        { label: "Ion", caption: "Ion Workspace · mail and calendar", shot: { img: "/projects/ion/mail.webp", alt: "Ion Workspace mail" } },
-        { label: "Postforge", caption: "Postforge · brand-aware posts", shot: { img: "/projects/postforge/tool.webp", alt: "Postforge design tool" } },
+      kind: "shipped",
+      ms: 4200,
+      items: [
+        { name: "Indus", blurb: "Website for a mega food park", kind: "Client", status: "Live", host: "indusbestmegafoodpark.com", url: "https://www.indusbestmegafoodpark.com/", caseStudy: "indus-best-mega-food-park", shot: { img: "/projects/indus/hero.webp", alt: "Indus Best Mega Food Park website" } },
+        { name: "Cue", blurb: "A DJ studio in the browser", kind: "My product", status: "Beta", host: "dj-app-kappa.vercel.app", url: "https://dj-app-kappa.vercel.app/", caseStudy: "cue-dj-studio", shot: { img: "/projects/cue/automix.webp", alt: "Cue transition assistant" } },
+        { name: "Ion", blurb: "Mail and calendar for teams", kind: "My product", status: "Live", host: "ion-workspace.vercel.app", url: "https://ion-workspace.vercel.app/", caseStudy: "ion-workspace", shot: { img: "/projects/ion/mail.webp", alt: "Ion Workspace mail" } },
+        { name: "Postforge", blurb: "Social posts that follow your brand", kind: "My product", status: "Live", host: "postforge-kohl.vercel.app", url: "https://postforge-kohl.vercel.app/", caseStudy: "postforge", shot: { img: "/projects/postforge/tool.webp", alt: "Postforge design tool" } },
       ],
     },
   },

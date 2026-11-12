@@ -4,13 +4,37 @@ import { useTheme } from "next-themes"
 
 import { HorizontalView } from "./horizontal-view"
 import { SettingsMenu } from "./settings-menu"
+import { SkillsBag } from "./skills-bag"
 import { SfxContext, useJourneySound } from "./sound"
 import { VerticalView } from "./vertical-view"
 import type { TimelineChapter } from "@/lib/journey/timeline"
+import { timelineChapters } from "@/lib/journey/timeline"
 
 export type JourneyView = "vertical" | "horizontal"
 const VIEW_KEY = "journey-view"
-const THREAD_KEY = "journey-thread"
+
+/** An on/off preference remembered per visitor. */
+function usePref(key: string, fallback: boolean) {
+  const [on, setOn] = React.useState(fallback)
+  React.useEffect(() => {
+    try {
+      const v = localStorage.getItem(key)
+      if (v === "on" || v === "off") setOn(v === "on")
+    } catch {
+      // storage blocked
+    }
+  }, [key])
+  const toggle = () => {
+    const next = !on
+    setOn(next)
+    try {
+      localStorage.setItem(key, next ? "on" : "off")
+    } catch {
+      // ignore
+    }
+  }
+  return [on, toggle] as const
+}
 
 // Safari still ships parts of the Fullscreen API prefixed, so every member is optional here
 type FsDoc = {
@@ -43,26 +67,16 @@ export function JourneyTimeline({
   )
   const [canFs, setCanFs] = React.useState(false)
   const [isFs, setIsFs] = React.useState(false)
-  const [threadOn, setThreadOn] = React.useState(true)
-
-  // The founder thread can be hidden; remembered per visitor
-  React.useEffect(() => {
-    try {
-      if (localStorage.getItem(THREAD_KEY) === "off") setThreadOn(false)
-    } catch {
-      // storage blocked
-    }
-  }, [])
-  const toggleThread = () => {
-    const next = !threadOn
-    setThreadOn(next)
+  const [threadOn, toggleThreadPref] = usePref("journey-thread", true)
+  const [bagOn, toggleBagPref] = usePref("journey-bag", false)
+  const [honestOn, toggleHonestPref] = usePref("journey-honest", false)
+  const withClick = (fn: () => void) => () => {
+    fn()
     sfx.click()
-    try {
-      localStorage.setItem(THREAD_KEY, next ? "on" : "off")
-    } catch {
-      // ignore
-    }
   }
+  // furthest stop reached so far, for the skills bag
+  const [reached, setReached] = React.useState(-1)
+  const navRef = React.useRef<((id: string) => void) | null>(null)
   const rootRef = React.useRef<HTMLDivElement>(null)
   const currentStop = React.useRef<string | null>(null)
   const segRef = React.useRef<HTMLDivElement>(null)
@@ -82,6 +96,8 @@ export function JourneyTimeline({
   const onStop = React.useCallback((c: TimelineChapter) => {
     currentStop.current = c.id
     rootRef.current?.style.setProperty("--jt-brand", c.brand)
+    const i = timelineChapters.findIndex((x) => x.id === c.id)
+    setReached((r) => Math.max(r, i))
   }, [])
 
   const choose = (next: JourneyView) => {
@@ -172,6 +188,7 @@ export function JourneyTimeline({
         className="jt"
         ref={rootRef}
         data-thread={threadOn ? undefined : "off"}
+        data-honest={honestOn ? "on" : undefined}
       >
         <header className="bar">
           <Link to="/" className="brand">
@@ -231,7 +248,21 @@ export function JourneyTimeline({
                 label: "Founder thread",
                 hint: "Same founder, three products",
                 on: threadOn,
-                toggle: toggleThread,
+                toggle: withClick(toggleThreadPref),
+              },
+              {
+                id: "bag",
+                label: "Skills bag",
+                hint: "Collect skills as you go",
+                on: bagOn,
+                toggle: withClick(toggleBagPref),
+              },
+              {
+                id: "honest",
+                label: "Honest notes",
+                hint: "What didn’t work, and what it taught me",
+                on: honestOn,
+                toggle: withClick(toggleHonestPref),
               },
               {
                 id: "dark",
@@ -244,12 +275,29 @@ export function JourneyTimeline({
                 },
               },
             ]}
-          />
+          >
+            {bagOn && (
+              <SkillsBag
+                reached={reached}
+                onJump={(id) => navRef.current?.(id)}
+              />
+            )}
+          </SettingsMenu>
         </header>
         {view === "horizontal" ? (
-          <HorizontalView key="h" startAt={startAt} onStop={onStop} />
+          <HorizontalView
+            key="h"
+            startAt={startAt}
+            onStop={onStop}
+            navRef={navRef}
+          />
         ) : (
-          <VerticalView key="v" startAt={startAt} onStop={onStop} />
+          <VerticalView
+            key="v"
+            startAt={startAt}
+            onStop={onStop}
+            navRef={navRef}
+          />
         )}
       </div>
     </SfxContext.Provider>

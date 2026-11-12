@@ -64,9 +64,17 @@ export function ChapterCopy({
   chapter: TimelineChapter
   active: boolean
 }) {
+  const [flipped, setFlipped] = React.useState(false)
+  const frontBtn = React.useRef<HTMLButtonElement>(null)
+  const backBtn = React.useRef<HTMLButtonElement>(null)
+  const flip = (on: boolean) => {
+    setFlipped(on)
+    // move focus to the face that just turned up
+    requestAnimationFrame(() => (on ? backBtn : frontBtn).current?.focus({ preventScroll: true }))
+  }
   let i = 0
-  return (
-    <div className="copy" style={{ "--b": c.brand } as React.CSSProperties}>
+  const front = (
+    <>
       {c.milestone && (
         <div {...r(i++)}>
           <span className="mbadge">◆ Milestone · {c.milestone}</span>
@@ -123,14 +131,21 @@ export function ChapterCopy({
           </small>
         </div>
       )}
-      <div className="tags" {...r(i++)}>
-        {c.tags.map((t) => (
-          <span key={t}>{t}</span>
-        ))}
-      </div>
-      {c.links && (
+      {c.tags.length > 0 && (
+        <div className="tags" {...r(i++)}>
+          {c.tags.map((t) => (
+            <span key={t}>{t}</span>
+          ))}
+        </div>
+      )}
+      {(c.caseStudy || c.links) && (
         <div className="links" {...r(i++)}>
-          {c.links.map((l) => (
+          {c.caseStudy && (
+            <a className="cs" href={`/projects/${c.caseStudy}`}>
+              Read the case study <span aria-hidden="true">→</span>
+            </a>
+          )}
+          {c.links?.map((l) => (
             <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
               {l.label} <span aria-hidden="true">↗</span>
               <span className="sr-only"> (opens in a new tab)</span>
@@ -138,6 +153,52 @@ export function ChapterCopy({
           ))}
         </div>
       )}
+      {c.honest && (
+        <div className="honest-cta" {...r(i++)}>
+          <button
+            ref={frontBtn}
+            type="button"
+            className="flip-link"
+            aria-expanded={flipped}
+            onClick={() => flip(true)}
+          >
+            The honest version <span aria-hidden="true">↻</span>
+          </button>
+        </div>
+      )}
+    </>
+  )
+  const style = { "--b": c.brand } as React.CSSProperties
+  if (!c.honest) {
+    return (
+      <div className="copy" style={style}>
+        {front}
+      </div>
+    )
+  }
+  return (
+    <div className="copy has-flip" style={style}>
+      <div className={`flipcard${flipped ? " on" : ""}`}>
+        <div className="face front" inert={flipped}>
+          {front}
+        </div>
+        <aside className="face back" aria-label={`${c.company}, the honest version`} inert={!flipped}>
+          <div className="tag">{c.company.replace(/\s*\(.*\)/, "")} · the honest version</div>
+          <p className="claim">
+            {c.title} {c.emphasis}
+          </p>
+          <div className="lab">What didn’t work</div>
+          <p className="missed">{c.honest.missed}</p>
+          <div className="lab">What it taught me</div>
+          <p className="taught">{c.honest.taught}</p>
+          <div className="row">
+            <small>Written in hindsight</small>
+            <button ref={backBtn} type="button" className="flip-link" onClick={() => flip(false)}>
+              <span aria-hidden="true">↺</span> Back to the pitch
+            </button>
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }

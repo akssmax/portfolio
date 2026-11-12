@@ -15,6 +15,8 @@ import {
 type ViewProps = {
   startAt: string | null
   onStop: (chapter: TimelineChapter) => void
+  /** Filled with this view's jump-to-stop function, for the skills bag */
+  navRef?: React.MutableRefObject<((id: string) => void) | null>
 }
 
 const NS = "http://www.w3.org/2000/svg"
@@ -25,7 +27,7 @@ const chapterIndex = (id: string | null) =>
     timelineChapters.findIndex((c) => c.id === id)
   )
 
-export function HorizontalView({ startAt, onStop }: ViewProps) {
+export function HorizontalView({ startAt, onStop, navRef }: ViewProps) {
   const sfx = useSfx()
   const { seen, reveal } = useRevealed()
   const [cur, setCur] = React.useState<string>(timelineChapters[0].id)
@@ -126,7 +128,8 @@ export function HorizontalView({ startAt, onStop }: ViewProps) {
         const l = pn.offsetLeft - shift
         if (l < vw * 0.96 && pn.dataset.key) reveal(pn.dataset.key)
       })
-      const cursor = shift + vw * 0.45
+      // on phones each panel is one screen and its station sits mid-panel
+      const cursor = shift + vw * (mobile ? 0.62 : 0.45)
       let lit = 0
       stations.forEach((s, i) => {
         if (s.x <= cursor) lit = i
@@ -290,6 +293,14 @@ export function HorizontalView({ startAt, onStop }: ViewProps) {
   }, [maxShift, reveal, sfx])
 
   React.useEffect(() => {
+    if (!navRef) return
+    navRef.current = (id: string) => goTo(id)
+    return () => {
+      navRef.current = null
+    }
+  }, [navRef, goTo])
+
+  React.useEffect(() => {
     if (!startAt) {
       window.scrollTo(0, 0)
       return
@@ -345,16 +356,19 @@ export function HorizontalView({ startAt, onStop }: ViewProps) {
             <svg className="h-world" ref={worldRef} aria-hidden="true" />
             <section className={cls("h-intro", "intro")} data-key="intro">
               <div className="intro">
-                <div className="k">
-                  Akshay Saini · the journey as a film strip
-                </div>
+                <div className="k">Akshay Saini · self-taught, still curious</div>
                 <h1>
-                  2014 → now.<em>Five acts, one line.</em>
+                  Same kid,<em>bigger toys.</em>
                 </h1>
                 <p>
-                  The ground climbs with every act. The red thread hanging under
-                  it is the founder I worked with on three different products.
-                  Every stop has something to play with.
+                  From After Effects in school to AI agents in production. The
+                  ground climbs with every act, and every stop has something to
+                  play with.
+                  <span className="thread-copy">
+                    {" "}
+                    The red thread underneath is a founder I built three
+                    products with.
+                  </span>
                 </p>
                 <div className="go">keep scrolling</div>
               </div>
